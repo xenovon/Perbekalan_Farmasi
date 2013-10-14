@@ -26,13 +26,10 @@ public class PurchaseOrderItem {
 	@Column(name="id_purchase_order")
 	private PurchaseOrder purchaseOrder;
 	
-	private Date date;
 	private int quantity;
 	@Column(columnDefinition="TEXT")
 	private String information;
 	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date timestamp;
 
 	public int getIdPurchaseOrderItem() {
 		return idPurchaseOrderItem;
@@ -58,13 +55,6 @@ public class PurchaseOrderItem {
 		this.purchaseOrder = purchaseOrder;
 	}
 
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
-	}
 
 	public int getQuantity() {
 		return quantity;
@@ -82,13 +72,7 @@ public class PurchaseOrderItem {
 		this.information = information;
 	}
 
-	public Date getTimestamp() {
-		return timestamp;
-	}
 
-	public void setTimestamp(Date timestamp) {
-		this.timestamp = timestamp;
-	}
 	
 	
 }

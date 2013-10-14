@@ -26,11 +26,14 @@ public class SupplierGoods {
 	@Column(name="id_goods")
 	private Goods goods;
 	
+	@ManyToOne
+	@Column(name="id_manufactur")
+	private Manufacturer manufacturer;
+	
+	
 	@Column(name="last_price")
 	private int lastPrice;
-	
-	private String manufacturer;
-	
+		
 	@Column(name="last_update")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date lastUpdate;
@@ -67,11 +70,11 @@ public class SupplierGoods {
 		this.lastPrice = lastPrice;
 	}
 
-	public String getManufacturer() {
+	public Manufacturer getManufacturer() {
 		return manufacturer;
 	}
 
-	public void setManufacturer(String manufacturer) {
+	public void setManufacturer(Manufacturer manufacturer) {
 		this.manufacturer = manufacturer;
 	}
 

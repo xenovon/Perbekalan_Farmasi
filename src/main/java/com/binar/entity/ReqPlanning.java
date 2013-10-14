@@ -22,7 +22,6 @@ public class ReqPlanning {
 	@Column(name="id_supplier_goods")
 	private SupplierGoods supplierGoods;
 	
-	
 	private Date period;
 	
 	private int quantity;

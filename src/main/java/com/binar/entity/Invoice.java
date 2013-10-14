@@ -18,10 +18,7 @@ public class Invoice {
 	@Id
 	@Column(name="id_invoice")
 	private int idInvoice;
-	
-	@Column(name="id_purchase_order")
-	private PurchaseOrder purchaseOrder;
-	
+		
 	@Column(name="invoice_number")
 	private String invoiceNumber;
 	
@@ -41,14 +38,6 @@ public class Invoice {
 
 	public void setIdInvoice(int idInvoice) {
 		this.idInvoice = idInvoice;
-	}
-
-	public PurchaseOrder getPurchaseOrder() {
-		return purchaseOrder;
-	}
-
-	public void setPurchaseOrder(PurchaseOrder purchaseOrder) {
-		this.purchaseOrder = purchaseOrder;
 	}
 
 	public String getInvoiceNumber() {

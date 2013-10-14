@@ -1,5 +1,6 @@
 package com.binar.entity;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -7,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.binar.entity.enumeration.EnumPurchaseOrderType;
 
@@ -28,6 +31,11 @@ public class PurchaseOrder {
 	
 	@OneToMany
 	private List<PurchaseOrderItem> purchaseOrderItem;
+	
+	private Date date;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date timestamp;
+
 
 	public int getIdPurchaseOrder() {
 		return idPurchaseOrder;
@@ -69,5 +77,18 @@ public class PurchaseOrder {
 		this.purchaseOrderItem = purchaseOrderItem;
 	}
 	
-	
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	public Date getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(Date timestamp) {
+		this.timestamp = timestamp;
+	}
 }

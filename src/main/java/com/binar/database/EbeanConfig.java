@@ -15,6 +15,7 @@ import com.binar.entity.GoodsReceipt;
 import com.binar.entity.Insurance;
 import com.binar.entity.Invoice;
 import com.binar.entity.InvoiceItem;
+import com.binar.entity.Manufacturer;
 import com.binar.entity.PurchaseOrder;
 import com.binar.entity.PurchaseOrderItem;
 import com.binar.entity.ReqPlanning;
@@ -81,6 +82,7 @@ public class EbeanConfig {
     	config.addClass(Supplier.class);
     	config.addClass(SupplierGoods.class);
     	config.addClass(User.class);
+    	config.addClass(Manufacturer.class);
     	
     	
     	
