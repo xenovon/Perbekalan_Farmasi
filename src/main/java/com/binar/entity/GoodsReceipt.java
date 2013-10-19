@@ -19,11 +19,11 @@ public class GoodsReceipt {
 	private int idGoodsReceipt;
 	
 	@ManyToOne
-	@Column(name="id_invoice")
+	@Column(name="fk")
 	private Invoice invoice;
 	
 	@ManyToOne
-	@Column(name="id_goods")
+	@Column(name="fk")
 	private Goods goods;
 
 	@Column(name="quantity_received")

@@ -18,7 +18,7 @@ public class Goods {
 	private int idGoods;
 	
 	@ManyToOne
-	@Column(name="id_insurance")
+	@Column(name="fk")
 	private Insurance insurance;
 	
 	private String name;

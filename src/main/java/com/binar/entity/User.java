@@ -17,7 +17,7 @@ public class User {
 	private int idUser;
 	
 	@ManyToOne
-	@Column(name="id_role")
+	@Column(name="fk")
 	private Role role;
 	
 	@Column(name="employee_num")

@@ -18,7 +18,7 @@ public class DeletedGoods {
 	private int idDeletedGoods;
 	
 	@ManyToOne
-	@Column(name="id_goods")
+	@Column(name="fk")
 	private Goods goods;
 	
 	private int quantity;

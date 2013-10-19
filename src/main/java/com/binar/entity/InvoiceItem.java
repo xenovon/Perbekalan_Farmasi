@@ -16,11 +16,11 @@ public class InvoiceItem {
 	private int idInvoiceItem;
 	
 	@ManyToOne
-	@Column(name="invoice")
+	@Column(name="fk")
 	private Invoice invoice;
 	
 	@OneToOne
-	@Column(name="id_purchase_order_item")
+	@Column(name="fk")
 	private PurchaseOrderItem purchaseOrderItem;
 	
 	private String batch;

@@ -19,15 +19,15 @@ public class SupplierGoods {
 	private int idSupplierGoods;
 
 	@ManyToOne
-	@Column(name="id_supplier")
+	@Column(name="fk")
 	private Supplier supplier;
 	
 	@ManyToOne
-	@Column(name="id_goods")
+	@Column(name="fk")
 	private Goods goods;
 	
 	@ManyToOne
-	@Column(name="id_manufactur")
+	@Column(name="fk")
 	private Manufacturer manufacturer;
 	
 	

@@ -19,7 +19,7 @@ public class ReqPlanning {
 	private int idReqPlanning;
 	
 	@ManyToOne
-	@Column(name="id_supplier_goods")
+	@Column(name="fk")
 	private SupplierGoods supplierGoods;
 	
 	private Date period;

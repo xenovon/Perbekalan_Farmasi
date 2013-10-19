@@ -6,15 +6,15 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="manufactur")
+@Table(name="manufacturer")
 public class Manufacturer {
 
 	@Id
-	@Column(name="id_manufactur")
-	private int idManufactur;
+	@Column(name="id_manufacturer")
+	private int idManufacturer;
 	
-	@Column(name="manufactur_name")
-	private String manufacturName;
+	@Column(name="manufacturer_name")
+	private String manufacturerName;
 	
 	@Column(columnDefinition="TEXT")
 	private String description;
@@ -25,20 +25,20 @@ public class Manufacturer {
 	
 	private String fax;
 
-	public int getIdManufactur() {
-		return idManufactur;
+	public int getIdManufacturer() {
+		return idManufacturer;
 	}
 
-	public void setIdManufactur(int idManufactur) {
-		this.idManufactur = idManufactur;
+	public void setIdManufacturer(int idManufacturer) {
+		this.idManufacturer = idManufacturer;
 	}
 
 	public String getManufacturName() {
-		return manufacturName;
+		return manufacturerName;
 	}
 
-	public void setManufacturName(String manufacturName) {
-		this.manufacturName = manufacturName;
+	public void setManufacturName(String manufacturerName) {
+		this.manufacturerName = manufacturerName;
 	}
 
 	public String getDescription() {
