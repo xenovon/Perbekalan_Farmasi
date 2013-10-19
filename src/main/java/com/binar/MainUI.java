@@ -29,7 +29,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
-@Theme("perbekalantheme")
+@Theme("dashboard")
 @SuppressWarnings("serial")
 @Title("Perbekalan Farmasi RSUD Ajibarang")
 public class MainUI extends UI
@@ -61,7 +61,12 @@ public class MainUI extends UI
 
     @Override
     protected void init(VaadinRequest request) {
-  	
+
+    	root.addStyleName("root");
+    	root.setSizeFull();
+    	setContent(root);
+    	
+    	
         final VerticalLayout layout = new VerticalLayout();
         layout.setMargin(true);
         setContent(layout);
@@ -75,6 +80,15 @@ public class MainUI extends UI
         EbeanServer server= GetEbeanServer.getServer();
         server.find(Insurance.class).findList();
         layout.addComponent(button);
+    }
+    
+    private void constructMainView(){
+    	nav = new Navigator(this, content);
+    	
+    	for(String route: routes.keySet()){
+    		nav.addView(route, routes.get(route));
+    	}
+    	
     }
 
 }
