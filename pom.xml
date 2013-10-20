@@ -163,6 +163,13 @@
 							<!-- if you don't specify any modules, the plugin will find them -->
 							<!-- <modules> <module>com.vaadin.demo.mobilemail.gwt.ColorPickerWidgetSet</module> 
 								</modules> -->
+             				<classpathScope>compile</classpathScope>
+            			    <mainClass>com.vaadin.sass.SassCompiler</mainClass>
+               				<arguments>
+              			      <argument>src/main/webapp/VAADIN/themes/dashboard/styles.scss</argument>
+                   			  <argument>src/main/webapp/VAADIN/themes/dashboard/styles.css</argument>
+               				</arguments>
+								
 						</configuration>
 						<goals>
 							<goal>clean</goal>

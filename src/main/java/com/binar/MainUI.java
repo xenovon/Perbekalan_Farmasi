@@ -14,6 +14,7 @@ import com.binar.view.InventoryManagementView;
 import com.binar.view.ProcurementView;
 import com.binar.view.ReportView;
 import com.binar.view.RequirementPlanningView;
+import com.binar.view.SettingView;
 import com.binar.view.UserManagementView;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
@@ -42,12 +43,12 @@ public class MainUI extends UI
     HashMap<String, Class<? extends View>> routes = new HashMap<String, Class<? extends View>>() {
         {
             put("/dashboard", DashboardView.class);
+            put("/requirementplanning", RequirementPlanningView.class);
+            put("/procurement", ProcurementView.class);
+            put("/inventorymanagement", InventoryManagementView.class);
             put("/report", ReportView.class);
             put("/datamanagement", DataManagementView.class);
-            put("/inventorymanagement", InventoryManagementView.class);
             put("/usermanagement", UserManagementView.class);
-            put("/procurement", ProcurementView.class);
-            put("/requirementplanning", RequirementPlanningView.class);
         }
     };    	
 	
@@ -69,7 +70,6 @@ public class MainUI extends UI
     	
         final VerticalLayout layout = new VerticalLayout();
         layout.setMargin(true);
-        setContent(layout);
         
         Button button = new Button("Click Me");
         button.addClickListener(new Button.ClickListener() {
@@ -80,14 +80,23 @@ public class MainUI extends UI
         EbeanServer server= GetEbeanServer.getServer();
         server.find(Insurance.class).findList();
         layout.addComponent(button);
+        constructMainView();
     }
     
     private void constructMainView(){
     	nav = new Navigator(this, content);
     	
+    	//Add view untuk ""
+    	nav.addView("", DashboardView.class);
+    	nav.addView("/", DashboardView.class);
+    	
     	for(String route: routes.keySet()){
     		nav.addView(route, routes.get(route));
     	}
+    	
+    	MainView mainView=new MainView(nav, content);
+    	mainView.init();
+    	root.addComponent(mainView);
     	
     }
 
