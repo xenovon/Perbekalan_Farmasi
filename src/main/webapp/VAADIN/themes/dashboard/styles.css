@@ -338,6 +338,7 @@
 .dashboard .v-loading-indicator, .dashboard .v-loading-indicator-delay, .dashboard .v-loading-indicator-wait {
 	top: 50%;
 	left: 50%;
+	z-index: 300000;
 	right: auto;
 	width: 44px;
 	height: 44px;
