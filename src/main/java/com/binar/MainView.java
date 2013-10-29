@@ -39,11 +39,12 @@ public class MainView extends HorizontalLayout {
 	private CssLayout menu;
 	private Label title;
 	private HorizontalLayout profileArea;
-	private Label  userName;
+	private NativeButton  userName;
 	private Label  role;
 	private MenuBar settingMenu;
 	private MenuItem settingMenuItem;
 	private Button logout;
+	private Button userSetting;	
 
     private HashMap<String, String> buttonName = new HashMap<String, String>() {
         {
@@ -54,6 +55,7 @@ public class MainView extends HorizontalLayout {
             put("usermanagement", "Manajemen Pengguna");
             put("procurement", "Pengadaan");
             put("requirementplanning", "Rencana Kebutuhan");
+            put("setting", "Pengaturan Aplikasi");
         }
     };
 	public MainView(Navigator nav, CssLayout content) {
@@ -62,7 +64,7 @@ public class MainView extends HorizontalLayout {
 	}	
 	public void init(){
 		this.setSizeFull();
-//		this.addStyleName("main-view");
+		this.addStyleName("main-view");
 		
 		//inisiasi sidebar
 		sidebar=new VerticalLayout();
@@ -79,16 +81,19 @@ public class MainView extends HorizontalLayout {
 				title.setSizeUndefined();
 			appTitle.addComponent(title);	
 		sidebar.addComponent(appTitle);
+
+		//tambahkan profil
+		initiateProfileAreaAndMenu();
+		sidebar.addComponent(profileArea);
+//		sidebar.addComponent(userSetting);
+
 		//tambahkan manu
 		initiateMenu();
 		sidebar.addComponent(menu);
 		sidebar.setExpandRatio(menu, 1);
+		
+		sidebar.addComponent(logout);
 
-		//tambahkan profil
-		initiateProfileArea();
-		sidebar.addComponent(profileArea);
-		
-		
 		//setting layout content
 		this.addComponent(sidebar);
 
@@ -131,11 +136,18 @@ public class MainView extends HorizontalLayout {
       
 
 	}
-	private void initiateProfileArea(){
+	private void initiateProfileAreaAndMenu(){
+		
 		profileArea=new HorizontalLayout();
-		userName=new Label("Binar");
+		userName=new NativeButton("Binar Candra");
 		role=new Label("Petugas Gudang");
-        Image profilePic = new Image(
+		role.addStyleName("role-style");
+		userName.addStyleName("name-style");
+		
+		CssLayout nameRoleContainer=new CssLayout();
+		nameRoleContainer.addComponents(userName, role);
+		
+		Image profilePic = new Image(
                 null,
                 new ThemeResource("img/profile-pic.png"));
         profilePic.setWidth("34px");
@@ -143,27 +155,20 @@ public class MainView extends HorizontalLayout {
 		profileArea.setSizeUndefined();
 		profileArea.addStyleName("user");
 		profileArea.addComponent(profilePic);
-		profileArea.addComponent(userName);
-		profileArea.addComponent(role);
-		//command, nanti ganti
+		profileArea.addComponent(nameRoleContainer);
 		
-        Command settingCmd = new Command() {
-            @Override
-            public void menuSelected(
-                    MenuItem selectedItem) {
-            	nav.navigateTo("/setting");
-            }
-        };
-		
-		//inisiasi menu
-		
-		settingMenu = new MenuBar();
-		settingMenuItem =settingMenu.addItem("", settingCmd);		
-		profileArea.addComponent(settingMenu);
+		userName.addClickListener(new Button.ClickListener() {
+			
+			@Override
+			public void buttonClick(ClickEvent event) {
+				nav.navigateTo("/usersetting");
+			}
+		});
 		
 		//button logout
 		logout = new NativeButton("Keluar");
-        logout.addStyleName("icon-cancel");
+		logout.addStyleName("v-button");
+		logout.addStyleName("logout-button");
         logout.setDescription("Keluar Dari Aplikasi");
         logout.addClickListener(new ClickListener() {
             @Override
@@ -171,12 +176,11 @@ public class MainView extends HorizontalLayout {
             	Notification.show("Logout Belum Di implementasikan");
             }
         });
-        profileArea.addComponent(logout);
         
 	}
 	public void setProfileText(String name, String role)
 	{
-		this.userName.setValue(name);
+		this.userName.setCaption(name);
 		this.role.setValue(role);
 	}
 	private	void clearMenuSelection(){

@@ -16,6 +16,7 @@ import com.binar.view.ReportView;
 import com.binar.view.RequirementPlanningView;
 import com.binar.view.SettingView;
 import com.binar.view.UserManagementView;
+import com.binar.view.UserSettingView;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
@@ -49,6 +50,8 @@ public class MainUI extends UI
             put("/report", ReportView.class);
             put("/datamanagement", DataManagementView.class);
             put("/usermanagement", UserManagementView.class);
+            put("/setting", SettingView.class);
+            put("/usersetting", UserSettingView.class);
         }
     };    	
 	

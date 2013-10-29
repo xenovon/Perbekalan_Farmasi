@@ -2450,3 +2450,68 @@
 .dashboard .edit-dashboard .v-formlayout .v-formlayout-captioncell {
 	vertical-align: middle;
 }
+
+.dashboard .role-style {
+	font-size: 10px !important;
+	min-width: 80px !important;
+	height: 10px !important;
+}
+
+.dashboard .name-style {
+	width: 60px;
+	min-width: 90px !important;
+	font-size: 13px !important;
+	height: 20px !important;
+	color: #767C7B;
+}
+
+.dashboard .name-style:hover {
+	background: #333537 !important;
+	color: white !important;
+	cursor: pointer;
+}
+
+.dashboard .name-style .v-nativebutton-caption {
+	display: inline !important;
+}
+
+.dashboard .name-style:hover {
+	color: #fff;
+	cursor: pointer;
+}
+
+.dashboard .logout-button {
+	font-size: 13px !important;
+	font-weight: 700 !important;
+	margin: 5px 20px 10px 25px !important;
+	width: 80px !important;
+	color: #767C7B !important;
+	background: #414243 !important;
+	border: 1px solid #6E6F6F !important;
+	text-shadow: 0 0.1em 0 !important;
+	padding: 6px 3px;
+	line-height: 1.2em;
+}
+
+.dashboard .setting-button {
+	font-size: 12px !important;
+	font-weight: 700 !important;
+	margin: 5px 5px 10px 23px !important;
+	width: 90px !important;
+	color: #767C7B !important;
+	background: #414243 !important;
+	border: 1px solid #6E6F6F !important;
+	padding: 6px 3px;
+	line-height: 1.2em;
+	text-shadow: 0 0.1em 0 !important;
+}
+
+.dashboard .user {
+	margin-bottom: 20px;
+}
+
+.dashboard .logout-button:hover {
+	background: #333537 !important;
+	color: white !important;
+	cursor: pointer;
+}
