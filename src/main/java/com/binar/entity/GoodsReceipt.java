@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -18,13 +19,10 @@ public class GoodsReceipt {
 	@Column(name="id_goods_receipt")
 	private int idGoodsReceipt;
 	
-	@ManyToOne
+	@OneToOne
 	@Column(name="fk")
-	private Invoice invoice;
+	private InvoiceItem invoiceItem;
 	
-	@ManyToOne
-	@Column(name="fk")
-	private Goods goods;
 
 	@Column(name="quantity_received")
 	private int quantityReceived;
@@ -50,21 +48,6 @@ public class GoodsReceipt {
 		this.idGoodsReceipt = idGoodsReceipt;
 	}
 
-	public Invoice getInvoice() {
-		return invoice;
-	}
-
-	public void setInvoice(Invoice invoice) {
-		this.invoice = invoice;
-	}
-
-	public Goods getGoods() {
-		return goods;
-	}
-
-	public void setGoods(Goods goods) {
-		this.goods = goods;
-	}
 
 	public int getQuantityReceived() {
 		return quantityReceived;
@@ -76,6 +59,14 @@ public class GoodsReceipt {
 
 	public String getInformation() {
 		return information;
+	}
+
+	public InvoiceItem getInvoiceItem() {
+		return invoiceItem;
+	}
+
+	public void setInvoiceItem(InvoiceItem invoiceItem) {
+		this.invoiceItem = invoiceItem;
 	}
 
 	public void setInformation(String information) {

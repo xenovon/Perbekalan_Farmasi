@@ -15,7 +15,7 @@ public class Goods {
 	
 	@Id
 	@Column(name="id_goods")
-	private int idGoods;
+	private String idGoods;
 	
 	@ManyToOne
 	@Column(name="fk")
@@ -31,7 +31,7 @@ public class Goods {
 	private String unit;
 	
 	@Column(name="current_stock")
-	int currentStrock;
+	int currentStock;
 	
 	@Column(columnDefinition="TEXT")
 	private String information;
@@ -46,11 +46,11 @@ public class Goods {
 	
 	private boolean isImportant;
 
-	public int getIdGoods() {
+	public String getIdGoods() {
 		return idGoods;
 	}
 
-	public void setIdGoods(int idGoods) {
+	public void setIdGoods(String idGoods) {
 		this.idGoods = idGoods;
 	}
 
@@ -94,12 +94,12 @@ public class Goods {
 		this.unit = unit;
 	}
 
-	public int getCurrentStrock() {
-		return currentStrock;
+	public int getCurrentStock() {
+		return currentStock;
 	}
 
-	public void setCurrentStrock(int currentStrock) {
-		this.currentStrock = currentStrock;
+	public void setCurrentStock(int currentStock) {
+		this.currentStock = currentStock;
 	}
 
 	public String getInformation() {
