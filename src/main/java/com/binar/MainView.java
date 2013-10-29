@@ -62,14 +62,13 @@ public class MainView extends HorizontalLayout {
 	}	
 	public void init(){
 		this.setSizeFull();
-		this.addStyleName("main-view");
+//		this.addStyleName("main-view");
 		
 		//inisiasi sidebar
 		sidebar=new VerticalLayout();
 		sidebar.addStyleName("sidebar");
-		sidebar.setWidth(null);
-        sidebar.setWidth("140px");
-
+		sidebar.setWidth("140px");
+		
 		sidebar.setHeight("100%");
 			//tambahkan title
 			appTitle=new CssLayout();
@@ -173,8 +172,7 @@ public class MainView extends HorizontalLayout {
             }
         });
         profileArea.addComponent(logout);
-
-		
+        
 	}
 	public void setProfileText(String name, String role)
 	{
