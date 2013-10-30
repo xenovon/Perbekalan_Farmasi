@@ -1,19 +1,26 @@
 package com.binar.core.requirementPlanning;
 
+import com.vaadin.server.ErrorMessage;
+import com.vaadin.server.Resource;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.TabSheet.Tab;
+import com.vaadin.ui.VerticalLayout;
 
-public class Approval extends CustomComponent {
+public class Approval extends  CssLayout {
 
-	CssLayout layout=new CssLayout();
+	
+	VerticalLayout layout=new VerticalLayout();
 	Label label=new Label("Persetujuan");
 	
 	public Approval() {
-		layout.setCaption("Persetujuan");
-		layout.addComponent(label);
-		layout.setSizeFull();
+		this.setCaption("Persetujuan");
+		this.addComponent(label);
 		
-		this.setCompositionRoot(layout);
+//		this.setSizeFull();
+		this.addStyleName("tab-content");
+		
 	}
 }

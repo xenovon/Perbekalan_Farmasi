@@ -99,6 +99,8 @@ public class MainUI extends UI
     	
     	MainView mainView=new MainView(nav, content);
     	mainView.init();
+    	Header header=new Header();
+    	root.addComponent(header);
     	root.addComponent(mainView);
     	
     }

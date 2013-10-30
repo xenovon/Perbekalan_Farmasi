@@ -1,17 +1,21 @@
 package com.binar.core.requirementPlanning;
 
+import javax.swing.text.html.CSS;
+
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.VerticalLayout;
 
-public class InputRequirementPlanning extends CustomComponent {
+public class InputRequirementPlanning extends CssLayout {
 
-	CssLayout layout=new CssLayout();
+	VerticalLayout layout=new VerticalLayout();
 	Label label=new Label("Input Rencana Kebutuhan");
 	
 	public InputRequirementPlanning() {
-		layout.setCaption("Input Rencana Kebutuhan");
-		layout.addComponent(label);
-		this.setCompositionRoot(layout);
+		this.setCaption("Input Rencana Kebutuhan");
+		this.addComponent(label);
+		this.addStyleName("tab-content");
+
 	}
 }

@@ -46,6 +46,7 @@ public class MainView extends HorizontalLayout {
 	private Button logout;
 	private Button userSetting;	
 
+	
     private HashMap<String, String> buttonName = new HashMap<String, String>() {
         {
             put("dashboard", "Dashboard");
@@ -72,19 +73,21 @@ public class MainView extends HorizontalLayout {
 		sidebar.setWidth("140px");
 		
 		sidebar.setHeight("100%");
-			//tambahkan title
-			appTitle=new CssLayout();
-			appTitle.addStyleName("branding");
-				title=new Label(
-						"<span>Aplikasi</span> Perbekalan Farmasi", 
-						ContentMode.HTML);
-				title.setSizeUndefined();
-			appTitle.addComponent(title);	
-		sidebar.addComponent(appTitle);
+//			tambahkan title
+//			appTitle=new CssLayout();
+//			appTitle.addStyleName("branding");
+//				title=new Label(
+//						"<span>Aplikasi</span> Perbekalan Farmasi", 
+//						ContentMode.HTML);
+//				title.setSizeUndefined();
+//			appTitle.addComponent(title);	
+//		sidebar.addComponent(appTitle);
 
 		//tambahkan profil
 		initiateProfileAreaAndMenu();
 		sidebar.addComponent(profileArea);
+		sidebar.addComponent(logout);
+
 //		sidebar.addComponent(userSetting);
 
 		//tambahkan manu
@@ -92,10 +95,8 @@ public class MainView extends HorizontalLayout {
 		sidebar.addComponent(menu);
 		sidebar.setExpandRatio(menu, 1);
 		
-		sidebar.addComponent(logout);
 
 		//setting layout content
-		this.addComponent(sidebar);
 
 		content.addStyleName("view-content");
 		content.setSizeFull();

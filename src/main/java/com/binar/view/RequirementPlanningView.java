@@ -8,6 +8,7 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TabSheet;
+import com.vaadin.ui.VerticalLayout;
 
 public class RequirementPlanningView extends CustomComponent implements View{
 
@@ -20,8 +21,13 @@ public class RequirementPlanningView extends CustomComponent implements View{
 		ReqPlanningList reqPlanning=new ReqPlanningList();
 		
 		
-		tabSheet=new TabSheet(reqPlanning, inputReqPl, approval);
-		tabSheet.addStyleName("borderless");
+		tabSheet=new TabSheet();
+		tabSheet.addTab(reqPlanning).setCaption("Daftar Rencana Kebutuhan");
+		tabSheet.addTab(inputReqPl).setCaption("Input Rencana Kebutuhan");;
+		tabSheet.addTab(approval).setCaption("Persetujuan");
+		
+		
+//		tabSheet.addStyleName("borderless");
 		tabSheet.setSizeFull();
 		this.setCompositionRoot(tabSheet);
 		
