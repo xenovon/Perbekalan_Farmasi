@@ -9,5 +9,7 @@ public class GoodsOrderReport extends CssLayout {
 	public GoodsOrderReport() {
 		this.setCaption("Laporan Pemesanan Barang");
 		this.addComponent(label);
+		this.addStyleName("tab-content");
+
 	}
 }

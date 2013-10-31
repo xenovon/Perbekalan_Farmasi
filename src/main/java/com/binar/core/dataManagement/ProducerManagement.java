@@ -9,5 +9,7 @@ public class ProducerManagement extends CssLayout{
 	public ProducerManagement() {
 		this.setCaption("Manajemen Produsen");
 		this.addComponent(label);
+		this.addStyleName("tab-content");
+
 	}
 }

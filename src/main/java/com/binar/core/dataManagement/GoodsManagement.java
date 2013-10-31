@@ -9,5 +9,7 @@ public class GoodsManagement extends CssLayout {
 	public GoodsManagement() {
 		this.setCaption("Manajemen Barang");
 		this.addComponent(label);
+		this.addStyleName("tab-content");
+
 	}
 }

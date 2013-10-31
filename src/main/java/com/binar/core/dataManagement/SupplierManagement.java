@@ -9,5 +9,7 @@ public class SupplierManagement extends CssLayout {
 	public SupplierManagement() {
 		this.setCaption("Manajemen Supplier");
 		this.addComponent(label);
+		this.addStyleName("tab-content");
+
 	}	
 }

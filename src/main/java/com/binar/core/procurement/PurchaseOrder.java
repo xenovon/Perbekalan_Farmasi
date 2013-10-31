@@ -9,5 +9,7 @@ public class PurchaseOrder extends CssLayout {
 	public PurchaseOrder() {
 		this.setCaption("Surat Pesanan");
 		this.addComponent(label);
+		this.addStyleName("tab-content");
+
 	}
 }

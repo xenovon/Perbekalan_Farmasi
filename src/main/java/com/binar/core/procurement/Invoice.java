@@ -9,6 +9,7 @@ public class Invoice extends CssLayout {
 	public Invoice() {
 		this.setCaption("Faktur");
 		this.addComponent(label);
+		this.addStyleName("tab-content");
 		
 	}
 }

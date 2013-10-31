@@ -12,7 +12,6 @@ public class UserManagementView extends CustomComponent implements View {
 	@Override
 	public void enter(ViewChangeEvent event) {
 		this.setCompositionRoot(label);
-
 	}
 
 }
