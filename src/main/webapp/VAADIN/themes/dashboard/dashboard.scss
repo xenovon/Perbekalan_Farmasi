@@ -1,4 +1,4 @@
-/* @import "../base/base.scss"; */
+@import "../base/base.scss";
 
 @import "icons/fontello.scss";
 @import "fonts/open-sans.scss";
@@ -30,7 +30,8 @@
 
 @mixin dashboard {
 	
-	@include base;
+  	@include base;
+
 	
 	@include dashboard-loading-indicator;
 	@include dashboard-common;
@@ -218,7 +219,7 @@
 		-webkit-appearance: none;
 		
 		display: block;
-		padding: 10px 14px 10px;
+		padding: 5px 14px 5px;
 		width: 100%;
 		border: none;
 		margin: 0;
@@ -234,13 +235,13 @@
 		
 		color: #888a8c;
 		font-weight: normal;
-		text-shadow: 0 1px 0 rgba(0,0,0,.5);
+	/*	text-shadow: 0 1px 0 rgba(0,0,0,.5); */
 		text-align: center;
 		
 		/* TODO mixin */
-		/* 		-webkit-transition: color ease-in-out 100ms, background-color linear 60ms; */
-		/* 		-moz-transition: color ease-in-out 100ms, background-color linear 60ms; */
-		/* 		transition: color ease-in-out 100ms, background-color linear 60ms; */
+				-webkit-transition: color ease-in-out 100ms, background-color linear 60ms; 
+		 		-moz-transition: color ease-in-out 100ms, background-color linear 60ms; 
+		 		transition: color ease-in-out 100ms, background-color linear 60ms; 
 	}
 	
 	.sidebar .menu:after {
@@ -703,7 +704,7 @@
 	}
 
 
-/*  Custom CSS Area , Oleh : Binar Candra */
+/*  Custom CSS Area , Oleh : Binar Candra    */
 
 	.role-style{
 		font-size: 10px !important;
@@ -726,6 +727,9 @@
 	}	
 	.name-style .v-nativebutton-caption{
 		display: inline !important;
+	}
+	v-nativebutton{
+		white-space: normal !important;
 	}
 	.name-style:hover{
 		color:#fff;
@@ -772,7 +776,7 @@
 	.header-style{
 		background-color:#414243;
 		font-size:16px;
-		height:30px;
+		height:40px;
 		color:#fff;
 		padding:5px 6px 5px 30px;
 	}
@@ -790,5 +794,47 @@
 	}
 	.v-scrollable{
 		position:relative !important;
+	}
+	
+	/* Tampilan Form */
+	
+	.dashboard .v-formlayout-spacing > tbody > .v-formlayout-row > .v-formlayout-captioncell, .dashboard .v-formlayout-spacing > tbody > .v-formlayout-row > .v-formlayout-contentcell, .dashboard .v-formlayout-spacing > tbody > .v-formlayout-row > .v-formlayout-errorcell {
+		padding-top: 6px;
+	}
+	
+	.dashboard .v-formlayout-spacing > tbody > .v-formlayout-firstrow > .v-formlayout-captioncell, .dashboard .v-formlayout-spacing > tbody > .v-formlayout-firstrow > .v-formlayout-contentcell, .dashboard .v-formlayout-spacing > tbody > .v-formlayout-firstrow > .v-formlayout-errorcell {
+		padding-top: 0;
+	}
+	
+	.dashboard .v-formlayout-margin-top > tbody > .v-formlayout-firstrow > .v-formlayout-captioncell, .dashboard .v-formlayout-margin-top > tbody > .v-formlayout-firstrow > .v-formlayout-contentcell, .dashboard .v-formlayout-margin-top > tbody > .v-formlayout-firstrow > .v-formlayout-errorcell {
+		padding-top: 12px;
+	}
+	
+	.dashboard .v-formlayout-margin-bottom > tbody > .v-formlayout-lastrow > .v-formlayout-captioncell, .dashboard .v-formlayout-margin-bottom > tbody > .v-formlayout-lastrow > .v-formlayout-contentcell, .dashboard .v-formlayout-margin-bottom > tbody > .v-formlayout-lastrow > .v-formlayout-errorcell {
+		padding-bottom: 12px;
+	}
+	
+	.dashboard .v-formlayout-margin-left > tbody > .v-formlayout-row > .v-formlayout-captioncell {
+		padding-left: 12px;
+	}
+	
+	.dashboard .v-formlayout-margin-right > tbody > .v-formlayout-row > .v-formlayout-contentcell {
+		padding-right: 12px;
+	}
+	
+	.dashboard .v-formlayout-captioncell .v-caption .v-required-field-indicator {
+		float: none;
+	}
+	.v-csslayout {
+		overflow: visible !important;
+	}
+	.v-widget{
+		vertical-align: super !important;	
+	}
+	.v-nativebutton .v-nativebutton-caption {
+			vertical-align: middle;
+			white-space: normal;
+			font: inherit;
+			color: inherit;
 	}
 }

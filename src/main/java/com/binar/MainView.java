@@ -2,6 +2,7 @@ package com.binar;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import com.binar.view.DashboardView;
 import com.binar.view.DataManagementView;
@@ -47,16 +48,16 @@ public class MainView extends HorizontalLayout {
 	private Button userSetting;	
 
 	
-    private HashMap<String, String> buttonName = new HashMap<String, String>() {
+    private Map<String, String> buttonName = new TreeMap<String, String>() {
         {
-            put("dashboard", "Dashboard");
-            put("report", "Laporan");
-            put("datamanagement", "Manajemen Data");
-            put("inventorymanagement", "Manajemen Inventory");
-            put("usermanagement", "Manajemen Pengguna");
-            put("procurement", "Pengadaan");
-            put("requirementplanning", "Rencana Kebutuhan");
-            put("setting", "Pengaturan Aplikasi");
+            put("Adashboard", "Dashboard");
+            put("Freport", "Laporan");
+            put("Edatamanagement", "Manajemen Data");
+            put("Dinventorymanagement", "Manajemen Inventory");
+            put("Gusermanagement", "Manajemen Pengguna");
+            put("Cprocurement", "Pengadaan");
+            put("Brequirementplanning", "Rencana Kebutuhan");
+            put("Hsetting", "Pengaturan Aplikasi");
         }
     };
 	public MainView(Navigator nav, CssLayout content) {
@@ -112,7 +113,7 @@ public class MainView extends HorizontalLayout {
 		menu=new CssLayout();
         menu.removeAllComponents();
         for (Map.Entry<String, String> entry : buttonName.entrySet()) {
-            final String key = entry.getKey();
+            final String key = entry.getKey().substring(1);
             final Object value = entry.getValue();
             
             Button b=new NativeButton(entry.getValue());

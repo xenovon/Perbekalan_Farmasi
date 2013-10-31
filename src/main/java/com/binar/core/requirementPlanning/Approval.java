@@ -18,9 +18,7 @@ public class Approval extends  CssLayout {
 	public Approval() {
 		this.setCaption("Persetujuan");
 		this.addComponent(label);
-		
-//		this.setSizeFull();
+		this.setSizeFull();
 		this.addStyleName("tab-content");
-		
 	}
 }
