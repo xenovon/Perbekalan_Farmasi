@@ -364,7 +364,7 @@
 	.sidebar .user {
 		display: block;
 		
-		border-top: 1px solid #303132;
+		border-top: 0px solid #303132;
 		background: #3b3c3d;
 		background-color: rgba(0,0,0,.1);
 		
@@ -718,6 +718,7 @@
 		font-size: 13px !important;
 		height: 20px !important;
 		color:#767C7B;
+		border-top: 0px solid #303132 !important;
 		
 	}
 	.name-style:hover {
@@ -831,10 +832,19 @@
 	.v-widget{
 		vertical-align: super !important;	
 	}
-	.v-nativebutton .v-nativebutton-caption {
+	.v-nativebutton-caption {
 			vertical-align: middle;
-			white-space: normal;
+			white-space: normal !important;
 			font: inherit;
 			color: inherit;
+	}
+	
+	.sidebar .user .v-label {
+		white-space: nowrap !important;
+		line-height: 0px !important;
+	}
+	
+	.user > .v-slot:first-child {
+		padding-top: 5px !important;
 	}
 }

@@ -117,7 +117,7 @@ public class MainView extends HorizontalLayout {
             final Object value = entry.getValue();
             
             Button b=new NativeButton(entry.getValue());
-            b.addStyleName("icon-dashboard");
+            b.addStyleName("icon-"+key);
             b.addClickListener(new Button.ClickListener() {
 				
 				private static final long serialVersionUID = 1L;
@@ -163,6 +163,7 @@ public class MainView extends HorizontalLayout {
 			
 			@Override
 			public void buttonClick(ClickEvent event) {
+				clearMenuSelection();
 				nav.navigateTo("/usersetting");
 			}
 		});

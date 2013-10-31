@@ -367,7 +367,7 @@
 }
 
 .icon-dashboard.v-nativebutton:before, .icon-dashboard > .v-button-wrap:before, .icon-dashboard.v-label:before, .v-menubar-menuitem-icon-dashboard:before {
-	content: "\2302";
+	content: "\e80e";
 }
 
 .icon-reports.v-nativebutton:before, .icon-reports > .v-button-wrap:before, .icon-reports.v-label:before, .v-menubar-menuitem-icon-reports:before {
@@ -391,7 +391,7 @@
 }
 
 .icon-user.v-nativebutton:before, .icon-user > .v-button-wrap:before, .icon-user.v-label:before, .v-menubar-menuitem-icon-user:before {
-	content: "\1f464";
+	content: "\e800";
 }
 
 .icon-attention.v-nativebutton:before, .icon-attention > .v-button-wrap:before, .icon-attention.v-label:before, .v-menubar-menuitem-icon-attention:before {
@@ -408,6 +408,38 @@
 
 .icon-cancel.v-nativebutton:before, .icon-cancel > .v-button-wrap:before, .icon-cancel.v-label:before, .v-menubar-menuitem-icon-cancel:before {
 	content: "\2715";
+}
+
+.icon-setting.v-nativebutton:before, .icon-setting > .v-button-wrap:before, .icon-setting.v-label:before, .v-menubar-menuitem-icon-setting:before {
+	content: "\e81f";
+}
+
+.icon-procurement.v-nativebutton:before, .icon-procurement > .v-button-wrap:before, .icon-procurement.v-label:before, .v-menubar-menuitem-icon-procurement:before {
+	content: "\e80f";
+}
+
+.icon-inventorymanagement.v-nativebutton:before, .icon-inventorymanagement > .v-button-wrap:before, .icon-inventorymanagement.v-label:before, .v-menubar-menuitem-icon-inventorymanagement:before {
+	content: "\e814";
+}
+
+.icon-report.v-nativebutton:before, .icon-report > .v-button-wrap:before, .icon-report.v-label:before, .v-menubar-menuitem-icon-report:before {
+	content: "\e817";
+}
+
+.icon-datamanagement.v-nativebutton:before, .icon-datamanagement > .v-button-wrap:before, .icon-datamanagement.v-label:before, .v-menubar-menuitem-icon-datamanagement:before {
+	content: "\e818";
+}
+
+.icon-usermanagement.v-nativebutton:before, .icon-usermanagement > .v-button-wrap:before, .icon-usermanagement.v-label:before, .v-menubar-menuitem-icon-usermanagement:before {
+	content: "\e819";
+}
+
+.icon-requirementplanning.v-nativebutton:before, .icon-requirementplanning > .v-button-wrap:before, .icon-requirementplanning.v-label:before, .v-menubar-menuitem-icon-requirementplanning:before {
+	content: "\e81b";
+}
+
+.icon-logout.v-nativebutton:before, .icon-logout > .v-button-wrap:before, .icon-logout.v-label:before, .v-menubar-menuitem-icon-logout:before {
+	content: "\e81e";
 }
 
 @-webkit-keyframes spinner {
@@ -6254,4 +6286,20 @@ body .dashboard.v-app .v-app-loading {
 
 .dashboard .v-widget {
 	vertical-align: super !important;
+}
+
+.dashboard .v-nativebutton-caption {
+	vertical-align: middle;
+	white-space: normal !important;
+	font: inherit;
+	color: inherit;
+}
+
+.dashboard .sidebar .user .v-label {
+	white-space: nowrap !important;
+	line-height: 0px !important;
+}
+
+.dashboard .user > .v-slot:first-child {
+	padding-top: 5px !important;
 }
