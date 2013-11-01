@@ -5,6 +5,7 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Select;
+import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 
 public class InputFormViewImpl extends FormLayout implements InputFormView {
@@ -26,6 +27,7 @@ public class InputFormViewImpl extends FormLayout implements InputFormView {
 	private ComboBox inputProducer;
 	private ComboBox inputSupplier;
 	private TextField inputPrice;
+	private TextArea inputInformation;
 	//untuk label unit di samping jumlah kebutuhan, isi sesuai jenis barang
 	private Label labelUnit;
 	
@@ -36,7 +38,8 @@ public class InputFormViewImpl extends FormLayout implements InputFormView {
 		inputProducer =new ComboBox("Produsen");
 		inputSupplier =new ComboBox("Distributor");
 		inputPrice= new TextField("Harga Obat");
-		
+		buttonCheckForecast=new Button("Cek Peramalan");
+		inputInformation =new TextArea("Keterangan");
 		
 		inputGoodsSelect.addItem("Panadol");
 		inputGoodsSelect.addItem("Sariman");
@@ -54,7 +57,6 @@ public class InputFormViewImpl extends FormLayout implements InputFormView {
 		inputSupplier.addItem("CV Jaya Permani");
 		
 		construct();
-		
 	}
 	/* untuk menkonstruksi tampilan */
 	public void construct(){
@@ -63,9 +65,12 @@ public class InputFormViewImpl extends FormLayout implements InputFormView {
 		
 		this.addComponent(inputGoodsSelect);
 		this.addComponent(inputGoodsQuantity);
+		this.addComponent(buttonCheckForecast);
 		this.addComponent(inputSupplier);
 		this.addComponent(inputProducer);
 		this.addComponent(inputPrice);
+		this.addComponent(inputInformation);
+		
 	}
 	
 	
