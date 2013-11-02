@@ -2,7 +2,10 @@ package com.binar.core.requirementPlanning;
 
 import javax.swing.text.html.CSS;
 
+import com.binar.core.requirementPlanning.inputRequierementPlanning.InputRequirementPlanningModel;
 import com.binar.core.requirementPlanning.inputRequierementPlanning.InputRequirementPlanningPresenter;
+import com.binar.core.requirementPlanning.inputRequierementPlanning.InputRequirementPlanningView;
+import com.binar.core.requirementPlanning.inputRequierementPlanning.InputRequirementPlanningViewImpl;
 import com.binar.core.requirementPlanning.inputRequierementPlanning.inputEditForm.InputFormPresenter;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.ui.CssLayout;
@@ -16,17 +19,18 @@ public class InputRequirementPlanning extends CssLayout {
 	VerticalLayout layout=new VerticalLayout();
 	Label label=new Label("Input Rencana Kebutuhan");
 	InputRequirementPlanningPresenter inputPresenter;
-	InputFormPresenter inputFormPresenter;
+	InputRequirementPlanningModel inputModel;
+	InputRequirementPlanningViewImpl inputView;
 	
 	public InputRequirementPlanning(GeneralFunction function) {
 		
 		this.generalFunction=function;
-		inputFormPresenter=new InputFormPresenter();
-		
-		inputPresenter =new InputRequirementPlanningPresenter(generalFunction);
-		
+		inputModel=new InputRequirementPlanningModel();
+		inputView=new InputRequirementPlanningViewImpl(generalFunction);
+		inputPresenter=new InputRequirementPlanningPresenter(inputView, inputModel, generalFunction);
+				
 		this.setCaption("Input Rencana Kebutuhan");
-		this.addComponent(inputPresenter.getViewComponent());
+		this.addComponent(inputView);
 		this.addStyleName("tab-content");
 	}
 }

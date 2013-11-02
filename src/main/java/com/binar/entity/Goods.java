@@ -18,7 +18,7 @@ public class Goods {
 	private String idGoods;
 	
 	@ManyToOne
-	@Column(name="fk")
+	@Column(name="fk_insurance")
 	private Insurance insurance;
 	
 	private String name;
@@ -31,7 +31,7 @@ public class Goods {
 	private String unit;
 	
 	@Column(name="current_stock")
-	int currentStock;
+	private int currentStock;
 	
 	@Column(columnDefinition="TEXT")
 	private String information;
@@ -44,6 +44,7 @@ public class Goods {
 	@Column(name="minimum_stock")
 	private int minimumStock;
 	
+	@Column(name="is_important")
 	private boolean isImportant;
 
 	public String getIdGoods() {

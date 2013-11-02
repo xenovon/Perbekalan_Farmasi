@@ -19,11 +19,11 @@ public class PurchaseOrderItem {
 	private int idPurchaseOrderItem;
 	
 	@ManyToOne
-	@Column(name="fk")
+	@Column(name="fk_supplier_goods")
 	private SupplierGoods supplierGoods;
 	
 	@ManyToOne 
-	@Column(name="fk")
+	@Column(name="fk_purchase_order")
 	private PurchaseOrder purchaseOrder;
 	
 	private int quantity;

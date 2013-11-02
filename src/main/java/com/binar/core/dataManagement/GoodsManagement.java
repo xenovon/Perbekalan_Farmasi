@@ -10,6 +10,5 @@ public class GoodsManagement extends CssLayout {
 		this.setCaption("Manajemen Barang");
 		this.addComponent(label);
 		this.addStyleName("tab-content");
-
 	}
 }

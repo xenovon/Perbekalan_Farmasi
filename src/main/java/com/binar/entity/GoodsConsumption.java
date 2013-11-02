@@ -19,7 +19,7 @@ public class GoodsConsumption {
 	private int idGoodsConsumption;
 	
 	@ManyToOne
-	@Column(name="fk")
+	@Column(name="fk_goods")
 	private Goods goods; 
 	
 	private int quantity;

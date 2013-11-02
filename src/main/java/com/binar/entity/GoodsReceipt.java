@@ -20,7 +20,7 @@ public class GoodsReceipt {
 	private int idGoodsReceipt;
 	
 	@OneToOne
-	@Column(name="fk")
+	@Column(name="fk_invoice_item")
 	private InvoiceItem invoiceItem;
 	
 

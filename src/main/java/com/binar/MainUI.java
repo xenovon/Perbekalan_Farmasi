@@ -1,6 +1,9 @@
 package com.binar;
 
+import java.io.File;
+import java.net.URI;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import javax.servlet.annotation.WebServlet;
 
@@ -64,8 +67,9 @@ public class MainUI extends UI
     }
 
     @Override
-    protected void init(VaadinRequest request) {
-
+    protected void init(VaadinRequest request) {    	
+    	
+    	
     	root.addStyleName("root");
     	root.setSizeFull();
     	setContent(root);

@@ -6,17 +6,17 @@ import com.vaadin.ui.Component;
 
 public class ReqPlanningListPresenter implements PresenterInterface{
 
-	ReqPlanningListViewImpl reqPlaningListViewImpl;
+	GeneralFunction function;
+	ReqPlanningListModel model;
+	ReqPlanningListViewImpl view;
 	
-	public ReqPlanningListPresenter(GeneralFunction function){
-		this.reqPlaningListViewImpl=new ReqPlanningListViewImpl(function);
-		this.reqPlaningListViewImpl.init();
+	public ReqPlanningListPresenter(GeneralFunction function, 
+			ReqPlanningListModel model, ReqPlanningListViewImpl view){
+		this.model=model;
+		this.view=view;
+		
+		view.init();
 	}
-	
-	@Override
-	public Component getViewComponent() {
-		// TODO Auto-generated method stub
-		return reqPlaningListViewImpl;
-	}
+
 
 }

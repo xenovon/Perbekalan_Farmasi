@@ -1,6 +1,8 @@
 package com.binar.core.requirementPlanning;
 
+import com.binar.core.requirementPlanning.reqPlanningList.ReqPlanningListModel;
 import com.binar.core.requirementPlanning.reqPlanningList.ReqPlanningListPresenter;
+import com.binar.core.requirementPlanning.reqPlanningList.ReqPlanningListViewImpl;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.CustomComponent;
@@ -11,15 +13,20 @@ public class ReqPlanningList extends CssLayout {
 
 	Label label=new Label("Daftar Rencana Kebutuhan");
 	GeneralFunction generalFunction;
+	ReqPlanningListPresenter presenter;
+	ReqPlanningListModel model;
+	ReqPlanningListViewImpl view;
 	
 	public ReqPlanningList(GeneralFunction function) {
 		this.generalFunction = function;
-		ReqPlanningListPresenter presenter=new ReqPlanningListPresenter(generalFunction);
+		model=new ReqPlanningListModel();
+		view=new ReqPlanningListViewImpl(generalFunction);
+		presenter=new ReqPlanningListPresenter(generalFunction, model, view);
 
 		this.setCaption("Daftar Rencana Kebutuhan");
 		this.addStyleName("tab-content");
 		
-		this.addComponent(presenter.getViewComponent());
+		this.addComponent(view);
 		
 
 	}

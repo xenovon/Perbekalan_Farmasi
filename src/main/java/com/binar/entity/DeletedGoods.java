@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 
 @Entity
@@ -18,12 +20,13 @@ public class DeletedGoods {
 	private int idDeletedGoods;
 	
 	@ManyToOne
-	@Column(name="fk")
+	@Column(name="fk_goods")
 	private Goods goods;
 	
 	private int quantity;
-	private int stock_quantity;
-	Date timestamp;
+	private int stockQuantity;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date timestamp;
 	@Column(columnDefinition="TEXT")
 	private String information;
 	
@@ -46,11 +49,11 @@ public class DeletedGoods {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-	public int getStock_quantity() {
-		return stock_quantity;
+	public int getStockQuantity() {
+		return stockQuantity;
 	}
-	public void setStock_quantity(int stock_quantity) {
-		this.stock_quantity = stock_quantity;
+	public void setStockQuantity(int stockQuantity) {
+		this.stockQuantity = stockQuantity;
 	}
 	public Date getTimestamp() {
 		return timestamp;
