@@ -2,7 +2,9 @@ package com.binar.core.requirementPlanning.inputRequierementPlanning.inputEditFo
 
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Select;
 import com.vaadin.ui.TextArea;
@@ -28,6 +30,7 @@ public class InputFormViewImpl extends FormLayout implements InputFormView {
 	private ComboBox inputSupplier;
 	private TextField inputPrice;
 	private TextArea inputInformation;
+	private Label labelSatuan;
 	//untuk label unit di samping jumlah kebutuhan, isi sesuai jenis barang
 	private Label labelUnit;
 	
@@ -56,6 +59,8 @@ public class InputFormViewImpl extends FormLayout implements InputFormView {
 		inputSupplier.addItem("PT Maumamu");
 		inputSupplier.addItem("CV Jaya Permani");
 		
+		labelSatuan =new Label("Satuan");
+		
 		construct();
 	}
 	/* untuk menkonstruksi tampilan */
@@ -65,7 +70,14 @@ public class InputFormViewImpl extends FormLayout implements InputFormView {
 		
 		this.addComponent(inputGoodsSelect);
 		this.addComponent(inputGoodsQuantity);
-		this.addComponent(buttonCheckForecast);
+		this.addComponent(new GridLayout(2,1){
+			{
+				addComponent(buttonCheckForecast, 0, 0);
+				addComponent(labelSatuan, 1,0);
+				setMargin(true);
+				setSpacing(true);
+			}
+		});
 		this.addComponent(inputSupplier);
 		this.addComponent(inputProducer);
 		this.addComponent(inputPrice);

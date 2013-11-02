@@ -9,8 +9,7 @@ public class ListFactory {
 
 	public List<String> createYearList(int yearSpan){
 		List<String> list=new ArrayList();
-		Calendar calendar=Calendar.getInstance();
-		int now=calendar.get(Calendar.YEAR);
+		int now = getCurrentYear();
 		int currentYear=now;
 		while(now-currentYear!=yearSpan){
 			list.add(Integer.toString(currentYear));
@@ -38,5 +37,52 @@ public class ListFactory {
 		};
 		
 		return list;
+	}
+	
+	public List<String> createMonthListFromNow(int monthSpan){
+		List<String> list=new ArrayList();
+		Calendar calendar=Calendar.getInstance();
+		int now=calendar.get(Calendar.MONTH);
+		
+		//inisiasi
+		int currentMonth=now;
+		int yearPassed=0;
+		int monthCount=0;
+		
+		while(monthCount<monthSpan){
+			String input;
+			switch(currentMonth){
+				case 0 :input="Januari";break;
+				case 1:input="Februari";break;
+				case 2:input="Maret";break;
+				case 3:input="April";break;
+				case 4:input="Mei";break;
+				case 5:input="Juni";break;
+				case 6:input="Juli";break;
+				case 7:input="Agustus";break;
+				case 8:input="September";break;
+				case 9:input="Oktober";break;
+				case 10:input="November";break;
+				case 11:input="Desember";break;
+				default:input="Januari";break;
+			}
+			input=input+"-"+(getCurrentYear()+yearPassed);
+			list.add(input);
+			if(currentMonth==11){
+				currentMonth=0;
+				yearPassed++;
+			}else{
+				currentMonth++;
+			}
+			
+			monthCount++;
+		}	
+		
+		return list;
+	}
+	
+	private int getCurrentYear(){
+		Calendar calendar=Calendar.getInstance();
+		return calendar.get(Calendar.YEAR);
 	}
 }
