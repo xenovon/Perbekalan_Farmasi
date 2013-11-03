@@ -8,6 +8,7 @@ public interface InputRequirementPlanningView {
 	interface InputRequirementListener{
 		void buttonClick(String source);
 		void buttonClick(String source, Object data);
+		void selectChange(Object data);
 	}
 	
 	public void displayForm(Component content);

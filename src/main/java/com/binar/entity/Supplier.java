@@ -25,8 +25,17 @@ public class Supplier {
 	@Column(name="phone_number")
 	private String  phoneNumber;
 	
-	@Column(name="email")
 	private String  email;
+	
+	private String fax;
+
+	public String getFax() {
+		return fax;
+	}
+
+	public void setFax(String fax) {
+		this.fax = fax;
+	}
 
 	public int getIdSupplier() {
 		return idSupplier;

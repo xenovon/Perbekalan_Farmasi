@@ -68,25 +68,9 @@ public class MainUI extends UI
 
     @Override
     protected void init(VaadinRequest request) {    	
-    	
-    	
     	root.addStyleName("root");
     	root.setSizeFull();
-    	setContent(root);
-    	
-    	
-        final VerticalLayout layout = new VerticalLayout();
-        layout.setMargin(true);
-        
-        Button button = new Button("Click Me");
-        button.addClickListener(new Button.ClickListener() {
-            public void buttonClick(ClickEvent event) {
-                layout.addComponent(new Label("Thank you for clicking"));
-            }
-        });
-        EbeanServer server= GetEbeanServer.getServer();
-        server.find(Insurance.class).findList();
-        layout.addComponent(button);
+    	setContent(root);    	
         constructMainView();
     }
     
@@ -110,8 +94,3 @@ public class MainUI extends UI
     }
 
 }
-
-/*
- * 
- * 
-*/

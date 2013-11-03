@@ -1,13 +1,35 @@
 package com.binar.generalFunction;
 
+import com.avaje.ebean.EbeanServer;
 import com.binar.entity.User;
+import com.vaadin.server.VaadinSession;
 
-public class Authenticate{
+public class LoginManager{
+	
+	VaadinSession session;
+	EbeanServer server;
+	
+	public LoginManager(VaadinSession session, EbeanServer server){
+		this.session=session;
+		this.server=server;
+	}
 	
 	public boolean login(String username, String password){
-		return true;
+		if(authenticate()){
+			session.setAttribute("login", username);
+			return true;
+		}
+		return false;
+	}
+	public String checkLogin(){
+		if(session.getAttribute("login")!=null){
+			return (String) session.getAttribute("login");
+		}else{
+			return null;
+		}
 	}
 	public boolean logout(){
+		session.setAttribute("login", null);
 		return true;
 	}
 	public User getUserLogin(){
@@ -15,5 +37,9 @@ public class Authenticate{
 	}
 	public String getRole(){
 		return null;
+	}
+	
+	private boolean authenticate(){
+		return true;
 	}
 }

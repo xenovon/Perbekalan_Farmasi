@@ -1,6 +1,12 @@
 package com.binar.core.requirementPlanning.inputRequierementPlanning;
 
+import java.util.List;
+
 import com.binar.generalFunction.GeneralFunction;
+import com.vaadin.data.Container.ItemSetChangeEvent;
+import com.vaadin.data.Container.ItemSetChangeListener;
+import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -18,7 +24,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 public class InputRequirementPlanningViewImpl extends VerticalLayout
-	implements InputRequirementPlanningView, ClickListener {
+	implements InputRequirementPlanningView, ClickListener, ValueChangeListener {
 
 	private GeneralFunction generalFunction;
 
@@ -42,10 +48,14 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 		buttonInput.setDescription("Input Data baru untuk bulan terpilih");
 		buttonInput.addClickListener(this);
 		
-		selectMonth =new ComboBox("", generalFunction.getListFactory().createMonthListFromNow(10));
+		List<String> contentList=generalFunction.getListFactory().createMonthListFromNow(10);
+		selectMonth =new ComboBox("", contentList);
+		selectMonth.setNullSelectionAllowed(false);
 		selectMonth.addStyleName("non-caption-form");
 		selectMonth.setWidth("180px");
-		
+		selectMonth.addValueChangeListener(this);
+		selectMonth.setImmediate(true);
+//		selectMonth.setValue(contentList.get(0));
 
 		table=new Table();
 
@@ -110,5 +120,14 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 			listener.buttonClick("buttonInput", "data");
 		}
 		System.err.println("Invoked in view");
+	}
+
+
+
+	@Override
+	public void valueChange(ValueChangeEvent event) {
+		if(event.getProperty()==selectMonth){
+			listener.selectChange(event.getProperty().getValue());
+		}
 	}
 }

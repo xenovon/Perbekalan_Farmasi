@@ -52,6 +52,15 @@ public class InputRequirementPlanningPresenter
 		}
 	}
 
+	@Override
+	public void selectChange(Object data) {
+		String stringData=(String)data;
+		String[] splitted=stringData.split("-");
+		for(String x:splitted){
+			System.out.println("data "+x);
+		}
+	}
+
 	
 
 	
