@@ -11,6 +11,8 @@ import com.avaje.ebean.EbeanServer;
 import com.avaje.ebean.EbeanServerFactory;
 import com.binar.database.GetEbeanServer;
 import com.binar.entity.Insurance;
+import com.binar.generalFunction.GeneralFunction;
+import com.binar.generalFunction.LoginManager;
 import com.binar.view.DashboardView;
 import com.binar.view.DataManagementView;
 import com.binar.view.InventoryManagementView;
@@ -27,6 +29,7 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CssLayout;
@@ -43,6 +46,9 @@ public class MainUI extends UI
 	VerticalLayout loginLayout=new VerticalLayout();
 	CssLayout menu=new CssLayout();
 	CssLayout content=new CssLayout();
+	LoginManager loginManager;
+	GeneralFunction generalFunction;
+	LoginView loginView;
 	
     HashMap<String, Class<? extends View>> routes = new HashMap<String, Class<? extends View>>() {
         {
@@ -67,13 +73,32 @@ public class MainUI extends UI
     }
 
     @Override
-    protected void init(VaadinRequest request) {    	
+    protected void init(VaadinRequest request) {    
+    	generalFunction =new GeneralFunction();
+    	
+    	loginManager=generalFunction.getLogin();
+    	
     	root.addStyleName("root");
     	root.setSizeFull();
-    	setContent(root);    	
-        constructMainView();
+    	setContent(root);   
+    	if(loginManager.isLogin()){
+            constructMainView();   		
+    	}else{
+    		constructLoginView();
+    	}
     }
-    
+    private void constructLoginView(){
+    	root.removeAllComponents();
+    	loginView = new LoginView(this, generalFunction, root);
+    }
+    public void constructLogin(){
+    	root.removeAllComponents();
+    	constructMainView();
+    }
+    public void constructLogout(){
+    	loginManager.logout();
+    	constructLoginView();
+    }
     private void constructMainView(){
     	nav = new Navigator(this, content);
     	
@@ -85,12 +110,11 @@ public class MainUI extends UI
     		nav.addView(route, routes.get(route));
     	}
     	
-    	MainView mainView=new MainView(nav, content);
+    	MainView mainView=new MainView(nav, content, this, generalFunction);
     	mainView.init();
     	Header header=new Header();
     	root.addComponent(header);
     	root.addComponent(mainView);
-    	
     }
 
 }

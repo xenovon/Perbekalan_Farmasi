@@ -6308,4 +6308,12 @@ body .dashboard.v-app .v-app-loading {
 .dashboard .non-caption-form {
 	padding-top: 0px !important;
 	top: -20px !important;
+	margin-left: 14px;
+	margin-right: 20px;
+}
+
+.dashboard .float-right {
+	float: right;
+	padding: 5px;
+	margin: 5px;
 }

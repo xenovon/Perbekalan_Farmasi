@@ -20,6 +20,7 @@ public class HelpManager {
     public void closeAll() {
         for (HelpContent overlay : contents) {
             overlay.close();
+            ui.removeWindow(overlay);
         }
         contents.clear();
     }
@@ -32,6 +33,20 @@ public class HelpManager {
         o.setStyleName(style);
         contents.add(o);
         return o;
+    }
+    //menampilkan overlay secara bertumpuk
+    public void show(){
+    	for(HelpContent overlay:contents){
+    		ui.addWindow(overlay);
+    	}
+    }
+    //Untuk menampilkan overlay tertentu
+    public void show(String caption){
+    	for(HelpContent overlay:contents){
+    		if(overlay.getCaption().equals(caption)){
+        		ui.addWindow(overlay);    			
+    		}
+    	}    	
     }
 
 }

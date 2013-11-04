@@ -11,6 +11,7 @@ public class HelpContent extends Window {
         setPrimaryStyleName("help-overlay");
         setDraggable(false);
         setResizable(false);
+        center();
     }
 
     public void addComponent(Component c) {

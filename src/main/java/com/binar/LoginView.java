@@ -3,6 +3,7 @@ package com.binar;
 import com.binar.core.help.HelpContent;
 import com.binar.core.help.HelpManager;
 import com.binar.entity.Insurance;
+import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.event.ShortcutListener;
 import com.vaadin.shared.ui.label.ContentMode;
@@ -21,30 +22,35 @@ import com.vaadin.ui.VerticalLayout;
 public class LoginView extends VerticalLayout{
 
 	HelpManager help;
-	UI ui;
+	MainUI ui;
+	GeneralFunction generalFunction;
 	CssLayout root;
-	public LoginView(UI ui, CssLayout root) {
-		this.ui=ui;
-		this.root=root;
+	PasswordField password;
+	TextField username;
+	Button signin;
+	CssLayout loginPanel;
+	ShortcutListener enter;
+	
+	public LoginView(MainUI mainUi, GeneralFunction function, CssLayout rootLayout) {
+		this.generalFunction=function;
+		this.root=rootLayout;
+		this.ui=mainUi;
+		help=new HelpManager(mainUi);
         help.closeAll();
-        HelpContent w = help
-                .addOverlay(
-                        "Aplikasi Perbekalan Farmasi",
-                        "<p>Gunakan username dan password yang sudah disediakan, hubungi administrator jika mengalami kesulitan untuk login</p>",
-                        "login");
-        w.center();
-        ui.addWindow(w);
-
+        help.addOverlay("Aplikasi Perbekalan Farmasi", 
+        				"<p>Gunakan username dan password yang sudah disediakan, hubungi administrator jika mengalami kesulitan untuk login</p>"
+        				, "login");
+        help.show();
+        root.addComponent(this);
         addStyleName("login");
 
         this.setSizeFull();
         this.addStyleName("login-layout");
-        root.addComponent(this);
 
-        final CssLayout loginPanel = new CssLayout();
+        loginPanel =new CssLayout();
         loginPanel.addStyleName("login-panel");
 
-        HorizontalLayout labels = new HorizontalLayout();
+        VerticalLayout labels = new VerticalLayout();
         labels.setWidth("100%");
         labels.setMargin(true);
         labels.addStyleName("labels");
@@ -61,26 +67,26 @@ public class LoginView extends VerticalLayout{
         title.addStyleName("h2");
         title.addStyleName("light");
         labels.addComponent(title);
-        labels.setComponentAlignment(title, Alignment.MIDDLE_RIGHT);
+        labels.setComponentAlignment(title, Alignment.MIDDLE_LEFT);
 
         HorizontalLayout fields = new HorizontalLayout();
         fields.setSpacing(true);
         fields.setMargin(true);
         fields.addStyleName("fields");
 
-        final TextField username = new TextField("Username");
+        username= new TextField("Username");
         username.focus();
         fields.addComponent(username);
 
-        final PasswordField password = new PasswordField("Password");
+        password= new PasswordField("Password");
         fields.addComponent(password);
 
-        final Button signin = new Button("Masuk");
+        signin = new Button("Masuk");
         signin.addStyleName("default");
         fields.addComponent(signin);
         fields.setComponentAlignment(signin, Alignment.BOTTOM_LEFT);
 
-        final ShortcutListener enter = new ShortcutListener("Masuk",
+        enter = new ShortcutListener("Masuk",
                 KeyCode.ENTER, null) {
             @Override
             public void handleAction(Object sender, Object target) {
@@ -90,26 +96,7 @@ public class LoginView extends VerticalLayout{
         signin.addClickListener(new ClickListener() {
             @Override
             public void buttonClick(ClickEvent event) {
-                if (username.getValue() != null
-                        && username.getValue().equals("")
-                        && password.getValue() != null
-                        && password.getValue().equals("")) {
-                    signin.removeShortcutListener(enter);
-                } else {
-                    if (loginPanel.getComponentCount() > 2) {
-                        loginPanel.removeComponent(loginPanel.getComponent(2));
-                    }
-                    Label error = new Label(
-                            "Username atau password salah",
-                            ContentMode.HTML);
-                    error.addStyleName("error");
-                    error.setSizeUndefined();
-                    error.addStyleName("light");
-                    // Tambah animasi
-                    error.addStyleName("v-animate-reveal");
-                    loginPanel.addComponent(error);
-                    username.focus();
-                }
+            	loginClick();
             }
         });
 
@@ -119,7 +106,32 @@ public class LoginView extends VerticalLayout{
 
         this.addComponent(loginPanel);
         this.setComponentAlignment(loginPanel, Alignment.MIDDLE_CENTER);
-        
+	}
+	
+	private void loginClick(){
+        if (username.getValue() != null
+                && username.getValue().equals("")
+                && password.getValue() != null
+                && password.getValue().equals("")) {
+            signin.removeShortcutListener(enter);
+            generalFunction.getLogin().login("binar", "awawa");
+            ui.constructLogin();
+            help.closeAll();
+        } else {
+            if (loginPanel.getComponentCount() > 2) {
+                loginPanel.removeComponent(loginPanel.getComponent(2));
+            }
+            Label error = new Label(
+                    "Username atau password salah",
+                    ContentMode.HTML);
+            error.addStyleName("error");
+            error.setSizeUndefined();
+            error.addStyleName("light");
+            // Tambah animasi
+            error.addStyleName("v-animate-reveal");
+            loginPanel.addComponent(error);
+            username.focus();
+        }		
 	}
 	
 	

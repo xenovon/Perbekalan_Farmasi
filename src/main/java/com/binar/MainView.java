@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.binar.generalFunction.GeneralFunction;
 import com.binar.view.DashboardView;
 import com.binar.view.DataManagementView;
 import com.binar.view.InventoryManagementView;
@@ -46,6 +47,8 @@ public class MainView extends HorizontalLayout {
 	private MenuItem settingMenuItem;
 	private Button logout;
 	private Button userSetting;	
+	private GeneralFunction generalFunction;
+	private MainUI ui;
 
 	
     private Map<String, String> buttonName = new TreeMap<String, String>() {
@@ -60,9 +63,11 @@ public class MainView extends HorizontalLayout {
             put("Hsetting", "Pengaturan Aplikasi");
         }
     };
-	public MainView(Navigator nav, CssLayout content) {
+	public MainView(Navigator nav, CssLayout content, MainUI ui, GeneralFunction function) {
 		this.nav=nav;
 		this.content=content;
+		this.generalFunction=function;
+		this.ui=ui;
 	}	
 	public void init(){
 		this.setSizeFull();
@@ -74,22 +79,11 @@ public class MainView extends HorizontalLayout {
 		sidebar.setWidth("140px");
 		
 		sidebar.setHeight("100%");
-//			tambahkan title
-//			appTitle=new CssLayout();
-//			appTitle.addStyleName("branding");
-//				title=new Label(
-//						"<span>Aplikasi</span> Perbekalan Farmasi", 
-//						ContentMode.HTML);
-//				title.setSizeUndefined();
-//			appTitle.addComponent(title);	
-//		sidebar.addComponent(appTitle);
-
+		
 		//tambahkan profil
 		initiateProfileAreaAndMenu();
 		sidebar.addComponent(profileArea);
 		sidebar.addComponent(logout);
-
-//		sidebar.addComponent(userSetting);
 
 		//tambahkan manu
 		initiateMenu();
@@ -106,7 +100,6 @@ public class MainView extends HorizontalLayout {
 		this.addComponent(content);
 
 		this.setExpandRatio(content, 1);
-		
 	}
 	
 	private void initiateMenu(){
@@ -124,11 +117,16 @@ public class MainView extends HorizontalLayout {
 
 				@Override
 				public void buttonClick(ClickEvent event) {
-					clearMenuSelection();
-					event.getButton().addStyleName("selected");
-					if(!nav.getState().equals("/"+key)){
-						nav.navigateTo("/"+key);
+					if(generalFunction.getLogin().isLogin()){
+						clearMenuSelection();
+						event.getButton().addStyleName("selected");
+						if(!nav.getState().equals("/"+key)){
+							nav.navigateTo("/"+key);
+						}						
+					}else{
+						ui.constructLogout();
 					}
+					
 				}
 			});
             menu.addComponent(b);
@@ -176,10 +174,9 @@ public class MainView extends HorizontalLayout {
         logout.addClickListener(new ClickListener() {
             @Override
             public void buttonClick(ClickEvent event) {
-            	Notification.show("Logout Belum Di implementasikan");
+            	ui.constructLogout();
             }
         });
-        
 	}
 	public void setProfileText(String name, String role)
 	{

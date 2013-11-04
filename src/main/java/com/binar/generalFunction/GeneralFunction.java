@@ -2,6 +2,7 @@ package com.binar.generalFunction;
 
 import com.avaje.ebean.EbeanServer;
 import com.binar.database.GetEbeanServer;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Button.ClickListener;
 
@@ -12,6 +13,7 @@ public class GeneralFunction {
 	ListFactory listFactory;
 	ConfirmationWindow window;
 	GetEbeanServer ebeanServer;
+	LoginManager loginManager;
 	public GeneralFunction() {
 		
 	}
@@ -35,4 +37,11 @@ public class GeneralFunction {
 		}
 		return ebeanServer.getServer();
 	}
+	public LoginManager getLogin(){
+		if(loginManager==null){
+			loginManager =new LoginManager(VaadinSession.getCurrent(), getServer());
+		}
+		return loginManager;
+	}
+	
 }

@@ -21,6 +21,13 @@ public class LoginManager{
 		}
 		return false;
 	}
+	public boolean isLogin(){
+		if(session.getAttribute("login")==null){
+			return false;
+		}else{
+			return true;
+		}
+	}
 	public String checkLogin(){
 		if(session.getAttribute("login")!=null){
 			return (String) session.getAttribute("login");
