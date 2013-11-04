@@ -25,7 +25,7 @@ public class InvoiceItem {
 	
 	private String batch;
 	private float discount;
-	private int price;
+	private double price;
 	private int quantity;
 	public int getIdInvoiceItem() {
 		return idInvoiceItem;
@@ -57,10 +57,10 @@ public class InvoiceItem {
 	public void setDiscount(float discount) {
 		this.discount = discount;
 	}
-	public int getPrice() {
+	public double getPrice() {
 		return price;
 	}
-	public void setPrice(int price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 	public int getQuantity() {

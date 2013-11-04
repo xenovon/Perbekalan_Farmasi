@@ -38,7 +38,7 @@ public class ReqPlanning {
 	private Date timestamp;
 	
 	@Column(name="price_estimation")
-	private int priceEstimation;
+	private double priceEstimation;
 
 	public int getIdReqPlanning() {
 		return idReqPlanning;
@@ -104,11 +104,11 @@ public class ReqPlanning {
 		this.timestamp = timestamp;
 	}
 
-	public int getPriceEstimation() {
+	public double getPriceEstimation() {
 		return priceEstimation;
 	}
 
-	public void setPriceEstimation(int priceEstimation) {
+	public void setPriceEstimation(double priceEstimation) {
 		this.priceEstimation = priceEstimation;
 	}
 	

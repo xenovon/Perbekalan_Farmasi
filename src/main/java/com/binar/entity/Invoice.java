@@ -26,7 +26,7 @@ public class Invoice {
 	private Date timestamp;
 	
 	@Column(name="amoount_paid")
-	private int amountPaid;
+	private double amountPaid;
 	
 	@OneToMany
 	@Column(name="invoice_item")
@@ -56,11 +56,11 @@ public class Invoice {
 		this.timestamp = timestamp;
 	}
 
-	public int getAmountPaid() {
+	public double getAmountPaid() {
 		return amountPaid;
 	}
 
-	public void setAmountPaid(int amountPaid) {
+	public void setAmountPaid(double amountPaid) {
 		this.amountPaid = amountPaid;
 	}
 

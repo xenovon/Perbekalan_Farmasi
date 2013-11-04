@@ -32,7 +32,7 @@ public class SupplierGoods {
 	
 	
 	@Column(name="last_price")
-	private int lastPrice;
+	private double lastPrice;
 		
 	@Column(name="last_update")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -62,11 +62,11 @@ public class SupplierGoods {
 		this.goods = goods;
 	}
 
-	public int getLastPrice() {
+	public double getLastPrice() {
 		return lastPrice;
 	}
 
-	public void setLastPrice(int lastPrice) {
+	public void setLastPrice(double lastPrice) {
 		this.lastPrice = lastPrice;
 	}
 
