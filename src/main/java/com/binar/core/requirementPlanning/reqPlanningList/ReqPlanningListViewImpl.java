@@ -1,5 +1,6 @@
 package com.binar.core.requirementPlanning.reqPlanningList;
 
+import java.util.Calendar;
 import java.util.List;
 
 import com.binar.generalFunction.GeneralFunction;
@@ -74,8 +75,16 @@ public class ReqPlanningListViewImpl extends VerticalLayout implements ReqPlanni
 		labelFilter=new Label("<b style='font-size:14px'>Filter : </b> ", ContentMode.HTML);
 		labelYear=new Label("Pilih Tahun  :");
 		labelMonth=new Label("Pilih Bulan  :");
-		selectYear = new ComboBox("", generalFunction.getListFactory().createYearList(5));
-		selectMonth =new ComboBox("", generalFunction.getListFactory().createMonthList());
+		
+		List<String> yearList=generalFunction.getListFactory().createYearList(5);
+		List<String> monthList=generalFunction.getListFactory().createMonthList();
+		selectYear = new ComboBox("", yearList);
+		selectMonth =new ComboBox("", monthList);
+		selectYear.setNullSelectionAllowed(false);
+		selectMonth.setNullSelectionAllowed(false);
+		selectYear.setValue(yearList.get(0));
+		selectMonth.setValue(monthList.get(Calendar.getInstance().get(Calendar.MONTH)));
+
 		selectMonth.setTextInputAllowed(false);
 		selectYear.setTextInputAllowed(false);
 		selectYear.addStyleName("non-caption-form");

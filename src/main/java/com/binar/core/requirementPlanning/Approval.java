@@ -1,5 +1,10 @@
 package com.binar.core.requirementPlanning;
 
+import com.binar.core.requirementPlanning.approval.ApprovalModel;
+import com.binar.core.requirementPlanning.approval.ApprovalPresenter;
+import com.binar.core.requirementPlanning.approval.ApprovalView;
+import com.binar.core.requirementPlanning.approval.ApprovalViewImpl;
+import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.server.ErrorMessage;
 import com.vaadin.server.Resource;
 import com.vaadin.ui.Component;
@@ -13,11 +18,22 @@ public class Approval extends  CssLayout {
 
 	
 	VerticalLayout layout=new VerticalLayout();
-	Label label=new Label("Persetujuan");
 	
-	public Approval() {
+	GeneralFunction generalFunction;
+	
+	ApprovalModel model;
+	ApprovalPresenter presenter;
+	ApprovalViewImpl view;
+	
+	public Approval(GeneralFunction function) {
+		generalFunction=function;
+		
+		model = new ApprovalModel();
+		view =new ApprovalViewImpl(generalFunction);
+		presenter = new  ApprovalPresenter(model, view);
+		
+		this.addComponent(view);
 		this.setCaption("Persetujuan");
-		this.addComponent(label);
 		this.setSizeFull();
 		this.addStyleName("tab-content");
 	}

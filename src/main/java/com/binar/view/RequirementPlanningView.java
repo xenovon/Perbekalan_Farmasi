@@ -23,7 +23,7 @@ public class RequirementPlanningView extends CustomComponent implements View{
 		generalFunction =new GeneralFunction();
 		generalFunction.setListFactory(new ListFactory());
 		
-		Approval approval=new Approval();
+		Approval approval=new Approval(generalFunction);
 		InputRequirementPlanning inputReqPl=new InputRequirementPlanning(generalFunction);
 		ReqPlanningList reqPlanning=new ReqPlanningList(generalFunction);
 		
