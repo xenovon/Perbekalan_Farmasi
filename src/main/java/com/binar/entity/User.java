@@ -8,6 +8,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
+import com.google.gwt.i18n.server.keygen.MD5KeyGenerator;
+
 @Entity
 @Table(name="user")
 public class User {
@@ -15,6 +19,10 @@ public class User {
 	@Id
 	@Column(name="id_user")
 	private int idUser;
+	
+	private String username;
+	
+	private String password;
 	
 	@ManyToOne
 	@Column(name="fk")
@@ -42,6 +50,27 @@ public class User {
 		return idUser;
 	}
 
+	
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	
+	public void setPassword(String password) {
+		
+		this.password=getMD5(password);
+	}
+	private String getMD5(String password){
+		return DigestUtils.md5Hex(password+"."+password.toUpperCase()+"."+password.length());
+	}
+	public String getPassword() {
+		return password;
+	}
+	public boolean isPasswordMatch(String input){
+		return password.equals(getMD5(input))?true:false;
+	}
 	public void setIdUser(int idUser) {
 		this.idUser = idUser;
 	}
