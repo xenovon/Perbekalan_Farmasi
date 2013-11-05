@@ -10,18 +10,17 @@ import com.vaadin.ui.Button.ClickListener;
 
 public class GeneralFunction {
 
-	ListFactory listFactory;
-	ConfirmationWindow window;
-	GetEbeanServer ebeanServer;
-	LoginManager loginManager;
+	private ListFactory listFactory;
+	private ConfirmationWindow window;
+	private GetEbeanServer ebeanServer;
+	private LoginManager loginManager;
 	public GeneralFunction() {
 		
-	}
-	public void setListFactory(ListFactory listFactory) {
-		this.listFactory = listFactory;
-	}
-	
+	}	
 	public ListFactory getListFactory(){
+		if(listFactory==null){
+			listFactory =new ListFactory();
+		}
 		return listFactory;
 	}
 	public void showDialog(String caption, String content, ClickListener listener, UI ui){

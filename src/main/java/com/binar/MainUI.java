@@ -64,7 +64,7 @@ public class MainUI extends UI
         }
     };    	
 	
-    HashMap<String, Button> viewNameToMenuButton = new HashMap<String, Button>();
+//    HashMap<String, Button> viewNameToMenuButton = new HashMap<String, Button>();
     private Navigator nav;
 
     @WebServlet(value = "/*", asyncSupported = true)

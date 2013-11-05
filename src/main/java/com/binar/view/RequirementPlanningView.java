@@ -21,7 +21,6 @@ public class RequirementPlanningView extends CustomComponent implements View{
 	public void enter(ViewChangeEvent event) {
 		//Inisiasi General function		
 		generalFunction =new GeneralFunction();
-		generalFunction.setListFactory(new ListFactory());
 		
 		Approval approval=new Approval(generalFunction);
 		InputRequirementPlanning inputReqPl=new InputRequirementPlanning(generalFunction);
@@ -32,12 +31,9 @@ public class RequirementPlanningView extends CustomComponent implements View{
 		tabSheet.addTab(reqPlanning).setCaption("Daftar Rencana Kebutuhan");
 		tabSheet.addTab(inputReqPl).setCaption("Input Rencana Kebutuhan");;
 		tabSheet.addTab(approval).setCaption("Persetujuan");
-		
-		
+
 		tabSheet.setSizeFull();
 		this.setCompositionRoot(tabSheet);
-		
-		
 	}
 
 }
