@@ -15,7 +15,7 @@ public class LoginManager{
 	}
 	
 	public boolean login(String username, String password){
-		if(authenticate()){
+		if(authenticate(username, password)){
 			session.setAttribute("login", username);
 			return true;
 		}
@@ -40,13 +40,24 @@ public class LoginManager{
 		return true;
 	}
 	public User getUserLogin(){
-		return new User();
+		if(isLogin()){
+			Object username=session.getAttribute("login");
+			return server.find(User.class).where()
+						 .eq("username", username.toString()).findUnique();
+		}else{
+			return null;
+		}
 	}
 	public String getRole(){
 		return null;
 	}
 	
-	private boolean authenticate(){
-		return true;
+	private boolean authenticate(String username, String password){
+		User user=server.find(User.class).where().eq("username", username).findUnique();
+		if(user!=null){
+			return user.isPasswordMatch(password)?true:false;			
+		}else{
+			return false;
+		}
 	}
 }

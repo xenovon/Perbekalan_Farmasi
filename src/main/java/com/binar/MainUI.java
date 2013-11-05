@@ -10,7 +10,9 @@ import javax.servlet.annotation.WebServlet;
 import com.avaje.ebean.EbeanServer;
 import com.avaje.ebean.EbeanServerFactory;
 import com.binar.database.GetEbeanServer;
+import com.binar.database.generateData.GenerateData;
 import com.binar.entity.Insurance;
+import com.binar.entity.User;
 import com.binar.generalFunction.GeneralFunction;
 import com.binar.generalFunction.LoginManager;
 import com.binar.view.DashboardView;
@@ -84,20 +86,22 @@ public class MainUI extends UI
     	if(loginManager.isLogin()){
             constructMainView();   		
     	}else{
-    		constructLoginView();
+    		constructLoginForm();
     	}
+    	GenerateData dataGenerator=new GenerateData(generalFunction);
+    	dataGenerator.insertData();
     }
-    private void constructLoginView(){
+    private void constructLoginForm(){
     	root.removeAllComponents();
     	loginView = new LoginView(this, generalFunction, root);
     }
-    public void constructLogin(){
+    public void constructAfterLogin(){
     	root.removeAllComponents();
     	constructMainView();
     }
     public void constructLogout(){
     	loginManager.logout();
-    	constructLoginView();
+    	constructLoginForm();
     }
     private void constructMainView(){
     	nav = new Navigator(this, content);
@@ -112,6 +116,8 @@ public class MainUI extends UI
     	
     	MainView mainView=new MainView(nav, content, this, generalFunction);
     	mainView.init();
+    	User userLogin=loginManager.getUserLogin();
+    	mainView.setProfileText(userLogin.getName(), userLogin.getRole().getRoleName());
     	Header header=new Header();
     	root.addComponent(header);
     	root.addComponent(mainView);

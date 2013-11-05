@@ -109,29 +109,47 @@ public class LoginView extends VerticalLayout{
 	}
 	
 	private void loginClick(){
-        if (username.getValue() != null
-                && username.getValue().equals("")
-                && password.getValue() != null
-                && password.getValue().equals("")) {
-            signin.removeShortcutListener(enter);
-            generalFunction.getLogin().login("binar", "awawa");
-            ui.constructLogin();
-            help.closeAll();
-        } else {
+		
+		String sUsername=username.getValue();
+		String sPassword=password.getValue();
+		
+		if(sUsername.equals("") || sPassword.equals("")){
             if (loginPanel.getComponentCount() > 2) {
                 loginPanel.removeComponent(loginPanel.getComponent(2));
             }
-            Label error = new Label(
-                    "Username atau password salah",
+			Label fill = new Label(
+                    "Isikan username dan password",
                     ContentMode.HTML);
-            error.addStyleName("error");
-            error.setSizeUndefined();
-            error.addStyleName("light");
+            fill.addStyleName("error");
+            fill.setSizeUndefined();
+            fill.addStyleName("light");
             // Tambah animasi
-            error.addStyleName("v-animate-reveal");
-            loginPanel.addComponent(error);
+            fill.addStyleName("v-animate-reveal");
+            loginPanel.addComponent(fill);
             username.focus();
-        }		
+		}else{
+			if(generalFunction.getLogin().login(sUsername, sPassword)){
+	            signin.removeShortcutListener(enter);
+	            ui.constructAfterLogin();
+	            help.closeAll();				
+			}else{
+	            if (loginPanel.getComponentCount() > 2) {
+	                loginPanel.removeComponent(loginPanel.getComponent(2));
+	            }
+	            Label error = new Label(
+	                    "Username atau password salah",
+	                    ContentMode.HTML);
+	            error.addStyleName("error");
+	            error.setSizeUndefined();
+	            error.addStyleName("light");
+	            // Tambah animasi
+	            error.addStyleName("v-animate-reveal");
+	            loginPanel.addComponent(error);
+	            username.focus();
+				
+			}
+		}
+		
 	}
 	
 	

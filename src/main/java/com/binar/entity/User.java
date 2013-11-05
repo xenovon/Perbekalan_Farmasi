@@ -10,7 +10,6 @@ import javax.persistence.Table;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-import com.google.gwt.i18n.server.keygen.MD5KeyGenerator;
 
 @Entity
 @Table(name="user")
@@ -58,18 +57,23 @@ public class User {
 		this.username = username;
 	}
 	
-	public void setPassword(String password) {
-		
+	public void setPassword(String password) {		
+		this.password=password;
+	}
+	public void setPasswordHash(String password){
 		this.password=getMD5(password);
 	}
-	private String getMD5(String password){
-		return DigestUtils.md5Hex(password+"."+password.toUpperCase()+"."+password.length());
+	private String getMD5(String input){
+		final String KEYVAR="PURWOKERTO";
+		String result=DigestUtils.md5Hex(KEYVAR + input+input.toUpperCase());
+		return result;	
 	}
 	public String getPassword() {
 		return password;
 	}
 	public boolean isPasswordMatch(String input){
-		return password.equals(getMD5(input))?true:false;
+		System.out.println("versus "+password+" "+getMD5(input)+" "+input);
+		return this.password.equals(getMD5(input))?true:false;
 	}
 	public void setIdUser(int idUser) {
 		this.idUser = idUser;

@@ -10,11 +10,11 @@ import javax.persistence.Table;
 public class Role {
 	
 	@Id
+	@Column(name="id_role")
+	private String idRole;
 	@Column(name="role_name")
 	private String roleName;
 	private String description;
-	@Column(name="id_role")
-	private String code;
 
 	public String getRoleName() {
 		return roleName;
@@ -28,11 +28,11 @@ public class Role {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public String getCode() {
-		return code;
+	public String getIdRole() {
+		return idRole;
 	}
-	public void setCode(String code) {
-		this.code = code;
+	public void setIdRole(String idRole) {
+		this.idRole = idRole;
 	}
 
 	

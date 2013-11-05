@@ -52,9 +52,10 @@ public class EbeanConfig {
     	// config.setDataSourceJndiName("someJndiDataSourceName");
 
     	// set DDL options...
+//    	config.setDdlGenerate(true);
+//    	config.setDdlRun(true);
     	config.setDdlGenerate(false);
     	config.setDdlRun(false);
-
     	config.setDefaultServer(false);
     	config.setRegister(false);
 
