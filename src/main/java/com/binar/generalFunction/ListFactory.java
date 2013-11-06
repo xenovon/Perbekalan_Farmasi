@@ -38,7 +38,7 @@ public class ListFactory {
 		
 		return list;
 	}
-	
+	/* untuk membuat daftar bulan dari bulan sekarang, hingga monthSpan kedepan */
 	public List<String> createMonthListFromNow(int monthSpan){
 		List<String> list=new ArrayList();
 		Calendar calendar=Calendar.getInstance();

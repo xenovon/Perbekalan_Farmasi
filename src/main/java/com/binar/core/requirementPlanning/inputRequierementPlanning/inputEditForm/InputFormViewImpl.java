@@ -110,7 +110,9 @@ public class InputFormViewImpl extends FormLayout implements
 	private void construct(){
 		setMargin(true);
 		this.setSpacing(true);
-		
+		/*
+		 * 
+		 */
 		this.addComponent(inputGoodsSelect);
 		this.addComponent(inputGoodsQuantity);
 		this.addComponent(new GridLayout(2,1){

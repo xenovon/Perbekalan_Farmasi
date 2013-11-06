@@ -1,6 +1,7 @@
 package com.binar.generalFunction;
 
 import com.avaje.ebean.EbeanServer;
+import com.binar.entity.Role;
 import com.binar.entity.User;
 import com.vaadin.server.VaadinSession;
 
@@ -48,8 +49,8 @@ public class LoginManager{
 			return null;
 		}
 	}
-	public String getRole(){
-		return null;
+	public Role getRole(){
+		return getUserLogin().getRole();
 	}
 	
 	private boolean authenticate(String username, String password){
