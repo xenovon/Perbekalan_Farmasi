@@ -140,7 +140,7 @@ public class MainView extends HorizontalLayout {
 		
 		profileArea=new HorizontalLayout();
 		userName=new NativeButton("Binar Candra");
-		role=new Label("Petugas Gudang");
+		role=new Label("Petugas Gudang",ContentMode.HTML);
 		role.addStyleName("role-style");
 		userName.addStyleName("name-style");
 		

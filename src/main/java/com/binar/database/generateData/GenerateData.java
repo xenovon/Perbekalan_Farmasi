@@ -7,9 +7,15 @@ import java.util.List;
 import org.joda.time.DateTime;
 
 import com.avaje.ebean.EbeanServer;
+import com.binar.entity.Goods;
 import com.binar.entity.Insurance;
+import com.binar.entity.Manufacturer;
 import com.binar.entity.Role;
+import com.binar.entity.Setting;
+import com.binar.entity.Supplier;
 import com.binar.entity.User;
+import com.binar.entity.enumeration.EnumGoodsCategory;
+import com.binar.entity.enumeration.EnumGoodsType;
 import com.binar.generalFunction.GeneralFunction;
 
 public class GenerateData {
@@ -60,7 +66,7 @@ public class GenerateData {
 		roleFarmasi.setDescription("Petugas gudang farmasi "
 								  +"merupakan pengguna yang bertugas mengelola"
 								  + "proses perbekalan farmasi dalam aplikasi");
-		roleFarmasi.setRoleName("Petugas Gudang Farmasi");
+		roleFarmasi.setRoleName("Petugas Gudang </br> Farmasi");
 		
 		server.save(roleFarmasi);
 		
@@ -104,9 +110,13 @@ public class GenerateData {
 	}
 	public void insertInsurance(){
 		Insurance insurance1=new Insurance();
-		insurance1.setName("Jamkesmas");
-		insurance1.setDescription("Merupakan jaminan kesehatan dari pemerintah Indonesia ");
+			insurance1.setName("Jamkesmas");
+			insurance1.setDescription("Merupakan jaminan kesehatan dari pemerintah Indonesia ");
 		server.save(insurance1);
+		Insurance insurance2=new Insurance();
+			insurance2.setName("Umum");
+			insurance2.setDescription("Merupakan jaminan kesehatan umum ");
+		server.save(insurance2);
 	}
 	public void insertUserData(){
 		//data user dummy
@@ -118,15 +128,15 @@ public class GenerateData {
 		final Role roleADM=server.find(Role.class, "ADM");
 		
 		User userFRM=new User();
-				userFRM.setAddress("Jalan Kemuning");
-				userFRM.setDateOfBirth(new Date());
-				userFRM.setEmail("smillingtinkerbell@yahoo.com");
+				userFRM.setAddress("Jalan Palem Indah Blok A2 Nomor 10");
+				userFRM.setDateOfBirth(new DateTime(1991, 9, 21, 18, 30).toDate());
+				userFRM.setEmail("youhavetochoose@yahoo.com");
 				userFRM.setEmployeeNum("120912");
-				userFRM.setName("Endang Sulasih");
+				userFRM.setName("Binar Candra Auni");
 				userFRM.setPasswordHash("password");
-				userFRM.setPhoneNumber("028178200");
-				userFRM.setPlaceBirth("Kemuning");
-				userFRM.setUsername("endang");
+				userFRM.setPhoneNumber("081327094933");
+				userFRM.setPlaceBirth("Wonosobo");
+				userFRM.setUsername("binar");
 				userFRM.setRole(roleFRM);
 				
 		server.save(userFRM);  
@@ -200,5 +210,94 @@ public class GenerateData {
 			userADM.setRole(roleADM);
 
 		server.save(userADM);	
+	}
+	
+	private void initiateSupplierData(){
+		Supplier supplier1 =new Supplier();
+			supplier1.setSupplierAbbr("KF");
+			supplier1.setEmail("customer@kimiafarma.com");
+			supplier1.setSupplierName("Kimia Farma");
+			supplier1.setSupplierAddress("Jakarta Pusat");
+			supplier1.setFax("0921090312");
+			supplier1.setPhoneNumber("08092022");
+			supplier1.setDescription("Supplier ini merupakan supplier yang sangat menjunjung tinggi integritas");
+		server.save(supplier1);
+
+		Supplier supplier2 =new Supplier();
+			supplier2.setSupplierAbbr("SS");
+			supplier2.setEmail("customer@saptasari.com");
+			supplier2.setSupplierName("Sapta Sari");
+			supplier2.setSupplierAddress("Jalan Bulalale 21, Semarang");
+			supplier2.setFax("453535");
+			supplier2.setPhoneNumber("545345");
+			supplier2.setDescription("Supplier yang suka memberikan banyak diskon");
+			
+		server.save(supplier2);		
+		
+	}
+	private void initiatieDistributorData(){
+		Manufacturer manufacturer1=new Manufacturer();
+			manufacturer1.setAddress("Jalan Bangsa Merderka, Jakarta Barat");
+			manufacturer1.setDescription("Manufaktur untuk obat-obat utama");
+			manufacturer1.setFax("090923042");
+			manufacturer1.setManufacturerName("Widatra");
+			manufacturer1.setEmail("info@widatra.co.id");
+			manufacturer1.setPhoneNumber("090909032");
+		server.save(manufacturer1);
+		Manufacturer manufacturer2=new Manufacturer();
+			manufacturer2.setAddress("Jalan Jenderal Soedirman, Jogjakarta");
+			manufacturer2.setDescription("Manufaktur untuk sampingan");
+			manufacturer2.setFax("4543534532");
+			manufacturer2.setManufacturerName("Biofarma");
+			manufacturer2.setEmail("info@biofarma.com");
+			manufacturer2.setPhoneNumber("390924");
+		server.save(manufacturer2);
+		
+		
+	}
+	private void initiateGoodsData(){
+		Goods goods =new Goods();
+			goods.setCategory(EnumGoodsCategory.PATEN);
+			goods.setCurrentStock(0);
+			goods.setDescription("Obat untuk menangani masalah akut pada pasien dengan gejala sindrom aspargiluss ekstritis");
+			goods.setGoodsPackage("box");
+			goods.setImportant(false);
+			goods.setInformation("Obat keras, berhati hatilah");
+			goods.setInsurance(server.find(Insurance.class).where().eq("name", "Umum").findUnique());
+			goods.setMinimumStock(12);
+			goods.setName("CLOPEDIN INJ 5's");
+			goods.setType(EnumGoodsType.OBAT);
+			goods.setUnit("box");
+		server.save(goods);
+
+		Goods goods1 =new Goods();
+			goods1.setCategory(EnumGoodsCategory.GENERIK);
+			goods1.setCurrentStock(0);
+			goods1.setDescription("Untuk Membalut luka");
+			goods1.setGoodsPackage("pack");
+			goods1.setImportant(false);
+			goods1.setInformation("Barang ini mudah sobek");
+			goods1.setInsurance(server.find(Insurance.class).where().eq("name", "Umum").findUnique());
+			goods1.setMinimumStock(12);
+			goods1.setName("Kassa Gulung 10CM");
+			goods1.setType(EnumGoodsType.BMHP);
+			goods1.setUnit("bag");
+		server.save(goods1);		
+	}
+	
+	private void setSettingData(){
+		Setting setting1=new Setting();
+				setting1.setSettingDescription("Masukan data satuan barang, tiap satuan dibatasi oleh tanda koma (',')");
+				setting1.setSettingKey("satuan");
+				setting1.setSettingName("Satuan Barang");
+				setting1.setSettingValue("btl, pcs, roll, tube, bag, tab, amp");
+		server.save(setting1);		
+		
+		Setting setting2=new Setting();
+			setting2.setSettingDescription("Masukan data kemasan barang,  tiap kemasan dibatasi oleh tanda koma (',')");
+			setting2.setSettingKey("package");
+			setting2.setSettingName("Kemasan Barang");
+			setting2.setSettingValue("btl, pcs, roll, tube, bag, tab, amp");
+		server.save(setting2);				
 	}
 }

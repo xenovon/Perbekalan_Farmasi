@@ -19,6 +19,9 @@ public class Supplier {
 	@Column(name="supplier_name")
 	private String  supplierName;
 	
+	@Column(columnDefinition="TEXT")
+	private String description;
+	
 	@Column(name="supplier_address")
 	private String  supplierAddress;
 	
@@ -83,6 +86,14 @@ public class Supplier {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 	

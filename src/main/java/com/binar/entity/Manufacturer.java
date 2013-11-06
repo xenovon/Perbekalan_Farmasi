@@ -19,6 +19,8 @@ public class Manufacturer {
 	@Column(columnDefinition="TEXT")
 	private String description;
 	
+	private String email;
+	
 	private String address;
 	
 	@Column(name="phone_number")
@@ -34,13 +36,6 @@ public class Manufacturer {
 		this.idManufacturer = idManufacturer;
 	}
 
-	public String getManufacturName() {
-		return manufacturerName;
-	}
-
-	public void setManufacturName(String manufacturerName) {
-		this.manufacturerName = manufacturerName;
-	}
 
 	public String getDescription() {
 		return description;
@@ -75,5 +70,17 @@ public class Manufacturer {
 	}
 	
 	
-	
+	public String getEmail() {
+		return email;
+	}
+	public String getManufacturerName() {
+		return manufacturerName;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public void setManufacturerName(String manufacturerName) {
+		this.manufacturerName = manufacturerName;
+	}
+
 }

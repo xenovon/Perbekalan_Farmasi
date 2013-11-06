@@ -79,6 +79,7 @@ public class LoginView extends VerticalLayout{
         fields.addComponent(username);
 
         password= new PasswordField("Password");
+  
         fields.addComponent(password);
 
         signin = new Button("Masuk");
