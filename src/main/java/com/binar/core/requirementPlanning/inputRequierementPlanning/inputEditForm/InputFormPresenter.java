@@ -17,14 +17,19 @@ public class InputFormPresenter implements PresenterInterface, InputFormView.Inp
 	GeneralFunction generalFunction;
 	InputFormViewImpl view;
 	InputFormModel model;
-		
+	String periode; //periode rencana kebutuhan di form ini untuk kapan
 	public InputFormPresenter(InputFormModel model, 
-			InputFormViewImpl view, GeneralFunction function) {
+			InputFormViewImpl view, GeneralFunction function, String periode) {
 		this.view=view;
 		this.model=model;
 		view.init();
 		view.addListener(this);
 		this.generalFunction=function;
+		
+		view.setSelectGoodsData(model.getGoodsData());
+		view.setSelectManufacturerData(model.getManufacturer());
+		view.setSelectSupplierData(model.getSupplierData());
+		
 	}
 	
 	public void buttonClick(String source) {

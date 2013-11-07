@@ -53,9 +53,9 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 		selectMonth.setNullSelectionAllowed(false);
 		selectMonth.addStyleName("non-caption-form");
 		selectMonth.setWidth("180px");
-		selectMonth.addValueChangeListener(this);
 		selectMonth.setImmediate(true);
-//		selectMonth.setValue(contentList.get(0));
+		selectMonth.setValue(contentList.iterator().next());
+		selectMonth.addValueChangeListener(this);
 
 		table=new Table();
 
@@ -117,7 +117,7 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 	@Override
 	public void buttonClick(ClickEvent event) {
 		if(event.getSource()==buttonInput){
-			listener.buttonClick("buttonInput", "data");
+			listener.buttonClick("buttonInput", selectMonth.getValue());
 		}
 		System.err.println("Invoked in view");
 	}

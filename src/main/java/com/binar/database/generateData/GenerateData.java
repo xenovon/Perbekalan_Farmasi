@@ -4,6 +4,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.swing.text.Segment;
+
 import org.joda.time.DateTime;
 
 import com.avaje.ebean.EbeanServer;
@@ -26,8 +28,6 @@ public class GenerateData {
 		this.generalFunction=function;
 		server=generalFunction.getServer();
 	}
-
-	
 	public void insertData(){
 		deleteData();
 		try {
@@ -42,9 +42,14 @@ public class GenerateData {
 		}
 		try {
 			insertInsurance();
+			initiateGoodsData();
+			initiateSupplierData();
+			initiatieManufacturerData();
+			setSettingData();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 	}
 	public void deleteData(){
 		List<User> users=server.find(User.class).findList();
@@ -55,10 +60,27 @@ public class GenerateData {
 		for(Role role:roles){
 			server.delete(role);
 		}
+
+		List<Goods> goods=server.find(Goods.class).findList();
+		for(Goods good:goods){
+			server.delete(good);
+		}
+		List<Supplier> suppliers=server.find(Supplier.class).findList();
+		for(Supplier supplier:suppliers){
+			server.delete(supplier);
+		}
+		List<Manufacturer> manufacturers=server.find(Manufacturer.class).findList();
+		for(Manufacturer manufactur:manufacturers){
+			server.delete(manufactur);
+		}
+		List<Setting> settings=server.find(Setting.class).findList();
+		for(Setting setting:settings){
+			server.delete(setting);
+		}
 		List<Insurance> insurances=server.find(Insurance.class).findList();
 		for(Insurance insurance:insurances){
 			server.delete(insurance);
-		}
+		}		
 	}
 	public void insertRole(){
 		Role roleFarmasi=new Role();
@@ -235,7 +257,7 @@ public class GenerateData {
 		server.save(supplier2);		
 		
 	}
-	private void initiatieDistributorData(){
+	private void initiatieManufacturerData(){
 		Manufacturer manufacturer1=new Manufacturer();
 			manufacturer1.setAddress("Jalan Bangsa Merderka, Jakarta Barat");
 			manufacturer1.setDescription("Manufaktur untuk obat-obat utama");
@@ -257,6 +279,7 @@ public class GenerateData {
 	}
 	private void initiateGoodsData(){
 		Goods goods =new Goods();
+			goods.setIdGoods("BRG-1X");
 			goods.setCategory(EnumGoodsCategory.PATEN);
 			goods.setCurrentStock(0);
 			goods.setDescription("Obat untuk menangani masalah akut pada pasien dengan gejala sindrom aspargiluss ekstritis");
@@ -271,6 +294,7 @@ public class GenerateData {
 		server.save(goods);
 
 		Goods goods1 =new Goods();
+			goods1.setIdGoods("BRG-2X");
 			goods1.setCategory(EnumGoodsCategory.GENERIK);
 			goods1.setCurrentStock(0);
 			goods1.setDescription("Untuk Membalut luka");

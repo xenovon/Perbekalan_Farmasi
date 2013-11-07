@@ -1,5 +1,7 @@
 package com.binar.core.requirementPlanning.inputRequierementPlanning.inputEditForm;
 
+import java.util.Map;
+
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.ComboBox;
@@ -54,28 +56,16 @@ public class InputFormViewImpl extends FormLayout implements
 		inputGoodsSelect=new ComboBox("Nama Barang"){
 			{
 				setWidth(WIDTH);
-				addItem("Panadol");
-				addItem("Sariman");
-				addItem("Anu");
-				addItem("Procold");
 			}
 		};
 		inputProducer =new ComboBox("Produsen"){
 			{
 				setWidth(WIDTH);
-				addItem("Kimia Farma");
-				addItem("Kimia Farmi");
-				addItem("Sanbe");
-				addItem("Tolak Angin");				
 			}
 		};
 		inputSupplier =new ComboBox("Distributor"){
 			{
 				setWidth(WIDTH);
-				addItem("CV Jaya Permana");
-				addItem("PT Tenia Jaya");
-				addItem("PT Maumamu");
-				addItem("CV Jaya Permani");
 			}
 		};
 		inputPrice= new TextField("Harga Obat"){
@@ -111,7 +101,13 @@ public class InputFormViewImpl extends FormLayout implements
 		setMargin(true);
 		this.setSpacing(true);
 		/*
-		 * 
+		 * input
+		 * input good
+		 * input quantitiy
+		 * input supplier
+		 * input producer
+		 * input price
+		 * input information
 		 */
 		this.addComponent(inputGoodsSelect);
 		this.addComponent(inputGoodsQuantity);
@@ -141,7 +137,15 @@ public class InputFormViewImpl extends FormLayout implements
 	public void addListener(InputFormListener listener){
 		this.listener=listener;
 	}
-	
+	public void resetForm(){
+
+		this.inputGoodsQuantity.setValue("");
+		this.inputGoodsSelect.setValue("");
+		this.inputInformation.setValue("");
+		this.inputPrice.setValue("");
+		this.inputProducer.setValue("");
+		this.inputSupplier.setValue("");
+	}
 	@Override
 	public void buttonClick(ClickEvent event) {
 		if(event.getSource()==buttonCheckForecast){
@@ -154,6 +158,28 @@ public class InputFormViewImpl extends FormLayout implements
 			listener.buttonClick("cancel");
 		}
 		
+	}
+	@Override
+	public void setSelectGoodsData(Map<String, String> data) {
+        for (Map.Entry<String, String> entry : data.entrySet()) {
+        	inputGoodsSelect.addItem(entry.getKey());
+        	inputGoodsSelect.setItemCaption(entry.getKey(), entry.getValue());
+        }
+		
+	}
+	@Override
+	public void setSelectManufacturerData(Map<String, String> data) {
+        for (Map.Entry<String, String> entry : data.entrySet()) {
+        	inputProducer.addItem(entry.getKey());
+        	inputProducer.setItemCaption(entry.getKey(), entry.getValue());
+        }		
+	}
+	@Override
+	public void setSelectSupplierData(Map<String, String> data) {
+        for (Map.Entry<String, String> entry : data.entrySet()) {
+        	inputSupplier.addItem(entry.getKey());
+        	inputSupplier.setItemCaption(entry.getKey(), entry.getValue());
+        }			
 	}
 	
 }

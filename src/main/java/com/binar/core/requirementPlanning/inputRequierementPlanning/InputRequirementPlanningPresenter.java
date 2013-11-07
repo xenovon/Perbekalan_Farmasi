@@ -37,15 +37,14 @@ public class InputRequirementPlanningPresenter
 	public void buttonClick(String source) {
 
 	}
-
 	@Override
 	public void buttonClick(String source, Object data) {
 		if(source.equals("buttonInput")){
 			if(formModel==null){
-				formModel=new InputFormModel();
+				formModel=new InputFormModel(generalFunction);
 				formView=new InputFormViewImpl();
 				formPresenter =new InputFormPresenter(formModel, formView,
-						generalFunction);
+						generalFunction, (String)data);
 			}
 			System.out.println("Data = "+data.toString());
 			view.displayForm(formView);
