@@ -7,12 +7,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.persistence.OptimisticLockException;
+
 import org.joda.time.DateTime;
 
 import com.avaje.ebean.EbeanServer;
 import com.binar.entity.Goods;
 import com.binar.entity.Manufacturer;
+import com.binar.entity.ReqPlanning;
 import com.binar.entity.Supplier;
+import com.binar.entity.SupplierGoods;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.ui.FormFieldFactory;
 import com.vaadin.ui.FormLayout;
@@ -70,47 +74,102 @@ public class InputFormModel {
 		}
 		return data;
 	}
-	public boolean insertData(FormLayout layout){
-		return true;
-	}
-	//Untuk mengubah  format January-2013 menjadi Date
-	private DateTime parseDate(String date){
+	//menyimpan data analisis kebutuhan
+	public String insertData(FormData data){
+		//mulai transaksi
+		server.beginTransaction();
+		try {
+			SupplierGoods supplierGoods=getSupplierGoods(data.getSupplierId(), 
+										data.getManufacturId(), data.getGoodsId());
+			if(supplierGoods!=null){  //jika suppliergoods udah ada
+				supplierGoods.setLastPrice(Double.parseDouble(data.getPrice()));
+				supplierGoods.setLastUpdate(new Date()); //tanggal sekarang
+				server.update(supplierGoods);
+			}else{ //jika belum ada, buat item suppliergoods baru
+				Goods goods=server.find(Goods.class, data.getGoodsId());
+				Manufacturer manufacturer=server.find(Manufacturer.class, Integer.parseInt(data.getManufacturId()));
+				Supplier supplier=server.find(Supplier.class, Integer.parseInt(data.getSupplierId()));
+				
+				supplierGoods=new SupplierGoods();
+				supplierGoods.setGoods(goods);
+				supplierGoods.setLastPrice(Integer.parseInt(data.getPrice()));
+				supplierGoods.setLastUpdate(new Date());
+				supplierGoods.setManufacturer(manufacturer);
+				supplierGoods.setSupplier(supplier);
+				
+				server.save(supplierGoods);
+			}
+			//mulai insert requirement planning
+			ReqPlanning reqPlanning=new ReqPlanning();
+			reqPlanning.setAccepted(false);
+			reqPlanning.setAcceptedQuantity(0);
+			reqPlanning.setInformation(data.getInformation());
+			reqPlanning.setPeriod(function.getDate().parseDateMonth(data.getPeriode()).toDate());
+			reqPlanning.setPriceEstimation(Double.parseDouble(data.getPrice()));
+			reqPlanning.setQuantity(Integer.parseInt(data.getQuantity()));
+			reqPlanning.setSupplierGoods(supplierGoods);
+			reqPlanning.setTimestamp(new Date());
+			
+			server.save(reqPlanning);
+			
+			server.commitTransaction();
+			return null;
+		} catch (NumberFormatException e) {
+			server.rollbackTransaction();
+			e.printStackTrace();
+			return "Kesalahan pengisian angka :"+e.getMessage();
+		} catch (OptimisticLockException e) {
+			server.rollbackTransaction();
+			e.printStackTrace();
+			return "Kesalahan tulis data ke database " + e.getMessage();
+		}catch(Exception e){
+			server.rollbackTransaction();
+			e.printStackTrace();
+			return "Kesalahan submit : " + e.getMessage();
 		
-		String monthString=date.split("-")[0];
-		String yearString=date.split("-")[1];
-		
-		int month=0;
-		int year=Integer.parseInt(yearString);
-		
-		if(monthString.equals("Januari")){
-			month=1;
-		}else if(monthString.equals("Februari")){
-			month=2;			
-		}else if(monthString.equals("Maret")){
-			month=3;
-		}else if(monthString.equals("April")){
-			month=4;
-		}else if(monthString.equals("Mei")){
-			month=5;
-		}else if(monthString.equals("Juni")){
-			month=6;
-		}else if(monthString.equals("Juli")){
-			month=7;
-		}else if(monthString.equals("Agustus")){
-			month=8;
-		}else if(monthString.equals("September")){
-			month=9;
-		}else if(monthString.equals("Oktober")){
-			month=10;
-		}else if(monthString.equals("November")){
-			month=11;
-		}else if(monthString.equals("Desember")){
-			month=12;
+		}finally{
+			server.endTransaction();			
 		}
-		return new DateTime(year, month, 1, 0, 0);
-		
 	}
-	
+	public String getGoodsUnit(String goodsId){
+		Goods goods=server.find(Goods.class,goodsId);
+		if(goods!=null){
+			return goods.getUnit();
+		}else{
+			return "";
+		}
+	}
+	public String getGoodsPrice(String supplierId, String manufacturerId, String goodsId){
+		try {
+			Supplier supplier=server.find(Supplier.class, Integer.parseInt(supplierId));
+			Manufacturer manufacturer = server.find(Manufacturer.class, Integer.parseInt(manufacturerId));
+			Goods goods=server.find(Goods.class, goodsId);
+			SupplierGoods supplierGoods=server.find(SupplierGoods.class).
+										where().eq("supplier", supplier).eq("manufacturer", manufacturer)
+										.eq("goods", goods).findUnique();
+			if(supplierGoods!=null){
+				return String.valueOf(supplierGoods.getLastPrice());
+			}
+			return "";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "";
+		}
+	}
+	//untuk menretrieve data supplier goods
+	private SupplierGoods getSupplierGoods(String supplierId, String manufacturerId, String goodsId){
+		
+		Supplier supplier=server.find(Supplier.class, Integer.parseInt(supplierId));
+		
+		Manufacturer manufacturer = server.find(Manufacturer.class, Integer.parseInt(manufacturerId));
+		
+		Goods goods=server.find(Goods.class, goodsId);
+		
+		SupplierGoods supplierGoods=server.find(SupplierGoods.class).
+									where().eq("supplier", supplier).eq("manufacturer", manufacturer)
+									.eq("goods", goods).findUnique();
+		return supplierGoods;
+	}
 	
 	
 }

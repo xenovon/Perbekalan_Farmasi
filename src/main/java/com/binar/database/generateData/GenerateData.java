@@ -12,9 +12,11 @@ import com.avaje.ebean.EbeanServer;
 import com.binar.entity.Goods;
 import com.binar.entity.Insurance;
 import com.binar.entity.Manufacturer;
+import com.binar.entity.ReqPlanning;
 import com.binar.entity.Role;
 import com.binar.entity.Setting;
 import com.binar.entity.Supplier;
+import com.binar.entity.SupplierGoods;
 import com.binar.entity.User;
 import com.binar.entity.enumeration.EnumGoodsCategory;
 import com.binar.entity.enumeration.EnumGoodsType;
@@ -52,7 +54,15 @@ public class GenerateData {
 
 	}
 	public void deleteData(){
-		List<User> users=server.find(User.class).findList();
+		List<ReqPlanning> reqs=server.find(ReqPlanning.class).findList();
+		for(ReqPlanning req:reqs){
+			server.delete(req);
+		}
+		List<SupplierGoods> supps=server.find(SupplierGoods.class).findList();
+		for(SupplierGoods supp:supps){
+			server.delete(supp);
+		}
+ 		List<User> users=server.find(User.class).findList();
 		for(User user:users){
 			server.delete(user);
 		}
@@ -60,7 +70,7 @@ public class GenerateData {
 		for(Role role:roles){
 			server.delete(role);
 		}
-
+		
 		List<Goods> goods=server.find(Goods.class).findList();
 		for(Goods good:goods){
 			server.delete(good);

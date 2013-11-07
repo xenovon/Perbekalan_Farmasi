@@ -17,13 +17,13 @@ public class FormData {
 	 * input information
 	 */
 
-	private String goodsId;
-	private String quantity;
-	private String supplierId;
-	private String manufacturId;
-	private String price;
-	private String information;
-	
+	private String goodsId="";
+	private String quantity="";
+	private String supplierId="";
+	private String manufacturId="";
+	private String price="";
+	private String information="";
+	private String periode="";
 	
 	private GeneralFunction function;
 	private EbeanServer server;
@@ -34,53 +34,122 @@ public class FormData {
 	//Validasi sebelum data disimpan kedalam aplikasi
 	public List<String> validate(){
 		List<String> error=new ArrayList<String>();
-		if(goodsId.equals("")||goodsId.equals(null)){
-			error.add("Data obat harus di isi");
+		if(goodsId!=null ){
+			if(goodsId.equals("")){
+				error.add("Data obat harus di isi");
+			}			
+		}else{
+			error.add("Data obat harus di isi");			
 		}
-		if(supplierId.equals("")||supplierId.equals(null)){
-			error.add("Data distributor harus di isi");
+		if(supplierId!=null){
+			if(supplierId.equals("")){
+				error.add("Data distributor harus di isi");
+			}			
+		}else{
+			error.add("Data distributor harus di isi");			
 		}
-		if(manufacturId.equals("")||manufacturId.equals(null)){
+		if(manufacturId!=null){
+			if(manufacturId.equals("")){
+				error.add("Data produsen harus di isi");				
+			}
+		}else{
 			error.add("Data produsen harus di isi");
 		}
 		String errorQuantity=validateQuantity();
-		String errorSupplier=validatePrice();
+		String errorPrice=validatePrice();
 		
-		if(errorQuantity.equals("")){
+		if(!errorQuantity.equals("")){
 			error.add(errorQuantity);
 		}
-		if(errorSupplier.equals("")){
-			error.add(errorSupplier);
+		if(!errorPrice.equals("")){
+			error.add(errorPrice);
 		}
-		return null;
+		System.out.println("Size : "+error.size());
+		return (error.size()==0)?null:error;
+
 	}
 	//validasi untuk quantity, menentukan apakah data inputan valid apa ngga
 	public String validateQuantity(){
-		String message="";
-		try {
-			int quantity=Integer.parseInt(this.quantity);
-			if(quantity<0){
-				message="Kuantitas harus lebih dari 0";
+		if(this.quantity!=null){	
+			if(!this.quantity.equals("")){
+				try {
+					int quantity=Integer.parseInt(this.quantity);
+					if(quantity<0){
+						return "Kuantitas harus lebih dari 0";
+					}
+				} catch (NumberFormatException e) {
+					e.printStackTrace();
+					return "Data harus berupa angka";
+				}
 			}
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-			message="Data harus berupa angka";
 		}
-		return message;
+		return "";
 	}
 	//Validasi untuk harga
 	public String validatePrice(){
-		String message="";
-		try {
-			int price=Integer.parseInt(this.price);
-			if(price<0){
-				message="Harga harus lebih dari 0";
+		if(this.price!=null){
+			if(!this.price.equals("")){
+				try {
+					double price=Double.parseDouble(this.price);
+					if(price<0){
+						return "Harga harus lebih dari 0";
+					}
+				} catch (NumberFormatException e) {
+					e.printStackTrace();
+					return "Harga harus berupa angka";
+				}
 			}
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-			message="Harga harus berupa angka";
 		}
-		return message;
+		
+		return "";
 	}
+	protected String getGoodsId() {
+		return goodsId;
+	}
+	protected void setGoodsId(String goodsId) {
+		this.goodsId = goodsId;
+	}
+	protected String getQuantity() {
+		return quantity;
+	}
+	protected void setQuantity(String quantity) {
+		this.quantity = quantity;
+	}
+	protected String getSupplierId() {
+		return supplierId;
+	}
+	protected void setSupplierId(String supplierId) {
+		this.supplierId = supplierId;
+	}
+	protected String getManufacturId() {
+		return manufacturId;
+	}
+	protected void setManufacturId(String manufacturId) {
+		this.manufacturId = manufacturId;
+	}
+	protected String getPrice() {
+		return price;
+	}
+	protected void setPrice(String price) {
+		this.price = price;
+	}
+	protected String getInformation() {
+		return information;
+	}
+	protected void setInformation(String information) {
+		this.information = information;
+	}
+	protected void setPeriode(String periode) {
+		this.periode = periode;
+	}
+	public String getPeriode() {
+		return periode;
+	}
+	public String toString(){
+		
+		return goodsId+" + "+quantity+" + "+supplierId+" + "
+				 + ""+manufacturId+" + "+price+" + "+information+" + "+periode;
+	}
+	
 		
 }

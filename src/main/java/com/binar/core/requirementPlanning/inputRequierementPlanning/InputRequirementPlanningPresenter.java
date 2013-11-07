@@ -47,6 +47,7 @@ public class InputRequirementPlanningPresenter
 						generalFunction, (String)data);
 			}
 			System.out.println("Data = "+data.toString());
+			formPresenter.setPeriode((String)data);
 			view.displayForm(formView);
 		}
 	}
@@ -59,6 +60,7 @@ public class InputRequirementPlanningPresenter
 			System.out.println("data "+x);
 		}
 	}
+	
 
 	
 

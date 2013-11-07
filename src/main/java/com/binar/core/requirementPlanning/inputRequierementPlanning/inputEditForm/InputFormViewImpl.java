@@ -1,7 +1,11 @@
 package com.binar.core.requirementPlanning.inputRequierementPlanning.inputEditForm;
 
+import java.awt.peer.TextFieldPeer;
 import java.util.Map;
 
+import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.Property.ValueChangeListener;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.ComboBox;
@@ -15,7 +19,9 @@ import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 
 public class InputFormViewImpl extends FormLayout implements 
-									   InputFormView, Button.ClickListener {
+									   InputFormView, Button.ClickListener,
+									   ValueChangeListener
+									   {
 
 	/*
 	 * Form dibutuhkan
@@ -31,53 +37,93 @@ public class InputFormViewImpl extends FormLayout implements
 	private ComboBox inputGoodsSelect;
 	private TextField inputGoodsQuantity;
 	private Button buttonCheckForecast;
-	private ComboBox inputProducer;
+	private ComboBox inputManufacturer;
 	private ComboBox inputSupplier;
 	private TextField inputPrice;
 	private TextArea inputInformation;
+	//untuk label unit di samping jumlah kebutuhan, isi sesuai jenis barang
 	private Label labelSatuan;
 	private Button buttonReset;
 	private Button buttonSubmit;
 	private Button buttonCancel;
 	
+	private Label labelErrorQuantity; //untuk error realtime
+ 	private Label labelErrorPrice; //untuk error realtime
+	private Label labelGeneralError; //error saat tombol submit ditekan
+	
 	private InputFormListener listener;
 
-	//untuk label unit di samping jumlah kebutuhan, isi sesuai jenis barang
-	private Label labelUnit;
 	
 	public void init(){
 		final String WIDTH="250px";
 		//inisiasi
+		labelErrorPrice=new Label(){
+			{
+				setVisible(false);
+				addStyleName("form-error");
+				setContentMode(ContentMode.HTML);
+			}
+		};
+		labelErrorQuantity=new Label(){
+			{
+				setVisible(false);
+				addStyleName("form-error");
+				setContentMode(ContentMode.HTML);
+			}
+		};
+		
+		labelGeneralError=new Label(){
+			{
+				setVisible(false);
+				addStyleName("form-error");
+				setContentMode(ContentMode.HTML);
+			}
+		};
 		inputGoodsQuantity=new TextField("Jumlah Kebutuhan"){
 			{
 				setWidth(WIDTH);
+				setImmediate(true);
 			}
 		};
+		// TODO tambahkan komponen label error
+		inputGoodsQuantity.addValueChangeListener(this);
 		inputGoodsSelect=new ComboBox("Nama Barang"){
 			{
+				setImmediate(true);
 				setWidth(WIDTH);
 			}
 		};
-		inputProducer =new ComboBox("Produsen"){
+		inputGoodsSelect.addValueChangeListener(this);
+
+		inputManufacturer =new ComboBox("Produsen"){
 			{
 				setWidth(WIDTH);
+				setImmediate(true);
+			
 			}
 		};
+		inputManufacturer.addValueChangeListener(this);
 		inputSupplier =new ComboBox("Distributor"){
 			{
+				setImmediate(true);
 				setWidth(WIDTH);
 			}
 		};
+		inputSupplier.addValueChangeListener(this);
 		inputPrice= new TextField("Harga Obat"){
 			{
+				setImmediate(true);
 				setWidth(WIDTH);
 			}
 		};
+		inputPrice.addValueChangeListener(this);
+		
 		buttonCheckForecast=new Button("Cek Peramalan");
 		buttonCheckForecast.addClickListener(this);
 		
 		inputInformation =new TextArea("Keterangan"){
 			{
+				setImmediate(true);
 				setWidth(WIDTH);
 			}
 		};
@@ -111,6 +157,7 @@ public class InputFormViewImpl extends FormLayout implements
 		 */
 		this.addComponent(inputGoodsSelect);
 		this.addComponent(inputGoodsQuantity);
+		this.addComponent(labelErrorQuantity);
 		this.addComponent(new GridLayout(2,1){
 			{
 				addComponent(buttonCheckForecast, 0, 0);
@@ -119,9 +166,11 @@ public class InputFormViewImpl extends FormLayout implements
 			}
 		});
 		this.addComponent(inputSupplier);
-		this.addComponent(inputProducer);
+		this.addComponent(inputManufacturer);
 		this.addComponent(inputPrice);
+		this.addComponent(labelErrorPrice);
 		this.addComponent(inputInformation);
+		this.addComponent(labelGeneralError);
 		this.addComponent(new GridLayout(3, 1){
 			{
 				addComponent(buttonSubmit, 0,0);
@@ -143,7 +192,7 @@ public class InputFormViewImpl extends FormLayout implements
 		this.inputGoodsSelect.setValue("");
 		this.inputInformation.setValue("");
 		this.inputPrice.setValue("");
-		this.inputProducer.setValue("");
+		this.inputManufacturer.setValue("");
 		this.inputSupplier.setValue("");
 	}
 	@Override
@@ -170,8 +219,8 @@ public class InputFormViewImpl extends FormLayout implements
 	@Override
 	public void setSelectManufacturerData(Map<String, String> data) {
         for (Map.Entry<String, String> entry : data.entrySet()) {
-        	inputProducer.addItem(entry.getKey());
-        	inputProducer.setItemCaption(entry.getKey(), entry.getValue());
+        	inputManufacturer.addItem(entry.getKey());
+        	inputManufacturer.setItemCaption(entry.getKey(), entry.getValue());
         }		
 	}
 	@Override
@@ -181,5 +230,104 @@ public class InputFormViewImpl extends FormLayout implements
         	inputSupplier.setItemCaption(entry.getKey(), entry.getValue());
         }			
 	}
+	@Override
+	public void valueChange(ValueChangeEvent event) {
+		if(event.getProperty()==inputGoodsQuantity){
+			listener.realtimeValidator("inputGoodsQuantity");
+		}else if(event.getProperty()==inputGoodsSelect){
+			listener.realtimeValidator("inputGoodsSelect");			
+		}else if(event.getProperty()==inputPrice){
+			listener.realtimeValidator("inputPrice");			
+		}else if(event.getProperty()==inputManufacturer){
+			listener.realtimeValidator("inputManufacturer");						
+		}else if(event.getProperty()==inputSupplier){
+			listener.realtimeValidator("inputSupplier");			
+		}
+	}
+	
+	public void showError(ErrorLabel label, String content){
+		switch (label) {
+		case GENERAL:labelGeneralError.setVisible(true);
+					 labelGeneralError.setValue(content);	
+					 break;
+		case QUANTITY:labelErrorQuantity.setVisible(true);
+					  labelErrorQuantity.setValue(content);
+					  break;
+		case SUPPLIER:labelErrorPrice.setVisible(true);
+					  labelErrorPrice.setValue(content);
+					  break;
+		default:
+			break;
+		}
+	}
+	public void hideError(ErrorLabel label){
+		switch (label) {
+		case GENERAL:labelGeneralError.setVisible(false);break;
+		case QUANTITY:labelErrorQuantity.setVisible(false);break;
+		case SUPPLIER : labelErrorPrice.setVisible(false);break;
+		default:
+			break;
+		}
+	}
+	public void hideAllError(){
+		labelErrorPrice.setVisible(false);
+		labelErrorQuantity.setVisible(false);
+		labelGeneralError.setVisible(false);
+	}
+	@Override
+	public void setUnit(String text) {
+		labelSatuan.setValue("Satuan : "+text);
+	}
+	protected ComboBox getInputGoodsSelect() {
+		return inputGoodsSelect;
+	}
+
+	protected void setInputGoodsSelect(ComboBox inputGoodsSelect) {
+		this.inputGoodsSelect = inputGoodsSelect;
+	}
+
+	protected TextField getInputGoodsQuantity() {
+		return inputGoodsQuantity;
+	}
+
+	protected void setInputGoodsQuantity(TextField inputGoodsQuantity) {
+		this.inputGoodsQuantity = inputGoodsQuantity;
+	}
+
+	protected ComboBox getInputManufacturer() {
+		return inputManufacturer;
+	}
+
+	protected void setInputManufacturer(ComboBox inputManufacturer) {
+		this.inputManufacturer = inputManufacturer;
+	}
+
+	protected ComboBox getInputSupplier() {
+		return inputSupplier;
+	}
+
+	protected void setInputSupplier(ComboBox inputSupplier) {
+		this.inputSupplier = inputSupplier;
+	}
+
+	protected TextField getInputPrice() {
+		return inputPrice;
+	}
+
+	protected void setInputPrice(TextField inputPrice) {
+		this.inputPrice = inputPrice;
+	}
+
+	protected TextArea getInputInformation() {
+		return inputInformation;
+	}
+
+	protected void setInputInformation(TextArea inputInformation) {
+		this.inputInformation = inputInformation;
+	}
+	
+	
+	
+	
 	
 }

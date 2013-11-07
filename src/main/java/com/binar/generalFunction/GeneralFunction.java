@@ -14,6 +14,7 @@ public class GeneralFunction {
 	private ConfirmationWindow window;
 	private GetEbeanServer ebeanServer;
 	private LoginManager loginManager;
+	private DateManipulator date;
 	public GeneralFunction() {
 		
 	}	
@@ -41,6 +42,12 @@ public class GeneralFunction {
 			loginManager =new LoginManager(VaadinSession.getCurrent(), getServer());
 		}
 		return loginManager;
+	}
+	public DateManipulator getDate() {
+		if(date==null){
+			date=new DateManipulator();
+		}
+		return date;
 	}
 	
 }

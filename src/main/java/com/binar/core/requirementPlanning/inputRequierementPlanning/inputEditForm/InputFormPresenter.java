@@ -4,10 +4,14 @@ import java.util.Collection;
 import java.util.List;
 
 import com.binar.core.PresenterInterface;
+import com.binar.core.requirementPlanning.inputRequierementPlanning.inputEditForm.InputFormView.ErrorLabel;
 import com.binar.generalFunction.GeneralFunction;
+import com.vaadin.client.ui.VNotification.HideEvent;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.Notification.Type;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -17,7 +21,7 @@ public class InputFormPresenter implements PresenterInterface, InputFormView.Inp
 	GeneralFunction generalFunction;
 	InputFormViewImpl view;
 	InputFormModel model;
-	String periode; //periode rencana kebutuhan di form ini untuk kapan
+	FormData data;
 	public InputFormPresenter(InputFormModel model, 
 			InputFormViewImpl view, GeneralFunction function, String periode) {
 		this.view=view;
@@ -25,6 +29,8 @@ public class InputFormPresenter implements PresenterInterface, InputFormView.Inp
 		view.init();
 		view.addListener(this);
 		this.generalFunction=function;
+		this.data=new FormData(function);
+		this.data.setPeriode(periode);
 		
 		view.setSelectGoodsData(model.getGoodsData());
 		view.setSelectManufacturerData(model.getManufacturer());
@@ -36,9 +42,9 @@ public class InputFormPresenter implements PresenterInterface, InputFormView.Inp
 		if(source.equals("forecast")){
 			Notification.show("Tombol forecast ditekan");
 		}else if(source.equals("reset")){
-			Notification.show("Tombol Reset Ditekan");
+			view.resetForm();;
 		}else if(source.equals("submit")){
-			Notification.show("Tombol Submit ditekan");
+			submitClick();
 		}else if(source.equals("cancel")){
 			generalFunction.showDialog("Batalkan", "Yakin Akan Membatalkan Memasukan Data?",
 					new ClickListener() {
@@ -52,4 +58,117 @@ public class InputFormPresenter implements PresenterInterface, InputFormView.Inp
 					
 		}
 	}
+	//Override dari interface input form listener, 
+	//berfungsi untuk menambahkan fungsi-fungsi validasi realtime pada isian form. 
+	@Override
+	public void realtimeValidator(String inputField) {
+		view.hideAllError();
+		if(inputField.equals("inputGoodsQuantity")){
+			goodsQuantityChange();
+		}
+		if(inputField.equals("inputGoodsSelect")){
+			goodsSelectChange();
+		}
+		if(inputField.equals("inputPrice")){
+			goodsPriceChange();
+		}
+		if(inputField.equals("inputManufacturer")){
+			manufacturerChange();
+		}
+		if(inputField.equals("inputSupplier")){
+			supplierChange();
+		}
+	}
+	//ambil data dari form, lalu diset ke variable data (kelas FormData)
+	private void setData(){
+		data.setGoodsId((String)view.getInputGoodsSelect().getValue());
+		data.setInformation(view.getInputInformation().getValue());
+		data.setManufacturId((String)view.getInputManufacturer().getValue());
+		data.setPrice(view.getInputPrice().getValue());
+		data.setQuantity(view.getInputGoodsQuantity().getValue());
+		data.setSupplierId((String)view.getInputSupplier().getValue());
+	}
+	
+	//Dijalankan ketika goods quantity berubah
+	private void goodsQuantityChange(){
+		data.setQuantity(view.getInputGoodsQuantity().getValue());
+		
+		//validasi quantity
+		String errorMessage=data.validateQuantity();
+		if(errorMessage.equals("")){
+			view.hideError(ErrorLabel.QUANTITY);
+		}else{
+			view.showError(ErrorLabel.QUANTITY, errorMessage);
+		}
+	}
+	//Dijalankan ketika harga berubah
+	private void goodsPriceChange(){
+		data.setPrice(view.getInputPrice().getValue());
+		
+		//validasi price
+		String errorMessage=data.validatePrice();
+		if(errorMessage.equals("")){
+			view.hideError(ErrorLabel.SUPPLIER);
+		}else{
+			view.showError(ErrorLabel.SUPPLIER, errorMessage);
+		}		
+	}
+	//Dijalankan ketika goods select berubah
+	private void goodsSelectChange(){
+		String unit=model.getGoodsUnit((String)view.getInputGoodsSelect().getValue());
+		view.setUnit(unit);
+		
+	}
+	//Dijalankan ketika dropdown manufacturer berubah
+	private void manufacturerChange(){
+		setData();
+		String price=model.getGoodsPrice(data.getSupplierId(), 
+					 data.getManufacturId(), data.getGoodsId());
+		if(!price.equals("")){
+			view.getInputPrice().setValue(price);
+		}
+	}
+	//Dijalankan ketika goods supplier berubah
+	private void supplierChange(){
+		setData();
+		String price=model.getGoodsPrice(data.getSupplierId(), 
+					 data.getManufacturId(), data.getGoodsId());
+		if(!price.equals("")){
+			view.getInputPrice().setValue(price);
+		}		
+	}
+	private void submitClick(){
+		setData();
+		System.err.println(data.toString());
+		
+		
+		List<String> errors=data.validate();
+		if(errors!=null){
+			String textError="Penyimpanan Tidak Berhasil, Silahkan koreksi Error berikut : </br>";
+			for(String error:errors){
+				textError=textError+error+"</br>";
+			}
+			view.showError(ErrorLabel.GENERAL, textError);
+		}else{
+			String status=model.insertData(data); //insert data
+			if(status!=null){ //penyimpanan gagal
+				view.showError(ErrorLabel.GENERAL, status);
+			}else{ //penyimpanan sukses
+				Collection<Window> list=view.getUI().getWindows();
+				for(Window w:list){
+					view.getUI().removeWindow(w);
+				}	
+				Notification.show("Penyimpanan rencana kebutuhan berhasil", Type.TRAY_NOTIFICATION);
+			}
+		
+		}
+		
+	}
+
+	@Override
+	public void setPeriode(String periode) {
+		this.data.setPeriode(periode);
+	}
+	
+	
 }
