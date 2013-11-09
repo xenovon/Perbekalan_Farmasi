@@ -3,10 +3,13 @@ package com.binar.core.requirementPlanning.inputRequierementPlanning;
 import java.util.List;
 
 import com.binar.generalFunction.GeneralFunction;
+import com.vaadin.data.Container;
 import com.vaadin.data.Container.ItemSetChangeEvent;
 import com.vaadin.data.Container.ItemSetChangeListener;
+import com.vaadin.data.Item;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
+import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -33,6 +36,8 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 	private Table table;
 	private Button buttonInput;
 	private ComboBox selectMonth;
+	
+	private Container tableContainer;
 	
 	private InputRequirementListener listener;
 	
@@ -62,18 +67,20 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 		table.setSizeFull();
         table.setWidth("100%");
         table.setSortEnabled(true);
+		table.setImmediate(true);
         
-
-		table.addContainerProperty("No",Integer.class, null);
-		table.addContainerProperty("Nama Barang",String.class, null);
-//		table.addContainerProperty("Perkiraan Harga",String.class, null);
-		table.addContainerProperty("Kebutuhan",Integer.class, null);
-//		table.addContainerProperty("Perkiraan Jumlah Harga",String.class, null);
-		table.addContainerProperty("Produsen",String.class, null);
-		table.addContainerProperty("Distributor",String.class, null);
-//		table.addContainerProperty("Disetujui?",CheckBox.class, null);
-//		table.addContainerProperty("Jumlah Disetujui",Integer.class, null);
-		table.addContainerProperty("Operasi", CssLayout.class, null);
+        tableContainer=new IndexedContainer(){
+        	{
+        		table.addContainerProperty("No",Integer.class, null);
+        		table.addContainerProperty("Nama Barang",String.class, null);
+        		table.addContainerProperty("Kebutuhan",Integer.class, null);
+        		table.addContainerProperty("Produsen",String.class, null);
+        		table.addContainerProperty("Distributor",String.class, null);
+        		table.addContainerProperty("Operasi", GridLayout.class, null);
+        	}
+        };
+        table.setContainerDataSource(tableContainer);
+        
 		construct();
 	}
 	
@@ -105,6 +112,66 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 		window.setContent(content);
 		this.getUI().addWindow(window);
 	}
+	
+	public Container getTableContainer() {
+		return tableContainer;
+	}
+	public void setTableData(List<TableData> data){
+		System.out.println(data.size());
+		for(TableData datum:data){
+			final TableData datumFinal=datum;
+			Item item=tableContainer.addItem(datum.getIdReq());
+			item.getItemProperty("Nama Barang").setValue(datum.getGoodsName());
+			item.getItemProperty("Kebutuhan").setValue(datum.getReq());
+			item.getItemProperty("Produsen").setValue(datum.getManufacturer());
+			item.getItemProperty("Distributor").setValue(datum.getSupp());
+			item.getItemProperty("Operasi").setValue(new GridLayout(){
+				{
+					Button buttonEdit=new Button();
+					buttonEdit.setCaption("Ubah");
+					buttonEdit.addClickListener(new ClickListener() {
+						
+						@Override
+						public void buttonClick(ClickEvent event) {
+							showEdit(datumFinal.getReq());
+						}
+					});
+					
+					Button buttonShow=new Button();
+					buttonShow.setCaption("Detail");
+					buttonShow.addClickListener(new ClickListener() {
+						
+						@Override
+						public void buttonClick(ClickEvent event) {
+							showDetail(datumFinal.getIdReq());
+						}
+					});
+					
+					Button buttonDelete=new Button();
+					buttonDelete.setCaption("Hapus");
+					buttonDelete.addClickListener(new ClickListener() {
+						
+						@Override
+						public void buttonClick(ClickEvent event) {
+							delete(datumFinal.getIdReq());
+						}
+					});
+					
+				}
+			});
+			
+		}
+	}
+	public void showDetail(int reqId){
+		System.out.println("Show detail invoked id : "+reqId);
+	}
+	public void showEdit(int reqId){
+		System.out.println("Show Edit invoked id : "+reqId);		
+	}
+	public void delete(int reqId){
+		System.out.println("Delete invoked id : "+reqId);		
+	}
+	
 	public Window getWindow(){
 		return window;
 	}
@@ -130,4 +197,24 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 			listener.selectChange(event.getProperty().getValue());
 		}
 	}
+	
+	public String getPeriodeValue(){
+		return (String) selectMonth.getValue();
+	}
 }
+
+/*
+ * 
+ * 
+ * //		table.addContainerProperty("No",Integer.class, null);
+//		table.addContainerProperty("Nama Barang",String.class, null);
+////		table.addContainerProperty("Perkiraan Harga",String.class, null);
+//		table.addContainerProperty("Kebutuhan",Integer.class, null);
+////		table.addContainerProperty("Perkiraan Jumlah Harga",String.class, null);
+//		table.addContainerProperty("Produsen",String.class, null);
+//		table.addContainerProperty("Distributor",String.class, null);
+////		table.addContainerProperty("Disetujui?",CheckBox.class, null);
+////		table.addContainerProperty("Jumlah Disetujui",Integer.class, null);
+//		table.addContainerProperty("Operasi", CssLayout.class, null);
+
+*/

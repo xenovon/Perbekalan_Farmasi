@@ -147,7 +147,7 @@ public class GenerateData {
 		server.save(insurance1);
 		Insurance insurance2=new Insurance();
 			insurance2.setName("Umum");
-			insurance2.setDescription("Merupakan jaminan kesehatan umum ");
+			insurance2.setDescription("Obat Tidak Memiliki Jaminan Kesehatan");
 		server.save(insurance2);
 	}
 	public void insertUserData(){

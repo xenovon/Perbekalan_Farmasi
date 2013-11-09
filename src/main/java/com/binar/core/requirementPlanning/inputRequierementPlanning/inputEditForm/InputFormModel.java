@@ -77,6 +77,7 @@ public class InputFormModel {
 	//menyimpan data analisis kebutuhan
 	public String insertData(FormData data){
 		//mulai transaksi
+		
 		server.beginTransaction();
 		try {
 			SupplierGoods supplierGoods=getSupplierGoods(data.getSupplierId(), 
@@ -170,6 +171,8 @@ public class InputFormModel {
 									.eq("goods", goods).findUnique();
 		return supplierGoods;
 	}
+	
+	
 	
 	
 }

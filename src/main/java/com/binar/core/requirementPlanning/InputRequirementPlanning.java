@@ -25,7 +25,7 @@ public class InputRequirementPlanning extends CssLayout {
 	public InputRequirementPlanning(GeneralFunction function) {
 		
 		this.generalFunction=function;
-		inputModel=new InputRequirementPlanningModel();
+		inputModel=new InputRequirementPlanningModel(generalFunction);
 		inputView=new InputRequirementPlanningViewImpl(generalFunction);
 		inputPresenter=new InputRequirementPlanningPresenter(inputView, inputModel, generalFunction);
 				

@@ -31,6 +31,7 @@ public class InputRequirementPlanningPresenter
 		view.init();
 		view.addListener(this);
 		this.generalFunction=function;
+		this.view.setTableData(model.getTableData(generalFunction.getDate().parseDateMonth(view.getPeriodeValue())));
 	}
 
 	@Override
@@ -59,6 +60,9 @@ public class InputRequirementPlanningPresenter
 		for(String x:splitted){
 			System.out.println("data "+x);
 		}
+		this.view.setTableData(model.getTableData(
+				generalFunction.getDate().parseDateMonth((String)data)));
+
 	}
 	
 
