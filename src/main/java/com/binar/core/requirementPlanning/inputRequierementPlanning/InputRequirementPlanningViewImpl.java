@@ -1,5 +1,6 @@
 package com.binar.core.requirementPlanning.inputRequierementPlanning;
 
+import java.util.Collection;
 import java.util.List;
 
 import com.binar.generalFunction.GeneralFunction;
@@ -7,6 +8,7 @@ import com.vaadin.data.Container;
 import com.vaadin.data.Container.ItemSetChangeEvent;
 import com.vaadin.data.Container.ItemSetChangeListener;
 import com.vaadin.data.Item;
+import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.IndexedContainer;
@@ -20,11 +22,16 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.Table;
+import com.vaadin.ui.Table.RowHeaderMode;
+import com.vaadin.ui.Window.CloseEvent;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
+import com.vaadin.ui.Window.CloseListener;
 
 public class InputRequirementPlanningViewImpl extends VerticalLayout
 	implements InputRequirementPlanningView, ClickListener, ValueChangeListener {
@@ -36,7 +43,7 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 	private Table table;
 	private Button buttonInput;
 	private ComboBox selectMonth;
-	
+	private TextField inputFilter;
 	private Container tableContainer;
 	
 	private InputRequirementListener listener;
@@ -46,6 +53,9 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 	}
 	
 	public void init(){
+		inputFilter= new TextField("Filter Tabel");
+		
+		
 		labelSelectMonth = new Label("<b>Pilih Periode Bulan : &nbsp</b>", ContentMode.HTML);
 		labelTitle =new Label("<h2>Input Rencana Kebutuhan</h2>", ContentMode.HTML);
 		
@@ -68,15 +78,14 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
         table.setWidth("100%");
         table.setSortEnabled(true);
 		table.setImmediate(true);
-        
+        table.setRowHeaderMode(RowHeaderMode.INDEX);
         tableContainer=new IndexedContainer(){
         	{
-        		table.addContainerProperty("No",Integer.class, null);
-        		table.addContainerProperty("Nama Barang",String.class, null);
-        		table.addContainerProperty("Kebutuhan",Integer.class, null);
-        		table.addContainerProperty("Produsen",String.class, null);
-        		table.addContainerProperty("Distributor",String.class, null);
-        		table.addContainerProperty("Operasi", GridLayout.class, null);
+        		addContainerProperty("Nama Barang",String.class, null);
+        		addContainerProperty("Kebutuhan",Integer.class, null);
+        		addContainerProperty("Produsen",String.class, null);
+        		addContainerProperty("Distributor",String.class, null);
+        		addContainerProperty("Operasi", GridLayout.class, null);
         	}
         };
         table.setContainerDataSource(tableContainer);
@@ -116,16 +125,22 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 	public Container getTableContainer() {
 		return tableContainer;
 	}
-	public void setTableData(List<TableData> data){
+	public boolean setTableData(List<TableData> data){
+		tableContainer.removeAllItems();
 		System.out.println(data.size());
+		if(data.size()==0){
+			Notification.show("Data kebutuhan kosong", Type.WARNING_MESSAGE);
+			return false;
+		}
 		for(TableData datum:data){
 			final TableData datumFinal=datum;
-			Item item=tableContainer.addItem(datum.getIdReq());
+			Item item = tableContainer.addItem(datum.getIdReq());
+						
 			item.getItemProperty("Nama Barang").setValue(datum.getGoodsName());
 			item.getItemProperty("Kebutuhan").setValue(datum.getReq());
 			item.getItemProperty("Produsen").setValue(datum.getManufacturer());
 			item.getItemProperty("Distributor").setValue(datum.getSupp());
-			item.getItemProperty("Operasi").setValue(new GridLayout(){
+			item.getItemProperty("Operasi").setValue(new GridLayout(3,1){
 				{
 					Button buttonEdit=new Button();
 					buttonEdit.setCaption("Ubah");
@@ -133,7 +148,7 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 						
 						@Override
 						public void buttonClick(ClickEvent event) {
-							showEdit(datumFinal.getReq());
+							showEdit(datumFinal.getIdReq());
 						}
 					});
 					
@@ -156,11 +171,16 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 							delete(datumFinal.getIdReq());
 						}
 					});
+					this.setSpacing(true);
+					this.addComponent(buttonShow, 0, 0);
+					this.addComponent(buttonEdit, 1, 0);
+					this.addComponent(buttonDelete, 2, 0);
 					
 				}
 			});
 			
 		}
+		return true;
 	}
 	public void showDetail(int reqId){
 		System.out.println("Show detail invoked id : "+reqId);

@@ -93,7 +93,7 @@ public class InputFormModel {
 				
 				supplierGoods=new SupplierGoods();
 				supplierGoods.setGoods(goods);
-				supplierGoods.setLastPrice(Integer.parseInt(data.getPrice()));
+				supplierGoods.setLastPrice(Double.parseDouble(data.getPrice()));
 				supplierGoods.setLastUpdate(new Date());
 				supplierGoods.setManufacturer(manufacturer);
 				supplierGoods.setSupplier(supplier);

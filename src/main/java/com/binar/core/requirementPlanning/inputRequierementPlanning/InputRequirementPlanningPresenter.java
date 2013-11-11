@@ -1,5 +1,7 @@
 package com.binar.core.requirementPlanning.inputRequierementPlanning;
 
+import java.util.Collection;
+
 import com.binar.core.PresenterInterface;
 import com.binar.core.requirementPlanning.inputRequierementPlanning.inputEditForm.InputFormModel;
 import com.binar.core.requirementPlanning.inputRequierementPlanning.inputEditForm.InputFormPresenter;
@@ -7,7 +9,10 @@ import com.binar.core.requirementPlanning.inputRequierementPlanning.inputEditFor
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.Window.CloseEvent;
+import com.vaadin.ui.Window.CloseListener;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.Window;
 
 import elemental.events.MouseEvent.Button;
 
@@ -31,7 +36,7 @@ public class InputRequirementPlanningPresenter
 		view.init();
 		view.addListener(this);
 		this.generalFunction=function;
-		this.view.setTableData(model.getTableData(generalFunction.getDate().parseDateMonth(view.getPeriodeValue())));
+		this.updateTable(view.getPeriodeValue());
 	}
 
 	@Override
@@ -50,6 +55,17 @@ public class InputRequirementPlanningPresenter
 			System.out.println("Data = "+data.toString());
 			formPresenter.setPeriode((String)data);
 			view.displayForm(formView);
+			
+			//menambahkan listener, agar ketika window diclose, tampilan table akan diupdate
+			Collection<Window> windows=view.getUI().getWindows();
+			for(Window window:windows){
+				window.addCloseListener(new CloseListener() {
+					public void windowClose(CloseEvent e) {
+						updateTable(view.getPeriodeValue());
+					}
+				});
+			}
+			
 		}
 	}
 
@@ -60,9 +76,13 @@ public class InputRequirementPlanningPresenter
 		for(String x:splitted){
 			System.out.println("data "+x);
 		}
+		updateTable((String)data);
+	}
+	
+	public void updateTable(String data){
 		this.view.setTableData(model.getTableData(
 				generalFunction.getDate().parseDateMonth((String)data)));
-
+		
 	}
 	
 
