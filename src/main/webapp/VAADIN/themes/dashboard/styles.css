@@ -6317,3 +6317,8 @@ body .dashboard.v-app .v-app-loading {
 	padding: 5px;
 	margin: 5px;
 }
+
+.dashboard .form-error {
+	line-height: 1.2;
+	color: red;
+}

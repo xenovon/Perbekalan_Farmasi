@@ -6,6 +6,7 @@ import com.binar.core.PresenterInterface;
 import com.binar.core.requirementPlanning.inputRequierementPlanning.inputEditForm.InputFormModel;
 import com.binar.core.requirementPlanning.inputRequierementPlanning.inputEditForm.InputFormPresenter;
 import com.binar.core.requirementPlanning.inputRequierementPlanning.inputEditForm.InputFormViewImpl;
+import com.binar.entity.ReqPlanning;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -26,6 +27,7 @@ public class InputRequirementPlanningPresenter
 	InputFormModel formModel;
 	InputFormPresenter formPresenter;
 	InputFormViewImpl formView;
+
 	
 	GeneralFunction generalFunction;
 	
@@ -51,9 +53,11 @@ public class InputRequirementPlanningPresenter
 				formView=new InputFormViewImpl();
 				formPresenter =new InputFormPresenter(formModel, formView,
 						generalFunction, (String)data);
+				System.out.println("Form model view presenter instantiasi");
+			}else{
+				System.out.println("Data = "+data.toString());
+				formPresenter.setPeriode((String)data);				
 			}
-			System.out.println("Data = "+data.toString());
-			formPresenter.setPeriode((String)data);
 			view.displayForm(formView);
 			
 			//menambahkan listener, agar ketika window diclose, tampilan table akan diupdate
@@ -84,6 +88,24 @@ public class InputRequirementPlanningPresenter
 				generalFunction.getDate().parseDateMonth((String)data)));
 		
 	}
+
+	@Override
+	public void showDetail(int reqId) {
+		ReqPlanning data=model.getSingleReqPlanning(reqId);
+		view.showDetailWindow(data);
+	}
+
+	@Override
+	public void delete(int reqId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void edit(int reqId) {
+		
+	}
+
 	
 
 	

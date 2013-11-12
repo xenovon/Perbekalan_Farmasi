@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.binar.core.PresenterInterface;
 import com.binar.core.requirementPlanning.inputRequierementPlanning.inputEditForm.InputFormView.ErrorLabel;
+import com.binar.entity.ReqPlanning;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.client.ui.VNotification.HideEvent;
 import com.vaadin.ui.Component;
@@ -22,6 +23,9 @@ public class InputFormPresenter implements PresenterInterface, InputFormView.Inp
 	InputFormViewImpl view;
 	InputFormModel model;
 	FormData data;
+	//id reqPlanning untuk mode edit
+	int reqPlanning;
+	
 	public InputFormPresenter(InputFormModel model, 
 			InputFormViewImpl view, GeneralFunction function, String periode) {
 		this.view=view;
@@ -36,6 +40,12 @@ public class InputFormPresenter implements PresenterInterface, InputFormView.Inp
 		view.setSelectManufacturerData(model.getManufacturer());
 		view.setSelectSupplierData(model.getSupplierData());
 		
+	}
+	
+	public InputFormPresenter(InputFormModel model, 
+			InputFormViewImpl view, GeneralFunction function, String periode,  int reqPlanning) {
+		this(model, view, function, periode);
+		view.setEditMode(model.getSingleReqPlanning(reqPlanning));
 	}
 	
 	public void buttonClick(String source) {

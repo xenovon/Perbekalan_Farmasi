@@ -1,5 +1,6 @@
 package com.binar.entity;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -9,6 +10,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.joda.time.DateTime;
+import org.joda.time.JodaTimePermission;
 
 @Entity 
 @Table(name="req_planning")
@@ -59,7 +63,30 @@ public class ReqPlanning {
 	public Date getPeriod() {
 		return period;
 	}
-
+	public String getPeriodString(){
+		Calendar cal=Calendar.getInstance();
+		cal.setTime(period);
+		int year=cal.get(Calendar.YEAR);
+		int month=cal.get(Calendar.MONTH);
+		String monthString;
+		switch(month){
+			case 0 :monthString="Januari";break;
+			case 1:monthString="Februari";break;
+			case 2:monthString="Maret";break;
+			case 3:monthString="April";break;
+			case 4:monthString="Mei";break;
+			case 5:monthString="Juni";break;
+			case 6:monthString="Juli";break;
+			case 7:monthString="Agustus";break;
+			case 8:monthString="September";break;
+			case 9:monthString="Oktober";break;
+			case 10:monthString="November";break;
+			case 11:monthString="Desember";break;
+			default:monthString="Januari";break;
+		}
+		return monthString+"-"+year;
+		
+	}
 	public void setPeriod(Date period) {
 		this.period = period;
 	}

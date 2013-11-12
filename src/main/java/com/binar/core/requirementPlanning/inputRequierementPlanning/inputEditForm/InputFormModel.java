@@ -171,7 +171,66 @@ public class InputFormModel {
 									.eq("goods", goods).findUnique();
 		return supplierGoods;
 	}
-	
+	//mengubah data analisis kebutuhan, kodenya mirip dengan insert
+	public String saveEdit(FormData data, int idReq){
+		//mulai transaksi
+		
+		server.beginTransaction();
+		try {
+			SupplierGoods supplierGoods=getSupplierGoods(data.getSupplierId(), 
+										data.getManufacturId(), data.getGoodsId());
+			if(supplierGoods!=null){  //jika suppliergoods udah ada
+				supplierGoods.setLastPrice(Double.parseDouble(data.getPrice()));
+				supplierGoods.setLastUpdate(new Date()); //tanggal sekarang
+				server.update(supplierGoods);
+			}else{ //jika belum ada, buat item suppliergoods baru
+				Goods goods=server.find(Goods.class, data.getGoodsId());
+				Manufacturer manufacturer=server.find(Manufacturer.class, Integer.parseInt(data.getManufacturId()));
+				Supplier supplier=server.find(Supplier.class, Integer.parseInt(data.getSupplierId()));
+				
+				supplierGoods=new SupplierGoods();
+				supplierGoods.setGoods(goods);
+				supplierGoods.setLastPrice(Double.parseDouble(data.getPrice()));
+				supplierGoods.setLastUpdate(new Date());
+				supplierGoods.setManufacturer(manufacturer);
+				supplierGoods.setSupplier(supplier);
+				
+				server.save(supplierGoods);
+			}
+			//mulai insert requirement planning
+			ReqPlanning reqPlanning=server.find(ReqPlanning.class, idReq);
+			reqPlanning.setAccepted(false);
+			reqPlanning.setAcceptedQuantity(0);
+			reqPlanning.setInformation(data.getInformation());
+			reqPlanning.setPeriod(function.getDate().parseDateMonth(data.getPeriode()).toDate());
+			reqPlanning.setPriceEstimation(Double.parseDouble(data.getPrice()));
+			reqPlanning.setQuantity(Integer.parseInt(data.getQuantity()));
+			reqPlanning.setSupplierGoods(supplierGoods);
+			
+			server.update(reqPlanning);
+			
+			server.commitTransaction();
+			return null;
+		} catch (NumberFormatException e) {
+			server.rollbackTransaction();
+			e.printStackTrace();
+			return "Kesalahan pengisian angka :"+e.getMessage();
+		} catch (OptimisticLockException e) {
+			server.rollbackTransaction();
+			e.printStackTrace();
+			return "Kesalahan tulis data ke database " + e.getMessage();
+		}catch(Exception e){
+			server.rollbackTransaction();
+			e.printStackTrace();
+			return "Kesalahan submit : " + e.getMessage();
+		
+		}finally{
+			server.endTransaction();			
+		}
+	}
+	public ReqPlanning getSingleReqPlanning(int id){
+		return server.find(ReqPlanning.class, id);
+	}
 	
 	
 	

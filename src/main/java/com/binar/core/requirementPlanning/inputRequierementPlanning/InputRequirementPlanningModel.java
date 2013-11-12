@@ -54,6 +54,7 @@ public class InputRequirementPlanningModel {
 	public ReqPlanning getSingleReqPlanning(int id){
 		return server.find(ReqPlanning.class, id);
 	}
+	
 	public boolean deleteReqPlanning(int id){
 		try {
 			ReqPlanning planning= server.find(ReqPlanning.class, id);
@@ -64,7 +65,7 @@ public class InputRequirementPlanningModel {
 			return false;
 		}
 	}
-	public boolean saveData(ReqPlanning reqPlanning, Date date){
+	public boolean edit(ReqPlanning reqPlanning, int reqId){
 		return true;
 	}
 }

@@ -9,6 +9,9 @@ public interface InputRequirementPlanningView {
 		void buttonClick(String source);
 		void buttonClick(String source, Object data);
 		void selectChange(Object data);
+		void showDetail(int reqId);
+		void delete(int reqId);
+		void edit(int reqId);
 	}
 	
 	public void displayForm(Component content);

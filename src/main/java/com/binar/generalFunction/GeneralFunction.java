@@ -15,6 +15,7 @@ public class GeneralFunction {
 	private GetEbeanServer ebeanServer;
 	private LoginManager loginManager;
 	private DateManipulator date;
+	private TableFilter filter;
 	public GeneralFunction() {
 		
 	}	
@@ -48,6 +49,15 @@ public class GeneralFunction {
 			date=new DateManipulator();
 		}
 		return date;
+	}
+	public TableFilter getFilter(String regex){
+		System.out.println("Regex in get filter" + regex);
+		if(filter==null){
+			filter=new TableFilter(regex);
+		}else{
+			filter.updateData(regex);
+		}
+		return filter;
 	}
 	
 }

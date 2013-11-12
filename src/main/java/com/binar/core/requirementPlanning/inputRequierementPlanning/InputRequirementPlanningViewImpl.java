@@ -1,10 +1,21 @@
 package com.binar.core.requirementPlanning.inputRequierementPlanning;
 
 import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import com.binar.entity.ReqPlanning;
+import com.binar.entity.SupplierGoods;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.data.Container;
+import com.vaadin.data.Container.Filter;
 import com.vaadin.data.Container.ItemSetChangeEvent;
 import com.vaadin.data.Container.ItemSetChangeListener;
 import com.vaadin.data.Item;
@@ -12,6 +23,8 @@ import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.IndexedContainer;
+import com.vaadin.event.FieldEvents.TextChangeEvent;
+import com.vaadin.event.FieldEvents.TextChangeListener;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -44,7 +57,8 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 	private Button buttonInput;
 	private ComboBox selectMonth;
 	private TextField inputFilter;
-	private Container tableContainer;
+	private IndexedContainer tableContainer;
+	private GridLayout layoutDetail;
 	
 	private InputRequirementListener listener;
 	
@@ -53,7 +67,25 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 	}
 	
 	public void init(){
-		inputFilter= new TextField("Filter Tabel");
+		inputFilter= new TextField("Filter Tabel"){
+			{
+				setImmediate(true);
+				addTextChangeListener(new TextChangeListener() {
+					Filter filter=null;
+					public void textChange(TextChangeEvent event) {
+				        // buang filter lama
+						System.out.println("Text change event fired");
+				        if (filter != null)
+				            tableContainer.removeContainerFilter(filter);
+				        
+				        //set filter baru
+				        filter = generalFunction.getFilter(event.getText());
+				        tableContainer.addContainerFilter(filter);
+					}
+				});
+
+			}
+		};
 		
 		
 		labelSelectMonth = new Label("<b>Pilih Periode Bulan : &nbsp</b>", ContentMode.HTML);
@@ -97,13 +129,16 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 		this.setMargin(true);
 		this.setSpacing(true);
 		this.addComponent(labelTitle);
-		this.addComponent(new GridLayout(2, 1){
+		this.addComponent(new GridLayout(3, 1){
 			{
 				addComponent(labelSelectMonth,0,0);
 				addComponent(selectMonth,1,0);
+				addComponent(buttonInput, 2,0);
+				setSpacing(true);
+				
 			}
 		});
-		this.addComponent(buttonInput);
+		this.addComponent(inputFilter);
 		this.addComponent(table);
 	}
 	Window window;
@@ -148,7 +183,7 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 						
 						@Override
 						public void buttonClick(ClickEvent event) {
-							showEdit(datumFinal.getIdReq());
+							listener.edit(datumFinal.getIdReq());
 						}
 					});
 					
@@ -158,7 +193,7 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 						
 						@Override
 						public void buttonClick(ClickEvent event) {
-							showDetail(datumFinal.getIdReq());
+							listener.showDetail(datumFinal.getIdReq());
 						}
 					});
 					
@@ -168,7 +203,7 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 						
 						@Override
 						public void buttonClick(ClickEvent event) {
-							delete(datumFinal.getIdReq());
+							listener.delete(datumFinal.getIdReq());
 						}
 					});
 					this.setSpacing(true);
@@ -182,14 +217,99 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 		}
 		return true;
 	}
-	public void showDetail(int reqId){
-		System.out.println("Show detail invoked id : "+reqId);
+	
+	//Instantiasi label data;
+	Label labelId;
+	Label labelName;
+	Label labelSupplier;
+	Label labelManufacturer;
+	Label labelPeriode;
+	Label labelQuantity;
+	Label labelIsAccepted;
+	Label labelAcceptedQuantity;
+	Label labelInformation;
+	Label labelTimestamp;
+	Label labelPriceEstimation;	
+	Window windowDetail;
+	//menampilkan jendela untuk detail
+	public void showDetailWindow(ReqPlanning data){
+		if(layoutDetail==null){
+			//buat konten 
+			layoutDetail= new GridLayout(2,13){
+				{
+					setSpacing(true);
+					setMargin(true);
+					addComponent(new Label
+							("<h2>Detail Rencana Kebutuhan</h2>", ContentMode.HTML),
+							0,0,1,0);
+					addComponent(new Label("Id Rencana Kebutuhan"), 0, 2);
+					addComponent(new Label("Nama Barang"), 0,3);
+					addComponent(new Label("Distributor"), 0, 4);
+					addComponent(new Label("Produsen"), 0, 5);
+					addComponent(new Label("Periode"), 0,6);
+					addComponent(new Label("Kuantitas"), 0,7);
+					addComponent(new Label("Diterima?"), 0, 8);
+					addComponent(new Label("Kuantitas Diterima"), 0,9);
+					addComponent(new Label("Keterangan"), 0, 10);
+					addComponent(new Label("Waktu Input"), 0,11);
+					addComponent(new Label("Estimasi Harga"), 0, 12);
+				}	
+			};
+			//instantiasi label
+			labelId=new Label();
+			labelName=new Label();
+			labelSupplier=new Label();
+			labelManufacturer=new Label();
+			labelPeriode =new Label();
+			labelQuantity = new Label();
+			labelIsAccepted =new Label();
+			labelAcceptedQuantity =new Label();
+			labelInformation =new Label();
+			labelTimestamp =new Label();
+			labelPriceEstimation =new Label();	
+			
+			//add Component konten ke layout
+			layoutDetail.addComponent(labelId, 1,2);
+			layoutDetail.addComponent(labelName, 1,3);
+			layoutDetail.addComponent(labelSupplier, 1,4);
+			layoutDetail.addComponent(labelManufacturer, 1,5);
+			layoutDetail.addComponent(labelPeriode, 1,6);
+			layoutDetail.addComponent(labelQuantity, 1,7);
+			layoutDetail.addComponent(labelIsAccepted, 1,8);
+			layoutDetail.addComponent(labelAcceptedQuantity, 1,9);
+			layoutDetail.addComponent(labelInformation, 1,10);
+			layoutDetail.addComponent(labelTimestamp, 1,11);
+			layoutDetail.addComponent(labelPriceEstimation, 1,12);
+		}
+		
+		setLabelData(data);
+		if(windowDetail==null){
+			windowDetail=new Window(){
+				{
+					center();
+					setWidth("500px");					
+				}
+			};
+		}
+		windowDetail.setContent(layoutDetail);
+		this.getUI().addWindow(windowDetail);		
 	}
-	public void showEdit(int reqId){
-		System.out.println("Show Edit invoked id : "+reqId);		
-	}
-	public void delete(int reqId){
-		System.out.println("Delete invoked id : "+reqId);		
+	private void setLabelData(ReqPlanning data){
+		try {
+			labelId.setValue(String.valueOf(data.getIdReqPlanning()));
+			labelName.setValue(data.getSupplierGoods().getGoods().getName());
+			labelSupplier.setValue(data.getSupplierGoods().getSupplier().getSupplierName());
+			labelManufacturer.setValue(data.getSupplierGoods().getManufacturer().getManufacturerName());
+			labelPeriode.setValue(data.getPeriodString());
+			labelQuantity.setValue(String.valueOf(data.getQuantity()));
+			labelIsAccepted.setValue(data.isAccepted()?"Ya":"Belum");
+			labelAcceptedQuantity.setValue(String.valueOf(data.getAcceptedQuantity()));
+			labelInformation.setValue(data.getInformation());
+			labelTimestamp.setValue(data.getTimestamp().toString());
+			labelPriceEstimation.setValue("Rp "+data.getPriceEstimation());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
 	}
 	
 	public Window getWindow(){
@@ -204,7 +324,12 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 	@Override
 	public void buttonClick(ClickEvent event) {
 		if(event.getSource()==buttonInput){
-			listener.buttonClick("buttonInput", selectMonth.getValue());
+			Object select=selectMonth.getValue();
+			if(select!=null){
+				listener.buttonClick("buttonInput", select);				
+			}else{
+				Notification.show("Terjadi Kesalahan, Pilih bulan lagi");
+			}
 		}
 		System.err.println("Invoked in view");
 	}
@@ -223,18 +348,4 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 	}
 }
 
-/*
- * 
- * 
- * //		table.addContainerProperty("No",Integer.class, null);
-//		table.addContainerProperty("Nama Barang",String.class, null);
-////		table.addContainerProperty("Perkiraan Harga",String.class, null);
-//		table.addContainerProperty("Kebutuhan",Integer.class, null);
-////		table.addContainerProperty("Perkiraan Jumlah Harga",String.class, null);
-//		table.addContainerProperty("Produsen",String.class, null);
-//		table.addContainerProperty("Distributor",String.class, null);
-////		table.addContainerProperty("Disetujui?",CheckBox.class, null);
-////		table.addContainerProperty("Jumlah Disetujui",Integer.class, null);
-//		table.addContainerProperty("Operasi", CssLayout.class, null);
 
-*/

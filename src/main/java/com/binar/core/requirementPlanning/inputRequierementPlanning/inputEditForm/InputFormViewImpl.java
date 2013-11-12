@@ -3,6 +3,7 @@ package com.binar.core.requirementPlanning.inputRequierementPlanning.inputEditFo
 import java.awt.peer.TextFieldPeer;
 import java.util.Map;
 
+import com.binar.entity.ReqPlanning;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.shared.ui.label.ContentMode;
@@ -46,6 +47,7 @@ public class InputFormViewImpl extends FormLayout implements
 	private Button buttonReset;
 	private Button buttonSubmit;
 	private Button buttonCancel;
+	private Button buttonSaveEdit;
 	
 	private Label labelErrorQuantity; //untuk error realtime
  	private Label labelErrorPrice; //untuk error realtime
@@ -136,10 +138,27 @@ public class InputFormViewImpl extends FormLayout implements
 		buttonSubmit=new Button("Submit");
 		buttonSubmit.addClickListener(this);
 		buttonSubmit.addStyleName("primary");
-		
+		buttonSaveEdit=new Button("Simpan Perubahan");
+		buttonSaveEdit.addClickListener(this);
+		buttonSaveEdit.addStyleName("primary");
 		buttonCancel =new Button("Batal");
 		buttonCancel.addClickListener(this);
 		construct();
+	}
+	//konstruksi mode agar sesuai dengan tampilan edit
+	public void setEditMode(ReqPlanning data){
+//		private ComboBox inputGoodsSelect;
+//		private TextField inputGoodsQuantity;
+//		private Button buttonCheckForecast;
+//		private ComboBox inputManufacturer;
+//		private ComboBox inputSupplier;
+//		private TextField inputPrice;
+//		private TextArea inputInformation;
+//		//untuk label unit di samping jumlah kebutuhan, isi sesuai jenis barang
+//		private Label labelSatuan;
+//		private Button buttonReset;
+//		private Button buttonSubmit;
+//		private Button buttonCancel;		
 	}
 	
 	/* untuk menkonstruksi tampilan */
