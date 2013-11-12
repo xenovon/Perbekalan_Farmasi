@@ -25,6 +25,7 @@ import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.event.FieldEvents.TextChangeEvent;
 import com.vaadin.event.FieldEvents.TextChangeListener;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -142,9 +143,10 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 		this.addComponent(table);
 	}
 	Window window;
-	public void displayForm(Component content){
+
+	public void displayForm(Component content, String title){
 		if(window==null){
-			window=new Window("Masukan Rencana Kebutuhan"){
+			window=new Window(title){
 				{
 					center();
 					setClosable(false);
@@ -177,18 +179,27 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 			item.getItemProperty("Distributor").setValue(datum.getSupp());
 			item.getItemProperty("Operasi").setValue(new GridLayout(3,1){
 				{
-					Button buttonEdit=new Button();
-					buttonEdit.setCaption("Ubah");
-					buttonEdit.addClickListener(new ClickListener() {
-						
-						@Override
-						public void buttonClick(ClickEvent event) {
-							listener.edit(datumFinal.getIdReq());
-						}
-					});
+					//jika sudah diaccept, maka button ubah  tidak ditampilkan
+					if(!datumFinal.isAccepted()){
+						Button buttonEdit=new Button();
+						buttonEdit.setDescription("Ubah data ini");
+						buttonEdit.setIcon(new ThemeResource("icons/image/icon-edit.png"));
+						buttonEdit.addStyleName("button-table");
+						buttonEdit.addClickListener(new ClickListener() {
+							
+							@Override
+							public void buttonClick(ClickEvent event) {
+								listener.edit(datumFinal.getIdReq());
+							}
+						});
+						this.addComponent(buttonEdit, 1, 0);
+
+					}
 					
 					Button buttonShow=new Button();
-					buttonShow.setCaption("Detail");
+					buttonShow.setDescription("Lihat Lebih detail");
+					buttonShow.setIcon(new ThemeResource("icons/image/icon-detail.png"));
+					buttonShow.addStyleName("button-table");
 					buttonShow.addClickListener(new ClickListener() {
 						
 						@Override
@@ -198,7 +209,9 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 					});
 					
 					Button buttonDelete=new Button();
-					buttonDelete.setCaption("Hapus");
+					buttonDelete.setDescription("Hapus Data");
+					buttonDelete.setIcon(new ThemeResource("icons/image/icon-delete.png"));
+					buttonDelete.addStyleName("button-table");
 					buttonDelete.addClickListener(new ClickListener() {
 						
 						@Override
@@ -207,9 +220,13 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 						}
 					});
 					this.setSpacing(true);
+					this.setMargin(false);
 					this.addComponent(buttonShow, 0, 0);
-					this.addComponent(buttonEdit, 1, 0);
-					this.addComponent(buttonDelete, 2, 0);
+					if(datumFinal.isAccepted()){
+						this.addComponent(buttonDelete, 1, 0);						
+					}else{
+						this.addComponent(buttonDelete, 2, 0);
+					}
 					
 				}
 			});

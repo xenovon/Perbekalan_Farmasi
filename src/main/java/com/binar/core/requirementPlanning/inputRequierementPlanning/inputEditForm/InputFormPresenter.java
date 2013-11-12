@@ -25,6 +25,8 @@ public class InputFormPresenter implements PresenterInterface, InputFormView.Inp
 	FormData data;
 	//id reqPlanning untuk mode edit
 	int reqPlanning;
+	boolean editMode=false;
+
 	
 	public InputFormPresenter(InputFormModel model, 
 			InputFormViewImpl view, GeneralFunction function, String periode) {
@@ -36,6 +38,7 @@ public class InputFormPresenter implements PresenterInterface, InputFormView.Inp
 		this.data=new FormData(function);
 		this.data.setPeriode(periode);
 		
+		
 		view.setSelectGoodsData(model.getGoodsData());
 		view.setSelectManufacturerData(model.getManufacturer());
 		view.setSelectSupplierData(model.getSupplierData());
@@ -45,18 +48,34 @@ public class InputFormPresenter implements PresenterInterface, InputFormView.Inp
 	public InputFormPresenter(InputFormModel model, 
 			InputFormViewImpl view, GeneralFunction function, String periode,  int reqPlanning) {
 		this(model, view, function, periode);
-		view.setEditMode(model.getSingleReqPlanning(reqPlanning));
+		updateEditView(reqPlanning);
 	}
-	
+	//untuk memperbaharui tampilan form, agar siap input dat lagi
+	public void updateEditView(int reqPlanning){
+		view.setDataEdit(model.getSingleReqPlanning(reqPlanning));
+		setEditMode(true);		
+		this.reqPlanning=reqPlanning;
+	}
+	public boolean isEditMode(){
+		return editMode;
+	}
+	public void setEditMode(boolean editMode){
+		this.editMode=true;
+	}
 	public void buttonClick(String source) {
 		if(source.equals("forecast")){
 			Notification.show("Tombol forecast ditekan");
 		}else if(source.equals("reset")){
 			view.resetForm();;
 		}else if(source.equals("submit")){
-			submitClick();
+			if(isEditMode()){
+				saveEditClick();
+			}else{
+				submitClick();				
+			}
 		}else if(source.equals("cancel")){
-			generalFunction.showDialog("Batalkan", "Yakin Akan Membatalkan Memasukan Data?",
+			generalFunction.showDialog("Batalkan", 
+					isEditMode()?"Anda yakin akan membatalkan perubahan data?":"Anda yakin Akan Membatalkan Memasukan Data?",
 					new ClickListener() {
 						public void buttonClick(ClickEvent event) {
 							Collection<Window> list=view.getUI().getWindows();
@@ -175,10 +194,36 @@ public class InputFormPresenter implements PresenterInterface, InputFormView.Inp
 		
 	}
 
+	private void saveEditClick(){
+		setData();
+		List<String> errors=data.validate();
+		if(errors!=null){
+			String textError="Penyimpanan Perubahan Data Tidak Berhasil, Silahkan koreksi Error berikut : </br>";
+			for(String error:errors){
+				textError=textError+error+"</br>";
+			}
+			view.showError(ErrorLabel.GENERAL, textError);
+		}else{
+			String status=model.saveEdit(data, reqPlanning); //insert data
+			if(status!=null){ //penyimpanan gagal
+				view.showError(ErrorLabel.GENERAL, status);
+			}else{ //penyimpanan sukses
+				Collection<Window> list=view.getUI().getWindows();
+				for(Window w:list){
+					view.getUI().removeWindow(w);
+				}	
+				Notification.show("Penyimpanan perubahan rencana kebutuhan berhasil", Type.TRAY_NOTIFICATION);
+			}
+		
+			
+		}
+	}
+	
 	@Override
 	public void setPeriode(String periode) {
 		this.data.setPeriode(periode);
 	}
+	
 	
 	
 }

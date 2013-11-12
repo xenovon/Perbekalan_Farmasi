@@ -10,6 +10,8 @@ import com.binar.entity.ReqPlanning;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.Window.CloseEvent;
 import com.vaadin.ui.Window.CloseListener;
 import com.vaadin.ui.Component;
@@ -20,15 +22,18 @@ import elemental.events.MouseEvent.Button;
 public class InputRequirementPlanningPresenter 
 		implements PresenterInterface, InputRequirementPlanningView.InputRequirementListener {
 
-	InputRequirementPlanningViewImpl view;
-	InputRequirementPlanningModel model;
+	private InputRequirementPlanningViewImpl view;
+	private InputRequirementPlanningModel model;
 	
 	//form input
-	InputFormModel formModel;
-	InputFormPresenter formPresenter;
-	InputFormViewImpl formView;
+	private InputFormModel formModel;
+	private InputFormPresenter formPresenter;
+	private InputFormViewImpl formView;
 
-	
+	//presenter untuk edit edit
+	private InputFormPresenter formPresenterEdit;
+	private InputFormModel formModelEdit;
+	private InputFormViewImpl formViewEdit;
 	GeneralFunction generalFunction;
 	
 	public InputRequirementPlanningPresenter(InputRequirementPlanningViewImpl view, 
@@ -58,7 +63,8 @@ public class InputRequirementPlanningPresenter
 				System.out.println("Data = "+data.toString());
 				formPresenter.setPeriode((String)data);				
 			}
-			view.displayForm(formView);
+			//form yang ditampilkan, dan judul jendelanya
+			view.displayForm(formView,"Masukan Rencana Kebutuhan");
 			
 			//menambahkan listener, agar ketika window diclose, tampilan table akan diupdate
 			Collection<Window> windows=view.getUI().getWindows();
@@ -97,12 +103,50 @@ public class InputRequirementPlanningPresenter
 
 	@Override
 	public void delete(int reqId) {
-		// TODO Auto-generated method stub
-		
+		final int reqIdFinal=reqId;
+		generalFunction.showDialog("Yakin Hapus Data?",
+				"Yakin akan menghapus data rencana kebutuhan?", 
+				new ClickListener() {
+					
+					public void buttonClick(ClickEvent event) {
+						boolean success=model.deleteReqPlanning(reqIdFinal);
+						if(success){
+							Notification.show("Data telah dihapus");
+						}else{
+							Notification.show("Data gagal dihapus", Type.ERROR_MESSAGE);
+						}
+						//update tampilan tabel
+						updateTable(view.getPeriodeValue());
+
+						
+					}
+				}, 
+				view.getUI());
 	}
 
 	@Override
 	public void edit(int reqId) {
+		if(formModel==null){
+			formModelEdit=new InputFormModel(generalFunction);
+			formViewEdit=new InputFormViewImpl();
+			formPresenterEdit =new InputFormPresenter(formModelEdit, formViewEdit,
+					generalFunction, view.getPeriodeValue(), reqId);
+			System.out.println("Form model view presenter instantiasi");
+		}else{
+			formPresenterEdit.setPeriode(view.getPeriodeValue());				
+		}
+		view.displayForm(formViewEdit, "Ubah Data Rencana Kebutuhan");
+		
+		//menambahkan listener, agar ketika window diclose, tampilan table akan diupdate
+		Collection<Window> windows=view.getUI().getWindows();
+		for(Window window:windows){
+			window.addCloseListener(new CloseListener() {
+				public void windowClose(CloseEvent e) {
+					updateTable(view.getPeriodeValue());
+				}
+			});
+		}
+		
 		
 	}
 

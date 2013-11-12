@@ -864,7 +864,12 @@
 	
 	.form-error{
 		line-height:1.2;
-		color:red;
+		color:#FD0000 !important;
 	}
+	.button-table{
+  		margin: 5px !important;
+  		padding: 2px 8px 2px 10px !important;
+	}	
+	
 	
 }

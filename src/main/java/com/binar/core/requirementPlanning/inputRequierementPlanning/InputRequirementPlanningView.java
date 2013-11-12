@@ -14,7 +14,7 @@ public interface InputRequirementPlanningView {
 		void edit(int reqId);
 	}
 	
-	public void displayForm(Component content);
+	public void displayForm(Component content, String title);
 	public Window getWindow();
 	public void addListener(InputRequirementListener listener);
 }

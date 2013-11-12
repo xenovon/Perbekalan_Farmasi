@@ -4773,7 +4773,7 @@ body .dashboard.v-app .v-app-loading {
 }
 
 .dashboard .v-tabsheet {
-	border: 1px solid #d3d6d6;
+	border: 0px solid #d3d6d6;
 }
 
 .dashboard .v-tabsheet-tabcontainer, .dashboard .v-tabsheet-content {
@@ -6320,5 +6320,10 @@ body .dashboard.v-app .v-app-loading {
 
 .dashboard .form-error {
 	line-height: 1.2;
-	color: red;
+	color: #FD0000 !important;
+}
+
+.dashboard .button-table {
+	margin: 5px !important;
+	padding: 2px 8px 2px 10px !important;
 }

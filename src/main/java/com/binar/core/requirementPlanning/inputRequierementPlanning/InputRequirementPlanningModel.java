@@ -45,6 +45,7 @@ public class InputRequirementPlanningModel {
 			tableData.setManufacturer(req.getSupplierGoods().getManufacturer().getManufacturerName());
 			tableData.setReq(req.getQuantity());
 			tableData.setSupp(req.getSupplierGoods().getSupplier().getSupplierName());
+			tableData.setAccepted(req.isAccepted());
 			returnValue.add(tableData);
 		}
 		System.out.println(returnValue.size() + returnValue.toString());

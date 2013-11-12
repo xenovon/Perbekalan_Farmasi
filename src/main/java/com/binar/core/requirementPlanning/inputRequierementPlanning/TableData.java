@@ -7,6 +7,14 @@ public class TableData {
 	private int req;
 	private String manufacturer;
 	private String supp;
+	private boolean accepted;
+	
+	protected boolean isAccepted(){
+		return accepted;
+	}
+	protected void setAccepted(boolean approval){
+		accepted=approval;
+	}
 	protected int getIdReq() {
 		return idReq;
 	}

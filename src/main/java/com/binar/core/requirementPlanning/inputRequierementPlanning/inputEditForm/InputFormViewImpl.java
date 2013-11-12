@@ -47,7 +47,6 @@ public class InputFormViewImpl extends FormLayout implements
 	private Button buttonReset;
 	private Button buttonSubmit;
 	private Button buttonCancel;
-	private Button buttonSaveEdit;
 	
 	private Label labelErrorQuantity; //untuk error realtime
  	private Label labelErrorPrice; //untuk error realtime
@@ -138,42 +137,32 @@ public class InputFormViewImpl extends FormLayout implements
 		buttonSubmit=new Button("Submit");
 		buttonSubmit.addClickListener(this);
 		buttonSubmit.addStyleName("primary");
-		buttonSaveEdit=new Button("Simpan Perubahan");
-		buttonSaveEdit.addClickListener(this);
-		buttonSaveEdit.addStyleName("primary");
 		buttonCancel =new Button("Batal");
 		buttonCancel.addClickListener(this);
 		construct();
 	}
-	//konstruksi mode agar sesuai dengan tampilan edit
-	public void setEditMode(ReqPlanning data){
-//		private ComboBox inputGoodsSelect;
-//		private TextField inputGoodsQuantity;
-//		private Button buttonCheckForecast;
-//		private ComboBox inputManufacturer;
-//		private ComboBox inputSupplier;
-//		private TextField inputPrice;
-//		private TextArea inputInformation;
-//		//untuk label unit di samping jumlah kebutuhan, isi sesuai jenis barang
-//		private Label labelSatuan;
-//		private Button buttonReset;
-//		private Button buttonSubmit;
-//		private Button buttonCancel;		
+	//set data yang mesti diedit
+	public void setDataEdit(ReqPlanning data){
+		
+		inputGoodsQuantity.setValue(String.valueOf(data.getQuantity()));
+		inputGoodsSelect.setValue(data.getSupplierGoods().getGoods().getIdGoods());
+		inputManufacturer.setValue(String.valueOf(data.getSupplierGoods().getManufacturer().getIdManufacturer()));
+		inputSupplier.setValue(String.valueOf(data.getSupplierGoods().getSupplier().getIdSupplier()));
+		inputPrice.setValue(String.valueOf(data.getPriceEstimation()));
+		inputInformation.setValue(data.getInformation());
+		buttonSubmit.setCaption("Simpan Perubahan");
+	}
+	//restore dari posisi edit ke submit;
+	public void setDataSubmit(){
+		buttonSubmit.setCaption("Submit");
+		resetForm();
 	}
 	
 	/* untuk menkonstruksi tampilan */
 	private void construct(){
 		setMargin(true);
 		this.setSpacing(true);
-		/*
-		 * input
-		 * input good
-		 * input quantitiy
-		 * input supplier
-		 * input producer
-		 * input price
-		 * input information
-		 */
+
 		this.addComponent(inputGoodsSelect);
 		this.addComponent(inputGoodsQuantity);
 		this.addComponent(labelErrorQuantity);
@@ -197,7 +186,6 @@ public class InputFormViewImpl extends FormLayout implements
 				addComponent(buttonCancel, 2, 0);
 				this.setMargin(true);
 				this.setSpacing(true);
-				
 			}
 		});
 	}
