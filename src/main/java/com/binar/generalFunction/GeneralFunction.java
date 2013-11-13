@@ -16,6 +16,7 @@ public class GeneralFunction {
 	private LoginManager loginManager;
 	private DateManipulator date;
 	private TableFilter filter;
+	private TextManipulator text;
 	public GeneralFunction() {
 		
 	}	
@@ -50,14 +51,15 @@ public class GeneralFunction {
 		}
 		return date;
 	}
+	//khusus untuk table filter, tiap memanggil get filter, maka akan membuat obyek baru
+	//Alasan : Biar tiap tabel memiliki filter yang unik
 	public TableFilter getFilter(String regex){
-		System.out.println("Regex in get filter" + regex);
-		if(filter==null){
-			filter=new TableFilter(regex);
-		}else{
-			filter.updateData(regex);
-		}
-		return filter;
+		return new TableFilter(regex);
 	}
-	
+	public TextManipulator getTextManipulator(){
+		if(text==null){
+			text=new TextManipulator();
+		}
+		return text;
+	}
 }

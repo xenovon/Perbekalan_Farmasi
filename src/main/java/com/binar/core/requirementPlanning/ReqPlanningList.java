@@ -19,7 +19,7 @@ public class ReqPlanningList extends CssLayout {
 	
 	public ReqPlanningList(GeneralFunction function) {
 		this.generalFunction = function;
-		model=new ReqPlanningListModel();
+		model=new ReqPlanningListModel(generalFunction);
 		view=new ReqPlanningListViewImpl(generalFunction);
 		presenter=new ReqPlanningListPresenter(generalFunction, model, view);
 

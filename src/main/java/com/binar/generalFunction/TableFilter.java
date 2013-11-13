@@ -6,7 +6,9 @@ import java.util.regex.PatternSyntaxException;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
-
+/*
+ * Kelas untuk memfilter tabel
+ */
 public class TableFilter implements Container.Filter {
 	 protected String regex;
 
@@ -23,8 +25,8 @@ public class TableFilter implements Container.Filter {
         Collection<String> properties = (Collection<String>) item.getItemPropertyIds();
         System.out.println(properties.size());
         for(String idProp:properties){
-        	System.out.println("Perulangan" +idProp);
-            // cek validitas, jika tidak valid, maka lanjut ke looping selanjutnya
+
+        	// cek validitas, jika tidak valid, maka lanjut ke looping selanjutnya
         	Property<?> p=item.getItemProperty(idProp);
             if (p == null || !p.getType().equals(String.class))
                 continue;
@@ -34,25 +36,20 @@ public class TableFilter implements Container.Filter {
 			} catch (Exception e1) {
 				continue;
 			}
-            System.out.println("Value ="+value);
-            System.out.println("Regex ="+regex);
+
             // Pass all if regex not given
             if (regex.isEmpty()) {
-            	System.out.println("Regex empty, return true");
                 return true;
             }
             
             // logika filter, dengan regex
             try {
                 result = value.contains(regex);
-            	System.out.println("logika filter, return "+result);
             	if(result==true){
             		return true;
             	}
                 
             } catch (PatternSyntaxException e) {
-            	System.out.println("PatternSyntaxException, return true");
-
             	return true;
             }        	
         }
@@ -62,7 +59,6 @@ public class TableFilter implements Container.Filter {
         
     }
 
-    /** Tells if this filter works on the given property. */
     @Override
     public boolean appliesToProperty(Object propertyId) {
         return true;

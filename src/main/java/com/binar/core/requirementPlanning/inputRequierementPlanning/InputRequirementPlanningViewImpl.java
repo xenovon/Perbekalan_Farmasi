@@ -14,6 +14,7 @@ import javax.persistence.TemporalType;
 import com.binar.entity.ReqPlanning;
 import com.binar.entity.SupplierGoods;
 import com.binar.generalFunction.GeneralFunction;
+import com.binar.generalFunction.TableFilter;
 import com.vaadin.data.Container;
 import com.vaadin.data.Container.Filter;
 import com.vaadin.data.Container.ItemSetChangeEvent;
@@ -66,13 +67,14 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 	public InputRequirementPlanningViewImpl(GeneralFunction function){
 		this.generalFunction=function;
 	}
-	
+	//Table Filter
+	TableFilter filter;
 	public void init(){
+		filter=generalFunction.getFilter("");
 		inputFilter= new TextField("Filter Tabel"){
 			{
 				setImmediate(true);
 				addTextChangeListener(new TextChangeListener() {
-					Filter filter=null;
 					public void textChange(TextChangeEvent event) {
 				        // buang filter lama
 						System.out.println("Text change event fired");
@@ -80,7 +82,7 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 				            tableContainer.removeContainerFilter(filter);
 				        
 				        //set filter baru
-				        filter = generalFunction.getFilter(event.getText());
+				        filter.updateData(event.getText());
 				        tableContainer.addContainerFilter(filter);
 					}
 				});
