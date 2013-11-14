@@ -9,7 +9,11 @@ public interface ReqPlanningListView  {
 
 	interface ReqPlanningListListener{
 		public void updateTable(String input);
+		public void showDetail(int idReq);
 	}
 	
 	public boolean updateTableData(List<ReqPlanning> data);
+	public void setListener(ReqPlanningListListener listener);
+	public void showDetailWindow(ReqPlanning reqPlanning);
+	public String getSelectedPeriod();
 }

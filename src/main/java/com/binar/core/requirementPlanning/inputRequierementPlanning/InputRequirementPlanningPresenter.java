@@ -126,7 +126,7 @@ public class InputRequirementPlanningPresenter
 
 	@Override
 	public void edit(int reqId) {
-		if(formModel==null){
+		if(formModelEdit==null){
 			formModelEdit=new InputFormModel(generalFunction);
 			formViewEdit=new InputFormViewImpl();
 			formPresenterEdit =new InputFormPresenter(formModelEdit, formViewEdit,

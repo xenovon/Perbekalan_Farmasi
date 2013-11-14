@@ -11,13 +11,13 @@ public class DateManipulator {
 	
 	
 	
-	//Untuk mengubah  format January-2013 menjadi Date
+	//Untuk mengubah  format Januari-2013 menjadi Date
 	public DateTime parseDateMonth(String date){
 		
 		String monthString=date.split("-")[0];
 		String yearString=date.split("-")[1];
 		
-		int month=0;
+		int month=1;
 		int year=Integer.parseInt(yearString);
 		
 		if(monthString.equals("Januari")){

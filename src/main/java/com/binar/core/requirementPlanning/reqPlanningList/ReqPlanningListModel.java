@@ -28,5 +28,7 @@ public class ReqPlanningListModel {
 
 		return returnValue;
 	}
-	
+	public ReqPlanning getReqPlanning(int idReqPlanning){
+		return server.find(ReqPlanning.class, idReqPlanning);
+	}
 }
