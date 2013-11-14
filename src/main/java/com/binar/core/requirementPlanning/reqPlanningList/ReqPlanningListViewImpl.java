@@ -250,24 +250,21 @@ public class ReqPlanningListViewImpl extends VerticalLayout
 	public void showDetailWindow(ReqPlanning data){
 		if(layoutDetail==null){
 			//buat konten 
-			layoutDetail= new GridLayout(2,13){
+			layoutDetail= new GridLayout(2,12){
 				{
 					setSpacing(true);
 					setMargin(true);
-					addComponent(new Label
-							("<h2>Detail Rencana Kebutuhan</h2>", ContentMode.HTML),
-							0,0,1,0);
-					addComponent(new Label("Id Rencana Kebutuhan"), 0, 2);
-					addComponent(new Label("Nama Barang"), 0,3);
-					addComponent(new Label("Distributor"), 0, 4);
-					addComponent(new Label("Produsen"), 0, 5);
-					addComponent(new Label("Periode"), 0,6);
-					addComponent(new Label("Kuantitas"), 0,7);
-					addComponent(new Label("Diterima?"), 0, 8);
-					addComponent(new Label("Kuantitas Diterima"), 0,9);
-					addComponent(new Label("Keterangan"), 0, 10);
-					addComponent(new Label("Waktu Input"), 0,11);
-					addComponent(new Label("Estimasi Harga"), 0, 12);
+					addComponent(new Label("Id Rencana Kebutuhan"), 0, 1);
+					addComponent(new Label("Nama Barang"), 0,2);
+					addComponent(new Label("Distributor"), 0, 3);
+					addComponent(new Label("Produsen"), 0, 4);
+					addComponent(new Label("Periode"), 0,5);
+					addComponent(new Label("Kuantitas"), 0,6);
+					addComponent(new Label("Diterima?"), 0, 7);
+					addComponent(new Label("Kuantitas Diterima"), 0,8);
+					addComponent(new Label("Keterangan"), 0, 9);
+					addComponent(new Label("Waktu Input"), 0,10);
+					addComponent(new Label("Estimasi Harga"), 0, 11);
 				}	
 			};
 			//instantiasi label
@@ -284,22 +281,22 @@ public class ReqPlanningListViewImpl extends VerticalLayout
 			labelPriceEstimation =new Label();	
 			
 			//add Component konten ke layout
-			layoutDetail.addComponent(labelId, 1,2);
-			layoutDetail.addComponent(labelName, 1,3);
-			layoutDetail.addComponent(labelSupplier, 1,4);
-			layoutDetail.addComponent(labelManufacturer, 1,5);
-			layoutDetail.addComponent(labelPeriode, 1,6);
-			layoutDetail.addComponent(labelQuantity, 1,7);
-			layoutDetail.addComponent(labelIsAccepted, 1,8);
-			layoutDetail.addComponent(labelAcceptedQuantity, 1,9);
-			layoutDetail.addComponent(labelInformation, 1,10);
-			layoutDetail.addComponent(labelTimestamp, 1,11);
-			layoutDetail.addComponent(labelPriceEstimation, 1,12);
+			layoutDetail.addComponent(labelId, 1,1);
+			layoutDetail.addComponent(labelName, 1,2);
+			layoutDetail.addComponent(labelSupplier, 1,3);
+			layoutDetail.addComponent(labelManufacturer, 1,4);
+			layoutDetail.addComponent(labelPeriode, 1,5);
+			layoutDetail.addComponent(labelQuantity, 1,6);
+			layoutDetail.addComponent(labelIsAccepted, 1,7);
+			layoutDetail.addComponent(labelAcceptedQuantity, 1,8);
+			layoutDetail.addComponent(labelInformation, 1,9);
+			layoutDetail.addComponent(labelTimestamp, 1,10);
+			layoutDetail.addComponent(labelPriceEstimation, 1,11);
 		}
 		
 		setLabelData(data);
 		if(windowDetail==null){
-			windowDetail=new Window(){
+			windowDetail=new Window("Detail Rencana Kebutuhan"){
 				{
 					center();
 					setWidth("500px");					

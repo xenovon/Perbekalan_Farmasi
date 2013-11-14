@@ -13,6 +13,8 @@ public class ReqPlanningList extends CssLayout {
 
 	Label label=new Label("Daftar Rencana Kebutuhan");
 	GeneralFunction generalFunction;
+
+
 	ReqPlanningListPresenter presenter;
 	ReqPlanningListModel model;
 	ReqPlanningListViewImpl view;
@@ -30,4 +32,30 @@ public class ReqPlanningList extends CssLayout {
 		
 
 	}
+
+	public ReqPlanningListPresenter getPresenter() {
+		return presenter;
+	}
+
+	public void setPresenter(ReqPlanningListPresenter presenter) {
+		this.presenter = presenter;
+	}
+
+	public ReqPlanningListModel getModel() {
+		return model;
+	}
+
+	public void setModel(ReqPlanningListModel model) {
+		this.model = model;
+	}
+
+	public ReqPlanningListViewImpl getView() {
+		return view;
+	}
+
+	public void setView(ReqPlanningListViewImpl view) {
+		this.view = view;
+	}
+	
+	
 }

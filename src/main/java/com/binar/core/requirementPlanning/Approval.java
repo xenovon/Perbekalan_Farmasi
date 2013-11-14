@@ -28,9 +28,9 @@ public class Approval extends  CssLayout {
 	public Approval(GeneralFunction function) {
 		generalFunction=function;
 		
-		model = new ApprovalModel();
+		model = new ApprovalModel(generalFunction);
 		view =new ApprovalViewImpl(generalFunction);
-		presenter = new  ApprovalPresenter(model, view);
+		presenter = new  ApprovalPresenter(model, view, generalFunction);
 		
 		this.addComponent(view);
 		this.setCaption("Persetujuan");

@@ -133,7 +133,7 @@ public class InputRequirementPlanningPresenter
 					generalFunction, view.getPeriodeValue(), reqId);
 			System.out.println("Form model view presenter instantiasi");
 		}else{
-			formPresenterEdit.setPeriode(view.getPeriodeValue());				
+			formPresenterEdit.updateEditView(reqId);			
 		}
 		view.displayForm(formViewEdit, "Ubah Data Rencana Kebutuhan");
 		

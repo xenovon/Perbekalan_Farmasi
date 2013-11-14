@@ -10,21 +10,25 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TabSheet;
+import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
+import com.vaadin.ui.TabSheet.SelectedTabChangeListener;
 import com.vaadin.ui.VerticalLayout;
 
-public class RequirementPlanningView extends CustomComponent implements View{
+public class RequirementPlanningView extends CustomComponent implements View, SelectedTabChangeListener{
 
 	TabSheet tabSheet;
 	GeneralFunction generalFunction;
-	
+	InputRequirementPlanning inputReqPl;
+	Approval approval;
+	ReqPlanningList reqPlanning;
 	@Override
 	public void enter(ViewChangeEvent event) {
 		//Inisiasi General function		
 		generalFunction =new GeneralFunction();
 		
-		Approval approval=new Approval(generalFunction);
-		InputRequirementPlanning inputReqPl=new InputRequirementPlanning(generalFunction);
-		ReqPlanningList reqPlanning=new ReqPlanningList(generalFunction);
+		approval=new Approval(generalFunction);
+		inputReqPl=new InputRequirementPlanning(generalFunction);
+		reqPlanning=new ReqPlanningList(generalFunction);
 		
 		
 		tabSheet=new TabSheet();
@@ -32,8 +36,16 @@ public class RequirementPlanningView extends CustomComponent implements View{
 		tabSheet.addTab(inputReqPl).setCaption("Input Rencana Kebutuhan");;
 		tabSheet.addTab(approval).setCaption("Persetujuan");
 
+		tabSheet.addSelectedTabChangeListener(this);
 		tabSheet.setSizeFull();
 		this.setCompositionRoot(tabSheet);
+	}
+
+	@Override
+	public void selectedTabChange(SelectedTabChangeEvent event) {
+		if(event.getTabSheet().getSelectedTab()==reqPlanning){
+			reqPlanning.getPresenter().updateTable(reqPlanning.getView().getSelectedPeriod());
+		}
 	}
 
 }
