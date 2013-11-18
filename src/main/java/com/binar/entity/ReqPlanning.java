@@ -43,7 +43,10 @@ public class ReqPlanning {
 	
 	@Column(name="price_estimation")
 	private double priceEstimation;
-
+	
+	@Column(name="price_estimation_ppn")
+	private double priceEstimationPPN; 
+	
 	public int getIdReqPlanning() {
 		return idReqPlanning;
 	}
@@ -139,5 +142,10 @@ public class ReqPlanning {
 		this.priceEstimation = priceEstimation;
 	}
 	
-	
+	public double getPriceEstimationPPN() {
+		return priceEstimationPPN;
+	}
+	public void setPriceEstimationPPN(double priceEstimationPPN) {
+		this.priceEstimationPPN = priceEstimationPPN;
+	}
 }

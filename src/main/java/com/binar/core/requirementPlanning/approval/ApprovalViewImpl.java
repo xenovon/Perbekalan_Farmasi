@@ -50,6 +50,7 @@ public class ApprovalViewImpl extends VerticalLayout implements
 
 	public ApprovalViewImpl(GeneralFunction function){
 		generalFunction=function;
+		text=generalFunction.getTextManipulator();
 	}
 	TableFilter filter;
 	public void init(){
@@ -95,12 +96,13 @@ public class ApprovalViewImpl extends VerticalLayout implements
         };
         table.setContainerDataSource(container);		
 		List<String> contentList=generalFunction.getListFactory().createMonthListFromNow(10);
-		selectMonth =new ComboBox("Pilih Periode", contentList);
+		selectMonth =new ComboBox("", contentList);
 		selectMonth.setNullSelectionAllowed(false);
 		selectMonth.addStyleName("non-caption-form");
 		selectMonth.setImmediate(true);
 		selectMonth.setValue(contentList.iterator().next());
 		selectMonth.addValueChangeListener(this);
+		selectMonth.setWidth("169px");
 		
         
         labelTitle =new Label("<h2>Persetujuan Rencana Kebutuhan</h2>", ContentMode.HTML);
@@ -114,7 +116,13 @@ public class ApprovalViewImpl extends VerticalLayout implements
 		
 	}
 	private void construct(){
-		
+		GridLayout filterLayout=new GridLayout(2,1){
+			{
+				this.addComponent(new Label("Pilih Bulan : "), 0,0);
+				this.addComponent(selectMonth);
+				this.setSpacing(true);
+			}
+		};
 		GridLayout buttonLayout=new GridLayout(2,1){
 			{
 				this.addComponent(buttonAccept,0,0);
@@ -124,7 +132,7 @@ public class ApprovalViewImpl extends VerticalLayout implements
 				this.addStyleName("float-right");
 			}
 		};
-		this.addComponents(labelTitle, selectMonth, inputFilter, buttonLayout, table );
+		this.addComponents(labelTitle, filterLayout, inputFilter, buttonLayout, table );
 		
 	}
 	ApprovalListener listener;
@@ -313,6 +321,10 @@ public class ApprovalViewImpl extends VerticalLayout implements
 	@Override
 	public IndexedContainer getContainer() {
 		return container;
+	}
+	
+	public String getPeriodeValue(){
+		return (String) selectMonth.getValue();
 	}
 
 }

@@ -17,6 +17,9 @@ public class GeneralFunction {
 	private DateManipulator date;
 	private TableFilter filter;
 	private TextManipulator text;
+	private GetSetting setting;
+	
+	//Method konstruktor kosong, jaga-jaga aja kalo butuh konstruktor
 	public GeneralFunction() {
 		
 	}	
@@ -26,12 +29,10 @@ public class GeneralFunction {
 		}
 		return listFactory;
 	}
+	//khusus show dialog, tiap memanggil, bikin obyek baru
 	public void showDialog(String caption, String content, ClickListener listener, UI ui){
-		if(window==null){
 			window =new ConfirmationWindow(caption, content, listener, ui);
-		}else{
-			window.show(caption, content, listener, ui);
-		}
+			
 	}
 	public EbeanServer getServer(){
 		if(ebeanServer==null){
@@ -61,5 +62,12 @@ public class GeneralFunction {
 			text=new TextManipulator();
 		}
 		return text;
+	}
+	
+	public GetSetting getSetting(){
+		if(setting==null){
+			setting=new GetSetting(getServer());
+		}
+		return setting;
 	}
 }

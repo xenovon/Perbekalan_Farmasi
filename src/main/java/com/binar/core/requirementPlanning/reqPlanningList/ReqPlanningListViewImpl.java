@@ -140,7 +140,6 @@ public class ReqPlanningListViewImpl extends VerticalLayout
 		selectMonth.addValueChangeListener(this);
 		selectYear.addValueChangeListener(this);
 
-		
 		labelTitle =new Label("<h2>Daftar Rencana Kebutuhan</h2>", ContentMode.HTML);
 		
 		construct();

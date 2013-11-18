@@ -17,13 +17,13 @@ import com.vaadin.ui.VerticalLayout;
 public class Approval extends  CssLayout {
 
 	
-	VerticalLayout layout=new VerticalLayout();
+	private VerticalLayout layout=new VerticalLayout();
 	
-	GeneralFunction generalFunction;
+	private GeneralFunction generalFunction;
 	
-	ApprovalModel model;
-	ApprovalPresenter presenter;
-	ApprovalViewImpl view;
+	private ApprovalModel model;
+	private ApprovalPresenter presenter;
+	private ApprovalViewImpl view;
 	
 	public Approval(GeneralFunction function) {
 		generalFunction=function;
@@ -36,5 +36,13 @@ public class Approval extends  CssLayout {
 		this.setCaption("Persetujuan");
 		this.setSizeFull();
 		this.addStyleName("tab-content");
+	}
+	
+	public ApprovalPresenter getPresenter(){
+		return presenter;
+		
+	}
+	public ApprovalViewImpl getView() {
+		return view;
 	}
 }

@@ -138,6 +138,12 @@ public class InputFormPresenter implements PresenterInterface, InputFormView.Inp
 		String errorMessage=data.validatePrice();
 		if(errorMessage.equals("")){
 			view.hideError(ErrorLabel.SUPPLIER);
+			String messageHET=data.validatePriceHET();
+			if(messageHET.equals("")){
+				view.hideError(ErrorLabel.SUPPLIER);
+			}else{
+				view.showError(ErrorLabel.SUPPLIER, messageHET);
+			}
 		}else{
 			view.showError(ErrorLabel.SUPPLIER, errorMessage);
 		}		

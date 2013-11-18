@@ -41,10 +41,17 @@ public class RequirementPlanningView extends CustomComponent implements View, Se
 		this.setCompositionRoot(tabSheet);
 	}
 
+	//untuk meload ulang (refresh) data tabel di tab ketika tab diakses
 	@Override
 	public void selectedTabChange(SelectedTabChangeEvent event) {
 		if(event.getTabSheet().getSelectedTab()==reqPlanning){
 			reqPlanning.getPresenter().updateTable(reqPlanning.getView().getSelectedPeriod());
+		}
+		if(event.getTabSheet().getSelectedTab()==inputReqPl){
+			inputReqPl.getPresenter().updateTable(inputReqPl.getView().getPeriodeValue());
+		}
+		if(event.getTabSheet().getSelectedTab()==approval){
+			approval.getPresenter().updateTable(approval.getView().getPeriodeValue());
 		}
 	}
 

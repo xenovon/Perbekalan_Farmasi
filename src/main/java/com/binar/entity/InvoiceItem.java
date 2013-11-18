@@ -26,6 +26,9 @@ public class InvoiceItem {
 	private String batch;
 	private float discount;
 	private double price;
+	
+	@Column(name="price_ppn")
+	private double pricePPN;
 	private int quantity;
 	public int getIdInvoiceItem() {
 		return idInvoiceItem;
@@ -70,6 +73,12 @@ public class InvoiceItem {
 		this.quantity = quantity;
 	}
 	
+	public void setPricePPN(double pricePPN) {
+		this.pricePPN = pricePPN;
+	}
+	public double getPricePPN() {
+		return pricePPN;
+	}
 	
 	
 }	

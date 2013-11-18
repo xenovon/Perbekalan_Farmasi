@@ -47,6 +47,8 @@ public class Goods {
 	@Column(name="is_important")
 	private boolean isImportant;
 
+	private double het;
+	
 	public String getIdGoods() {
 		return idGoods;
 	}
@@ -141,6 +143,14 @@ public class Goods {
 
 	public void setImportant(boolean isImportant) {
 		this.isImportant = isImportant;
+	}
+
+	public double getHet() {
+		return het;
+	}
+
+	public void setHet(double het) {
+		this.het = het;
 	}
 	
 	

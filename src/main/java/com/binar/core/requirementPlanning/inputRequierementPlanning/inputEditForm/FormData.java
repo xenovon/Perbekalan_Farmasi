@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.avaje.ebean.EbeanServer;
+import com.binar.entity.Goods;
+import com.binar.entity.Setting;
 import com.binar.generalFunction.GeneralFunction;
+import com.binar.generalFunction.GetSetting;
+import com.binar.generalFunction.TextManipulator;
 
 public class FormData {
 	/*
@@ -27,9 +31,13 @@ public class FormData {
 	
 	private GeneralFunction function;
 	private EbeanServer server;
+	private GetSetting setting;
+	private TextManipulator text;
 	public FormData(GeneralFunction function){
 		this.function=function;
 		this.server=function.getServer();
+		this.setting=function.getSetting();
+		this.text=function.getTextManipulator();
 	}
 	//Validasi sebelum data disimpan kedalam aplikasi
 	public List<String> validate(){
@@ -102,6 +110,29 @@ public class FormData {
 		}
 		
 		return "";
+	}
+	//validasi untuk mengecek nilai harga agar tidak melebihi HET, 
+	//Validasi ini tidak mengikat, hanya menampilkan peringatan
+	public String validatePriceHET(){
+		//memastikan lolos dari validatePrice()
+		if(validatePrice().equals("")){
+			double price=Double.parseDouble(this.price);
+			
+			//hitung harga jual
+			double plusPPN=price+(price*setting.getPPN()/100);
+			double sellingPrice=plusPPN+(plusPPN*setting.getMargin()/100);
+			double het=getHET();
+			if(sellingPrice > het){
+				return "Harga Jual Lebih tinggi dari HET </br>"+
+					   "Harga Jual :  "+text.doubleToRupiah(sellingPrice)+
+					   "</br>HET   :  "+text.doubleToRupiah(het);
+			}
+		}
+		return "";
+	}
+	private double getHET(){
+		Goods goods=server.find(Goods.class, goodsId);
+		return goods.getHet();
 	}
 	protected String getGoodsId() {
 		return goodsId;

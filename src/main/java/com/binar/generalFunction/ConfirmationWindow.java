@@ -53,7 +53,7 @@ public class ConfirmationWindow extends Window implements ClickListener {
 		getUI().removeWindow(this);
 	}
 	public void show(String caption, String content, ClickListener listener, UI ui){
-		this.labelContent=new Label(content);
+		this.labelContent.setValue(content);
 		removeClickListeners(ok);
 		ok.addClickListener(this);
 		ok.addClickListener(listener);

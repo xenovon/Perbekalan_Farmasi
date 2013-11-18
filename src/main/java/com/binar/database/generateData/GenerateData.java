@@ -301,6 +301,7 @@ public class GenerateData {
 			goods.setName("CLOPEDIN INJ 5's");
 			goods.setType(EnumGoodsType.OBAT);
 			goods.setUnit("box");
+			goods.setHet(200000);
 		server.save(goods);
 
 		Goods goods1 =new Goods();
@@ -316,22 +317,37 @@ public class GenerateData {
 			goods1.setName("Kassa Gulung 10CM");
 			goods1.setType(EnumGoodsType.BMHP);
 			goods1.setUnit("bag");
+			goods1.setHet(100000);
 		server.save(goods1);		
 	}
 	
 	private void setSettingData(){
 		Setting setting1=new Setting();
-				setting1.setSettingDescription("Masukan data satuan barang, tiap satuan dibatasi oleh tanda koma (',')");
+				setting1.setSettingDescription("Masukan data satuan barang, tiap satuan dibatasi oleh tanda koma (','). Singkatan dan nama kemasan dipisah dengan tanda sama dengan ('=') ");
 				setting1.setSettingKey("satuan");
 				setting1.setSettingName("Satuan Barang");
-				setting1.setSettingValue("btl, pcs, roll, tube, bag, tab, amp");
+				setting1.setSettingValue("btl=botol, pcs=pieces, roll=roll, tube=tube, bag=bag, tab=tablet, amp=ampul,vial=vial, pair=pair, pack=pack");
 		server.save(setting1);		
 		
 		Setting setting2=new Setting();
-			setting2.setSettingDescription("Masukan data kemasan barang,  tiap kemasan dibatasi oleh tanda koma (',')");
+			setting2.setSettingDescription("Masukan data kemasan barang,  tiap kemasan dibatasi oleh tanda koma (',').  Singkatan dan nama satuan dipisah dengan tanda sama dengan ('=')");
 			setting2.setSettingKey("package");
 			setting2.setSettingName("Kemasan Barang");
-			setting2.setSettingValue("btl, pcs, roll, tube, bag, tab, amp");
-		server.save(setting2);				
+			setting2.setSettingValue("box=boxs, strip=strip, dus=dus, botol=botol, blister=blister");
+		server.save(setting2);	
+		
+		Setting setting3=new Setting();
+			setting3.setSettingDescription("Besaran PPN untuk barang dalam persen");
+			setting3.setSettingKey("ppn");
+			setting3.setSettingName("Nilai PPN");
+			setting3.setSettingValue("10");
+		server.save(setting3);
+		
+		Setting setting4=new Setting();
+			setting4.setSettingDescription("Nilai besaran margin dalam persen");
+			setting4.setSettingKey("margin");
+			setting4.setSettingName("Nilai Margin");
+			setting4.setSettingValue("20");
+		server.save(setting4);
 	}
 }

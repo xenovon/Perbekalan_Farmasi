@@ -15,12 +15,12 @@ import com.vaadin.ui.VerticalLayout;
 
 public class InputRequirementPlanning extends CssLayout {
 
-	GeneralFunction generalFunction;
-	VerticalLayout layout=new VerticalLayout();
-	Label label=new Label("Input Rencana Kebutuhan");
-	InputRequirementPlanningPresenter inputPresenter;
-	InputRequirementPlanningModel inputModel;
-	InputRequirementPlanningViewImpl inputView;
+	private GeneralFunction generalFunction;
+	private VerticalLayout layout=new VerticalLayout();
+	private Label label=new Label("Input Rencana Kebutuhan");
+	private InputRequirementPlanningPresenter inputPresenter;
+	private InputRequirementPlanningModel inputModel;
+	private InputRequirementPlanningViewImpl inputView;
 	
 	public InputRequirementPlanning(GeneralFunction function) {
 		
@@ -32,5 +32,12 @@ public class InputRequirementPlanning extends CssLayout {
 		this.setCaption("Input Rencana Kebutuhan");
 		this.addComponent(inputView);
 		this.addStyleName("tab-content");
+	}
+	
+	public InputRequirementPlanningPresenter getPresenter(){
+		return inputPresenter;
+	}
+	public InputRequirementPlanningViewImpl getView(){
+		return inputView;
 	}
 }
