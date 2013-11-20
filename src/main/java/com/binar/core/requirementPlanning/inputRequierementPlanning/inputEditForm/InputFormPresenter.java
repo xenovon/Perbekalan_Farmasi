@@ -37,7 +37,7 @@ public class InputFormPresenter implements PresenterInterface, InputFormView.Inp
 		this.generalFunction=function;
 		this.data=new FormData(function);
 		this.data.setPeriode(periode);
-		
+		view.resetForm();
 		
 		view.setSelectGoodsData(model.getGoodsData());
 		view.setSelectManufacturerData(model.getManufacturer());
@@ -81,9 +81,11 @@ public class InputFormPresenter implements PresenterInterface, InputFormView.Inp
 							Collection<Window> list=view.getUI().getWindows();
 							for(Window w:list){
 								view.getUI().removeWindow(w);
+								view.resetForm();
 							}
 						}
 					}, view.getUI());
+			
 					
 		}
 	}
@@ -193,6 +195,7 @@ public class InputFormPresenter implements PresenterInterface, InputFormView.Inp
 				for(Window w:list){
 					view.getUI().removeWindow(w);
 				}	
+				view.resetForm();
 				Notification.show("Penyimpanan rencana kebutuhan berhasil", Type.TRAY_NOTIFICATION);
 			}
 		
@@ -218,6 +221,7 @@ public class InputFormPresenter implements PresenterInterface, InputFormView.Inp
 				for(Window w:list){
 					view.getUI().removeWindow(w);
 				}	
+				view.resetForm();
 				Notification.show("Penyimpanan perubahan rencana kebutuhan berhasil", Type.TRAY_NOTIFICATION);
 			}
 		
