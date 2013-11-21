@@ -301,6 +301,7 @@ public class GenerateData {
 			goods.setName("CLOPEDIN INJ 5's");
 			goods.setType(EnumGoodsType.OBAT);
 			goods.setUnit("box");
+			goods.setMinimumStock(100);
 			goods.setHet(200000);
 		server.save(goods);
 
@@ -317,6 +318,7 @@ public class GenerateData {
 			goods1.setName("Kassa Gulung 10CM");
 			goods1.setType(EnumGoodsType.BMHP);
 			goods1.setUnit("bag");
+			goods1.setMinimumStock(20);
 			goods1.setHet(100000);
 		server.save(goods1);		
 	}

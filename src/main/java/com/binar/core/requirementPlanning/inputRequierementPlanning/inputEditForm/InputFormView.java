@@ -8,7 +8,7 @@ public interface InputFormView {
 
 	interface InputFormListener{
 		void buttonClick(String source);
-		void realtimeValidator(String inputField);
+		void realTimeValidator(String inputField);
 		public void setPeriode(String periode);
 	}
 	public enum ErrorLabel{

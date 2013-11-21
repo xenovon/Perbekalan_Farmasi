@@ -92,7 +92,7 @@ public class InputFormPresenter implements PresenterInterface, InputFormView.Inp
 	//Override dari interface input form listener, 
 	//berfungsi untuk menambahkan fungsi-fungsi validasi realtime pada isian form. 
 	@Override
-	public void realtimeValidator(String inputField) {
+	public void realTimeValidator(String inputField) {
 		view.hideAllError();
 		if(inputField.equals("inputGoodsQuantity")){
 			goodsQuantityChange();

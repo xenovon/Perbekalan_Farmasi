@@ -177,7 +177,6 @@ public class ReqPlanningListViewImpl extends VerticalLayout
 			Notification.show("Data kebutuhan kosong", Type.WARNING_MESSAGE);
 			return false;
 		}
-		
 		for(ReqPlanning datum:data){
 			final ReqPlanning datumFinal=datum;
 			Item item = container.addItem(datum.getIdReqPlanning());

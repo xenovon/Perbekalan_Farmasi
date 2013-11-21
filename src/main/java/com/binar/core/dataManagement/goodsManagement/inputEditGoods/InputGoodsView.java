@@ -1,0 +1,82 @@
+package com.binar.core.dataManagement.goodsManagement.inputEditGoods;
+
+import java.util.List;
+import java.util.Map;
+
+import com.binar.entity.Goods;
+import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.TextArea;
+import com.vaadin.ui.TextField;
+
+public interface InputGoodsView {
+
+	public enum ErrorLabel{
+		QUANTITY,SUPPLIER,GENERAL
+	}
+	interface InputGoodsListener{
+		public void buttonClick(String button);
+		public void realTimeValidator(String inputFields);
+	}
+	public void init(); 
+	public void construct();
+	public void setFormData(Goods data); //untuk mengeset data form
+	public FormData getFormData(); //untuk mendapatkan data form
+	public void setEditMode(boolean editMode); //mengubah mode edit
+ 	public void resetForm(); //mereset isi form
+	public void showError(ErrorLabel label, String content); //menampilkan error di tempat tertentu dengan konten tertentu
+	public void hideError(ErrorLabel label); //menyembunyikan error tertentu
+	public void hideAllError(); //menyembunyikan semua error
+	public void setComboBoxData(ComboDataList list);
+	
+	
+	//sub kelas untuk menampun data combobox
+	public class ComboDataList{
+		private Map<String, String> insuranceList;
+		private Map<String, String> inputUnitList;
+		private Map<String, String> inputTypeList;
+		private Map<String, String> inputPackageList;
+		private Map<String, String> inputCategoryList;
+		private Map<Boolean, String> inputImportantList;
+		public Map<String, String> getInsuranceList() {
+			return insuranceList;
+		}
+		public void setInsuranceList(Map<String, String> insuranceList) {
+			this.insuranceList = insuranceList;
+		}
+		public Map<String, String> getInputUnitList() {
+			return inputUnitList;
+		}
+		public void setInputUnitList(Map<String, String> inputUnitList) {
+			this.inputUnitList = inputUnitList;
+		}
+		public Map<String, String> getInputTypeList() {
+			return inputTypeList;
+		}
+		public void setInputTypeList(Map<String, String> inputTypeList) {
+			this.inputTypeList = inputTypeList;
+		}
+		public Map<String, String> getInputPackageList() {
+			return inputPackageList;
+		}
+		public void setInputPackageList(Map<String, String> inputPackageList) {
+			this.inputPackageList = inputPackageList;
+		}
+		public Map<String, String> getInputCategoryList() {
+			return inputCategoryList;
+		}
+		public void setInputCategoryList(Map<String, String> inputCategoryList) {
+			this.inputCategoryList = inputCategoryList;
+		}
+		public Map<Boolean, String> getInputImportantList() {
+			return inputImportantList;
+		}
+		public void setInputImportantList(Map<Boolean, String> inputImportantList) {
+			this.inputImportantList = inputImportantList;
+		}
+		
+		
+	}
+	
+	 
+	
+}

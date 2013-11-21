@@ -10,6 +10,11 @@ import com.vaadin.ui.Button.ClickListener;
 
 public class GeneralFunction {
 
+	//Konstanta untuk aplikasi
+	
+	//maksimal jumlah teks dalam input text area
+	final int MAX_TEXTAREA_LENGTH = 300;
+	
 	private ListFactory listFactory;
 	private ConfirmationWindow window;
 	private GetEbeanServer ebeanServer;

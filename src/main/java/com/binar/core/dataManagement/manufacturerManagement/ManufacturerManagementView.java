@@ -1,6 +1,6 @@
-package com.binar.core.dataManagement.producerManagement;
+package com.binar.core.dataManagement.manufacturerManagement;
 
-public interface ProducerManagementView {
+public interface ManufacturerManagementView {
 
 	interface ProducerManagementListener{
 		

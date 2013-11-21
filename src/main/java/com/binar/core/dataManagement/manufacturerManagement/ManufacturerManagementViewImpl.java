@@ -1,21 +1,21 @@
-package com.binar.core.dataManagement.producerManagement;
+package com.binar.core.dataManagement.manufacturerManagement;
 
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
-public class ProducerManagementViewImpl extends VerticalLayout implements ProducerManagementView{
+public class ManufacturerManagementViewImpl extends VerticalLayout implements ManufacturerManagementView{
 
 	GeneralFunction function;
 	Label title;
 	
-	public ProducerManagementViewImpl(GeneralFunction function) {
+	public ManufacturerManagementViewImpl(GeneralFunction function) {
 		this.function=function;
 	}
 	@Override
 	public void init() {
-		title=new Label("<h2>Manajemen Producer</h2>", ContentMode.HTML);
+		title=new Label("<h2>Manajemen Produsen</h2>", ContentMode.HTML);
 
 		construct();
 	}

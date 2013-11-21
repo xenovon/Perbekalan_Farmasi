@@ -1,24 +1,24 @@
 package com.binar.core.dataManagement;
 
-import com.binar.core.dataManagement.producerManagement.ProducerManagementModel;
-import com.binar.core.dataManagement.producerManagement.ProducerManagementPresenter;
-import com.binar.core.dataManagement.producerManagement.ProducerManagementViewImpl;
+import com.binar.core.dataManagement.manufacturerManagement.ManufacturerManagementModel;
+import com.binar.core.dataManagement.manufacturerManagement.ManufacturerManagementPresenter;
+import com.binar.core.dataManagement.manufacturerManagement.ManufacturerManagementViewImpl;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Label;
 
-public class ProducerManagement extends CssLayout{
+public class ManufacturerManagement extends CssLayout{
 
 	private GeneralFunction function;
-	private ProducerManagementViewImpl view;
-	private ProducerManagementModel model;
-	private ProducerManagementPresenter presenter;
-	public ProducerManagement(GeneralFunction function) {
+	private ManufacturerManagementViewImpl view;
+	private ManufacturerManagementModel model;
+	private ManufacturerManagementPresenter presenter;
+	public ManufacturerManagement(GeneralFunction function) {
 		this.function=function;
-		view=new  ProducerManagementViewImpl(function);
-		model=new ProducerManagementModel(function);
+		view=new  ManufacturerManagementViewImpl(function);
+		model=new ManufacturerManagementModel(function);
 		
-		presenter= new ProducerManagementPresenter(model, view, function);
+		presenter= new ManufacturerManagementPresenter(model, view, function);
 		
 		this.addComponent(view);
 		
@@ -27,11 +27,11 @@ public class ProducerManagement extends CssLayout{
 		this.setSizeFull();
 	}
 	
-	public ProducerManagementViewImpl getView() {
+	public ManufacturerManagementViewImpl getView() {
 		return view;
 	}
 	
-	public ProducerManagementPresenter getPresenter() {
+	public ManufacturerManagementPresenter getPresenter() {
 		return presenter;
 	}
 }

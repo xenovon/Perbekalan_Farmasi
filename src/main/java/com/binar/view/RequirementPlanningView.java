@@ -26,9 +26,15 @@ public class RequirementPlanningView extends CustomComponent implements View, Se
 		//Inisiasi General function		
 		generalFunction =new GeneralFunction();
 		
-		approval=new Approval(generalFunction);
-		inputReqPl=new InputRequirementPlanning(generalFunction);
-		reqPlanning=new ReqPlanningList(generalFunction);
+		if(approval==null){
+			approval=new Approval(generalFunction);
+		}
+		if(inputReqPl==null){
+			inputReqPl=new InputRequirementPlanning(generalFunction);
+		}
+		if(reqPlanning==null){
+			reqPlanning=new ReqPlanningList(generalFunction);			
+		}
 		
 		
 		tabSheet=new TabSheet();

@@ -4,6 +4,7 @@ import java.awt.peer.TextFieldPeer;
 import java.util.Map;
 
 import com.binar.entity.ReqPlanning;
+import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.shared.ui.label.ContentMode;
@@ -54,6 +55,11 @@ public class InputFormViewImpl extends FormLayout implements
 	
 	private InputFormListener listener;
 
+	GeneralFunction function;
+	
+	public InputFormViewImpl(GeneralFunction function){
+		this.function=function;
+	}
 	
 	public void init(){
 		final String WIDTH="250px";
@@ -126,6 +132,7 @@ public class InputFormViewImpl extends FormLayout implements
 			{
 				setImmediate(true);
 				setWidth(WIDTH);
+				setMaxLength(function.);
 			}
 		};
 
@@ -240,15 +247,15 @@ public class InputFormViewImpl extends FormLayout implements
 	@Override
 	public void valueChange(ValueChangeEvent event) {
 		if(event.getProperty()==inputGoodsQuantity){
-			listener.realtimeValidator("inputGoodsQuantity");
+			listener.realTimeValidator("inputGoodsQuantity");
 		}else if(event.getProperty()==inputGoodsSelect){
-			listener.realtimeValidator("inputGoodsSelect");			
+			listener.realTimeValidator("inputGoodsSelect");			
 		}else if(event.getProperty()==inputPrice){
-			listener.realtimeValidator("inputPrice");			
+			listener.realTimeValidator("inputPrice");			
 		}else if(event.getProperty()==inputManufacturer){
-			listener.realtimeValidator("inputManufacturer");						
+			listener.realTimeValidator("inputManufacturer");						
 		}else if(event.getProperty()==inputSupplier){
-			listener.realtimeValidator("inputSupplier");			
+			listener.realTimeValidator("inputSupplier");			
 		}
 	}
 	

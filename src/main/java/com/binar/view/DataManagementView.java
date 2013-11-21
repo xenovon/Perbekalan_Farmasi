@@ -1,7 +1,7 @@
 package com.binar.view;
 
 import com.binar.core.dataManagement.GoodsManagement;
-import com.binar.core.dataManagement.ProducerManagement;
+import com.binar.core.dataManagement.ManufacturerManagement;
 import com.binar.core.dataManagement.SupplierManagement;
 import com.binar.core.requirementPlanning.Approval;
 import com.binar.core.requirementPlanning.InputRequirementPlanning;
@@ -13,58 +13,55 @@ import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
+import com.vaadin.ui.TabSheet.SelectedTabChangeListener;
 
-public class DataManagementView extends CustomComponent implements View {
+public class DataManagementView extends CustomComponent implements View, SelectedTabChangeListener {
 
 	GeneralFunction function;
 	GoodsManagement goodsManagement;
-	ProducerManagement producerManagement;
+	ManufacturerManagement manufacturerManagement;
 	SupplierManagement supplierManagement;
 	
-	TabSheet tabSheet=new TabSheet();
+	TabSheet tabSheet;
 		@Override
 	public void enter(ViewChangeEvent event) {
+		
+		if(tabSheet==null){
+			tabSheet=new TabSheet();
+		}
 			
-			
+		if(function==null){
+			function=new GeneralFunction();
+		}
+		if(goodsManagement==null){
+			goodsManagement=new GoodsManagement(function);
+		}
+		if(manufacturerManagement==null){
+			manufacturerManagement=new ManufacturerManagement(function);
+		}
+		if(supplierManagement==null){
+			supplierManagement=new SupplierManagement(function);
+		}
+		
 		tabSheet.addTab(goodsManagement).setCaption("Manajemen Barang");
 		tabSheet.addTab(supplierManagement).setCaption("Manajemen Supplier");;
-		tabSheet.addTab(producerManagement).setCaption("Manajemen Produsen");;
+		tabSheet.addTab(manufacturerManagement).setCaption("Manajemen Produsen");;
 		tabSheet.setSizeFull();
-
-		setCompositionRoot(tabSheet);
-	}
-/*
- * 		//Inisiasi General function		
-		generalFunction =new GeneralFunction();
-		
-		approval=new Approval(generalFunction);
-		inputReqPl=new InputRequirementPlanning(generalFunction);
-		reqPlanning=new ReqPlanningList(generalFunction);
-		
-		
-		tabSheet=new TabSheet();
-		tabSheet.addTab(reqPlanning).setCaption("Daftar Rencana Kebutuhan");
-		tabSheet.addTab(inputReqPl).setCaption("Input Rencana Kebutuhan");;
-		tabSheet.addTab(approval).setCaption("Persetujuan");
-
 		tabSheet.addSelectedTabChangeListener(this);
-		tabSheet.setSizeFull();
-		this.setCompositionRoot(tabSheet);
+		setCompositionRoot(tabSheet);
+		System.out.println("Selesai enter");
+		
 	}
-
-	//untuk meload ulang (refresh) data tabel di tab ketika tab diakses
-	@Override
-	public void selectedTabChange(SelectedTabChangeEvent event) {
-		if(event.getTabSheet().getSelectedTab()==reqPlanning){
-			reqPlanning.getPresenter().updateTable(reqPlanning.getView().getSelectedPeriod());
+		@Override
+		public void selectedTabChange(SelectedTabChangeEvent event) {
+			if(event.getTabSheet().getSelectedTab()==goodsManagement){
+				
+			}else if(event.getTabSheet().getSelectedTab()==supplierManagement){
+				
+			}else if(event.getTabSheet().getSelectedTab()==manufacturerManagement){
+				
+			}
+			
 		}
-		if(event.getTabSheet().getSelectedTab()==inputReqPl){
-			inputReqPl.getPresenter().updateTable(inputReqPl.getView().getPeriodeValue());
-		}
-		if(event.getTabSheet().getSelectedTab()==approval){
-			approval.getPresenter().updateTable(approval.getView().getPeriodeValue());
-		}
-	}
-
- */
+		
 }

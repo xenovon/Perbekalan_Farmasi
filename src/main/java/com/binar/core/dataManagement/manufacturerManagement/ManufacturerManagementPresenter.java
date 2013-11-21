@@ -1,20 +1,18 @@
-package com.binar.core.dataManagement.producerManagement;
+package com.binar.core.dataManagement.manufacturerManagement;
 
 import com.binar.generalFunction.GeneralFunction;
 
-public class ProducerManagementPresenter {
+public class ManufacturerManagementPresenter  {
 
-	ProducerManagementViewImpl view;
-	ProducerManagementModel model;
+	ManufacturerManagementViewImpl view;
+	ManufacturerManagementModel model;
 	GeneralFunction function;
 	
-	public ProducerManagementPresenter(ProducerManagementModel model, 
-			ProducerManagementViewImpl view, GeneralFunction function){
-	this.model=model;
-	this.view=view;
-	this.function=function;
-	
-	view.init();
-		
+	public ManufacturerManagementPresenter(ManufacturerManagementModel model, 
+			ManufacturerManagementViewImpl view, GeneralFunction function){
+		this.model=model;
+		this.view=view;
+		this.function=function;	
+		view.init();
 	}
 }

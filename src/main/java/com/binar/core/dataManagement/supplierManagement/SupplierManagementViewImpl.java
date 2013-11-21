@@ -20,6 +20,7 @@ public class SupplierManagementViewImpl extends VerticalLayout implements
 	@Override
 	public void init() {
 		title=new Label("<h2>Manajemen Supplier</h2>", ContentMode.HTML);
+		construct();
 	}
 
 
