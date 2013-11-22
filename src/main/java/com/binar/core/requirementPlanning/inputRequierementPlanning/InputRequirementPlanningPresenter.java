@@ -55,7 +55,7 @@ public class InputRequirementPlanningPresenter
 		if(source.equals("buttonInput")){
 			if(formModel==null){
 				formModel=new InputFormModel(generalFunction);
-				formView=new InputFormViewImpl();
+				formView=new InputFormViewImpl(generalFunction);
 				formPresenter =new InputFormPresenter(formModel, formView,
 						generalFunction, (String)data);
 				System.out.println("Form model view presenter instantiasi");
@@ -128,7 +128,7 @@ public class InputRequirementPlanningPresenter
 	public void edit(int reqId) {
 		if(formModelEdit==null){
 			formModelEdit=new InputFormModel(generalFunction);
-			formViewEdit=new InputFormViewImpl();
+			formViewEdit=new InputFormViewImpl(generalFunction);
 			formPresenterEdit =new InputFormPresenter(formModelEdit, formViewEdit,
 					generalFunction, view.getPeriodeValue(), reqId);
 			System.out.println("Form model view presenter instantiasi");

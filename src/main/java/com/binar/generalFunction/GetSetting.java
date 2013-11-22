@@ -24,7 +24,7 @@ public class GetSetting {
 		
 	}
 	//untuk mendapatkan list satuan dalam format map
-	public Map<String, String> getSatuan(){
+	public Map<String, String> getUnit(){
 		String value = getSetting("satuan").getSettingValue();
 		return getMapFromString(value);
 		

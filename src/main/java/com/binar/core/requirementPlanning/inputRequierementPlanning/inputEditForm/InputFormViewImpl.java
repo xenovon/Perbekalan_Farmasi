@@ -132,7 +132,7 @@ public class InputFormViewImpl extends FormLayout implements
 			{
 				setImmediate(true);
 				setWidth(WIDTH);
-				setMaxLength(function.);
+				setMaxLength(function.MAX_TEXTAREA_LENGTH);
 			}
 		};
 

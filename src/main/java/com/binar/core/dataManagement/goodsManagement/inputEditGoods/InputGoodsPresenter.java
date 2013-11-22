@@ -14,5 +14,9 @@ public class InputGoodsPresenter implements InputGoodsListener{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public boolean isCanEditInitialStock(){
+		return true;
+	}
 
 }
