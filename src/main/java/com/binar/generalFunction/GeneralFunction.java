@@ -14,7 +14,8 @@ public class GeneralFunction {
 	
 	//maksimal jumlah teks dalam input text area
 	public final int MAX_TEXTAREA_LENGTH = 300;
-	
+	public final String FORM_WIDTH="250px";
+
 	private ListFactory listFactory;
 	private ConfirmationWindow window;
 	private GetEbeanServer ebeanServer;

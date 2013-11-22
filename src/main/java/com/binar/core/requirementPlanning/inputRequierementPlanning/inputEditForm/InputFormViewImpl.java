@@ -88,7 +88,7 @@ public class InputFormViewImpl extends FormLayout implements
 		};
 		inputGoodsQuantity=new TextField("Jumlah Kebutuhan"){
 			{
-				setWidth(WIDTH);
+				setWidth(function.FORM_WIDTH);
 				setImmediate(true);
 			}
 		};
@@ -97,14 +97,14 @@ public class InputFormViewImpl extends FormLayout implements
 		inputGoodsSelect=new ComboBox("Nama Barang"){
 			{
 				setImmediate(true);
-				setWidth(WIDTH);
+				setWidth(function.FORM_WIDTH);
 			}
 		};
 		inputGoodsSelect.addValueChangeListener(this);
 
 		inputManufacturer =new ComboBox("Produsen"){
 			{
-				setWidth(WIDTH);
+				setWidth(function.FORM_WIDTH);
 				setImmediate(true);
 			
 			}
@@ -113,14 +113,14 @@ public class InputFormViewImpl extends FormLayout implements
 		inputSupplier =new ComboBox("Distributor"){
 			{
 				setImmediate(true);
-				setWidth(WIDTH);
+				setWidth(function.FORM_WIDTH);
 			}
 		};
 		inputSupplier.addValueChangeListener(this);
 		inputPrice= new TextField("Harga Obat"){
 			{
 				setImmediate(true);
-				setWidth(WIDTH);
+				setWidth(function.FORM_WIDTH);
 			}
 		};
 		inputPrice.addValueChangeListener(this);
@@ -131,7 +131,7 @@ public class InputFormViewImpl extends FormLayout implements
 		inputInformation =new TextArea("Keterangan"){
 			{
 				setImmediate(true);
-				setWidth(WIDTH);
+				setWidth(function.FORM_WIDTH);
 				setMaxLength(function.MAX_TEXTAREA_LENGTH);
 			}
 		};

@@ -27,6 +27,7 @@ public interface InputGoodsView {
 	}
 	public void init(); 
 	public void construct();
+	public void setListener(InputGoodsListener listener);
 	public void setFormData(Goods data); //untuk mengeset data form
 	public FormData getFormData(); //untuk mendapatkan data form
 	public void setEditMode(boolean editMode); //mengubah mode edit
@@ -35,6 +36,7 @@ public interface InputGoodsView {
 	public void hideError(ErrorLabel label); //menyembunyikan error tertentu
 	public void hideAllError(); //menyembunyikan semua error
 	public void setComboBoxData(ComboDataList list);
+	
 	
 	
 	//sub kelas untuk menampun data combobox

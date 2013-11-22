@@ -19,11 +19,13 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.Window;
 
 public class InputGoodsViewImpl extends FormLayout implements 
 			InputGoodsView, ClickListener, TextChangeListener, ValueChangeListener {
@@ -43,36 +45,37 @@ public class InputGoodsViewImpl extends FormLayout implements
 	 * -penting
 	 * -HET
 	 */
-	GeneralFunction function;
-	GetSetting setting;
-	TextManipulator text;
+	private GeneralFunction function;
+	private GetSetting setting;
+	private TextManipulator text;
 	
 	//inisialisasi Form
-	TextField inputId;
-	TextField inputName;
-	ComboBox inputInsurance;
-	TextArea inputDescription;
-	ComboBox inputType;
-	ComboBox inputUnit;
-	ComboBox inputPackage;
-	ComboBox inputCategory;
-	TextField inputMinimalStock;
-	TextField inputHET;
-	ComboBox inputImportant;
-	TextArea inputInformation;
-	TextField inputInitialStock;
+	private TextField inputId;
+	private TextField inputName;
+	private ComboBox inputInsurance;
+	private TextArea inputDescription;
+	private ComboBox inputType;
+	private ComboBox inputUnit;
+	private ComboBox inputPackage;
+	private ComboBox inputCategory;
+	private TextField inputMinimalStock;
+	private TextField inputHET;
+	private ComboBox inputImportant;
+	private TextArea inputInformation;
+	private TextField inputInitialStock;
 
-	Label labelGeneralError;
-	Label labelErrorId;
-	Label labelErrorMinimalStock;
-	Label labelErrorHET;
-	Label labelErrorInitialStock;
-	Button buttonSubmit;
-	Button buttonSaveEdit;
-	Button buttonReset;
-	Button buttonCancel;
+	private Label labelGeneralError;
+	private Label labelErrorId;
+	private Label labelErrorMinimalStock;
+	private Label labelErrorHET;
+	private Label labelErrorInitialStock;
+	private Button buttonSubmit;
+	private Button buttonSaveEdit;
+	private Button buttonReset;
+	private Button buttonCancel;
 	
-	InputGoodsListener listener;
+	private InputGoodsListener listener;
+	private boolean editMode;
 	
 	public InputGoodsViewImpl(GeneralFunction function){
 		this.function=function;
@@ -85,33 +88,53 @@ public class InputGoodsViewImpl extends FormLayout implements
 				inputId.setDescription("Kode barang harus unik");
 				inputId.addValueChangeListener(this);
 				inputId.setImmediate(true);
+				inputId.setWidth(function.FORM_WIDTH);
 		inputName=new TextField("Nama Barang");
 				inputName.setDescription("Nama dari barang");
 				inputName.addValueChangeListener(this);
 				inputName.setImmediate(true);
+				inputName.setWidth(function.FORM_WIDTH);
 		inputInsurance= new ComboBox("Asuransi");
 						inputInsurance.setDescription("Asuransi yang dipakai untuk barang ini");
+						inputInsurance.setWidth(function.FORM_WIDTH);
+	
 		inputDescription =new TextArea("Deskripsi Barang");
-		inputType = new ComboBox("Tipe Barang");
-		inputUnit = new ComboBox("Satuan Barang");
+						  inputDescription.setWidth(function.FORM_WIDTH);
 		
+		inputType = new ComboBox("Tipe Barang");
+					inputType.setWidth(function.FORM_WIDTH);
+					inputType.setImmediate(true);
+		inputUnit = new ComboBox("Satuan Barang");
+					inputUnit.setWidth(function.FORM_WIDTH);
+					inputUnit.setImmediate(true);
 		inputPackage= new ComboBox("Kemasan Barang");
-		inputCategory =new ComboBox("Kategori Barang");
+					inputPackage.setWidth(function.FORM_WIDTH);
+					inputUnit.setImmediate(true);
+		inputCategory = new ComboBox("Kategori Barang");
+						inputCategory.setWidth(function.FORM_WIDTH);
+						inputCategory.setImmediate(true);
 		inputMinimalStock =new TextField("Stok Minimal");
 						   inputMinimalStock.setDescription("Minimal stok untuk barang ini");
 						   inputMinimalStock.addValueChangeListener(this);
 						   inputMinimalStock.setImmediate(true);
+						   inputMinimalStock.setWidth(function.FORM_WIDTH);
 		inputHET = new TextField("Harga Eceran Tertinggi");
 				   inputHET.addValueChangeListener(this);
-				   inputMinimalStock.setImmediate(true);
+				   inputHET.setImmediate(true);
+				   inputHET.setWidth(function.FORM_WIDTH);
 		inputImportant=new ComboBox("Barang Penting?");
+						inputImportant.setImmediate(true);
+						inputImportant.setWidth(function.FORM_WIDTH);
+						inputImportant.setNullSelectionAllowed(false);
 		inputInformation =new TextArea("Keterangan");
 						inputInformation.setMaxLength(200);
+						inputInformation.setWidth(function.FORM_WIDTH);
 		inputInitialStock =new TextField("Stok Awal");
 						  inputInitialStock.setDescription("Stok awal saat data barang di input");
 						  inputInitialStock.setImmediate(true);
 						  inputInitialStock.addValueChangeListener(this);
-						  inputInitialStock.setValue("0");
+						  inputInitialStock.setWidth(function.FORM_WIDTH);
+						  
 		buttonCancel =new Button("Batalkan");
 					  buttonCancel.addClickListener(this);
 		buttonReset = new Button("Reset");
@@ -156,14 +179,17 @@ public class InputGoodsViewImpl extends FormLayout implements
 				setVisible(false);
 				addStyleName("form-error");
 				setContentMode(ContentMode.HTML);
-				
 			}
 		};
+		construct();
 	}
 	@Override
 	public void construct() {
+		setMargin(true);
+		this.setSpacing(true);
 		this.addComponent(inputId);
 		this.addComponent(labelErrorId);
+		this.addComponent(inputName);
 		this.addComponent(inputInsurance);
 		this.addComponent(inputDescription);
 		this.addComponent(inputType);
@@ -172,6 +198,8 @@ public class InputGoodsViewImpl extends FormLayout implements
 		this.addComponent(inputCategory);
 		this.addComponent(inputMinimalStock);
 		this.addComponent(labelErrorMinimalStock);
+		this.addComponent(inputInitialStock);
+		this.addComponent(labelErrorInitialStock);
 		this.addComponent(inputHET);
 		this.addComponent(labelErrorHET);
 		this.addComponent(inputImportant);
@@ -187,8 +215,8 @@ public class InputGoodsViewImpl extends FormLayout implements
 				this.addComponent(buttonCancel,3 ,0);
 			}
 		});
-		
 		this.setEditMode(false);
+		
 	}
 
 
@@ -213,12 +241,12 @@ public class InputGoodsViewImpl extends FormLayout implements
 		inputName.setValue(data.getName());;
 		inputInsurance.setValue(data.getInsurance().getIdInsurance());;
 		inputDescription.setValue(data.getDescription());;
-		inputType.setValue(data.getType().toString());;
+		inputType.setValue(data.getType());;
 		inputUnit.setValue(data.getUnit());
 		inputPackage.setValue(data.getGoodsPackage());;
 		inputCategory.setValue(data.getCategory());;
 		inputMinimalStock.setValue(data.getMinimumStock()+"");
-		inputHET.setValue(text.doubleToRupiah(data.getHet()));
+		inputHET.setValue(data.getHet()+"");
 		inputImportant.setValue((Boolean)data.isImportant());
 		inputInformation.setValue(data.getInformation());
 		inputInitialStock.setValue(data.getCurrentStock()+"");
@@ -226,20 +254,23 @@ public class InputGoodsViewImpl extends FormLayout implements
 
 	@Override
 	public FormData getFormData() {
-		FormData returnValue=new FormData(function);
-		returnValue.setCategory((EnumGoodsCategory)inputCategory.getValue());
-		returnValue.setDescription((String)inputDescription.getValue());
-		returnValue.setGoodsPackage((String)inputPackage.getValue());
-		returnValue.setHet((String)inputHET.getValue());
-		returnValue.setId((String)inputId.getValue());
-		returnValue.setImportant((Boolean)inputImportant.getValue());
-		returnValue.setInformation((String)inputInformation.getValue());
-		returnValue.setInsurance((String)inputInsurance.getValue());
-		returnValue.setMinimalStock((String)inputMinimalStock.getValue());
-		returnValue.setName((String)inputName.getValue());
-		returnValue.setType((EnumGoodsType)inputType.getValue());
-		returnValue.setUnit((String)inputUnit.getValue());
-		returnValue.setInitialStock((String)inputInitialStock.getValue());
+		FormData returnValue=new FormData(function, editMode);
+			returnValue.setCategory((EnumGoodsCategory)inputCategory.getValue());
+			returnValue.setDescription((String)inputDescription.getValue());
+			returnValue.setGoodsPackage((String)inputPackage.getValue());
+			returnValue.setHet((String)inputHET.getValue());
+			returnValue.setId((String)inputId.getValue());
+			if(inputImportant.getValue()==null){
+				System.out.println("Input important value null");
+			}
+			returnValue.setImportant((Boolean)inputImportant.getValue());
+			returnValue.setInformation((String)inputInformation.getValue());
+			returnValue.setInsurance((String)inputInsurance.getValue());
+			returnValue.setMinimalStock((String)inputMinimalStock.getValue());
+			returnValue.setName((String)inputName.getValue());
+			returnValue.setType((EnumGoodsType)inputType.getValue());
+			returnValue.setUnit((String)inputUnit.getValue());
+			returnValue.setInitialStock((String)inputInitialStock.getValue());
 		return returnValue;
 	}
 	
@@ -250,18 +281,19 @@ public class InputGoodsViewImpl extends FormLayout implements
 			buttonSaveEdit.setVisible(true);
 			buttonSubmit.setVisible(false);
 			inputId.setEnabled(false);
+			if(listener.isCanEditInitialStock()){
+				inputInitialStock.setEnabled(true);
+			}else{
+				inputInitialStock.setEnabled(false);
+			}
 		}else{
 			buttonSaveEdit.setVisible(false);
-			buttonSaveEdit.setVisible(true);
+			buttonSubmit.setVisible(true);
 			inputId.setEnabled(true);
 			
 		}
+		this.editMode=editMode;
 		
-		if(listener.isCanEditInitialStock()){
-			inputInitialStock.setVisible(false);
-		}else{
-			inputInitialStock.setVisible(true);
-		}
 
 	}
 
@@ -331,7 +363,7 @@ public class InputGoodsViewImpl extends FormLayout implements
 		if(event.getProperty()==inputHET){
 			listener.realTimeValidator("inputHET");
 		}else if(event.getProperty()==inputId){
-			listener.realTimeValidator("inputID");
+			listener.realTimeValidator("inputId");
 		}else if(event.getProperty()==inputMinimalStock){
 			listener.realTimeValidator("inputMinimalStock");
 		}else if(event.getProperty()==inputInitialStock){
@@ -385,7 +417,14 @@ public class InputGoodsViewImpl extends FormLayout implements
         	inputImportant.addItem(entry.getKey());
         	inputImportant.setItemCaption(entry.getKey(), entry.getValue());
         }
+        inputImportant.setValue(false);
+	}
+	@Override
+	public void setListener(InputGoodsListener listener) {
+		this.listener=listener;
 	}
 	
+
+
 	
 }

@@ -17,6 +17,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.CheckBox;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
@@ -302,6 +303,28 @@ public class GoodsManagementViewImpl extends VerticalLayout
 		this.listener=listener;		
 	}
 
+	Window window;
+
+	public void displayForm(Component content, String title){
+		//menghapus semua window terlebih dahulu
+		for(Window window:this.getUI().getWindows()){
+			window.close();
+		}
+		if(window==null){
+			window=new Window(title){
+				{
+					center();
+					setClosable(false);
+					setWidth("600px");
+					setHeight("500px");
+				}
+			};
+
+		}
+		window.setCaption(title);
+		window.setContent(content);
+		this.getUI().addWindow(window);
+	}
 
 	
 	

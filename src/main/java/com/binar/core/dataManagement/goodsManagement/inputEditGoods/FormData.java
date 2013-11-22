@@ -11,28 +11,37 @@ import com.binar.generalFunction.GeneralFunction;
 
 public class FormData {
 
-	private String id;
-	private String name;
-	private String insurance;
-	private String description;
-	private EnumGoodsType type;
-	private String unit;
-	private String goodsPackage;
-	private EnumGoodsCategory category;
-	private String minimalStock;
-	private String het;
-	private String information;
-	private boolean isImportant;
-	private String initialStock;
+	private String id="";
+	private String name="";
+	private String insurance="";
+	private String description="";
+	private EnumGoodsType type=EnumGoodsType.ALAT_KESEHATAN;
+	private String unit="";
+	private String goodsPackage="";
+	private EnumGoodsCategory category=EnumGoodsCategory.GENERIK;
+	private String minimalStock="";
+	private String het="";
+	private String information="";
+	private boolean isImportant=false;
+	private String initialStock="";
 	
 	private GeneralFunction function;
 	private EbeanServer server;
-	public FormData(GeneralFunction function) {
+	private boolean editMode;
+	public FormData(GeneralFunction function, boolean editMode) {
 		this.function=function;
+		this.editMode=editMode;
+		server=function.getServer();
 	}
 	
 	public List<String> validate(){
 		List<String> errorData=new ArrayList<String>();
+		
+		//validasi form kosong
+		if(id.equals("")){
+			errorData.add("Data id tidak boleh kosong");
+			return errorData;			
+		}
 		
 		//validasi Id
 		String errorId=validateId();
@@ -52,6 +61,14 @@ public class FormData {
 		return errorData.size()==0?null:errorData;
 	}
 	public String validateId(){
+
+		//jika editmode, maka tidak perlu validasi ID
+		if(editMode){
+			return null;
+		}
+		if(id.equals("")){
+			return "Id tidak boleh kosong";
+		}
 		if(id.contains(" ")){
 			return "Kode barang tidak boleh mengandung spasi";
 		}
@@ -87,10 +104,16 @@ public class FormData {
 		}
 	}
 	public double getHETDouble() throws NumberFormatException{
-		return Double.parseDouble(het);
+		if(!het.equals("")){
+			return Double.parseDouble(het);			
+		}
+		return 0;
 	}
 	public int getMinimalStockInt() throws NumberFormatException{
-		return Integer.parseInt(minimalStock);
+		if(!minimalStock.equals("")){
+			return Integer.parseInt(minimalStock);			
+		}
+		return 0;
 	}
 	
 	
@@ -177,7 +200,10 @@ public class FormData {
 	public void setInitialStock(String initialStock) {
 		this.initialStock = initialStock;
 	}
-	public int getInitialStockInt(){
-		return Integer.parseInt(initialStock);
+	public int getInitialStockInt() throws NumberFormatException{
+		if(initialStock.equals("")){
+			return Integer.parseInt(initialStock);			
+		}
+		return 0;
 	}
 }

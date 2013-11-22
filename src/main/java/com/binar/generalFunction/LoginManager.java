@@ -20,7 +20,7 @@ public class LoginManager{
 			session.setAttribute("login", username);
 			return true;
 		}
-		return true;
+		return false;
 	}
 	public boolean isLogin(){
 		if(session.getAttribute("login")==null){

@@ -21,4 +21,10 @@ public class GoodsManagementModel {
 	public Goods getSingleGoods(String idGoods){
 		return server.find(Goods.class,idGoods);
 	}	
+	public String deleteGoods(String idGoods){
+		return null;
+	}
+	public String forcedDeleteGoods(String goods){
+		return null;
+	}
 }
