@@ -315,8 +315,8 @@ public class GoodsManagementViewImpl extends VerticalLayout
 				{
 					center();
 					setClosable(false);
-					setWidth("600px");
-					setHeight("500px");
+					setWidth("500px");
+					setHeight("80%");
 				}
 			};
 

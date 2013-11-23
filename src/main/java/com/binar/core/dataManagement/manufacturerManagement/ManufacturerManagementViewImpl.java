@@ -1,5 +1,8 @@
 package com.binar.core.dataManagement.manufacturerManagement;
 
+import java.util.List;
+
+import com.binar.entity.Goods;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Label;
@@ -25,11 +28,18 @@ public class ManufacturerManagementViewImpl extends VerticalLayout implements Ma
 	}
 	ProducerManagementListener listener;
 	@Override
-	public void addListener(ProducerManagementListener listener) {
+	public void setListener(ProducerManagementListener listener) {
 		this.listener=listener;
 	}
-
-	
-	
+	@Override
+	public boolean updateTableData(List<Goods> data) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	@Override
+	public void showDetailWindow(Goods goods) {
+		// TODO Auto-generated method stub
+		
+	}	
 	
 }

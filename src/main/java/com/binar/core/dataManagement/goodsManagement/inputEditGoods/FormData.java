@@ -39,7 +39,7 @@ public class FormData {
 		
 		//validasi form kosong
 		if(id.equals("")){
-			errorData.add("Data id tidak boleh kosong");
+			errorData.add("Data kode barang tidak boleh kosong");
 			return errorData;			
 		}
 		

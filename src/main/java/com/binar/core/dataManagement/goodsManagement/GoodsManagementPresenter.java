@@ -13,8 +13,11 @@ import com.google.gwt.dom.client.ModElement;
 import com.google.gwt.user.client.Window.ClosingEvent;
 import com.google.gwt.user.client.WindowCloseListener;
 import com.google.gwt.user.client.Window.ClosingHandler;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.Window;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Window.CloseEvent;
 import com.vaadin.ui.Window.CloseListener;
 
@@ -74,7 +77,22 @@ public class GoodsManagementPresenter implements GoodsManagementListener {
 
 	@Override
 	public void deleteClick(String idGoods) {
-		Notification.show(idGoods);
+		final String finalIdGoods=idGoods;
+		Goods goods=model.getSingleGoods(idGoods);
+		function.showDialog("Hapus Data", "Yakin akan menghapus data barang "+goods.getName(),
+				new ClickListener() {
+					
+					@Override
+					public void buttonClick(ClickEvent event) {
+						String result=model.deleteGoods(finalIdGoods);
+						if(result!=null){
+							Notification.show(result, Type.ERROR_MESSAGE);
+						}else{
+							updateTable();
+							Notification.show("Data sukses dihapus");
+						}
+					}
+				}, view.getUI());
 	}
 
 	@Override
