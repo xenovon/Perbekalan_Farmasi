@@ -44,7 +44,7 @@ public class DataManagementView extends CustomComponent implements View, Selecte
 		}
 		
 		tabSheet.addTab(goodsManagement).setCaption("Manajemen Barang");
-		tabSheet.addTab(supplierManagement).setCaption("Manajemen Supplier");;
+		tabSheet.addTab(supplierManagement).setCaption("Manajemen Distributor");;
 		tabSheet.addTab(manufacturerManagement).setCaption("Manajemen Produsen");;
 		tabSheet.setSizeFull();
 		tabSheet.addSelectedTabChangeListener(this);

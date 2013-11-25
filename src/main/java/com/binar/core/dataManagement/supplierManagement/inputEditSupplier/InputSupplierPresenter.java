@@ -1,33 +1,34 @@
-package com.binar.core.dataManagement.goodsManagement.inputEditGoods;
+package com.binar.core.dataManagement.supplierManagement.inputEditSupplier;
 
 import java.util.Collection;
 import java.util.List;
 
-import com.binar.core.dataManagement.goodsManagement.inputEditGoods.InputGoodsView.ErrorLabel;
-import com.binar.core.dataManagement.goodsManagement.inputEditGoods.InputGoodsView.InputGoodsListener;
+import com.binar.core.dataManagement.supplierManagement.inputEditSupplier.InputSupplierView.ErrorLabel;
+import com.binar.core.dataManagement.supplierManagement.inputEditSupplier.InputSupplierView.InputSupplierListener;
 import com.binar.entity.Goods;
+import com.binar.entity.Supplier;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 
-public class InputGoodsPresenter implements InputGoodsListener{
+public class InputSupplierPresenter implements InputSupplierListener{
 
-	private InputGoodsModel model;
-	private InputGoodsViewImpl view;
+	private InputSupplierModel model;
+	private InputSupplierViewImpl view;
 	private GeneralFunction function;
+	private int idSupplier; //untuk mode edit, dibutuhkan informasi id suplier yang sedang dirubah
 	private boolean editMode;
 	
-	public InputGoodsPresenter(InputGoodsModel model,
-			InputGoodsViewImpl view, GeneralFunction function,  boolean editMode) {
+	public InputSupplierPresenter(InputSupplierModel model,
+			InputSupplierViewImpl view, GeneralFunction function,  boolean editMode) {
 		this.model=model;
 		this.view=view;
 		this.function=function;
 	
 		view.setListener(this);
 		view.init();
-		view.setComboBoxData(model.getComboData());
 		view.setEditMode(editMode);
 		this.editMode=editMode;
 	}
@@ -49,48 +50,26 @@ public class InputGoodsPresenter implements InputGoodsListener{
 	@Override
 	public void realTimeValidator(String inputFields) {
 		FormData data=view.getFormData();
-		if(inputFields.equals("inputHET")){
-			validateHET(data);
-		}else if(inputFields.equals("inputId")){
-			validateInputId(data);
-		}else if(inputFields.equals("inputMinimalStock")){
-			validateInputMinimalStock(data);
-		}else if(inputFields.equals("inputInitialStock")){
-			validateInputInitialStock(data);
+		if(inputFields.equals("inputEmail")){
+			validateEmail(data);
+		}else if(inputFields.equals("inputAbbr")){
+			validateAbbr(data);
 		}
 
 	}
-	private void validateHET(FormData data){
-		view.hideError(ErrorLabel.HET);
-		String valid=data.validateHET();
+	private void validateEmail(FormData data){
+		view.hideError(ErrorLabel.EMAIL);
+		String valid=data.validateEmail();
 		if(valid!=null){
-			view.showError(ErrorLabel.HET, valid);
+			view.showError(ErrorLabel.EMAIL, valid);
 		}
 	}
-	private void validateInputId(FormData data){
-		view.hideError(ErrorLabel.ID);
-		String valid=data.validateId();
+	private void validateAbbr(FormData data){
+		view.hideError(ErrorLabel.ABBR);
+		String valid=data.validateAbbr();
 		if(valid!=null){
-			view.showError(ErrorLabel.ID, valid);
+			view.showError(ErrorLabel.ABBR, valid);
 		}	}
-	private void validateInputMinimalStock(FormData data){
-		view.hideError(ErrorLabel.MINIMUM_STOCK);
-		String valid=data.validateMinimalStock();
-		if(valid!=null){
-			view.showError(ErrorLabel.MINIMUM_STOCK, valid);
-		}		
-	}
-	private void validateInputInitialStock(FormData data){
-		view.hideError(ErrorLabel.INITIAL_STOCK);
-		String valid=data.validateInitialStock();
-		if(valid!=null){
-			view.showError(ErrorLabel.INITIAL_STOCK, valid);
-		}
-	}
-	
-	public boolean isCanEditInitialStock(){
-		return model.isCanEditInitialStock(view.getFormData().getId());
-	}
 	
 	private void saveData(){
 		view.hideAllError();
@@ -100,7 +79,7 @@ public class InputGoodsPresenter implements InputGoodsListener{
 			String result=model.saveData(data);
 			if(result==null){
 				closeWindow();
-				Notification.show("Penyimpanan barang berhasil");
+				Notification.show("Penyimpanan data distributor berhasil");
 			}else{
 				view.showError(ErrorLabel.GENERAL, result);
 			}
@@ -108,7 +87,7 @@ public class InputGoodsPresenter implements InputGoodsListener{
 		}else{
 			String error="<b>Tidak bisa menyimpan data, perbaiki kesalahan berikut :</b><br> <br>";
 			for(String err:validate){
-				error=error+validate+"<br>";
+				error=error+err+"<br>";
 			}
 			view.showError(ErrorLabel.GENERAL, error);
 		}
@@ -119,10 +98,10 @@ public class InputGoodsPresenter implements InputGoodsListener{
 		FormData data=view.getFormData();
 		List<String> validate=data.validate();
 		if(validate==null){
-			String result=model.saveEditData(data);
+			String result=model.saveEditData(data, idSupplier);
 			if(result==null){
 				closeWindow();
-				Notification.show("Penyimpanan barang berhasil");
+				Notification.show("Penyimpanan data distributor berhasil");
 			}else{
 				view.showError(ErrorLabel.GENERAL, result);
 			}
@@ -130,7 +109,7 @@ public class InputGoodsPresenter implements InputGoodsListener{
 		}else{
 			String error="<b>Tidak bisa menyimpan data, perbaiki kesalahan berikut :</b><br> <br>";
 			for(String err:validate){
-				error=error+err+"<br>";
+				error=error+validate+"<br>";
 			}
 			view.showError(ErrorLabel.GENERAL, error);
 		}
@@ -155,9 +134,11 @@ public class InputGoodsPresenter implements InputGoodsListener{
 		
 	}
 	//set data untuk edit
-	public void setFormData(String idGoods){
-		Goods goods=model.getSingleGoods(idGoods);
-		view.setFormData(goods);
+	public void setFormData(int idSupplier){
+		this.idSupplier=idSupplier;
+		Supplier supplier=model.getSingleSupplier(idSupplier);
+		view.setFormData(supplier);
+		validateAbbr(view.getFormData());
 	}
 
 }

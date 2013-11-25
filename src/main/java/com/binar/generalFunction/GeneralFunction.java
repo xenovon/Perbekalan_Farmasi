@@ -2,6 +2,7 @@ package com.binar.generalFunction;
 
 import com.avaje.ebean.EbeanServer;
 import com.binar.database.GetEbeanServer;
+import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Button.ClickListener;
@@ -24,6 +25,7 @@ public class GeneralFunction {
 	private TableFilter filter;
 	private TextManipulator text;
 	private GetSetting setting;
+	private EmailValidator emailValidator;
 	
 	//Method konstruktor kosong, jaga-jaga aja kalo butuh konstruktor
 	public GeneralFunction() {
@@ -75,5 +77,13 @@ public class GeneralFunction {
 			setting=new GetSetting(getServer());
 		}
 		return setting;
+	}
+	public EmailValidator getEmailValidator(String message){
+		if(emailValidator==null){
+			emailValidator=new EmailValidator(message);
+		}else{
+			emailValidator.setErrorMessage(message);
+		}
+		return emailValidator;
 	}
 }
