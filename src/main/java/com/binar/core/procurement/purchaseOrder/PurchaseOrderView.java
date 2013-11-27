@@ -1,13 +1,12 @@
-package com.binar.core.dataManagement.manufacturerManagement;
+package com.binar.core.procurement.purchaseOrder;
 
 import java.util.List;
 
 import com.binar.entity.Goods;
 
-public interface ManufacturerManagementView {
-
+interface PurchaseOrderView {
 	
-	interface ProducerManagementListener{
+	interface PurchaseOrderListener{
 		public void buttonClick(String buttonName);
 		public void editClick(String idGoods);
 		public void deleteClick(String idGoods);
@@ -16,7 +15,8 @@ public interface ManufacturerManagementView {
 	}
 	public void init();
 	public void construct();
-	public void setListener(ProducerManagementListener listener);
+	public void setListener(PurchaseOrderListener listener);
 	public boolean updateTableData(List<Goods> data);
 	public void showDetailWindow(Goods goods);
+
 }

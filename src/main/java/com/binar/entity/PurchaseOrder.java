@@ -24,6 +24,8 @@ public class PurchaseOrder {
 	@Column(name="purchase_order_number")
 	private int purchaseOrderNumber;
 	
+	private String purchaseOrderName;
+	
 	private String rayon;
 	
 	@Column(name="purchase_order_type")
@@ -90,5 +92,11 @@ public class PurchaseOrder {
 
 	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
+	}
+	public String getPurchaseOrderName() {
+		return purchaseOrderName;
+	}
+	public void setPurchaseOrderName(String purchaseOrderName) {
+		this.purchaseOrderName = purchaseOrderName;
 	}
 }

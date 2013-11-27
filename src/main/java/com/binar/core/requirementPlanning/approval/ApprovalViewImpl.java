@@ -76,7 +76,8 @@ public class ApprovalViewImpl extends VerticalLayout implements
 		
 		table=new Table();
 		table.setSizeFull();
-        table.setWidth("100%");
+		table.setWidth("100%");
+		table.setHeight("439px");
         table.setSortEnabled(true);
         table.setRowHeaderMode(RowHeaderMode.INDEX);
        

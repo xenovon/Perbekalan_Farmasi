@@ -86,8 +86,9 @@ public class ReqPlanningListViewImpl extends VerticalLayout
 
 		table=new Table();
 		table.setSizeFull();
-        table.setWidth("100%");
-        table.setSortEnabled(true);
+		table.setWidth("100%");
+		table.setHeight("439px");
+		table.setSortEnabled(true);
         table.setRowHeaderMode(RowHeaderMode.INDEX);
        
         container=new IndexedContainer(){

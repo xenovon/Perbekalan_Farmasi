@@ -22,6 +22,8 @@ public class Invoice {
 	@Column(name="invoice_number")
 	private String invoiceNumber;
 	
+	private String invoiceName;
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date timestamp;
 	
@@ -72,6 +74,12 @@ public class Invoice {
 		this.invoiceItem = invoiceItem;
 	}
 	
+	public String getInvoiceName() {
+		return invoiceName;
+	}
+	public void setInvoiceName(String invoiceName) {
+		this.invoiceName = invoiceName;
+	}
 	
 	
 }

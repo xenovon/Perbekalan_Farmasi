@@ -1,6 +1,5 @@
 package com.binar.view;
 
-import com.binar.core.procurement.GoodsOrderReport;
 import com.binar.core.procurement.Invoice;
 import com.binar.core.procurement.PurchaseOrder;
 import com.vaadin.navigator.View;
@@ -13,20 +12,18 @@ public class ProcurementView extends CustomComponent implements View {
 
 	Label label=new Label("Procurement Management ");
 	TabSheet tabSheet=new TabSheet();
-	GoodsOrderReport goodsOrderReport=new GoodsOrderReport();
-	Invoice invoice=new Invoice();
-	PurchaseOrder purchaseOrder=new PurchaseOrder();
+	Invoice invoice;
+	PurchaseOrder purchaseOrder;
 	
 	
 	@Override
 	public void enter(ViewChangeEvent event) {
+		invoice=new Invoice();
+		purchaseOrder = new PurchaseOrder();
 		tabSheet.addTab(purchaseOrder).setCaption("Surat Pesanan");
-		tabSheet.addTab(invoice).setCaption("Invoice");
-		tabSheet.addTab(goodsOrderReport).setCaption("Laporan Pemesanan Barang");
+		tabSheet.addTab(invoice).setCaption("Faktur");
 		tabSheet.setSizeFull();
 		this.setCompositionRoot(tabSheet);
-		
-
 	}
 
 }

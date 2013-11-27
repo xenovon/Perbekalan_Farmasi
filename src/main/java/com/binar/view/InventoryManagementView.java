@@ -1,6 +1,7 @@
 package com.binar.view;
 
 import com.binar.core.inventoryManagement.Consumption;
+import com.binar.core.inventoryManagement.Deletion;
 import com.binar.core.inventoryManagement.Receipt;
 import com.binar.core.inventoryManagement.Stock;
 import com.vaadin.navigator.View;
@@ -15,12 +16,13 @@ public class InventoryManagementView extends CustomComponent implements View {
 	Consumption consumption =new Consumption();
 	Receipt receipt =new Receipt();
 	Stock stock=new Stock();
+	Deletion deletion=new Deletion();
 	
 	TabSheet tabSheet=new TabSheet();
 	@Override
 	public void enter(ViewChangeEvent event) {
 		this.setCompositionRoot(tabSheet);
-		tabSheet.addComponents(receipt,consumption,stock);
+		tabSheet.addComponents(receipt,consumption,stock, deletion);
 		tabSheet.setSizeFull();
 		
 	}
