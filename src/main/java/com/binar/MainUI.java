@@ -89,7 +89,7 @@ public class MainUI extends UI
     		constructLoginForm();
     	}
     	GenerateData dataGenerator=new GenerateData(generalFunction);
-//    	dataGenerator.insertData();
+    	dataGenerator.insertData();
     }
     private void constructLoginForm(){
     	root.removeAllComponents();
