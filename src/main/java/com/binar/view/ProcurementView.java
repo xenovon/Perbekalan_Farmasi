@@ -19,7 +19,7 @@ public class ProcurementView extends CustomComponent implements View {
 	@Override
 	public void enter(ViewChangeEvent event) {
 		invoice=new Invoice();
-		purchaseOrder = new PurchaseOrder();
+//		purchaseOrder = new PurchaseOrder();
 		tabSheet.addTab(purchaseOrder).setCaption("Surat Pesanan");
 		tabSheet.addTab(invoice).setCaption("Faktur");
 		tabSheet.setSizeFull();

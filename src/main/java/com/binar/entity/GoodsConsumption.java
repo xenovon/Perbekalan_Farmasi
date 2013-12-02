@@ -24,6 +24,9 @@ public class GoodsConsumption {
 	
 	private int quantity;
 	
+	@Column(name="consumption_date")
+	private Date consumptionDate;
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date timestamp;
 	
@@ -81,5 +84,10 @@ public class GoodsConsumption {
 		this.information = information;
 	}
 	
-	
+	public Date getConsumptionDate() {
+		return consumptionDate;
+	}
+	public void setConsumptionDate(Date consumptionDate) {
+		this.consumptionDate = consumptionDate;
+	}
 }

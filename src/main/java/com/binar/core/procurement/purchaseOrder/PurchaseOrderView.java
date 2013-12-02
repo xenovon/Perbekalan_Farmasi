@@ -3,6 +3,7 @@ package com.binar.core.procurement.purchaseOrder;
 import java.util.List;
 
 import com.binar.entity.Goods;
+import com.binar.entity.PurchaseOrder;
 
 interface PurchaseOrderView {
 	
@@ -16,7 +17,7 @@ interface PurchaseOrderView {
 	public void init();
 	public void construct();
 	public void setListener(PurchaseOrderListener listener);
-	public boolean updateTableData(List<Goods> data);
-	public void showDetailWindow(Goods goods);
+	public boolean updateTableData(List<PurchaseOrder> data);
+	public void showDetailWindow(PurchaseOrder purchaseOrder);
 
 }
