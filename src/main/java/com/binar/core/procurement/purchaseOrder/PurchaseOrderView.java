@@ -9,9 +9,10 @@ interface PurchaseOrderView {
 	
 	interface PurchaseOrderListener{
 		public void buttonClick(String buttonName);
-		public void editClick(String idGoods);
-		public void deleteClick(String idGoods);
-		public void showClick(String idGoods);
+		public void editClick(int idPurchaseOrder);
+		public void deleteClick(int idPurchaseOrder);
+		public void showClick(int idPurchaseOrder);
+		public void valueChange(String value);
 	
 	}
 	public void init();
@@ -19,5 +20,6 @@ interface PurchaseOrderView {
 	public void setListener(PurchaseOrderListener listener);
 	public boolean updateTableData(List<PurchaseOrder> data);
 	public void showDetailWindow(PurchaseOrder purchaseOrder);
+	public String getSelectedPeriod();
 
 }

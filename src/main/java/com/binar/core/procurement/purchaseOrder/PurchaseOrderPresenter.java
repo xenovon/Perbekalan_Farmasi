@@ -2,6 +2,7 @@ package com.binar.core.procurement.purchaseOrder;
 
 import com.binar.core.procurement.purchaseOrder.PurchaseOrderView.PurchaseOrderListener;
 import com.binar.generalFunction.GeneralFunction;
+import com.vaadin.ui.Notification;
 
 public class PurchaseOrderPresenter implements PurchaseOrderListener {
 
@@ -15,22 +16,30 @@ public class PurchaseOrderPresenter implements PurchaseOrderListener {
 	}
 	@Override
 	public void buttonClick(String buttonName) {
-		// TODO Auto-generated method stub
+		if(buttonName.equals("buttonNewPurchase")){
+			Notification.show("New Surat Pesanan");
+		}
+	}
+	@Override
+	public void editClick(int idPurchaseOrder) {
+		Notification.show("edit Surat Pesanan"+idPurchaseOrder);
 		
 	}
 	@Override
-	public void editClick(String idGoods) {
-		// TODO Auto-generated method stub
+	public void deleteClick(int idPurchaseOrder) {
+		Notification.show("delete Surat Pesanan" +idPurchaseOrder);
 		
 	}
 	@Override
-	public void deleteClick(String idGoods) {
-		// TODO Auto-generated method stub
+	public void showClick(int idPurchaseOrder) {
+		Notification.show("show Surat Pesanan" +idPurchaseOrder);
 		
 	}
 	@Override
-	public void showClick(String idGoods) {
-		// TODO Auto-generated method stub
-		
+	public void valueChange(String value) {
+		if(value.equals("")){
+			
+		}
 	}
+
 }

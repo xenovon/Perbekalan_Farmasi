@@ -3,6 +3,7 @@ package com.binar.entity;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -30,7 +31,7 @@ public class Invoice {
 	@Column(name="amoount_paid")
 	private double amountPaid;
 	
-	@OneToMany
+	@OneToMany(cascade=CascadeType.PERSIST)
 	@Column(name="invoice_item")
 	private List<InvoiceItem> invoiceItem;
 

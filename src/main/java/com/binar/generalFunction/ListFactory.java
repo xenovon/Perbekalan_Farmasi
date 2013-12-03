@@ -7,6 +7,23 @@ import java.util.List;
 
 public class ListFactory {
 
+	//membuat daftar tahun dari tahun 2012
+	
+	public List<String> createYearList(int yearSpan, int yearForward, boolean allYearMode){
+		List<String> list=new ArrayList();
+		if(allYearMode){
+			list.add("Semua Tahun");
+		}
+		int now = getCurrentYear();
+		int endYear=now+yearForward;
+		int currentYear=endYear;
+		while(endYear-currentYear!=yearSpan+yearForward){
+			list.add(Integer.toString(currentYear));
+			currentYear--;
+		}
+		return list;
+		
+	}
 	public List<String> createYearList(int yearSpan){
 		List<String> list=new ArrayList();
 		int now = getCurrentYear();
@@ -17,6 +34,12 @@ public class ListFactory {
 		}
 		return list;
 		
+	}
+	//overloading : membuat daftar bulan yang ada komponen "semua bulan" ....
+	public List<String> createMonthList(boolean allMonthMode){
+		List<String> list =createMonthList();
+		list.add(0,"Semua Bulan");
+		return allMonthMode?list:createMonthList();
 	}
 	public List<String> createMonthList(){
 		List<String> list=new ArrayList<String>(){
@@ -84,5 +107,11 @@ public class ListFactory {
 	private int getCurrentYear(){
 		Calendar calendar=Calendar.getInstance();
 		return calendar.get(Calendar.YEAR);
+	}
+	
+	public static void main(String[] args) {
+		ListFactory x  =new ListFactory();
+		System.out.println(x.createYearList(10,2, true));
+		System.out.println(x.createMonthList(false));
 	}
 }

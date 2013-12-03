@@ -21,7 +21,6 @@ public class ManufacturerManagement extends CssLayout{
 		presenter= new ManufacturerManagementPresenter(model, view, function);
 		
 		this.addComponent(view);
-		
 		this.setCaption("Manajemen Produsen");
 		this.setStyleName("tab-content");
 		this.setSizeFull();

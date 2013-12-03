@@ -1,8 +1,10 @@
 package com.binar.entity;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -31,10 +33,11 @@ public class PurchaseOrder {
 	@Column(name="purchase_order_type")
 	private EnumPurchaseOrderType purchaseOrderType;
 	
-	@OneToMany
+	@OneToMany(cascade=CascadeType.PERSIST)
 	private List<PurchaseOrderItem> purchaseOrderItem;
 	
 	private Date date;
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date timestamp;
 
@@ -82,6 +85,10 @@ public class PurchaseOrder {
 	public Date getDate() {
 		return date;
 	}
+	public  String getDate_format(){
+		SimpleDateFormat format=new SimpleDateFormat("dd MMM yyyy");
+		return format.format(date);
+	}	
 
 	public void setDate(Date date) {
 		this.date = date;
@@ -89,6 +96,10 @@ public class PurchaseOrder {
 	public Date getTimestamp() {
 		return timestamp;
 	}
+	public  String getTimeStamp_format(){
+		SimpleDateFormat format=new SimpleDateFormat("dd MMM yyyy hh:mm");
+		return format.format(timestamp);
+	}	
 
 	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;

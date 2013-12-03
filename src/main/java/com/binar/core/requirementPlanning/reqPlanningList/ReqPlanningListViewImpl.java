@@ -113,7 +113,7 @@ public class ReqPlanningListViewImpl extends VerticalLayout
 		labelYear=new Label("Pilih Tahun  :");
 		labelMonth=new Label("Pilih Bulan  :");
 		
-		List<String> yearList=generalFunction.getListFactory().createYearList(5);
+		List<String> yearList=generalFunction.getListFactory().createYearList(10);
 		List<String> monthList=generalFunction.getListFactory().createMonthList();
 		selectYear = new ComboBox("", yearList);
 		selectMonth =new ComboBox("", monthList);
