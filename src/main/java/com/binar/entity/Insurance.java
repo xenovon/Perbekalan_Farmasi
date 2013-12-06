@@ -17,7 +17,14 @@ public class Insurance {
 	
 	@Column(columnDefinition="TEXT")
 	private String description;
-
+	private boolean showInDropdown;
+	
+	public boolean isShowInDropdown() {
+		return showInDropdown;
+	}
+	public void setShowInDropdown(boolean showInDropdown) {
+		this.showInDropdown = showInDropdown;
+	}
 	public int getIdInsurance() {
 		return idInsurance;
 	}

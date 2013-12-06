@@ -38,6 +38,8 @@ public class PurchaseOrder {
 	
 	private Date date;
 	
+	private String information;
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date timestamp;
 

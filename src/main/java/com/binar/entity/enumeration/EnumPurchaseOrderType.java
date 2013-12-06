@@ -6,7 +6,7 @@ public enum EnumPurchaseOrderType {
 	@EnumValue("NARKOTIKA")
 	NARKOTIKA,
 	@EnumValue("PSIKOTROPIKA")	
-	PSIKOTOPRIKA,
+	PSIKOTROPIKA,
 	@EnumValue("GENERAL")
 	GENERAL
 }

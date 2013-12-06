@@ -87,6 +87,7 @@ public class GoodsManagementViewImpl extends VerticalLayout
 				addContainerProperty("Kode Barang", String.class, null);
 				addContainerProperty("Nama Barang", String.class,null);
 				addContainerProperty("Tipe Barang", String.class, null);
+				addContainerProperty("Asuransi", String.class, null);
 				addContainerProperty("Satuan", String.class, null);
 				addContainerProperty("Stok Saat Ini", Integer.class, null);
 				addContainerProperty("Stok Minimum", Integer.class, null);
@@ -233,6 +234,7 @@ public class GoodsManagementViewImpl extends VerticalLayout
 			item.getItemProperty("Kode Barang").setValue(datum.getIdGoods());
 			item.getItemProperty("Nama Barang").setValue(datum.getName());
 			item.getItemProperty("Tipe Barang").setValue(datum.getType().toString());
+			item.getItemProperty("Asuransi").setValue(datum.getInsurance().getName());
 			item.getItemProperty("Satuan").setValue(datum.getUnit());
 			item.getItemProperty("Stok Saat Ini").setValue(datum.getCurrentStock());
 			item.getItemProperty("Stok Minimum").setValue(datum.getMinimumStock());

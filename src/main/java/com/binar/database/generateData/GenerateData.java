@@ -143,12 +143,20 @@ public class GenerateData {
 	public void insertInsurance(){
 		Insurance insurance1=new Insurance();
 			insurance1.setName("Jamkesmas");
+			insurance1.setShowInDropdown(true);
 			insurance1.setDescription("Merupakan jaminan kesehatan dari pemerintah Indonesia ");
 		server.save(insurance1);
 		Insurance insurance2=new Insurance();
 			insurance2.setName("Umum");
+			insurance2.setShowInDropdown(false);
 			insurance2.setDescription("Obat Tidak Memiliki Jaminan Kesehatan");
 		server.save(insurance2);
+		Insurance insurance3=new Insurance();
+			insurance3.setName("Jamsostek");
+			insurance3.setShowInDropdown(true);
+			insurance3.setDescription("Merupakan Jaminan sosial tenaga kerja");
+		server.save(insurance3);
+
 	}
 	public void insertUserData(){
 		//data user dummy

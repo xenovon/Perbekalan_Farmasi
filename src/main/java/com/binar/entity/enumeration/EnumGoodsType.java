@@ -7,7 +7,7 @@ public enum EnumGoodsType {
 	@EnumValue("NARKOTIKA")
 	NARKOTIKA,
 	@EnumValue("PSIKOTROPIKA")	
-	PSIKOTOPRIKA,
+	PSIKOTROPIKA,
 	@EnumValue("OBAT")	
 	OBAT,
 	@EnumValue("ALAT_KESEHATAN")

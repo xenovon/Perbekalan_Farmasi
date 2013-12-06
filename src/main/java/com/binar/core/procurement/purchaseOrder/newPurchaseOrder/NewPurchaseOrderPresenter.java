@@ -11,4 +11,11 @@ public class NewPurchaseOrderPresenter implements NewPurchaseOrderListener {
 	public NewPurchaseOrderPresenter(NewPurchaseOrderModel model, 
 			NewPurchaseOrderViewImpl view, GeneralFunction function) {
 	}
+	@Override
+	public void buttonClick(String button) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
 }

@@ -23,10 +23,11 @@ public class InputFormPresenter implements PresenterInterface, InputFormView.Inp
 	InputFormViewImpl view;
 	InputFormModel model;
 	FormData data;
+	
 	//id reqPlanning untuk mode edit
 	int reqPlanning;
 	boolean editMode=false;
-
+	
 	
 	public InputFormPresenter(InputFormModel model, 
 			InputFormViewImpl view, GeneralFunction function, String periode) {

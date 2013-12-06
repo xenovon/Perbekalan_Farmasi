@@ -13,6 +13,7 @@ import org.joda.time.DateTime;
 
 import com.avaje.ebean.EbeanServer;
 import com.binar.entity.Goods;
+import com.binar.entity.Insurance;
 import com.binar.entity.Manufacturer;
 import com.binar.entity.ReqPlanning;
 import com.binar.entity.Supplier;
@@ -51,7 +52,12 @@ public class InputFormModel {
 		List<Goods> goodsList=server.find(Goods.class).findList();
 		Map<String, String> data=new TreeMap<String, String>();
 		for(Goods goods:goodsList){
-			data.put(goods.getIdGoods(), goods.getName());
+			//get akses
+			if(goods.getInsurance().isShowInDropdown()){
+				data.put(goods.getIdGoods(), goods.getName() + " - "+goods.getInsurance().getName());				
+			}else{
+				data.put(goods.getIdGoods(), goods.getName());				
+			}
 		}
 		return data;
 	}

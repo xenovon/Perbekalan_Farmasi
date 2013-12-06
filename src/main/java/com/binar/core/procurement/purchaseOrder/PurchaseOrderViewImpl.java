@@ -62,7 +62,7 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 		labelYear=new Label("Pilih Tahun  :");
 		labelMonth=new Label("Pilih Bulan  :");
 		
-		List<String> yearList=function.getListFactory().createYearList(6, 2, true);
+		List<String> yearList=function.getListFactory().createYearList(6, 2, false);
 		List<String> monthList=function.getListFactory().createMonthList(true);
 		selectYear = new ComboBox("", yearList);
 		selectMonth =new ComboBox("", monthList);
@@ -239,7 +239,7 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 			EnumGoodsType enumGoodsType=purchaseOrder.getPurchaseOrderItem().
 					get(0).getSupplierGoods().getGoods().getType();
 			if(enumGoodsType==EnumGoodsType.NARKOTIKA ||
-					enumGoodsType==EnumGoodsType.PSIKOTOPRIKA){
+					enumGoodsType==EnumGoodsType.PSIKOTROPIKA){
 				goodsType=enumGoodsType.toString().toLowerCase();
 			}else{
 				goodsType="Biasa";
