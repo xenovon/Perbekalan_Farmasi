@@ -11,9 +11,14 @@ import org.joda.time.DateTime;
  */
 public class DateManipulator {
 	
+	SimpleDateFormat format;
 	//mengubah date menjadi teks (November 2013)
 	public String dateToText(Date date){
-		SimpleDateFormat format=new SimpleDateFormat("MMMMM ");
+		if(format==null){
+			format=new SimpleDateFormat("MMMMM");			
+		}else{
+			format.applyPattern("MMMMM");
+		}
 		String month=format.format(date);
 		String monthIndo="";
 		if(month.equals("January")){
@@ -33,14 +38,30 @@ public class DateManipulator {
 		}else if(month.equals("December")){
 			monthIndo="Desember";
 		}
+		System.out.println(monthIndo);
 		if(monthIndo.equals("")){
 			monthIndo=month;
 		}
 		format.applyPattern("yyyy");
 		String year=format.format(date);
 		return monthIndo+" "+year;
-
 	}
+	//full format dengan tanggal, 12 Oktober 2010
+	public String dateToText(Date date, boolean fullFormat){
+		if(fullFormat){
+			if(format==null){
+				format=new SimpleDateFormat("dd");
+			}else{
+				format.applyPattern("dd");
+			}
+			
+			String returnValue=format.format(date);
+			return returnValue+" "+dateToText(date);
+		}else{
+			return dateToText(date);
+		}
+	}
+	
 	
 	//Untuk mengubah  format Januari-2013 menjadi Date
 	public DateTime parseDateMonth(String date){
@@ -83,7 +104,7 @@ public class DateManipulator {
 	public static void main(String[] args) {
 		DateManipulator x=new DateManipulator();
 		System.out.println(x.parseDateMonth("Desember-2014").toDate().toString());
-		System.out.println(x.dateToText(new Date()));
+		System.out.println(x.dateToText(new Date(), true));
 	}
 	
 

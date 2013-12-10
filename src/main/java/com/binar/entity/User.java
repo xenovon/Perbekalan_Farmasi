@@ -30,26 +30,33 @@ public class User {
 	@Column(name="employee_num")
 	private String employeeNum;
 	
+	private String title; //jabatan
+	
 	private String name;
-	
-	@Column(name="place_birth")
-	private String placeBirth;
-	
-	@Column(name="date_of_birth")
-	private Date dateOfBirth;
 	
 	@Column(name="phone_number")
 	private String phoneNumber;
 	
 	private String address;
 	
-	private String email;
+	private boolean active;
 
+	public boolean isActive() {
+		return active;
+	}
+	public void setActive(boolean active) {
+		this.active = active;
+	}
 	public int getIdUser() {
 		return idUser;
 	}
 
-	
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
 	public String getUsername() {
 		return username;
 	}
@@ -103,22 +110,6 @@ public class User {
 		this.name = name;
 	}
 
-	public String getPlaceBirth() {
-		return placeBirth;
-	}
-
-	public void setPlaceBirth(String placeBirth) {
-		this.placeBirth = placeBirth;
-	}
-
-	public Date getDateOfBirth() {
-		return dateOfBirth;
-	}
-
-	public void setDateOfBirth(Date dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
-	}
-
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
@@ -133,14 +124,6 @@ public class User {
 
 	public void setAddress(String address) {
 		this.address = address;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 	
 	

@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.binar.entity.enumeration.EnumSettingGroup;
+
 @Entity
 @Table(name="setting")
 public class Setting {
@@ -22,13 +24,21 @@ public class Setting {
 	@Column(name="setting_key")
 	private String settingKey;
 	
-	@Column(name="setting_value")
+	@Column(name="setting_group")
+	private EnumSettingGroup settingGroup;
+	
+	@Column(name="setting_value", columnDefinition="TEXT")
 	private String settingValue;
 
 	public int getIdSetting() {
 		return idSetting;
 	}
-
+    public void setSettingGroup(EnumSettingGroup settingGroup) {
+		this.settingGroup = settingGroup;
+	}
+    public EnumSettingGroup getSettingGroup() {
+		return settingGroup;
+	}
 	public void setIdSetting(int idSetting) {
 		this.idSetting = idSetting;
 	}

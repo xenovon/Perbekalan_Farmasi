@@ -24,9 +24,13 @@ public class PurchaseOrder {
 	private int idPurchaseOrder;
 	
 	@Column(name="purchase_order_number")
-	private int purchaseOrderNumber;
+	private String purchaseOrderNumber;
 	
+	@Column(name="purchase_order_name")
 	private String purchaseOrderName;
+
+	@Column(name="user_responsible")
+	private User userResponsible;
 	
 	private String rayon;
 	
@@ -37,13 +41,17 @@ public class PurchaseOrder {
 	private List<PurchaseOrderItem> purchaseOrderItem;
 	
 	private Date date;
-	
-	private String information;
-	
+		
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date timestamp;
 
-
+	
+	public void setUserResponsible(User userResponsible) {
+		this.userResponsible = userResponsible;
+	}
+	public User getUserResponsible() {
+		return userResponsible;
+	}
 	public int getIdPurchaseOrder() {
 		return idPurchaseOrder;
 	}
@@ -52,11 +60,11 @@ public class PurchaseOrder {
 		this.idPurchaseOrder = idPurchaseOrder;
 	}
 
-	public int getPurchaseOrderNumber() {
+	public String getPurchaseOrderNumber() {
 		return purchaseOrderNumber;
 	}
-
-	public void setPurchaseOrderNumber(int purchaseOrderNumber) {
+	
+	public void setPurchaseOrderNumber(String purchaseOrderNumber) {
 		this.purchaseOrderNumber = purchaseOrderNumber;
 	}
 

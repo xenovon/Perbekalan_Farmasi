@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeField;
+
 
 public class ListFactory {
 
@@ -23,6 +26,9 @@ public class ListFactory {
 		}
 		return list;
 		
+	}
+	private int getCurrentYear(){
+		return DateTime.now().getYear();
 	}
 	public List<String> createYearList(int yearSpan){
 		List<String> list=new ArrayList();
@@ -63,11 +69,16 @@ public class ListFactory {
 	}
 	/* untuk membuat daftar bulan dari bulan sekarang, hingga monthSpan kedepan */
 	public List<String> createMonthListFromNow(int monthSpan){
+		return createMonthListFromNow(monthSpan, 0);
+	}
+	public List<String> createMonthListFromNow(int monthSpan, int monthBefore){
 		List<String> list=new ArrayList();
-		Calendar calendar=Calendar.getInstance();
-		int now=calendar.get(Calendar.MONTH);
+		DateTime datetime=DateTime.now();
+		datetime=datetime.minusMonths(monthBefore);
+		int now=datetime.getMonthOfYear()-1;  //karena di joda time, bulan januari dianggep 1, bukan 0
 		
 		//inisiasi
+		monthSpan=monthSpan+monthBefore;
 		int currentMonth=now;
 		int yearPassed=0;
 		int monthCount=0;
@@ -89,7 +100,7 @@ public class ListFactory {
 				case 11:input="Desember";break;
 				default:input="Januari";break;
 			}
-			input=input+"-"+(getCurrentYear()+yearPassed);
+			input=input+"-"+(datetime.getYear()+yearPassed);
 			list.add(input);
 			if(currentMonth==11){
 				currentMonth=0;
@@ -102,16 +113,16 @@ public class ListFactory {
 		}	
 		
 		return list;
+		
 	}
 	
-	private int getCurrentYear(){
-		Calendar calendar=Calendar.getInstance();
-		return calendar.get(Calendar.YEAR);
-	}
 	
 	public static void main(String[] args) {
 		ListFactory x  =new ListFactory();
 		System.out.println(x.createYearList(10,2, true));
 		System.out.println(x.createMonthList(false));
+		System.out.println(x.createMonthListFromNow(10));
+		System.out.println(x.createMonthListFromNow(2,2));
+		
 	}
 }

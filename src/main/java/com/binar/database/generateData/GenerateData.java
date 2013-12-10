@@ -20,6 +20,7 @@ import com.binar.entity.SupplierGoods;
 import com.binar.entity.User;
 import com.binar.entity.enumeration.EnumGoodsCategory;
 import com.binar.entity.enumeration.EnumGoodsType;
+import com.binar.entity.enumeration.EnumSettingGroup;
 import com.binar.generalFunction.GeneralFunction;
 
 public class GenerateData {
@@ -169,85 +170,72 @@ public class GenerateData {
 		
 		User userFRM=new User();
 				userFRM.setAddress("Jalan Palem Indah Blok A2 Nomor 10");
-				userFRM.setDateOfBirth(new DateTime(1991, 9, 21, 18, 30).toDate());
-				userFRM.setEmail("youhavetochoose@yahoo.com");
 				userFRM.setEmployeeNum("120912");
 				userFRM.setName("Binar Candra Auni");
 				userFRM.setPasswordHash("password");
 				userFRM.setPhoneNumber("081327094933");
-				userFRM.setPlaceBirth("Wonosobo");
 				userFRM.setUsername("binar");
 				userFRM.setRole(roleFRM);
-				
+				userFRM.setActive(true);	
 		server.save(userFRM);  
 		
 		User userIFRS=new User();
 			userIFRS.setAddress("Jalan Sukabirus");
-			userIFRS.setDateOfBirth(new Date());
-			userIFRS.setEmail("nanasumadewi@gmail.com");
 			userIFRS.setEmployeeNum("120982");
 			userIFRS.setName("Nana Sumadewi Nautika");
 			userIFRS.setPasswordHash("password");
 			userIFRS.setPhoneNumber("32412321");
 			userIFRS.setUsername("nana");
-			userIFRS.setPlaceBirth("Bandung");
 			userIFRS.setRole(roleIFRS);
+			userIFRS.setActive(true);	
 		
 		server.save(userIFRS);  		
 		
 
 		User userPPK=new User();
 			userPPK.setAddress("Jalan Buah Batu");
-			userPPK.setDateOfBirth(new DateTime(1991, 12, 14, 11, 12).toDate());
-			userPPK.setEmail("michaelsumarjan@gmail.com");
 			userPPK.setEmployeeNum("120732");
 			userPPK.setName("Michail Sumarjan");
 			userPPK.setPasswordHash("password");
 			userPPK.setPhoneNumber("091092444");
-			userPPK.setPlaceBirth("Tangerang");
 			userPPK.setUsername("michael");
 			userPPK.setRole(rolePPK);
+			userPPK.setActive(true);	
 	
 		server.save(userPPK);
 		
 		User userPNJ=new User();
 			userPNJ.setAddress("Jalan Ragasemangsang");
-			userPNJ.setDateOfBirth(new DateTime(1981, 5, 3, 11, 12).toDate());
-			userPNJ.setEmail("suhari@gmail.com");
 			userPNJ.setEmployeeNum("120532");
 			userPNJ.setName("Suhardiani");
 			userPNJ.setPasswordHash("password");
 			userPNJ.setPhoneNumber("080420912");
-			userPNJ.setPlaceBirth("Purwokerto");
 			userPNJ.setUsername("suha");
 			userPNJ.setRole(rolePNJ);
+			userPNJ.setActive(true);	
 
 		server.save(userPNJ);		
 		User userTPN=new User();
 			userTPN.setAddress("Jalan Juanda ");
-			userTPN.setDateOfBirth(new DateTime(1971, 4, 8, 11, 12).toDate());
-			userTPN.setEmail("nansamia@gmail.com");
 			userTPN.setEmployeeNum("120962");
 			userTPN.setName("Nantia Ramansari");
 			userTPN.setPasswordHash("password");
 			userTPN.setPhoneNumber("9002093");
-			userTPN.setPlaceBirth("Madiun");
 			userTPN.setUsername("nantia");
 			userTPN.setRole(roleTPN);
+			userTPN.setActive(true);	
 
 		server.save(userTPN);			
 
 		User userADM=new User();
 			userADM.setAddress("Jalan Gatot Subroto ");
-			userADM.setDateOfBirth(new DateTime(1985, 4, 8, 11, 12).toDate());
-			userADM.setEmail("rs-ajibarang@gmail.com");
 			userADM.setEmployeeNum("092003");
 			userADM.setName("Administrator");
 			userADM.setPasswordHash("password-admin");
 			userADM.setPhoneNumber("etewt");
-			userADM.setPlaceBirth("Someplace");
 			userADM.setUsername("admin");
 			userADM.setRole(roleADM);
+			userADM.setActive(true);	
 
 		server.save(userADM);	
 	}
@@ -349,15 +337,53 @@ public class GenerateData {
 		Setting setting3=new Setting();
 			setting3.setSettingDescription("Besaran PPN untuk barang dalam persen");
 			setting3.setSettingKey("ppn");
-			setting3.setSettingName("Nilai PPN");
+			setting3.setSettingName("Nilai PPN (%)");
 			setting3.setSettingValue("10");
+			setting3.setSettingGroup(EnumSettingGroup.KEUANGAN);
 		server.save(setting3);
 		
 		Setting setting4=new Setting();
 			setting4.setSettingDescription("Nilai besaran margin dalam persen");
 			setting4.setSettingKey("margin");
-			setting4.setSettingName("Nilai Margin");
+			setting4.setSettingName("Nilai Margin (%)");
 			setting4.setSettingValue("20");
+			setting4.setSettingGroup(EnumSettingGroup.KEUANGAN);
 		server.save(setting4);
+		
+		Setting setting5=new Setting();
+			setting5.setSettingDescription("Nama Apotik dan Lembaga rumah sakit pemesan");
+			setting5.setSettingKey("apotek");
+			setting5.setSettingName("Nama Apotik Dan Lembaga");
+			setting5.setSettingValue("Instalasi Farmasi RSUD Ajibarang");
+			setting5.setSettingGroup(EnumSettingGroup.SURAT_PESANAN);
+		Setting setting6=new Setting();
+			setting6.setSettingDescription("Rayon rumah sakit");
+			setting6.setSettingKey("rayon");
+			setting6.setSettingName("Rayon");
+			setting6.setSettingValue("Jawa Tengah I");
+			setting6.setSettingGroup(EnumSettingGroup.SURAT_PESANAN);
+		Setting setting7=new Setting();
+			setting7.setSettingDescription("Prefiks Nomor Surat Pesanan Narkotika");
+			setting7.setSettingKey("narkotika");
+			setting7.setSettingName("Prefiks Narkotika");
+			setting7.setSettingValue("NAR");
+			setting7.setSettingGroup(EnumSettingGroup.SURAT_PESANAN);
+		
+		Setting setting8=new Setting();
+			setting8.setSettingDescription("Prefiks Nomor Surat Pesanan Psikotropika");
+			setting8.setSettingKey("psikotropika");
+			setting8.setSettingName("Prefiks Psikotropika");
+			setting8.setSettingValue("PSI");
+			setting8.setSettingGroup(EnumSettingGroup.SURAT_PESANAN);
+		
+		Setting setting9=new Setting();
+			setting9.setSettingDescription("Prefiks Nomor Surat Pesanan Barang Umum");
+			setting9.setSettingKey("general");
+			setting9.setSettingName("Prefiks Barang General");
+			setting9.setSettingValue("GEN");
+			setting9.setSettingGroup(EnumSettingGroup.SURAT_PESANAN);
+		
+		
+			
 	}
 }

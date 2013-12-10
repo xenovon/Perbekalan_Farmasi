@@ -15,17 +15,11 @@ public class EditPurchaseOrderModel {
 	public EditPurchaseOrderModel(GeneralFunction function) {
 		this.function=function;
 		server=function.getServer();
-		
 	}
-	//menghasilkan obyek purchase order dari req planning
-	public List<PurchaseOrder> generatePurchaseOrder(List<ReqPlanning> reqPlannings){
-		return null;
+	public PurchaseOrder getPurchaseOrder(int id){
+		return server.find(PurchaseOrder.class, id);
 	}
-	
-	public boolean saveSinglePurchaseOrder(PurchaseOrder order){
-		return true;
-	}
-	public boolean updateSinglePurchaseOrder(PurchaseOrder order){
+	public boolean updatePurchaseOrder(PurchaseOrder order){
 		return true;
 	}
 
