@@ -30,19 +30,20 @@ public interface NewPurchaseOrderView {
 	public void setListener(NewPurchaseOrderListener listener);
 	public void setFormView(FormViewEnum formView);
 	public Date getPurchaseDate();
-	
+	public String getSelectedPeriod();
 	
 	public void generateReqPlanningTable(List<ReqPlanning> reqPlanning);
-	public List<Integer> getReqPlanningSelected();
-	
+	public void checkReqPlanning(boolean isChecked);
 	public void setComboUserData(Map<Integer, String> data);
-	public void generatePurchaseOrderListView(List<PurchaseOrder> purchaseOrder);
+	public boolean generatePurchaseOrderListView(List<PurchaseOrder> purchaseOrder);
 	public List<PurchaseOrder> getPurchaseOrderListData();
+	public FormData getFormData();
 	
 	public FormViewEnum getFormState();
 	
-	class PurchaseOrderData{
-		private Date date;
+	class FormData{
+		private List<Integer> reqPlanningId;
+		private Date purchaseDate;
 		private int idUser;
 		 
 		public int getIdUser() {
@@ -51,11 +52,17 @@ public interface NewPurchaseOrderView {
 		public void setIdUser(int idUser) {
 			this.idUser = idUser;
 		}
-		public Date getDate() {
-			return date;
+		public Date getPurchaseDate() {
+			return purchaseDate;
 		}
-		public void setDate(Date date) {
-			this.date = date;
+		public void setPurchaseDate(Date date) {
+			this.purchaseDate = date;
+		}
+		public void setReqPlanningId(List<Integer> reqPlanningId) {
+			this.reqPlanningId = reqPlanningId;
+		}
+		public List<Integer> getReqPlanningId() {
+			return reqPlanningId;
 		}
 	}
 

@@ -22,11 +22,13 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.Window;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.Table.RowHeaderMode;
 import com.vaadin.ui.VerticalLayout;
@@ -294,5 +296,30 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 			listener.valueChange("selectYear");
 		}
 	}
+	
+	Window window;
+
+	public void displayForm(Component content, String title){
+		//menghapus semua window terlebih dahulu
+		for(Window window:this.getUI().getWindows()){
+			window.close();
+		}
+		if(window==null){
+			window=new Window(title){
+				{
+					center();
+					setClosable(false);
+					setWidth("500px");
+					setHeight("80%");
+				}
+			};
+
+		}
+		this.getUI().removeWindow(window);
+		window.setCaption(title);
+		window.setContent(content);
+		this.getUI().addWindow(window);
+	}
+
 
 }

@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import org.joda.time.DateTime;
 
 import com.avaje.ebean.EbeanServer;
+import com.binar.core.procurement.purchaseOrder.newPurchaseOrder.NewPurchaseOrderView.FormData;
 import com.binar.entity.PurchaseOrder;
 import com.binar.entity.PurchaseOrderItem;
 import com.binar.entity.ReqPlanning;
@@ -92,71 +93,84 @@ public class NewPurchaseOrderModel {
 	}
 	//menghasilkan obyek purchase order dari req planning
 	//Disini dilakukan pemisahan antar tiap supplier dan jenis obat
-	public List<PurchaseOrder> generatePurchaseOrder(List<ReqPlanning> reqPlannings, Date purchaseDate, int IdUser){
-		List<PurchaseOrder> list=new ArrayList<PurchaseOrder>();
-		Map<Integer, PurchaseOrder> poGeneral=new HashMap<Integer, PurchaseOrder>();
-		for(ReqPlanning reqPlanning:reqPlannings){
-			EnumGoodsType goodsType=reqPlanning.getSupplierGoods().getGoods().getType();
+	public List<PurchaseOrder> generatePurchaseOrder(FormData data){
+		try {
+			List<Integer> reqPlanningIds=data.getReqPlanningId();
+			Date purchaseDate=data.getPurchaseDate(); 
+			int IdUser=data.getIdUser();
 			
-			if(goodsType==EnumGoodsType.NARKOTIKA){
-				PurchaseOrder order=new PurchaseOrder();
-				order.setDate(purchaseDate);
-				order.setPurchaseOrderType(EnumPurchaseOrderType.NARKOTIKA);					
-				order.setPurchaseOrderNumber(generatePurchaseOrderNumber(order));
-				order.setUserResponsible(server.find(User.class, IdUser));
-				order.setRayon(setting.getSetting("rayon").getSettingValue());
-				//tanggal
-				//tipe
-				//order
-				//jumlah barang
+			List<ReqPlanning> reqPlannings=new ArrayList<ReqPlanning>();
+			for(Integer id:reqPlanningIds){
+				reqPlannings.add(server.find(ReqPlanning.class, id));
+			}
+			List<PurchaseOrder> list=new ArrayList<PurchaseOrder>();
+			Map<Integer, PurchaseOrder> poGeneral=new HashMap<Integer, PurchaseOrder>();
+			for(ReqPlanning reqPlanning:reqPlannings){
+				EnumGoodsType goodsType=reqPlanning.getSupplierGoods().getGoods().getType();
 				
-				PurchaseOrderItem item=new PurchaseOrderItem();
-				item.setPurchaseOrder(order);
-				item.setSupplierGoods(reqPlanning.getSupplierGoods());
-				item.setQuantity(reqPlanning.getAcceptedQuantity());
-				item.setInformation(reqPlanning.getInformation());
-				
-				
-				List<PurchaseOrderItem> itemList=new ArrayList<PurchaseOrderItem>();
-				itemList.add(item);
-				
-				order.setPurchaseOrderItem(itemList);
-				
-				list.add(order);
-			}else{
-				//jika bukan psikotoprika dan narkotika, maka dikelompokan berdasarkan supplier
-				int mapKey=reqPlanning.getSupplierGoods().getSupplier().getIdSupplier();
-				PurchaseOrderItem item=new PurchaseOrderItem();
-				item.setSupplierGoods(reqPlanning.getSupplierGoods());
-				item.setQuantity(reqPlanning.getAcceptedQuantity());
-				item.setInformation(reqPlanning.getInformation());
-				
-				//jika purchase order untuk supplier ini belum ditambahkan 
-				if(!poGeneral.containsKey(mapKey)){
+				if(goodsType==EnumGoodsType.NARKOTIKA){
 					PurchaseOrder order=new PurchaseOrder();
-					if(goodsType==EnumGoodsType.PSIKOTROPIKA){
-						order.setPurchaseOrderType(EnumPurchaseOrderType.PSIKOTROPIKA);					
-					}else{
-						order.setPurchaseOrderType(EnumPurchaseOrderType.GENERAL);
-					}
-
+					order.setDate(purchaseDate);
+					order.setPurchaseOrderType(EnumPurchaseOrderType.NARKOTIKA);					
+					order.setPurchaseOrderNumber(generatePurchaseOrderNumber(order));
+					order.setUserResponsible(server.find(User.class, IdUser));
+					order.setRayon(setting.getSetting("rayon").getSettingValue());
+					//tanggal
+					//tipe
+					//order
+					//jumlah barang
+					
+					PurchaseOrderItem item=new PurchaseOrderItem();
 					item.setPurchaseOrder(order);
+					item.setSupplierGoods(reqPlanning.getSupplierGoods());
+					item.setQuantity(reqPlanning.getAcceptedQuantity());
+					item.setInformation(reqPlanning.getInformation());
+					
 					
 					List<PurchaseOrderItem> itemList=new ArrayList<PurchaseOrderItem>();
 					itemList.add(item);
 					
 					order.setPurchaseOrderItem(itemList);
 					
-					poGeneral.put(mapKey,order);
+					list.add(order);
 				}else{
-					//jika untuk supplier di req planning udah ada, maka tinggal nambahin item
-					PurchaseOrder order=poGeneral.get(mapKey);
-					item.setPurchaseOrder(order);
-					order.getPurchaseOrderItem().add(item);
+					//jika bukan psikotoprika dan narkotika, maka dikelompokan berdasarkan supplier
+					int mapKey=reqPlanning.getSupplierGoods().getSupplier().getIdSupplier();
+					PurchaseOrderItem item=new PurchaseOrderItem();
+					item.setSupplierGoods(reqPlanning.getSupplierGoods());
+					item.setQuantity(reqPlanning.getAcceptedQuantity());
+					item.setInformation(reqPlanning.getInformation());
+					
+					//jika purchase order untuk supplier ini belum ditambahkan 
+					if(!poGeneral.containsKey(mapKey)){
+						PurchaseOrder order=new PurchaseOrder();
+						if(goodsType==EnumGoodsType.PSIKOTROPIKA){
+							order.setPurchaseOrderType(EnumPurchaseOrderType.PSIKOTROPIKA);					
+						}else{
+							order.setPurchaseOrderType(EnumPurchaseOrderType.GENERAL);
+						}
+
+						item.setPurchaseOrder(order);
+						
+						List<PurchaseOrderItem> itemList=new ArrayList<PurchaseOrderItem>();
+						itemList.add(item);
+						
+						order.setPurchaseOrderItem(itemList);
+						
+						poGeneral.put(mapKey,order);
+					}else{
+						//jika untuk supplier di req planning udah ada, maka tinggal nambahin item
+						PurchaseOrder order=poGeneral.get(mapKey);
+						item.setPurchaseOrder(order);
+						order.getPurchaseOrderItem().add(item);
+					}
 				}
 			}
+			return list;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
 		}
-		return list;
 	}
 	public String savePurchaseOrder(List<PurchaseOrder> orders){
 		server.beginTransaction();
@@ -182,9 +196,6 @@ public class NewPurchaseOrderModel {
 		order.setPurchaseOrderName(generateName(order));
 		
 		server.save(order);
-	}
-	public boolean updateSinglePurchaseOrder(PurchaseOrder order){
-		return true;
 	}
 	private String generateName(PurchaseOrder purchaseOrder){
 		String goodsType=getPurchaseType(purchaseOrder);

@@ -61,6 +61,8 @@ public class NewPurchaseOrderViewImpl extends Window implements NewPurchaseOrder
 	private Button buttonNext;
 	private Button buttonBack;
 	private Button buttonCreate;
+	private Button buttonCancel;
+	private Button buttonCancelPo;
 	
 	private FormViewEnum position;
 	
@@ -102,6 +104,8 @@ public class NewPurchaseOrderViewImpl extends Window implements NewPurchaseOrder
 		buttonNext = new Button("Selanjutnya");
 		buttonBack =new Button("Kembali");
 		buttonCreate =new Button("Buat Surat Pesanan");
+		buttonCancel =new Button("Batal");
+		buttonCancelPo=new Button("Batal");
 		
 		
 		construct();
@@ -142,6 +146,7 @@ public class NewPurchaseOrderViewImpl extends Window implements NewPurchaseOrder
 					{
 						setStyleName("float-right");
 						addComponent(buttonNext);
+						addComponent(buttonCancel);
 						
 					}
 				});
@@ -174,6 +179,7 @@ public class NewPurchaseOrderViewImpl extends Window implements NewPurchaseOrder
 						});
 						addComponent(buttonBack);
 						addComponent(buttonCreate);
+						addComponent(buttonCancelPo);
 					}
 				});
 				setVisible(false);
@@ -218,8 +224,7 @@ public class NewPurchaseOrderViewImpl extends Window implements NewPurchaseOrder
 	}
 
 	//mengembalikan ID req planning yang diseleksi
-	@Override
-	public List<Integer> getReqPlanningSelected() {
+	private List<Integer> getReqPlanningSelected() {
 		List<Integer> returnValue=new ArrayList<Integer>();
 		List<Integer> itemIds=(List<Integer>) tableContainer.getItemIds();
 		for(Integer itemId:itemIds){
@@ -231,12 +236,22 @@ public class NewPurchaseOrderViewImpl extends Window implements NewPurchaseOrder
 		}
 		return returnValue;
 	}
-	
+	@Override
+	public FormData getFormData() {
+		FormData formData=new FormData();
+		formData.setIdUser((Integer)comboUserResponsible.getValue());
+		formData.setPurchaseDate(inputDate.getValue());
+		formData.setReqPlanningId(getReqPlanningSelected());
+		return null;
+	}
 	private List<FormLayout> formLayout;
 	private List<PurchaseOrder> purchaseOrders;
 	@Override
-	public void generatePurchaseOrderListView(List<PurchaseOrder> purchaseOrders) {
+	public boolean generatePurchaseOrderListView(List<PurchaseOrder> purchaseOrders) {
 		this.purchaseOrders=purchaseOrders;
+		if(purchaseOrders==null){
+			return false;
+		}
 		clearPurchaseOrderList();
 		if(purchaseOrders.size()!=0){
 			labelPurchaseDate.setValue(function.getDate().dateToText(purchaseOrders.get(0).getDate(), true));
@@ -267,6 +282,7 @@ public class NewPurchaseOrderViewImpl extends Window implements NewPurchaseOrder
 		}else{
 			labelPurchaseDate.setValue("Tidak ada surat pesanan yang dibuat");
 		}
+		return true;
 	}
 	
 	private void clearPurchaseOrderList(){
@@ -289,10 +305,21 @@ public class NewPurchaseOrderViewImpl extends Window implements NewPurchaseOrder
 			listener.buttonClick("buttonBack");
 		}else if(event.getButton()==buttonCreate){
 			listener.buttonClick("buttonCreate");
+		}else if(event.getButton()==buttonCancel || event.getButton()==buttonCancelPo){
+			listener.buttonClick("buttonCancel");
 		}else if(event.getButton()==buttonCheckAll){
 			listener.buttonClick("buttonCheckAll");
 		}else if(event.getButton()==buttonUncheckAll){
 			listener.buttonClick("buttonUncheckAll");
+		}
+	}
+	@Override
+	public void checkReqPlanning(boolean isChecked) {
+		List<Integer> listReqPlanning=(List<Integer>) tableContainer.getItemIds();
+		if(listReqPlanning.size()!=0){
+			for(Integer id:listReqPlanning){
+				tableContainer.getItem(id).getItemProperty("Pilih").setValue(new CheckBox("", isChecked));
+			}			
 		}
 	}
 	private NewPurchaseOrderListener listener;
@@ -303,7 +330,6 @@ public class NewPurchaseOrderViewImpl extends Window implements NewPurchaseOrder
 
 	@Override
 	public FormViewEnum getFormState() {
-		// TODO Auto-generated method stub
 		return position;
 	}
 
@@ -319,6 +345,11 @@ public class NewPurchaseOrderViewImpl extends Window implements NewPurchaseOrder
 		if(event.getProperty()==comboPeriod){
 			listener.periodChange();
 		}
+	}
+
+	@Override
+	public String getSelectedPeriod() {
+		return (String)comboPeriod.getValue();
 	}
 
 }
