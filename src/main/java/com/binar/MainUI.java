@@ -79,6 +79,8 @@ public class MainUI extends UI
     	generalFunction =new GeneralFunction();
     	
     	loginManager=generalFunction.getLogin();
+    	GenerateData dataGenerator=new GenerateData(generalFunction);
+//    	dataGenerator.insertData();
     	
     	root.addStyleName("root");
     	root.setSizeFull();
@@ -88,8 +90,6 @@ public class MainUI extends UI
     	}else{
     		constructLoginForm();
     	}
-    	GenerateData dataGenerator=new GenerateData(generalFunction);
-//    	dataGenerator.insertData();
     }
     private void constructLoginForm(){
     	root.removeAllComponents();

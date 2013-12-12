@@ -99,7 +99,6 @@ public class NewPurchaseOrderPresenter implements NewPurchaseOrderListener {
 		for(Window w:list){
 			view.getUI().removeWindow(w);
 		}
-		
 	}
 
 	@Override

@@ -46,11 +46,11 @@ public class PurchaseOrderModel {
 			if(month==null){
 				startDate=year.withDayOfYear(year.dayOfYear().getMinimumValue()).toDate();
 				endDate=year.withDayOfYear(year.dayOfYear().getMaximumValue()).toDate();
-				
 			}else{
 				startDate=month.withDayOfMonth(month.dayOfMonth().getMinimumValue()).withYear(year.getYear()).toDate();	
 				endDate=month.withDayOfMonth(month.dayOfMonth().getMaximumValue()).withYear(year.getYear()).toDate();
 			}
+			System.out.println("Month null" + endDate.toString()+" "+startDate.toString());
 			
 			return server.find(PurchaseOrder.class).where().between("date", startDate, endDate).order().asc("date").findList();
 		} catch (Exception e) {

@@ -8,6 +8,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -29,6 +30,7 @@ public class PurchaseOrder {
 	@Column(name="purchase_order_name")
 	private String purchaseOrderName;
 
+	@ManyToOne
 	@Column(name="user_responsible")
 	private User userResponsible;
 	
@@ -37,7 +39,7 @@ public class PurchaseOrder {
 	@Column(name="purchase_order_type")
 	private EnumPurchaseOrderType purchaseOrderType;
 	
-	@OneToMany(cascade=CascadeType.PERSIST)
+	@OneToMany(cascade=CascadeType.ALL)
 	private List<PurchaseOrderItem> purchaseOrderItem;
 	
 	private Date date;
@@ -120,4 +122,5 @@ public class PurchaseOrder {
 	public void setPurchaseOrderName(String purchaseOrderName) {
 		this.purchaseOrderName = purchaseOrderName;
 	}
+	
 }

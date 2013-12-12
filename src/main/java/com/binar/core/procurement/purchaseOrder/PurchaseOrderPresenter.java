@@ -10,6 +10,7 @@ import com.binar.core.procurement.purchaseOrder.newPurchaseOrder.NewPurchaseOrde
 import com.binar.core.procurement.purchaseOrder.newPurchaseOrder.NewPurchaseOrderPresenter;
 import com.binar.core.procurement.purchaseOrder.newPurchaseOrder.NewPurchaseOrderViewImpl;
 import com.binar.entity.PurchaseOrder;
+import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -24,15 +25,20 @@ public class PurchaseOrderPresenter implements PurchaseOrderListener {
 	PurchaseOrderModel model;
 	PurchaseOrderViewImpl view;
 	GeneralFunction function;
+	DateManipulator date;
+	
 	NewPurchaseOrderModel modelNew;
 	NewPurchaseOrderPresenter presenterNew;
 	NewPurchaseOrderViewImpl viewNew;
 	public PurchaseOrderPresenter(PurchaseOrderViewImpl view, PurchaseOrderModel model, GeneralFunction function) {
 		this.function=function;
+		this.date=function.getDate();
 		this.model=model;
 		this.view=view;
+		
 		this.view.setListener(this);
 		this.view.init();
+		
 		
 	}
 	@Override
@@ -44,6 +50,7 @@ public class PurchaseOrderPresenter implements PurchaseOrderListener {
 				presenterNew=new NewPurchaseOrderPresenter(modelNew, viewNew, function);
 			}
 			view.getUI().addWindow(viewNew);
+			addWIndowCloseListener();
 		}
 	}
 	@Override
@@ -94,9 +101,19 @@ public class PurchaseOrderPresenter implements PurchaseOrderListener {
 	}
 	@Override
 	public void updateTable() {
+		
 		String period=view.getSelectedPeriod();
-		DateTime year=DateTime.now().withYear(Integer.parseInt(period.split("-")[1]));
-		DateTime month=DateTime.now().withMonthOfYear(Integer.parseInt(period.split("-")[0]));
+		System.out.println(" Periode "+period);
+		DateTime date=this.date.parseDateMonth(period);
+		DateTime year=null;
+		DateTime month=null;
+		//untuk menampung opsi pilihan "Semua Bulan"
+		if(date==null){
+			year=DateTime.now().withYear(Integer.parseInt(period.split("-")[1]));	
+		}else{
+			year=date;
+			month=date;
+		}
 		List<PurchaseOrder> data=model.getPurchaseOrderList(month, year);
 		if(data!=null){
 			view.updateTableData(data);			

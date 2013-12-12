@@ -126,7 +126,7 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 		
 		table=new Table();
 		table.setSizeFull();
-		table.setWidth("100%");
+		table.setWidth("80%");
 		table.setHeight("439px");
 		table.setSortEnabled(true);
 		table.setImmediate(true);
@@ -134,13 +134,13 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 		
 		tableContainer=new IndexedContainer(){
 			{
-				addContainerProperty("Nomor Surat Pesanan", String.class,null);
-				addContainerProperty("Nama", String.class,null);
+				addContainerProperty("Nomor Surat", String.class,null);
+				addContainerProperty("Nama", Label.class,null);
 				addContainerProperty("Distributor",String.class,null);
-				addContainerProperty("Jenis Surat Pesanan", String.class,null);
-				addContainerProperty("Tanggal Surat",String.class,null);
-				addContainerProperty("Jumlah Barang",String.class,null);
-				addContainerProperty("Tanggal Dibuat", Integer.class, null);
+				addContainerProperty("Jenis Surat", String.class,null);
+				addContainerProperty("Tanggal",String.class,null);
+				addContainerProperty("Jumlah Barang",Integer.class,null);
+				addContainerProperty("Tanggal Dibuat", String.class, null);
 				addContainerProperty("Operasi", GridLayout.class,null);
 			}
 		};
@@ -186,11 +186,11 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 		for(PurchaseOrder datum:data){
 			final PurchaseOrder datumFinal=datum;
 			Item item=tableContainer.addItem(datum.getIdPurchaseOrder());
-			item.getItemProperty("Nomor Surat Pesanan").setValue(datum.getPurchaseOrderNumber());
-			item.getItemProperty("Nama").setValue(datum.getPurchaseOrderName());
+			item.getItemProperty("Nomor Surat").setValue(datum.getPurchaseOrderNumber());
+			item.getItemProperty("Nama").setValue(new Label(datum.getPurchaseOrderName()){{setWidth("200px");}});
 			item.getItemProperty("Distributor").setValue(datum.getPurchaseOrderItem().get(0).getSupplierGoods().getSupplier().getSupplierName());
-			item.getItemProperty("Jenis Surat Pesanan").setValue(datum.getPurchaseOrderType().toString());
-			item.getItemProperty("Tanggal Surat").setValue(date.dateToText(datum.getDate(), true));
+			item.getItemProperty("Jenis Surat").setValue(datum.getPurchaseOrderType().toString());
+			item.getItemProperty("Tanggal").setValue(date.dateToText(datum.getDate(), true));
 			item.getItemProperty("Jumlah Barang").setValue(datum.getPurchaseOrderItem().size());
 			item.getItemProperty("Tanggal Dibuat").setValue(datum.getTimeStamp_format());
 			item.getItemProperty("Operasi").setValue(new GridLayout(3,1){
@@ -281,16 +281,16 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 				buttonPrint.setIcon(new ThemeResource("icons/image/icon-print.png"));
 				buttonPrint.addStyleName("button-table");
 		 	 buttonSave=new Button("Simpan PDF");
-				buttonPrint.setDescription("Simpan surat pesanan sebagai PDF");
-				buttonPrint.setIcon(new ThemeResource("icons/image/icon-save.png"));
-				buttonPrint.addStyleName("button-table");
+				buttonSave.setDescription("Simpan surat pesanan sebagai PDF");
+				buttonSave.setIcon(new ThemeResource("icons/image/icon-save.png"));
+				buttonSave.addStyleName("button-table");
 
 			layoutContent=new GridLayout(2,7){
 				{
 					setSpacing(true);
 					setMargin(true);
-					addComponent(new Label("Nama Surat "), 0,0 );
-					addComponent(new Label("Nomor Surat"), 0,1 );
+					addComponent(new Label("Nomor Surat "), 0,0 );
+					addComponent(new Label("Nama Surat"), 0,1 );
 					addComponent(new Label("Tanggal"), 0,2 );
 					addComponent(new Label("Tipe Surat"), 0,3 );
 					addComponent(new Label("Penanggung Jawab"), 0,4 );
@@ -311,7 +311,8 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 			tableDetail =new Table("Daftar Item");
 				tableDetail.setSizeFull();
 				tableDetail.setWidth("100%");
-				tableDetail.setHeight("439px");
+				tableDetail.setHeight("339px");
+				
 				tableDetail.setSortEnabled(true);
 				tableDetail.setImmediate(true);
 				tableDetail.setRowHeaderMode(RowHeaderMode.INDEX);
@@ -319,7 +320,7 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 			containerDetail=new IndexedContainer(){
 				{
 					addContainerProperty("Nama Barang", String.class, null);
-					addContainerProperty("Jumlah", String.class, null);
+					addContainerProperty("Jumlah", Integer.class, null);
 					addContainerProperty("Satuan", String.class, null);
 					addContainerProperty("Keterangan", String.class, null);
 				}
@@ -336,7 +337,7 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 			layoutDetail.addComponent(layoutContent);
 			layoutDetail.addComponent(tableDetail);
 			
-			detailWindow =new Window(){
+			detailWindow =new Window("Surat Pesanan"){
 				{
 					center();
 					setClosable(true);
@@ -344,10 +345,11 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 					setHeight("80%");
 				}
 			};
-			detailWindow.setContent(layoutDetail);
-			setDetailData(purchaseOrder);
-			this.getUI().addWindow(detailWindow);
 		}
+		detailWindow.setContent(layoutDetail);
+		setDetailData(purchaseOrder);
+		this.getUI().addWindow(detailWindow);
+
 	}
 	
 	public void setDetailData(PurchaseOrder purchaseOrder){
