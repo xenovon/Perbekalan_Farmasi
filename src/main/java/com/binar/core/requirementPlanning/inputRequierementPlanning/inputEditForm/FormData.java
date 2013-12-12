@@ -106,6 +106,8 @@ public class FormData {
 					e.printStackTrace();
 					return "Harga harus berupa angka";
 				}
+			}else{
+				return "harga kosong";
 			}
 		}
 		

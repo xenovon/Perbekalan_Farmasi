@@ -120,9 +120,7 @@ public class MainView extends HorizontalLayout {
 					if(generalFunction.getLogin().isLogin()){
 						clearMenuSelection();
 						event.getButton().addStyleName("selected");
-						if(!nav.getState().equals("/"+key)){
-							nav.navigateTo("/"+key);
-						}						
+						nav.navigateTo("/"+key);				
 					}else{
 						ui.constructLogout();
 					}

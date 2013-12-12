@@ -1,5 +1,6 @@
 package com.binar.core.procurement.purchaseOrder.newPurchaseOrder;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -44,8 +45,23 @@ public interface NewPurchaseOrderView {
 	class FormData{
 		private List<Integer> reqPlanningId;
 		private Date purchaseDate;
-		private int idUser;
+		private int idUser=0;
 		 
+		public List<String> validateFormData(){
+			List<String> error=new ArrayList<String>();
+			if(reqPlanningId==null){
+				error.add("Rencana Kebutuhan Kosong");
+			}else if(reqPlanningId.size()==0){
+				error.add("Tidak ada rencana kebutuhan yang di seleksi");
+			}
+			if(purchaseDate==null){
+				error.add("Tanggal SuratKosong");
+			}
+			if(idUser==0){
+				error.add("Penanggung jawab tidak boleh kosong");
+			}
+			return error.size()==0?null:error;
+		}
 		public int getIdUser() {
 			return idUser;
 		}

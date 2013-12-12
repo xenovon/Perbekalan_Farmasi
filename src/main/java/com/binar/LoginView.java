@@ -107,6 +107,9 @@ public class LoginView extends VerticalLayout{
 
         this.addComponent(loginPanel);
         this.setComponentAlignment(loginPanel, Alignment.MIDDLE_CENTER);
+        username.setValue("dsad");
+        password.setValue("fas");
+        signin.click();
 	}
 	
 	private void loginClick(){

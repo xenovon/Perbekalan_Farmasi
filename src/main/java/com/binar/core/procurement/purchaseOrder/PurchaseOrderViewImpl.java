@@ -3,10 +3,15 @@ package com.binar.core.procurement.purchaseOrder;
 import java.util.Calendar;
 import java.util.List;
 
+import org.joda.time.DateTime;
+
 import com.binar.entity.Goods;
 import com.binar.entity.PurchaseOrder;
+import com.binar.entity.PurchaseOrderItem;
 import com.binar.entity.Supplier;
 import com.binar.entity.enumeration.EnumGoodsType;
+import com.binar.entity.enumeration.EnumPurchaseOrderType;
+import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
 import com.binar.generalFunction.TableFilter;
 import com.binar.generalFunction.TextManipulator;
@@ -16,6 +21,8 @@ import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.event.FieldEvents.TextChangeEvent;
 import com.vaadin.event.FieldEvents.TextChangeListener;
+import com.vaadin.server.BrowserWindowOpener;
+import com.vaadin.server.Resource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
@@ -23,6 +30,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
@@ -52,8 +60,10 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 	private ComboBox selectMonth;
 	private Label labelYear;
 	private Label labelMonth;
+	private DateManipulator date;
 	public PurchaseOrderViewImpl(GeneralFunction function){
 		this.function=function;
+		this.date=function.getDate();
 		
 	}
 	
@@ -75,8 +85,8 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 		
 		selectYear.setNullSelectionAllowed(false);
 		selectMonth.setNullSelectionAllowed(false);
-		selectYear.setValue(yearList.get(0));
 		selectMonth.setValue(monthList.get(Calendar.getInstance().get(Calendar.MONTH)));
+		selectYear.setValue(yearList.get(2));
 		for(String month:monthList){
 			System.out.println("Bulan "+month);
 		}
@@ -124,19 +134,21 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 		
 		tableContainer=new IndexedContainer(){
 			{
-				addContainerProperty("Nomor Surat Pesanan", String.class, null);
-				addContainerProperty("Nama", String.class, null);
-				addContainerProperty("Distributor", String.class, null);
+				addContainerProperty("Nomor Surat Pesanan", String.class,null);
+				addContainerProperty("Nama", String.class,null);
+				addContainerProperty("Distributor",String.class,null);
 				addContainerProperty("Jenis Surat Pesanan", String.class,null);
-				addContainerProperty("Tanggal Surat", String.class, null);
-				addContainerProperty("Jumlah Barang", String.class, null);
+				addContainerProperty("Tanggal Surat",String.class,null);
+				addContainerProperty("Jumlah Barang",String.class,null);
 				addContainerProperty("Tanggal Dibuat", Integer.class, null);
 				addContainerProperty("Operasi", GridLayout.class,null);
 			}
 		};
 		table.setContainerDataSource(tableContainer);
+		selectMonth.setValue("Semua Bulan");
 		construct();
 	}
+	
 	@Override
 	public void construct() {
 		this.addComponent(title);
@@ -172,14 +184,13 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 			return false;
 		}
 		for(PurchaseOrder datum:data){
-			
 			final PurchaseOrder datumFinal=datum;
 			Item item=tableContainer.addItem(datum.getIdPurchaseOrder());
 			item.getItemProperty("Nomor Surat Pesanan").setValue(datum.getPurchaseOrderNumber());
 			item.getItemProperty("Nama").setValue(datum.getPurchaseOrderName());
-			item.getItemProperty("Distributor").setValue(getSupplierName(datum));
-			item.getItemProperty("Jenis Surat Pesanan").setValue(getPurchaseType(datum));
-			item.getItemProperty("Tanggal Surat").setValue(datum.getDate_format());
+			item.getItemProperty("Distributor").setValue(datum.getPurchaseOrderItem().get(0).getSupplierGoods().getSupplier().getSupplierName());
+			item.getItemProperty("Jenis Surat Pesanan").setValue(datum.getPurchaseOrderType().toString());
+			item.getItemProperty("Tanggal Surat").setValue(date.dateToText(datum.getDate(), true));
 			item.getItemProperty("Jumlah Barang").setValue(datum.getPurchaseOrderItem().size());
 			item.getItemProperty("Tanggal Dibuat").setValue(datum.getTimeStamp_format());
 			item.getItemProperty("Operasi").setValue(new GridLayout(3,1){
@@ -229,48 +240,134 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 			
 		}
 
-		return false;
+		return true;
 	}
-	private EnumGoodsType getPurchaseTypeEnum(PurchaseOrder purchaseOrder){
-		return purchaseOrder.getPurchaseOrderItem().
-				get(0).getSupplierGoods().getGoods().getType();		
-	}
-	private String getPurchaseType(PurchaseOrder purchaseOrder){
-		String goodsType;
-		try {
-			EnumGoodsType enumGoodsType=purchaseOrder.getPurchaseOrderItem().
-					get(0).getSupplierGoods().getGoods().getType();
-			if(enumGoodsType==EnumGoodsType.NARKOTIKA ||
-					enumGoodsType==EnumGoodsType.PSIKOTROPIKA){
-				goodsType=enumGoodsType.toString().toLowerCase();
-			}else{
-				goodsType="Biasa";
-			}
-		} catch (Exception e) {
-			goodsType="Biasa";
-		}
-		return goodsType;
-	}
-	private String getSupplierName(PurchaseOrder purchaseOrder){
-		String supplierName;
-		try {
-			supplierName=purchaseOrder.getPurchaseOrderItem().
-					get(0).getSupplierGoods().getSupplier().getSupplierName();
-		} catch (Exception e) {
-			supplierName="";
-		}		
-		return supplierName;
-	}
-	private String generateDescription(PurchaseOrder purchaseOrder){
-		String goodsType=getPurchaseType(purchaseOrder);
-		String supplierName=getSupplierName(purchaseOrder);
-		String date=function.getDate().dateToText(purchaseOrder.getDate());
-		return "Surat Pesanan "+goodsType+", bulan "+date+","
-				+ " Untuk Distributor "+supplierName;
-	}
+	private Window detailWindow;
+	private Table tableDetail;
+	private IndexedContainer containerDetail;
+	
+	private VerticalLayout layoutDetail;
+	private GridLayout layoutContent;
+
+	//label
+	private Label labelPoName;
+	private Label labelPoNumber;
+	private Label labelDate;
+	private Label labelType;
+	private Label labelUserResponsible;
+	private Label labelRayon;
+	private Label labelSupplier;
+	private Button buttonPrint;
+	private Button buttonSave;
+	
 	@Override
 	public void showDetailWindow(PurchaseOrder purchaseOrder) {
+		if(detailWindow==null){
+			layoutDetail = new VerticalLayout(){
+				{
+					setSpacing(true);
+					setMargin(true);
+				}
+			};
+			 labelPoName=new Label();
+			 labelPoNumber=new Label();
+			 labelDate=new Label();
+			 labelType=new Label();
+			 labelUserResponsible=new Label();
+			 labelRayon=new Label();
+			 labelSupplier=new Label();
+			 buttonPrint=new Button("Cetak");
+				buttonPrint.setDescription("Cetak Surat Pesanan");
+				buttonPrint.setIcon(new ThemeResource("icons/image/icon-print.png"));
+				buttonPrint.addStyleName("button-table");
+		 	 buttonSave=new Button("Simpan PDF");
+				buttonPrint.setDescription("Simpan surat pesanan sebagai PDF");
+				buttonPrint.setIcon(new ThemeResource("icons/image/icon-save.png"));
+				buttonPrint.addStyleName("button-table");
+
+			layoutContent=new GridLayout(2,7){
+				{
+					setSpacing(true);
+					setMargin(true);
+					addComponent(new Label("Nama Surat "), 0,0 );
+					addComponent(new Label("Nomor Surat"), 0,1 );
+					addComponent(new Label("Tanggal"), 0,2 );
+					addComponent(new Label("Tipe Surat"), 0,3 );
+					addComponent(new Label("Penanggung Jawab"), 0,4 );
+					addComponent(new Label("Rayon"), 0,5 );
+					addComponent(new Label("Distributor"), 0,6 );
+					
+					addComponent(labelPoNumber, 1,0 );
+					addComponent(labelPoName, 1,1 );
+					addComponent(labelDate, 1,2 );
+					addComponent(labelType, 1,3 );
+					addComponent(labelUserResponsible, 1,4 );
+					addComponent(labelRayon, 1,5 );
+					addComponent(labelSupplier, 1,6);
+					
+				}
+			};
+			
+			tableDetail =new Table("Daftar Item");
+				tableDetail.setSizeFull();
+				tableDetail.setWidth("100%");
+				tableDetail.setHeight("439px");
+				tableDetail.setSortEnabled(true);
+				tableDetail.setImmediate(true);
+				tableDetail.setRowHeaderMode(RowHeaderMode.INDEX);
+
+			containerDetail=new IndexedContainer(){
+				{
+					addContainerProperty("Nama Barang", String.class, null);
+					addContainerProperty("Jumlah", String.class, null);
+					addContainerProperty("Satuan", String.class, null);
+					addContainerProperty("Keterangan", String.class, null);
+				}
+			};
+			
+			tableDetail.setContainerDataSource(containerDetail);
+			layoutDetail.addComponent(new CssLayout(){
+				{
+					setStyleName("float-right");
+					addComponent(buttonPrint);
+					addComponent(buttonSave);
+				}
+			});
+			layoutDetail.addComponent(layoutContent);
+			layoutDetail.addComponent(tableDetail);
+			
+			detailWindow =new Window(){
+				{
+					center();
+					setClosable(true);
+					setWidth("700px");
+					setHeight("80%");
+				}
+			};
+			detailWindow.setContent(layoutDetail);
+			setDetailData(purchaseOrder);
+			this.getUI().addWindow(detailWindow);
+		}
+	}
+	
+	public void setDetailData(PurchaseOrder purchaseOrder){
 		
+		labelPoName.setValue(purchaseOrder.getPurchaseOrderName());
+		labelPoNumber.setValue(purchaseOrder.getPurchaseOrderNumber());
+		labelDate.setValue(date.dateToText(purchaseOrder.getDate(), true));
+		labelType.setValue(purchaseOrder.getPurchaseOrderType().toString());
+		labelUserResponsible.setValue(purchaseOrder.getUserResponsible().getName());
+		labelRayon.setValue(purchaseOrder.getRayon());
+		labelSupplier.setValue(purchaseOrder.getPurchaseOrderItem().get(0).
+				getSupplierGoods().getSupplier().getSupplierName());
+		containerDetail.removeAllItems();
+		for(PurchaseOrderItem datum:purchaseOrder.getPurchaseOrderItem()){
+			Item item=containerDetail.addItem(datum.getIdPurchaseOrderItem());
+			item.getItemProperty("Nama Barang").setValue(datum.getSupplierGoods().getGoods().getName());
+			item.getItemProperty("Jumlah").setValue(datum.getQuantity());
+			item.getItemProperty("Satuan").setValue(datum.getSupplierGoods().getGoods().getUnit());
+			item.getItemProperty("Keterangan").setValue(datum.getInformation());
+		}
 	}
 
 	@Override
@@ -298,7 +395,7 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 	}
 	
 	Window window;
-
+	
 	public void displayForm(Component content, String title){
 		//menghapus semua window terlebih dahulu
 		for(Window window:this.getUI().getWindows()){
@@ -313,7 +410,6 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 					setHeight("80%");
 				}
 			};
-
 		}
 		this.getUI().removeWindow(window);
 		window.setCaption(title);
@@ -321,5 +417,6 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 		this.getUI().addWindow(window);
 	}
 
+	
 
 }

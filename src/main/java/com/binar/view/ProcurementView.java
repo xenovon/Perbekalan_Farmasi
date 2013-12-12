@@ -2,6 +2,7 @@ package com.binar.view;
 
 import com.binar.core.procurement.Invoice;
 import com.binar.core.procurement.PurchaseOrder;
+import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.CustomComponent;
@@ -14,12 +15,13 @@ public class ProcurementView extends CustomComponent implements View {
 	TabSheet tabSheet=new TabSheet();
 	Invoice invoice;
 	PurchaseOrder purchaseOrder;
-	
+	GeneralFunction function;
 	
 	@Override
 	public void enter(ViewChangeEvent event) {
 		invoice=new Invoice();
-//		purchaseOrder = new PurchaseOrder();
+		function=new GeneralFunction();
+		purchaseOrder = new PurchaseOrder(function);
 		tabSheet.addTab(purchaseOrder).setCaption("Surat Pesanan");
 		tabSheet.addTab(invoice).setCaption("Faktur");
 		tabSheet.setSizeFull();

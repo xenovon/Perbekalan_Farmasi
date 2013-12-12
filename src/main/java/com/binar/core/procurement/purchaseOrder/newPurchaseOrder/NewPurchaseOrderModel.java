@@ -38,9 +38,7 @@ public class NewPurchaseOrderModel {
 	//mendapatkan id dan String user dengan role ifrs; 
 	public Map<Integer, String> getUserComboData(){
 		Role role=server.find(Role.class, "IFRS");
-		List<User> users=server.find(User.class).fetch("idUser").
-												 fetch("username").
-												 fetch("title").where().eq("role", role).findList();
+		List<User> users=server.find(User.class).where().eq("role", role).findList();
 		
 		Map<Integer, String> returnValue=new HashMap<Integer, String>(users.size());
 		for(User user:users){
@@ -51,11 +49,16 @@ public class NewPurchaseOrderModel {
 		
 	}
 	public List<ReqPlanning> getReqPlanning(DateTime periode){
-		Date startDate=periode.toDate();
-		Date endDate=periode.withDayOfMonth(periode.dayOfMonth().getMaximumValue()).toDate();
-		List<ReqPlanning> returnValue=server.find(ReqPlanning.class).where().
-				between("period", startDate, endDate).findList();
-		return returnValue;
+		try {
+			Date startDate=periode.toDate();
+			Date endDate=periode.withDayOfMonth(periode.dayOfMonth().getMaximumValue()).toDate();
+			List<ReqPlanning> returnValue=server.find(ReqPlanning.class).where().
+					between("period", startDate, endDate).eq("isAccepted", true).findList();
+			return returnValue;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 		
 	}
 	//format nomor pesanan ex : PSI/10/2013/3
@@ -79,16 +82,17 @@ public class NewPurchaseOrderModel {
 		return prefiks+"/"+month+"/"+year+"/"+purchaseNumber;
 	}
 	private String getPurchaseLastNumber(String purchaseOrderType){
-		PurchaseOrder newest=server.find(PurchaseOrder.class).
-				where().eq("purchaseOrderType",purchaseOrderType).order().desc("timestamp").findUnique();
-		System.out.println(newest.getPurchaseOrderNumber());
-		String[] purchaseNumber=newest.getPurchaseOrderNumber().split("/");
 		try {
-			int currentNumber=Integer.parseInt(purchaseNumber[3]); //ambil nomor saat ini;
+			PurchaseOrder newest=server.find(PurchaseOrder.class).
+					where().eq("purchaseOrderType",purchaseOrderType).order().desc("timestamp").findList().get(0);		
+			int currentNumber;
+			String[] purchaseNumber=newest.getPurchaseOrderNumber().split("/");	
+			int length=purchaseNumber.length-1;
+			currentNumber=Integer.parseInt(purchaseNumber[length]); //ambil nomor saat ini;
 			return String.valueOf(currentNumber+1); //udah ditambah satu ya...
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "0";
+			return "1";
 		}
 	}
 	//menghasilkan obyek purchase order dari req planning
@@ -115,6 +119,7 @@ public class NewPurchaseOrderModel {
 					order.setPurchaseOrderNumber(generatePurchaseOrderNumber(order));
 					order.setUserResponsible(server.find(User.class, IdUser));
 					order.setRayon(setting.getSetting("rayon").getSettingValue());
+					order.setPurchaseOrderName(generateName(order));
 					//tanggal
 					//tipe
 					//order
@@ -149,6 +154,12 @@ public class NewPurchaseOrderModel {
 						}else{
 							order.setPurchaseOrderType(EnumPurchaseOrderType.GENERAL);
 						}
+						order.setDate(purchaseDate);
+						order.setPurchaseOrderNumber(generatePurchaseOrderNumber(order));
+						order.setUserResponsible(server.find(User.class, IdUser));
+						order.setRayon(setting.getSetting("rayon").getSettingValue());
+						order.setPurchaseOrderName(generateName(order));
+
 
 						item.setPurchaseOrder(order);
 						
@@ -165,7 +176,12 @@ public class NewPurchaseOrderModel {
 						order.getPurchaseOrderItem().add(item);
 					}
 				}
+				
 			}
+			for(Map.Entry<Integer, PurchaseOrder> entry:poGeneral.entrySet()){
+				list.add(entry.getValue());
+			}
+			System.out.println("generatePurchaseOrder "+list.size());
 			return list;
 		} catch (Exception e) {
 			e.printStackTrace();

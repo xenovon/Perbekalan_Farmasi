@@ -13,6 +13,7 @@ interface PurchaseOrderView {
 		public void deleteClick(int idPurchaseOrder);
 		public void showClick(int idPurchaseOrder);
 		public void valueChange(String value);
+		public void updateTable();
 	
 	}
 	public void init();
