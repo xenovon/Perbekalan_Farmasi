@@ -147,6 +147,17 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 		};
 		table.setContainerDataSource(tableContainer);
 		selectMonth.setValue("Semua Bulan");
+		 buttonPrint=new Button("Cetak");
+			buttonPrint.setDescription("Cetak Surat Pesanan");
+			buttonPrint.setIcon(new ThemeResource("icons/image/icon-print.png"));
+			buttonPrint.addStyleName("button-table");
+			buttonPrint.addClickListener(this);
+	 	 buttonSave=new Button("Simpan PDF");
+			buttonSave.setDescription("Simpan surat pesanan sebagai PDF");
+			buttonSave.setIcon(new ThemeResource("icons/image/icon-save.png"));
+			buttonSave.addStyleName("button-table");
+			buttonSave.addClickListener(this);
+
 		construct();
 	}
 	
@@ -277,14 +288,6 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 			 labelUserResponsible=new Label();
 			 labelRayon=new Label();
 			 labelSupplier=new Label();
-			 buttonPrint=new Button("Cetak");
-				buttonPrint.setDescription("Cetak Surat Pesanan");
-				buttonPrint.setIcon(new ThemeResource("icons/image/icon-print.png"));
-				buttonPrint.addStyleName("button-table");
-		 	 buttonSave=new Button("Simpan PDF");
-				buttonSave.setDescription("Simpan surat pesanan sebagai PDF");
-				buttonSave.setIcon(new ThemeResource("icons/image/icon-save.png"));
-				buttonSave.addStyleName("button-table");
 
 			layoutContent=new GridLayout(2,7){
 				{
@@ -383,6 +386,11 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 		if(event.getButton()==buttonNewPurchase){
 			listener.buttonClick("buttonNewPurchase");
 		}
+		else if(event.getButton()==buttonPrint){
+			listener.buttonClick("buttonPrint");
+		}else if(event.getButton()==buttonSave){
+			listener.buttonClick("buttonSave");
+		}
 	}
 	@Override
 	public String getSelectedPeriod() {
@@ -422,6 +430,10 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 		window.setCaption(title);
 		window.setContent(content);
 		this.getUI().addWindow(window);
+	}
+	
+	public Button getButtonPrint() {
+		return buttonPrint;
 	}
 
 	

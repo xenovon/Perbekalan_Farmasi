@@ -33,7 +33,7 @@ public class Invoice {
 	@Column(name="amoount_paid")
 	private double amountPaid;
 	
-	@OneToMany(cascade=CascadeType.PERSIST)
+	@OneToMany(cascade=CascadeType.ALL)
 	@Column(name="invoice_item")
 	private List<InvoiceItem> invoiceItem;
 

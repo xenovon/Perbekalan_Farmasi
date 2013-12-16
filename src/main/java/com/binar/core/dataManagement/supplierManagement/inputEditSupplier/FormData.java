@@ -21,6 +21,7 @@ public class FormData {
 	private String phoneNumber="";
 	private String email="";
 	private String fax="";
+	private String city="";
 	
 	private GeneralFunction function;
 	private EbeanServer server;
@@ -30,7 +31,12 @@ public class FormData {
 		this.editMode=editMode;
 		server=function.getServer();
 	}
-	
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
+	}
 	public List<String> validate(){
 		List<String> errorData=new ArrayList<String>();
 		

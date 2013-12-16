@@ -119,6 +119,7 @@ public class SupplierManagementViewImpl extends VerticalLayout implements
 	private Label labelEmail;
 	private Label labelFax;
 	private Label labelGoods;
+	private Label labelCity;
 	
 	GridLayout layoutDetail;
 	Window windowDetail;
@@ -127,7 +128,7 @@ public class SupplierManagementViewImpl extends VerticalLayout implements
 		if(layoutDetail==null){
 			//buat konten 
 
-			layoutDetail= new GridLayout(2,10){
+			layoutDetail= new GridLayout(2,11){
 				{
 					setSpacing(true);
 					setMargin(true);
@@ -141,6 +142,7 @@ public class SupplierManagementViewImpl extends VerticalLayout implements
 					addComponent(new Label("Email"), 0, 7);
 					addComponent(new Label("Faksimile"), 0,8);
 					addComponent(new Label("Daftar Barang"), 0, 9);
+					addComponent(new Label("Kota"), 0, 10);
 				}	
 			};
 			//instantiasi label
@@ -153,7 +155,7 @@ public class SupplierManagementViewImpl extends VerticalLayout implements
 			 labelEmail=new Label("", ContentMode.HTML);
 			 labelFax=new Label("", ContentMode.HTML);
 			 labelGoods=new Label("", ContentMode.HTML);
-
+			 labelCity=new Label("", ContentMode.HTML);
 			//add Component konten ke layout
 			 
 			 layoutDetail.addComponent(labelId,1,1);
@@ -165,6 +167,7 @@ public class SupplierManagementViewImpl extends VerticalLayout implements
 			 layoutDetail.addComponent(labelEmail,1,7);
 			 layoutDetail.addComponent(labelFax,1,8);
 			 layoutDetail.addComponent(labelGoods, 1, 9);
+			 layoutDetail.addComponent(labelCity, 1, 10);
 		}
 		
 		setLabelData(supplier, goods);
@@ -192,6 +195,7 @@ public class SupplierManagementViewImpl extends VerticalLayout implements
 		 labelEmail.setValue(supplier.getEmail());
 		 labelFax.setValue(supplier.getFax());
 		 labelGoods.setValue(goods);
+		 labelCity.setValue(supplier.getCity());
 
 	}
 	public boolean updateTableData(List<Supplier> data){

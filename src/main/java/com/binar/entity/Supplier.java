@@ -24,7 +24,7 @@ public class Supplier {
 	
 	@Column(name="supplier_address")
 	private String  supplierAddress;
-	
+	private String city;
 	@Column(name="phone_number")
 	private String  phoneNumber;
 	
@@ -32,6 +32,12 @@ public class Supplier {
 	
 	private String fax;
 
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
+	}
 	public String getFax() {
 		return fax;
 	}

@@ -47,7 +47,7 @@ public class InputSupplierModel {
 			supplier.setSupplierAbbr(data.getAbbr());
 			supplier.setSupplierAddress(data.getAddress());
 			supplier.setSupplierName(data.getName());
-			
+			supplier.setCity(data.getCity());
 			server.save(supplier);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -66,7 +66,7 @@ public class InputSupplierModel {
 			supplier.setSupplierAbbr(data.getAbbr());
 			supplier.setSupplierAddress(data.getAddress());
 			supplier.setSupplierName(data.getName());
-			
+			supplier.setCity(data.getCity());
 			server.update(supplier);
 		} catch (Exception e) {
 			e.printStackTrace();

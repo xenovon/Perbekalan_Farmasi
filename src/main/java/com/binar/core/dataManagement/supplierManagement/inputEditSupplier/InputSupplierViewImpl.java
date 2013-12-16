@@ -54,6 +54,7 @@ public class InputSupplierViewImpl extends VerticalLayout implements
 	private TextArea inputPhoneNumber;
 	private TextField inputEmail;
 	private TextArea inputFax;
+	private TextField inputCity;
 
 	private Label labelGeneralError;
 	private Label labelErrorEmail;
@@ -100,6 +101,10 @@ public class InputSupplierViewImpl extends VerticalLayout implements
 						inputFax.setImmediate(true);
 						inputFax.addValueChangeListener(this);
 						inputFax.setWidth(function.FORM_WIDTH);	
+		inputCity =new TextField("Kota");
+						inputCity.setImmediate(true);
+						inputCity.addValueChangeListener(this);
+						inputCity.setWidth(function.FORM_WIDTH);	
 						
 		buttonCancel =new Button("Batalkan");
 					  buttonCancel.addClickListener(this);
@@ -151,6 +156,7 @@ public class InputSupplierViewImpl extends VerticalLayout implements
 		layout.addComponent(inputEmail);
 		layout.addComponent(labelErrorEmail);
 		layout.addComponent(inputFax);
+		layout.addComponent(inputCity);
 		layout.addComponent(labelGeneralError);
 		
 		this.addComponent(layout);
@@ -192,6 +198,7 @@ public class InputSupplierViewImpl extends VerticalLayout implements
 		inputDescription.setValue(data.getDescription());
 		inputAddress.setValue(data.getSupplierAddress());
 		inputEmail.setValue(data.getEmail());
+		inputCity.setValue(data.getCity());
 		inputFax.setValue(data.getFax());
 		inputPhoneNumber.setValue(data.getPhoneNumber());
 		inputAbbr.setData(data.getSupplierAbbr());  //mengeset nilai awal Abbr yang tidak bisa dirubah
@@ -209,6 +216,7 @@ public class InputSupplierViewImpl extends VerticalLayout implements
 			returnValue.setFax(inputFax.getValue());
 			returnValue.setPhoneNumber(inputPhoneNumber.getValue());
 			returnValue.setAddress(inputAddress.getValue());
+			returnValue.setCity(inputCity.getValue());
 		return returnValue;
 	}
 	
@@ -237,6 +245,7 @@ public class InputSupplierViewImpl extends VerticalLayout implements
 		inputFax.setValue("");
 		inputName.setValue("");
 		inputPhoneNumber.setValue("");
+		inputCity.setValue("");
 	}
 
 	@Override

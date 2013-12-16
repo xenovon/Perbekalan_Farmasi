@@ -15,9 +15,11 @@ import com.binar.core.procurement.purchaseOrder.editPurchaseOrder.EditPurchaseOr
 import com.binar.core.procurement.purchaseOrder.newPurchaseOrder.NewPurchaseOrderModel;
 import com.binar.core.procurement.purchaseOrder.newPurchaseOrder.NewPurchaseOrderPresenter;
 import com.binar.core.procurement.purchaseOrder.newPurchaseOrder.NewPurchaseOrderViewImpl;
+import com.binar.core.procurement.purchaseOrder.printPurchaseOrder.GeneralPrint;
 import com.binar.entity.PurchaseOrder;
 import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
+import com.vaadin.server.BrowserWindowOpener;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Notification;
@@ -49,7 +51,7 @@ public class PurchaseOrderPresenter implements PurchaseOrderListener {
 		
 		this.view.setListener(this);
 		this.view.init();
-		
+		printClick();
 		
 	}
 	@Override
@@ -62,6 +64,9 @@ public class PurchaseOrderPresenter implements PurchaseOrderListener {
 			}
 			view.getUI().addWindow(viewNew);
 			addWIndowCloseListener();
+		}else if(buttonName.equals("buttonPrint")){
+		}else if(buttonName.equals("buttonSave")){
+			
 		}
 	}
 	@Override
@@ -139,6 +144,20 @@ public class PurchaseOrderPresenter implements PurchaseOrderListener {
 		presenterEdit.setFormData(idPurchase);
 		view.displayForm(viewEdit, "Ubah Data Surat Pesanan", "65%");
 		addWIndowCloseListener();
+	}
+	
+	public void printClick(){
+		// Create an opener extension
+		BrowserWindowOpener opener =
+		new BrowserWindowOpener(GeneralPrint.class);
+		opener.setFeatures("height=200,width=400,resizable");
+		// A button to open the printer-friendly page.
+		opener.setParameter("anu","Gahahahaha");
+		opener.extend(view.getButtonPrint());
+	}
+	
+	public void saveClick(){
+		Notification.show("Print pdf");
 	}
 
 
