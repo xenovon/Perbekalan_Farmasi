@@ -14,8 +14,7 @@ public class InvoiceItem {
 	@Id
 	@Column(name="id_invoice_item")
 	private int idInvoiceItem;
-	
-	
+
 	@ManyToOne
 	@Column(name="fk_invoice")
 	private Invoice invoice;

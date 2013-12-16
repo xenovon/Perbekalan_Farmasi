@@ -399,6 +399,10 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 	
 	Window window;
 	
+	public void displayForm(Component content, String title, String height){
+		displayForm(content, title);
+		window.setHeight(height);
+	}
 	public void displayForm(Component content, String title){
 		//menghapus semua window terlebih dahulu
 		for(Window window:this.getUI().getWindows()){

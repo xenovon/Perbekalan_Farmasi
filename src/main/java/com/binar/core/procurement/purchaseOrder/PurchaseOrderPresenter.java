@@ -5,7 +5,13 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 
+import com.binar.core.dataManagement.manufacturerManagement.inputManufacturer.InputManufacturerModel;
+import com.binar.core.dataManagement.manufacturerManagement.inputManufacturer.InputManufacturerPresenter;
+import com.binar.core.dataManagement.manufacturerManagement.inputManufacturer.InputManufacturerViewImpl;
 import com.binar.core.procurement.purchaseOrder.PurchaseOrderView.PurchaseOrderListener;
+import com.binar.core.procurement.purchaseOrder.editPurchaseOrder.EditPurchaseOrderModel;
+import com.binar.core.procurement.purchaseOrder.editPurchaseOrder.EditPurchaseOrderPresenter;
+import com.binar.core.procurement.purchaseOrder.editPurchaseOrder.EditPurchaseOrderViewImpl;
 import com.binar.core.procurement.purchaseOrder.newPurchaseOrder.NewPurchaseOrderModel;
 import com.binar.core.procurement.purchaseOrder.newPurchaseOrder.NewPurchaseOrderPresenter;
 import com.binar.core.procurement.purchaseOrder.newPurchaseOrder.NewPurchaseOrderViewImpl;
@@ -30,6 +36,11 @@ public class PurchaseOrderPresenter implements PurchaseOrderListener {
 	NewPurchaseOrderModel modelNew;
 	NewPurchaseOrderPresenter presenterNew;
 	NewPurchaseOrderViewImpl viewNew;
+	
+	EditPurchaseOrderModel modelEdit;
+	EditPurchaseOrderPresenter presenterEdit;
+	EditPurchaseOrderViewImpl viewEdit;
+	
 	public PurchaseOrderPresenter(PurchaseOrderViewImpl view, PurchaseOrderModel model, GeneralFunction function) {
 		this.function=function;
 		this.date=function.getDate();
@@ -52,10 +63,6 @@ public class PurchaseOrderPresenter implements PurchaseOrderListener {
 			view.getUI().addWindow(viewNew);
 			addWIndowCloseListener();
 		}
-	}
-	@Override
-	public void editClick(int idPurchaseOrder) {
-		Notification.show("edit Surat Pesanan"+idPurchaseOrder);
 	}
 	@Override
 	public void deleteClick(int idPurchaseOrder) {
@@ -120,6 +127,18 @@ public class PurchaseOrderPresenter implements PurchaseOrderListener {
 		}else{
 			Notification.show("Terjadi kesalahan pengambilan data");
 		}
+	}
+
+	public void editClick(int idPurchase) {
+		if(presenterEdit==null){
+			modelEdit =new EditPurchaseOrderModel(function);
+			viewEdit = new EditPurchaseOrderViewImpl(function);
+			presenterEdit=new EditPurchaseOrderPresenter(modelEdit, viewEdit, function);
+		}
+		viewEdit.resetForm();	
+		presenterEdit.setFormData(idPurchase);
+		view.displayForm(viewEdit, "Ubah Data Surat Pesanan", "65%");
+		addWIndowCloseListener();
 	}
 
 
