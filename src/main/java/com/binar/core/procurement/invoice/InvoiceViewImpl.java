@@ -10,6 +10,29 @@ import com.vaadin.ui.Button.ClickListener;
 
 public class InvoiceViewImpl implements InvoiceView, ClickListener, ValueChangeListener {
 
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.binar.core.procurement.invoice.InvoiceView#init()
+	 *  INVOICE
+		idInvoice
+		Nomor invoice
+		nama invoice
+		jatuh tempo
+		timestamp
+		total tagihan
+		jumlah dibayar
+		jumlah item
+		
+		
+		INVOICE ITEM
+		invoice
+		batch
+		discount
+		price
+		pricePPN
+		quantity
+	 */
 	@Override
 	public void init() {
 		// TODO Auto-generated method stub

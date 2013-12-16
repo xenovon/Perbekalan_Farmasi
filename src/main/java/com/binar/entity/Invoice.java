@@ -25,7 +25,8 @@ public class Invoice {
 	
 	private String invoiceName;
 	
-	private Date due_date;
+	@Column(name="due_date")
+	private Date dueDate;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date timestamp;
@@ -37,11 +38,11 @@ public class Invoice {
 	@Column(name="invoice_item")
 	private List<InvoiceItem> invoiceItem;
 
-	public Date getDue_date() {
-		return due_date;
+	public Date getDueDate() {
+		return dueDate;
 	}
-	public void setDue_date(Date due_date) {
-		this.due_date = due_date;
+	public void setDue_date(Date dueDate) {
+		this.dueDate = dueDate;
 	}
 	
 	public int getIdInvoice() {
