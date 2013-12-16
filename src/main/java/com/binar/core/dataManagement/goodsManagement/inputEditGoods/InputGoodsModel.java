@@ -104,6 +104,7 @@ public class InputGoodsModel {
 	//menyimpan barang baru
 	public String saveData(FormData data){
 		try {
+			System.out.println("data = "+data.getType());
 			Goods goods=new Goods();
 			goods.setCategory(data.getCategory());
 			goods.setCurrentStock(data.getInitialStockInt());

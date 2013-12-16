@@ -397,6 +397,7 @@ public class InputGoodsViewImpl extends FormLayout implements
         for (Map.Entry<EnumGoodsType, String> entry : typeList.entrySet()) {
         	inputType.addItem(entry.getKey());
         	inputType.setItemCaption(entry.getKey(), entry.getValue());
+        	System.out.println("Good type= " +entry.getKey() +" "+entry.getValue());
         }
         
         Map<String, String>  unitList=list.getInputUnitList();

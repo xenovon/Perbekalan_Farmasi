@@ -61,16 +61,17 @@ public class NewPurchaseOrderModel {
 		}
 		
 	}
-	//format nomor pesanan ex : PSI/10/2013/3
-	private String generatePurchaseOrderNumber(PurchaseOrder order){
+	//format nomor pesanan ex : PSI/10/2013/3   
+	private String generatePurchaseOrderNumber(PurchaseOrder order, int currentNumber){
+		// currentNumber : urutan saat ini;
 		String prefiks;
 		String month=String.valueOf(DateTime.now().getMonthOfYear());
 		String year=String.valueOf(DateTime.now().getYear());
-		String purchaseNumber;
+		int purchaseNumber=0;
 	
 		if(order.getPurchaseOrderType()==EnumPurchaseOrderType.PSIKOTROPIKA){
 			prefiks=setting.getSetting("psikotropika").getSettingValue();
-			purchaseNumber=getPurchaseLastNumber("PSIKOTROPIKA");
+			purchaseNumber=getPurchaseLastNumber("PSIKOTROPIKA");			
 		}else if(order.getPurchaseOrderType()==EnumPurchaseOrderType.NARKOTIKA){
 			prefiks=setting.getSetting("narkotika").getSettingValue();
 			purchaseNumber=getPurchaseLastNumber("NARKOTIKA");			
@@ -78,10 +79,22 @@ public class NewPurchaseOrderModel {
 			prefiks=setting.getSetting("general").getSettingValue();
 			purchaseNumber=getPurchaseLastNumber("GENERAL");
 		}
-		
+		if(currentNumber==0){
+			purchaseNumber=purchaseNumber+1;
+		}else{
+			purchaseNumber=currentNumber+1;
+		}
+
 		return prefiks+"/"+month+"/"+year+"/"+purchaseNumber;
 	}
-	private String getPurchaseLastNumber(String purchaseOrderType){
+	private int getPurchaseOrderNumber(String input){
+		int currentNumber;
+		String[] purchaseNumber=input.split("/");	
+		int length=purchaseNumber.length-1;
+		currentNumber=Integer.parseInt(purchaseNumber[length]); //ambil nomor saat ini;
+		return currentNumber; //belum ditambah satu ya...		
+	}
+	private int getPurchaseLastNumber(String purchaseOrderType){
 		try {
 			PurchaseOrder newest=server.find(PurchaseOrder.class).
 					where().eq("purchaseOrderType",purchaseOrderType).order().desc("timestamp").findList().get(0);		
@@ -89,15 +102,17 @@ public class NewPurchaseOrderModel {
 			String[] purchaseNumber=newest.getPurchaseOrderNumber().split("/");	
 			int length=purchaseNumber.length-1;
 			currentNumber=Integer.parseInt(purchaseNumber[length]); //ambil nomor saat ini;
-			return String.valueOf(currentNumber+1); //udah ditambah satu ya...
+			return currentNumber; //belum ditambah satu ya...
 		} catch (Exception e) {
-			e.printStackTrace();
-			return "1";
+			return 0;
 		}
 	}
 	//menghasilkan obyek purchase order dari req planning
 	//Disini dilakukan pemisahan antar tiap supplier dan jenis obat
 	public List<PurchaseOrder> generatePurchaseOrder(FormData data){
+		int psikotropikaNumber=0;
+		int narkotikaNumber=0;
+		int generalNumber=0;
 		try {
 			List<Integer> reqPlanningIds=data.getReqPlanningId();
 			Date purchaseDate=data.getPurchaseDate(); 
@@ -115,8 +130,12 @@ public class NewPurchaseOrderModel {
 				if(goodsType==EnumGoodsType.NARKOTIKA){
 					PurchaseOrder order=new PurchaseOrder();
 					order.setDate(purchaseDate);
-					order.setPurchaseOrderType(EnumPurchaseOrderType.NARKOTIKA);					
-					order.setPurchaseOrderNumber(generatePurchaseOrderNumber(order));
+					order.setPurchaseOrderType(EnumPurchaseOrderType.NARKOTIKA);
+					
+					String numberPO=generatePurchaseOrderNumber(order, narkotikaNumber);
+					order.setPurchaseOrderNumber(numberPO);
+					narkotikaNumber=getPurchaseOrderNumber(numberPO);
+					
 					order.setUserResponsible(server.find(User.class, IdUser));
 					order.setRayon(setting.getSetting("rayon").getSettingValue());
 					order.setPurchaseOrderName(generateName(order));
@@ -150,12 +169,18 @@ public class NewPurchaseOrderModel {
 					if(!poGeneral.containsKey(mapKey)){
 						PurchaseOrder order=new PurchaseOrder();
 						if(goodsType==EnumGoodsType.PSIKOTROPIKA){
-							order.setPurchaseOrderType(EnumPurchaseOrderType.PSIKOTROPIKA);					
+							order.setPurchaseOrderType(EnumPurchaseOrderType.PSIKOTROPIKA);	
+							String numberPO=generatePurchaseOrderNumber(order, psikotropikaNumber);
+							order.setPurchaseOrderNumber(numberPO);
+							psikotropikaNumber=getPurchaseOrderNumber(numberPO);
 						}else{
 							order.setPurchaseOrderType(EnumPurchaseOrderType.GENERAL);
+							String numberPO=generatePurchaseOrderNumber(order, generalNumber);
+							order.setPurchaseOrderNumber(numberPO);
+							generalNumber=getPurchaseOrderNumber(numberPO);
+
 						}
 						order.setDate(purchaseDate);
-						order.setPurchaseOrderNumber(generatePurchaseOrderNumber(order));
 						order.setUserResponsible(server.find(User.class, IdUser));
 						order.setRayon(setting.getSetting("rayon").getSettingValue());
 						order.setPurchaseOrderName(generateName(order));
@@ -207,7 +232,6 @@ public class NewPurchaseOrderModel {
 	}
 	//pastikan nomor purchase order di update lagi
 	public void saveSinglePurchaseOrder(PurchaseOrder order) throws Exception{
-		order.setPurchaseOrderNumber(generatePurchaseOrderNumber(order));
 		order.setTimestamp(new Date());
 		order.setPurchaseOrderName(generateName(order));
 		

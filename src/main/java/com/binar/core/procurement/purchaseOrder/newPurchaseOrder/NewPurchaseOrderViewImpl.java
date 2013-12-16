@@ -91,7 +91,7 @@ public class NewPurchaseOrderViewImpl extends Window implements NewPurchaseOrder
 	    reqPlanningTable=new Table();
 			reqPlanningTable.setSizeFull();
 			reqPlanningTable.setWidth("100%");
-			reqPlanningTable.setHeight("439px");
+			reqPlanningTable.setHeight("300px");
 			reqPlanningTable.setSortEnabled(true);
 			reqPlanningTable.setImmediate(true);
 			reqPlanningTable.setRowHeaderMode(RowHeaderMode.INDEX);
