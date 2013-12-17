@@ -25,11 +25,20 @@ public class InvoiceItem {
 	
 	private String batch;
 	private float discount;
+	//harga per barang
 	private double price;
 	
 	@Column(name="price_ppn")
 	private double pricePPN;
 	private int quantity;
+	//Untuk mengakomodasi sistem perhitungan harga yang berbeda2
+	//Khususnya terkait dengan diskon, potongan, PPN, dll
+	//Item ini bisa di override di input 
+	private double totalPrice;
+	
+	public double getTotalPrice() {
+		return totalPrice;
+	}
 	public int getIdInvoiceItem() {
 		return idInvoiceItem;
 	}

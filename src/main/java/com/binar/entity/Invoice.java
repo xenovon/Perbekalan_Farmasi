@@ -92,5 +92,14 @@ public class Invoice {
 		this.invoiceName = invoiceName;
 	}
 	
+	public double getTotalPrice(){
+		double total=0;
+		for(InvoiceItem item:getInvoiceItem()){
+			total=total+item.getTotalPrice();
+		}
+		return total;
+	}
+
+	
 	
 }
