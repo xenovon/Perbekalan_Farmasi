@@ -41,7 +41,7 @@ public class GetSetting {
 		} catch (NumberFormatException e) {
 			e.printStackTrace();			
 		}
-		return 0;
+		return 10;
 	}
 	public double getMargin(){
 		try {

@@ -23,7 +23,11 @@ public class Invoice {
 	@Column(name="invoice_number")
 	private String invoiceNumber;
 	
+	@Column(name="invoice_name")
 	private String invoiceName;
+	
+	@Column(name="invoice_date")
+	private Date invoiceDate;
 	
 	@Column(name="due_date")
 	private Date dueDate;
@@ -41,7 +45,7 @@ public class Invoice {
 	public Date getDueDate() {
 		return dueDate;
 	}
-	public void setDue_date(Date dueDate) {
+	public void setDuedate(Date dueDate) {
 		this.dueDate = dueDate;
 	}
 	
@@ -98,6 +102,15 @@ public class Invoice {
 			total=total+item.getTotalPrice();
 		}
 		return total;
+	}
+	public Date getInvoiceDate() {
+		return invoiceDate;
+	}
+	public void setInvoiceDate(Date invoiceDate) {
+		this.invoiceDate = invoiceDate;
+	}
+	public void setDueDate(Date dueDate) {
+		this.dueDate = dueDate;
 	}
 
 	

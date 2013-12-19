@@ -24,7 +24,7 @@ public class InvoiceItem {
 	private PurchaseOrderItem purchaseOrderItem;
 	
 	private String batch;
-	private float discount;
+	private double discount;
 	//harga per barang
 	private double price;
 	
@@ -38,6 +38,9 @@ public class InvoiceItem {
 	
 	public double getTotalPrice() {
 		return totalPrice;
+	}
+	public void setTotalPrice(double totalPrice) {
+		this.totalPrice = totalPrice;
 	}
 	public int getIdInvoiceItem() {
 		return idInvoiceItem;
@@ -63,10 +66,10 @@ public class InvoiceItem {
 	public void setBatch(String batch) {
 		this.batch = batch;
 	}
-	public float getDiscount() {
+	public double getDiscount() {
 		return discount;
 	}
-	public void setDiscount(float discount) {
+	public void setDiscount(double discount) {
 		this.discount = discount;
 	}
 	public double getPrice() {
