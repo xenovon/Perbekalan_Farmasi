@@ -39,6 +39,10 @@ public class ReqPlanning {
 	private String information;
 	
 	@Temporal(TemporalType.TIMESTAMP)
+	private Date dateAccepted;
+	
+	
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date timestamp;
 	
 	@Column(name="price_estimation")
@@ -62,7 +66,12 @@ public class ReqPlanning {
 	public void setSupplierGoods(SupplierGoods supplierGoods) {
 		this.supplierGoods = supplierGoods;
 	}
-
+	public Date getDateAccepted() {
+		return dateAccepted;
+	}
+	public void setDateAccepted(Date dateAccepted) {
+		this.dateAccepted = dateAccepted;
+	}
 	public Date getPeriod() {
 		return period;
 	}

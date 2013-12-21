@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.binar.core.requirementPlanning.inputRequierementPlanning.TableData;
 import com.binar.entity.ReqPlanning;
+import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
 import com.binar.generalFunction.TableFilter;
 import com.binar.generalFunction.TextManipulator;
@@ -56,11 +57,13 @@ public class ReqPlanningListViewImpl extends VerticalLayout
 	TextField inputFilter;
 	//untuk fungsi tambah rupiah
 	TextManipulator text;
+	DateManipulator date;
 	
 	ReqPlanningListListener listener;
 	public ReqPlanningListViewImpl(GeneralFunction function) {
 		this.generalFunction=function;
 		text=generalFunction.getTextManipulator();
+		this.date=generalFunction.getDate();
 	}
 	TableFilter filter;
 	public void init(){
@@ -242,6 +245,7 @@ public class ReqPlanningListViewImpl extends VerticalLayout
 	Label labelInformation;
 	Label labelTimestamp;
 	Label labelPriceEstimation;	
+	Label labelDateAccepted;
 	Window windowDetail;
 	GridLayout layoutDetail;
 	
@@ -249,7 +253,7 @@ public class ReqPlanningListViewImpl extends VerticalLayout
 	public void showDetailWindow(ReqPlanning data){
 		if(layoutDetail==null){
 			//buat konten 
-			layoutDetail= new GridLayout(2,12){
+			layoutDetail= new GridLayout(2,13){
 				{
 					setSpacing(true);
 					setMargin(true);
@@ -260,10 +264,11 @@ public class ReqPlanningListViewImpl extends VerticalLayout
 					addComponent(new Label("Periode"), 0,5);
 					addComponent(new Label("Kuantitas"), 0,6);
 					addComponent(new Label("Diterima?"), 0, 7);
-					addComponent(new Label("Kuantitas Diterima"), 0,8);
-					addComponent(new Label("Keterangan"), 0, 9);
-					addComponent(new Label("Waktu Input"), 0,10);
-					addComponent(new Label("Estimasi Harga"), 0, 11);
+					addComponent(new Label("Tanggal Penerimaan"), 0,8);
+					addComponent(new Label("Kuantitas Diterima"), 0,9);
+					addComponent(new Label("Keterangan"), 0, 10);
+					addComponent(new Label("Waktu Input"), 0,11);
+					addComponent(new Label("Estimasi Harga"), 0, 12);
 				}	
 			};
 			//instantiasi label
@@ -277,6 +282,7 @@ public class ReqPlanningListViewImpl extends VerticalLayout
 			labelAcceptedQuantity =new Label();
 			labelInformation =new Label();
 			labelTimestamp =new Label();
+			labelDateAccepted=new Label();
 			labelPriceEstimation =new Label();	
 			
 			//add Component konten ke layout
@@ -287,10 +293,11 @@ public class ReqPlanningListViewImpl extends VerticalLayout
 			layoutDetail.addComponent(labelPeriode, 1,5);
 			layoutDetail.addComponent(labelQuantity, 1,6);
 			layoutDetail.addComponent(labelIsAccepted, 1,7);
-			layoutDetail.addComponent(labelAcceptedQuantity, 1,8);
-			layoutDetail.addComponent(labelInformation, 1,9);
-			layoutDetail.addComponent(labelTimestamp, 1,10);
-			layoutDetail.addComponent(labelPriceEstimation, 1,11);
+			layoutDetail.addComponent(labelDateAccepted, 1,8);
+			layoutDetail.addComponent(labelAcceptedQuantity, 1,9);
+			layoutDetail.addComponent(labelInformation, 1,10);
+			layoutDetail.addComponent(labelTimestamp, 1,11);
+			layoutDetail.addComponent(labelPriceEstimation, 1,12);
 		}
 		
 		setLabelData(data);
@@ -318,6 +325,8 @@ public class ReqPlanningListViewImpl extends VerticalLayout
 			labelInformation.setValue(data.getInformation());
 			labelTimestamp.setValue(data.getTimestamp().toString());
 			labelPriceEstimation.setValue("Rp "+data.getPriceEstimation());
+			labelDateAccepted.setValue(date.dateToText(data.getDateAccepted(), true));
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		

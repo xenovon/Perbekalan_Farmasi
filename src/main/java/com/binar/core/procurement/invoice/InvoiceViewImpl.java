@@ -19,9 +19,11 @@ import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.Window;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.RowHeaderMode;
@@ -264,12 +266,136 @@ public class InvoiceViewImpl extends VerticalLayout implements InvoiceView, Clic
 		return true;
 	}
 	
+	/*  
+	 * (non-Javadoc)
+	 * @see com.binar.core.procurement.invoice.InvoiceView#init()
+	 *  INVOICE
+		idInvoice
+		Nomor invoice
+		nama invoice
+		jatuh tempo
+		timestamp
+		total tagihan
+		jumlah dibayar
+		jumlah item
+		
+		
+		INVOICE ITEM
+		invoice
+		batch
+		discount
+		price
+		pricePPN
+		quantity
+	 */
+	
+
+	
+	private Label labelInvoiceNumber;
+	private Label labelInvoiceName;
+	private Label labelDueDate;
+	private Label labelTimestamp;
+	private Label labelTotalPrice;
+	private Label labelAmountPaid;
+	private Label labelItemCount;
+	private Label labelInvoiceDate;
+	
+	private Table tableDetail;
+	private Window detailWindow;
+	private IndexedContainer containerDetail;
+	
+	private VerticalLayout layoutDetail;
+	private GridLayout layoutContent;
 	
 	@Override
 	public void showDetailWindow(Invoice invoice) {
-		
+		if(detailWindow==null){
+			layoutDetail = new VerticalLayout(){
+				{
+					setSpacing(true);
+					setMargin(true);
+				}
+			};
+			 labelInvoiceNumber=new Label();
+			 labelInvoiceName=new Label();
+			 labelDueDate=new Label();
+			 labelTimestamp=new Label();
+			 labelTotalPrice=new Label();
+			 labelAmountPaid=new Label();
+			 labelItemCount=new Label();
+			 labelInvoiceDate=new Label();
+			
+			layoutContent=new GridLayout(2,8){
+				{
+					setSpacing(true);
+					setMargin(true);
+					addComponent(new Label("Nomor Faktur"), 0,0 );
+					addComponent(new Label("Nama Faktur"), 0,1 );
+					addComponent(new Label("Tanggal Faktur"), 0,2 );
+					addComponent(new Label("Jatuh Tempo"), 0,3 );
+					addComponent(new Label("Total Harga"), 0,4 );
+					addComponent(new Label("Jumlah dibayar"), 0,5 );
+					addComponent(new Label("Jumlah Barang"), 0,6 );
+					addComponent(new Label("Waktu input"), 0,7 );
+					
+					addComponent(labelInvoiceNumber, 1,0 );
+					addComponent(labelInvoiceName, 1,1 );
+					addComponent(labelInvoiceDate, 1,2 );
+					addComponent(labelDueDate, 1,3 );
+					addComponent(labelTotalPrice, 1,4 );
+					addComponent(labelAmountPaid, 1,5 );
+					addComponent(labelItemCount, 1,6);
+					addComponent(labelTimestamp, 1,7);
+					
+				}
+			};
+			
+			tableDetail =new Table("Daftar Item");
+				tableDetail.setSizeFull();
+				tableDetail.setWidth("100%");
+				tableDetail.setHeight("339px");
+				
+				tableDetail.setSortEnabled(true);
+				tableDetail.setImmediate(true);
+				tableDetail.setRowHeaderMode(RowHeaderMode.INDEX);
+
+			containerDetail=new IndexedContainer(){
+				{
+					addContainerProperty("Jumlah", String.class, null);
+					addContainerProperty("Kode Barang", Integer.class, null);
+					addContainerProperty("Nama Barang", String.class, null);
+					addContainerProperty("Batch", String.class, null);
+					addContainerProperty("ED", String.class, null);
+					addContainerProperty("Harga Satuan", String.class, null);
+					addContainerProperty("Harga + PPN", String.class, null);
+					addContainerProperty("Total", String.class, null);
+					addContainerProperty("Diskon", String.class, null);
+					addContainerProperty("Sub Total", String.class, null);
+
+				}
+			};
+			
+			tableDetail.setContainerDataSource(containerDetail);
+			layoutDetail.addComponent(layoutContent);
+			layoutDetail.addComponent(tableDetail);
+			
+			detailWindow =new Window("Surat Pesanan"){
+				{
+					center();
+					setClosable(true);
+					setWidth("800px");
+					setHeight("80%");
+				}
+			};
+		}
+		detailWindow.setContent(layoutDetail);
+		setDetailData(invoice);
+		this.getUI().addWindow(detailWindow);
 	}
 
+	public void setDetailData(Invoice invoice){
+		
+	}
 	@Override
 	public String getSelectedPeriod() {
 		return selectMonth.getValue()+"-"+selectYear.getValue();

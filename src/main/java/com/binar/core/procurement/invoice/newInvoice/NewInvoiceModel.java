@@ -69,6 +69,9 @@ public class NewInvoiceModel {
 		purchaseOrderItem
 	 */	
 
+	public PurchaseOrder getPurchaseOrder(int id){
+		return server.find(PurchaseOrder.class, id);
+	}
 	public FormData generateInvoiceFormData(PurchaseOrder order){
 		FormData formData=new FormData();
 		
@@ -140,6 +143,15 @@ public class NewInvoiceModel {
 				getPurchaseOrderItem().getSupplierGoods().getSupplier().getSupplierName();
 		String invoiceDate=date.dateToText(invoice.getInvoiceDate(), true);
 		return "Faktur dari distributor "+supplierName+" pada tanggal "+invoiceDate+"";
+	}
+	public double countPrice(boolean isPPN, double price, double quantity){
+		if(isPPN){
+			return price*quantity;
+		}else{
+			double pricePPN=price+(setting.getPPN()/100*price);
+			return pricePPN*quantity;
+		}
+				
 	}
 	public double countTotalPrice(int quantity, double pricePPN, double discount){
 		double total=quantity*pricePPN;

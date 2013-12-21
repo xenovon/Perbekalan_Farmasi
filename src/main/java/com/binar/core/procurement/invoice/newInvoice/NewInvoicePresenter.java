@@ -8,8 +8,10 @@ import java.util.Map;
 
 import org.joda.time.DateTime;
 
+import com.binar.core.procurement.invoice.newInvoice.NewInvoiceView.FormData;
 import com.binar.core.procurement.invoice.newInvoice.NewInvoiceView.FormViewEnum;
 import com.binar.core.procurement.invoice.newInvoice.NewInvoiceView.NewInvoiceListener;
+import com.binar.entity.Invoice;
 import com.binar.entity.PurchaseOrder;
 import com.binar.entity.ReqPlanning;
 import com.binar.generalFunction.DateManipulator;
@@ -38,29 +40,54 @@ public class NewInvoicePresenter implements NewInvoiceListener{
 	}
 	@Override
 	public void buttonClick(String button) {
-		view.getLabelError().setVisible(false);
+		view.hideError();
 		if(button.equals("buttonNext")){
 			buttonNext();
 		}else if(button.equals("buttonBack")){
 			view.setFormView(FormViewEnum.INPUT_VIEW);
 		}else if(button.equals("buttonCreate")){
-			closeWindow();
+			buttonCreate();
 		}else if(button.equals("buttonCancel")){
 			buttonCancel();
-		}else if(button.equals("buttonCheckAll")){
-			view.checkReqPlanning(true);
-		}else if(button.equals("buttonUncheckAll")){
-			view.checkReqPlanning(false);
+		}
+	}
+	private void buttonCreate(){
+		FormData data=view.getEditedInvoice();
+		List<String> error=model.saveInvoice(data);
+		if(error==null){
+			closeWindow();	
+			Notification.show("Data faktur disimpan", Type.TRAY_NOTIFICATION);
+		}else{
+			String stringError="Tidak dapat menyimpan Faktur, kesalahan : </br>";
+			for(String x:error){
+				stringError=stringError+"</br>"+x;
+			}
+			view.showError(stringError);
 		}
 	}
 	private void buttonNext(){
+		int purchaseOrder=view.getPurchaseOrderSelect();
+		PurchaseOrder order=model.getPurchaseOrder(purchaseOrder);
+		view.setFormView(FormViewEnum.INPUT_VIEW);
+		view.generateInvoiceView(order);
 	}
 	private void buttonCancel(){
 		function.showDialog("Batalkan", 
-				"Yakin Akan Membatalkan Membuat Surat Pesanan?",
+				"Yakin Akan Membatalkan Membuat Faktur Baru?",
 				new ClickListener() {
 					public void buttonClick(ClickEvent event) {
 						closeWindow();
+					}
+				}, view.getUI());
+		
+	}
+	public void buttonBack(){
+		function.showDialog("Kembali", 
+				"Kembali ke menu sebelumnya? Data faktur yang belum tersimpan akan dihapus",
+				new ClickListener() {
+					public void buttonClick(ClickEvent event) {
+						view.resetForm();
+						view.setFormView(FormViewEnum.INPUT_VIEW);
 					}
 				}, view.getUI());
 		
@@ -85,6 +112,16 @@ public class NewInvoicePresenter implements NewInvoiceListener{
 			view.setComboPurchaseOrder(data);
 		}
 		
+	}
+	@Override
+	public double countPrice(boolean ppn, String quantity, String price) {
+		try{
+			double quantityD=Double.parseDouble(quantity);
+			double priceD=Double.parseDouble(price);
+			return model.countPrice(ppn, priceD, quantityD);
+		}catch(Exception e){
+			return 0;
+		}
 	}
 	
 }

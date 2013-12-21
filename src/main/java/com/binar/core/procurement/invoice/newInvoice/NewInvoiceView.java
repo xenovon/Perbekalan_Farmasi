@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.binar.core.procurement.purchaseOrder.newPurchaseOrder.NewPurchaseOrderView.FormViewEnum;
 import com.binar.entity.Invoice;
+import com.binar.entity.PurchaseOrder;
 import com.binar.entity.PurchaseOrderItem;
 
 
@@ -19,41 +20,20 @@ public interface NewInvoiceView {
 	public interface NewInvoiceListener{
 		public void buttonClick(String button);
 		public void periodChange();
+		public double countPrice(boolean ppn, String quantity, String price);
 	}
 	
 	public void init();
 	public void construct();
 	public void setListener(NewInvoiceListener listener);
-	public String getSelectedPeriod();
+	public Date[] getSelectedPeriod();
 	public void setFormView(FormViewEnum formView);
 	
-	public void checkReqPlanning(boolean isChecked);
 	public void setComboPurchaseOrder(Map<Integer, String> data);
-	public void generateInvoiceView(Invoice data);
+	public void generateInvoiceView(PurchaseOrder data);
 	public FormData getEditedInvoice();
 	public void resetForm();
-	/*  
-	 * (non-Javadoc)
-	 * @see com.binar.core.procurement.invoice.InvoiceView#init()
-	 *  INVOICE
-		idInvoice
-		Nomor invoice
-		nama invoice
-		jatuh tempo
-		timestamp
-		total tagihan
-		jumlah dibayar
-		jumlah item
-		
-		
-		INVOICE ITEM
-		invoice
-		batch
-		discount
-		price
-		pricePPN
-		quantity
-	 */	
+
 	//form data untuk validasi
 	class FormData{
 		private String invoiceNumber;
@@ -181,16 +161,32 @@ public interface NewInvoiceView {
 		}
 		
 		public double getdiscountDouble(){
-			return Double.parseDouble(discount);
+			if(discount!=null){
+				return Double.parseDouble(discount);				
+			}else{
+				return 0;
+			}
 		}
 		public double getPriceDouble(){
-			return Double.parseDouble(price);
+			if(price!=null){
+				return Double.parseDouble(price);				
+			}else{
+				return 0;
+			}
 		}
 		public int getQuantityInt(){
-			return Integer.parseInt(quantity);
+			if(quantity!=null){
+				return Integer.parseInt(quantity);				
+			}else{
+				return 0;
+			}
 		}
 		public double getTotalPriceDouble(){
-			return Double.parseDouble(totalPrice);
+			if(totalPrice!=null){
+				return Double.parseDouble(totalPrice);				
+			}else{
+				return 0;
+			}
 		}
 		public void setPurchaseOrderItem(PurchaseOrderItem purchaseOrderItem) {
 			this.purchaseOrderItem = purchaseOrderItem;

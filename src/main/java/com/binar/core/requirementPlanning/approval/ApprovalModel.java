@@ -101,6 +101,7 @@ public class ApprovalModel {
 				ReqPlanning planning=server.find(ReqPlanning.class, data.getIdReq());
 				planning.setAcceptedQuantity(data.getQuantityAccepted());
 				planning.setAccepted(data.isAccepted());
+				planning.setDateAccepted(new Date());
 				server.update(planning);
 			}
 			server.commitTransaction();
