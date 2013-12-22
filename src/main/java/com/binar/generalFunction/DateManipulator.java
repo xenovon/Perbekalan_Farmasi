@@ -98,7 +98,7 @@ public class DateManipulator {
 			}else if(monthString.equals("Desember")){
 				month=12;
 			}else{
-				throw  new NumberFormatException();
+				return null;
 			}
 			return new DateTime(year, month, 1, 0, 0);
 		} catch (NumberFormatException e) {

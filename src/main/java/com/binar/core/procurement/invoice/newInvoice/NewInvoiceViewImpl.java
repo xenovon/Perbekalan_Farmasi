@@ -2,8 +2,11 @@ package com.binar.core.procurement.invoice.newInvoice;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import org.joda.time.DateTime;
 
 import com.binar.core.procurement.invoice.InvoiceView.InvoiceListener;
 import com.binar.core.procurement.invoice.newInvoice.NewInvoiceView.InvoiceItem;
@@ -12,6 +15,7 @@ import com.binar.entity.Invoice;
 import com.binar.entity.PurchaseOrder;
 import com.binar.entity.PurchaseOrderItem;
 import com.binar.generalFunction.GeneralFunction;
+import com.vaadin.data.Property.ReadOnlyException;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.IndexedContainer;
@@ -56,6 +60,11 @@ public class NewInvoiceViewImpl extends Window implements NewInvoiceView, ValueC
 	}
 	@Override
 	public void init() {
+		center();
+		setClosable(false);
+		setWidth("700px");
+		setHeight("80%");
+
 		comboPurchaseOrder =new ComboBox("Surat Pesanan");
 				comboPurchaseOrder.setImmediate(true);
 				comboPurchaseOrder.addValueChangeListener(this);
@@ -77,12 +86,29 @@ public class NewInvoiceViewImpl extends Window implements NewInvoiceView, ValueC
 			buttonCreate.setVisible(false);
 		buttonCancel =new Button("Batalkan");
 			buttonCancel.addClickListener(this);
-			 
+		labelError=new Label(){
+				{				
+					setVisible(false);
+					addStyleName("form-error");
+					setContentMode(ContentMode.HTML);
+					addValueChangeListener(new ValueChangeListener() {
 
+						@Override
+						public void valueChange(
+								com.vaadin.data.Property.ValueChangeEvent event) {
+							hideError();
+						}
+					});
+					
+				}
+			};
+			 
+			construct();
 	}
 
 	@Override
 	public void construct() {
+		this.setCaption("Buat Faktur Baru");
 		formSelectPurchaseOrder= new FormLayout(){
 			{
 				setMargin(true);
@@ -155,6 +181,7 @@ public class NewInvoiceViewImpl extends Window implements NewInvoiceView, ValueC
 		private TextField inputPrice;
 		private TextField inputQuantity;
 		private CheckBox isPPN;
+		private DateField expiredDate;
 		private TextField totalPrice;
 		private PurchaseOrderItem purchaseOrderItem;
 		
@@ -168,7 +195,10 @@ public class NewInvoiceViewImpl extends Window implements NewInvoiceView, ValueC
 			String goodsName=item.getSupplierGoods().getGoods().getName();
 			String quantity=item.getQuantity()+"";
 			String price=item.getSupplierGoods().getLastPrice()+"";
-			
+			totalPrice=new TextField("Total Harga Barang");
+				totalPrice.setImmediate(true);
+				totalPrice.addValueChangeListener(valueListener);
+		
 			title=new Label("<h3>Isi faktur untuk barang "+goodsName+"</h3>", ContentMode.HTML);
 			inputBatch=new TextField("Batch");
 				inputBatch.setImmediate(true);
@@ -184,28 +214,35 @@ public class NewInvoiceViewImpl extends Window implements NewInvoiceView, ValueC
 				inputPrice.addValueChangeListener(this);
 				inputPrice.addValueChangeListener(valueListener);
 				inputPrice.setValue(price);
-			inputQuantity=new TextField("Kuantitas");
-					inputQuantity.setImmediate(true);
-					inputQuantity.addValueChangeListener(this);
-					inputQuantity.addValueChangeListener(valueListener);
-					inputQuantity.setValue(quantity);
+				inputQuantity=new TextField("Kuantitas");
+				inputQuantity.setImmediate(true);
+				inputQuantity.addValueChangeListener(this);
+				inputQuantity.addValueChangeListener(valueListener);
+				inputQuantity.setValue(quantity);
+			expiredDate=new DateField("Kadaluarsa");
+				expiredDate.setImmediate(true);
+				expiredDate.addValueChangeListener(valueListener);
+				//4 tahun dari sekarang
+				expiredDate.setValue(new DateTime().withYear(new DateTime().getYear()+4).toDate());
 			isPPN=new CheckBox("Harga Termasuk PPN");
 				isPPN.setValue(true);
 				isPPN.addValueChangeListener(this);
 				isPPN.addValueChangeListener(valueListener);
-			totalPrice=new TextField();
-				totalPrice.setImmediate(true);
-				totalPrice.addValueChangeListener(valueListener);
+				
 			construct();
 		}
 		private void construct(){
 			this.addComponents(title, inputBatch,inputDiscount,
-					inputPrice, inputQuantity, isPPN, totalPrice);
+					inputPrice, expiredDate, inputQuantity, isPPN, totalPrice);
 		}
 		@Override
 		public void valueChange(ValueChangeEvent event) {
-			totalPrice.setValue(listener.countPrice(isPPN.getValue(),
-					inputQuantity.getValue(), inputPrice.getValue())+"");
+			try {
+				totalPrice.setValue(function.formatDecimal(listener.countPrice(isPPN.getValue(),
+						inputQuantity.getValue(), inputPrice.getValue(), inputDiscount.getValue())));
+			} catch (Exception e) {
+				totalPrice.setValue("0");
+			}
 		}
 		public InvoiceItem getData(){
 			InvoiceItem returnValue=new InvoiceItem();
@@ -216,6 +253,7 @@ public class NewInvoiceViewImpl extends Window implements NewInvoiceView, ValueC
 			returnValue.setPurchaseOrderItem(purchaseOrderItem);
 			returnValue.setQuantity(inputQuantity.getValue());
 			returnValue.setTotalPrice(totalPrice.getValue());
+			returnValue.setExpiredDate(expiredDate.getValue());
 			return returnValue;
 		}
 	}
@@ -290,29 +328,15 @@ public class NewInvoiceViewImpl extends Window implements NewInvoiceView, ValueC
 					});
 				}
 			};
-			labelError=new Label(){
-				{				
-					setVisible(false);
-					addStyleName("form-error");
-					setContentMode(ContentMode.HTML);
-					addValueChangeListener(new ValueChangeListener() {
-
-						@Override
-						public void valueChange(
-								com.vaadin.data.Property.ValueChangeEvent event) {
-							hideError();
-						}
-					});
-					
-				}
-			};
 			invoiceFormLayout =new FormLayout();
-			invoiceFormLayout.addComponents(title, inputInvoiceNumber, inputInvoiceDate,
-					inputDueDate, inputAmountPaid);
 		}else{
+			invoiceFormLayout.removeAllComponents();
 			resetForm();
-			title.setCaption("<h3>Faktur untuk "+data.getPurchaseOrderName()+"</h3>");
+			title.setValue("<h3>Faktur untuk "+data.getPurchaseOrderName()+"</h3>");
 		}
+		invoiceFormLayout.addComponents(title, inputInvoiceNumber, inputInvoiceDate,
+				inputDueDate, inputAmountPaid);
+
 		viewInvoice.addComponent(invoiceFormLayout);
 		
 		for(PurchaseOrderItem item:data.getPurchaseOrderItem()){
@@ -323,7 +347,7 @@ public class NewInvoiceViewImpl extends Window implements NewInvoiceView, ValueC
 					hideError();
 				}
 			});
-			viewInvoice.addComponent(form);
+			viewInvoice.addComponents(form, labelError);
 		}
 	}
 /*
@@ -353,12 +377,16 @@ public class NewInvoiceViewImpl extends Window implements NewInvoiceView, ValueC
 		data.setInvoiceNumber(inputInvoiceNumber.getValue());
 		
 		List<InvoiceItem> items=new ArrayList<NewInvoiceView.InvoiceItem>();
-		while(invoiceFormLayout.iterator().hasNext()){
-			Component component=invoiceFormLayout.iterator().next();
-			if(component instanceof InvoiceItemForm){
+		Iterator<Component> iterator=viewInvoice.iterator();
+		while(iterator.hasNext()){
+			Component component=iterator.next();
+			try {
 				InvoiceItemForm invoiceForm = (InvoiceItemForm)component;
 				items.add(invoiceForm.getData());
+			} catch (Exception e) {
+				System.out.println("Do nothing");
 			}
+			System.out.println("iterator test");
 		}
 		System.out.println("Ukuran item" +items.size());
 		data.setInvoiceItems(items);
@@ -375,11 +403,11 @@ public class NewInvoiceViewImpl extends Window implements NewInvoiceView, ValueC
 		
 	}
 	public void showError(String content){
-		labelError.setCaption(content);
+		labelError.setValue(content);
 		labelError.setVisible(true);
 	}
 	public void hideError(){
-		labelError.setCaption("");
+		labelError.setValue("");
 		labelError.setVisible(false);
 	}
 	@Override
@@ -404,7 +432,12 @@ public class NewInvoiceViewImpl extends Window implements NewInvoiceView, ValueC
 		}		
 	}
 	public int getPurchaseOrderSelect(){
-		return (Integer)comboPurchaseOrder.getValue();
+		try {
+			return (Integer)comboPurchaseOrder.getValue();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
 	}
 	public Date getRangeStart(){
 		return inputRangeStart.getValue();
@@ -421,7 +454,8 @@ public class NewInvoiceViewImpl extends Window implements NewInvoiceView, ValueC
 		}else if(event.getButton()==buttonCreate){
 			listener.buttonClick("buttonCreate");
 		}else if(event.getButton()==buttonNext){
-			listener.buttonClick("buttonCreate");
+			listener.buttonClick("buttonNext");
+			System.out.println("Next Click");
 		}
 	}
 	@Override

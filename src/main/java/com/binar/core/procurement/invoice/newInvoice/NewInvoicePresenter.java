@@ -16,6 +16,7 @@ import com.binar.entity.PurchaseOrder;
 import com.binar.entity.ReqPlanning;
 import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
+import com.binar.generalFunction.GetSetting;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
@@ -28,6 +29,7 @@ public class NewInvoicePresenter implements NewInvoiceListener{
 	NewInvoiceModel model;
 	NewInvoiceViewImpl view;
 	DateManipulator date;
+	GetSetting setting;
 	public NewInvoicePresenter(NewInvoiceModel model, NewInvoiceViewImpl view, GeneralFunction function) {
 		this.model=model;
 		this.view=view;
@@ -36,6 +38,7 @@ public class NewInvoicePresenter implements NewInvoiceListener{
 		this.view.init();
 		this.date=function.getDate();
 		this.periodChange();
+		this.setting=function.getSetting();
 		
 	}
 	@Override
@@ -43,8 +46,9 @@ public class NewInvoicePresenter implements NewInvoiceListener{
 		view.hideError();
 		if(button.equals("buttonNext")){
 			buttonNext();
+			System.out.println("Next Click");
 		}else if(button.equals("buttonBack")){
-			view.setFormView(FormViewEnum.INPUT_VIEW);
+			buttonBack();
 		}else if(button.equals("buttonCreate")){
 			buttonCreate();
 		}else if(button.equals("buttonCancel")){
@@ -67,9 +71,13 @@ public class NewInvoicePresenter implements NewInvoiceListener{
 	}
 	private void buttonNext(){
 		int purchaseOrder=view.getPurchaseOrderSelect();
-		PurchaseOrder order=model.getPurchaseOrder(purchaseOrder);
-		view.setFormView(FormViewEnum.INPUT_VIEW);
-		view.generateInvoiceView(order);
+		if(purchaseOrder!=0){
+			PurchaseOrder order=model.getPurchaseOrder(purchaseOrder);
+			view.setFormView(FormViewEnum.EDIT_VIEW);
+			view.generateInvoiceView(order);
+			System.out.println("Next Click "+purchaseOrder);			
+		}
+
 	}
 	private void buttonCancel(){
 		function.showDialog("Batalkan", 
@@ -105,20 +113,30 @@ public class NewInvoicePresenter implements NewInvoiceListener{
 		Date dateEnd=view.getRangeEnd();
 		if(dateStart!=null && dateEnd!=null){
 			List<PurchaseOrder> orders=model.getPurchaseOrderList(dateStart, dateEnd);
-			Map<Integer, String> data=new HashMap<Integer, String>();
-			for(PurchaseOrder order:orders){
-				data.put(order.getIdPurchaseOrder(), order.getPurchaseOrderName());
+			if(orders==null){
+				Notification.show("Data faktur kosong", Type.WARNING_MESSAGE);
+			}else{
+				Map<Integer, String> data=new HashMap<Integer, String>();
+				for(PurchaseOrder order:orders){
+					data.put(order.getIdPurchaseOrder(), order.getPurchaseOrderName());
+				}
+				view.setComboPurchaseOrder(data);				
 			}
-			view.setComboPurchaseOrder(data);
 		}
 		
 	}
+	//	public double countTotalPrice(int quantity, double pricePPN, double discount){
+
 	@Override
-	public double countPrice(boolean ppn, String quantity, String price) {
+	public double countPrice(boolean ppn, String quantity, String price, String discount) {
 		try{
-			double quantityD=Double.parseDouble(quantity);
+			int quantityD=Integer.parseInt(quantity);
 			double priceD=Double.parseDouble(price);
-			return model.countPrice(ppn, priceD, quantityD);
+			double discountD=Double.parseDouble(discount);
+			if(!ppn){
+				priceD=priceD+(priceD*setting.getPPN());
+			}
+			return model.countTotalPrice(quantityD, priceD, discountD);
 		}catch(Exception e){
 			return 0;
 		}

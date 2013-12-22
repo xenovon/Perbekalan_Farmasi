@@ -116,7 +116,13 @@ public class PurchaseOrderPresenter implements PurchaseOrderListener {
 		
 		String period=view.getSelectedPeriod();
 		System.out.println(" Periode "+period);
-		DateTime date=this.date.parseDateMonth(period);
+		DateTime date;
+		try {
+			date = this.date.parseDateMonth(period);
+		} catch (Exception e) {
+			date=null;
+//			e.printStackTrace();
+		}
 		DateTime year=null;
 		DateTime month=null;
 		//untuk menampung opsi pilihan "Semua Bulan"
@@ -130,7 +136,7 @@ public class PurchaseOrderPresenter implements PurchaseOrderListener {
 		if(data!=null){
 			view.updateTableData(data);			
 		}else{
-			Notification.show("Terjadi kesalahan pengambilan data");
+//			Notification.show("Terjadi kesalahan pengambilan data");
 		}
 	}
 

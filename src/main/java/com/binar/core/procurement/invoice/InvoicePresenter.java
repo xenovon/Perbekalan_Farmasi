@@ -6,6 +6,18 @@ import java.util.List;
 import org.joda.time.DateTime;
 
 import com.binar.core.procurement.invoice.InvoiceView.InvoiceListener;
+import com.binar.core.procurement.invoice.editInvoice.EditInvoiceModel;
+import com.binar.core.procurement.invoice.editInvoice.EditInvoicePresenter;
+import com.binar.core.procurement.invoice.editInvoice.EditInvoiceViewImpl;
+import com.binar.core.procurement.invoice.newInvoice.NewInvoiceModel;
+import com.binar.core.procurement.invoice.newInvoice.NewInvoicePresenter;
+import com.binar.core.procurement.invoice.newInvoice.NewInvoiceViewImpl;
+import com.binar.core.procurement.purchaseOrder.editPurchaseOrder.EditPurchaseOrderModel;
+import com.binar.core.procurement.purchaseOrder.editPurchaseOrder.EditPurchaseOrderPresenter;
+import com.binar.core.procurement.purchaseOrder.editPurchaseOrder.EditPurchaseOrderViewImpl;
+import com.binar.core.procurement.purchaseOrder.newPurchaseOrder.NewPurchaseOrderModel;
+import com.binar.core.procurement.purchaseOrder.newPurchaseOrder.NewPurchaseOrderPresenter;
+import com.binar.core.procurement.purchaseOrder.newPurchaseOrder.NewPurchaseOrderViewImpl;
 import com.binar.entity.Invoice;
 import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
@@ -24,26 +36,46 @@ public class InvoicePresenter implements InvoiceListener{
 	InvoiceViewImpl view;
 	GeneralFunction function;
 	DateManipulator date;
+	
+	NewInvoiceModel modelNew;
+	NewInvoicePresenter presenterNew;
+	NewInvoiceViewImpl viewNew;
+	
+	EditInvoiceModel modelEdit;
+	EditInvoiceViewImpl viewEdit;
+	EditInvoicePresenter presenterEdit;
+	
 	public InvoicePresenter(InvoiceViewImpl view, InvoiceModel model, GeneralFunction function) {
 		this.function=function;
 		this.model=model;
 		this.view=view;
 		this.date=function.getDate();
+		this.view.setListener(this);
+		this.view.init();
+	
 	}
 	@Override
 	public void buttonClick(String buttonName) {
 		if(buttonName.equals("buttonNewInvoice")){
-			if(null==null){
+			if(presenterNew==null){
+				modelNew=new NewInvoiceModel(function);
+				viewNew=new NewInvoiceViewImpl(function);
+				presenterNew=new NewInvoicePresenter(modelNew, viewNew, function);
 			}
-			view.getUI().addWindow(null);
+			view.getUI().addWindow(viewNew);
 			addWIndowCloseListener();
 		}
-		
 	}
 	@Override
 	public void editClick(int idInvoice) {
-		// TODO Auto-generated method stub
-		
+		if(presenterEdit==null){
+			modelEdit =new EditInvoiceModel(function);
+			viewEdit = new EditInvoiceViewImpl(function);
+			presenterEdit=new EditInvoicePresenter(function,modelEdit, viewEdit);
+		}
+		presenterEdit.generateInvoice(idInvoice);
+		view.displayForm(viewEdit, "Ubah Data Surat Pesanan", "65%");
+		addWIndowCloseListener();
 	}
 	@Override
 	public void deleteClick(int idInvoice) {
@@ -72,7 +104,6 @@ public class InvoicePresenter implements InvoiceListener{
 			view.showDetailWindow(invoice);
 			addWIndowCloseListener();
 		}
-		
 	}
 	@Override
 	public void valueChange(String value) {
@@ -83,7 +114,12 @@ public class InvoicePresenter implements InvoiceListener{
 	public void updateTable() {
 		String period=view.getSelectedPeriod();
 		System.out.println(" Periode "+period);
-		DateTime date=this.date.parseDateMonth(period);
+		DateTime date;
+		try {
+			date = this.date.parseDateMonth(period);
+		} catch (Exception e) {
+			date=null;
+		}
 		DateTime year=null;
 		DateTime month=null;
 		//untuk menampung opsi pilihan "Semua Bulan"
@@ -97,7 +133,7 @@ public class InvoicePresenter implements InvoiceListener{
 		if(data!=null){
 			view.updateTableData(data);			
 		}else{
-			Notification.show("Terjadi kesalahan pengambilan data");
+//			Notification.show("Terjadi kesalahan pengambilan data");
 		}
 		
 	}

@@ -19,8 +19,8 @@ public class ProcurementView extends CustomComponent implements View {
 	
 	@Override
 	public void enter(ViewChangeEvent event) {
-		invoice=new Invoice();
 		function=new GeneralFunction();
+		invoice=new Invoice(function);
 		purchaseOrder = new PurchaseOrder(function);
 		tabSheet.addTab(purchaseOrder).setCaption("Surat Pesanan");
 		tabSheet.addTab(invoice).setCaption("Faktur");

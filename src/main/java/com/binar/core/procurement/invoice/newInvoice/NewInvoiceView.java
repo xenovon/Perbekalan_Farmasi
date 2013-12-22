@@ -20,7 +20,8 @@ public interface NewInvoiceView {
 	public interface NewInvoiceListener{
 		public void buttonClick(String button);
 		public void periodChange();
-		public double countPrice(boolean ppn, String quantity, String price);
+		public double countPrice(boolean ppn, String quantity, String price,
+				String discount);
 	}
 	
 	public void init();
@@ -35,7 +36,7 @@ public interface NewInvoiceView {
 	public void resetForm();
 
 	//form data untuk validasi
-	class FormData{
+	public class FormData{
 		private String invoiceNumber;
 		private Date dueDate;
 		private Date invoiceDate;
@@ -107,10 +108,11 @@ public interface NewInvoiceView {
 		}
 	}
 	
-	class InvoiceItem{
+	public class InvoiceItem{
 		private String batch="";
 		private String discount="0";
 		private String price="0";
+		private Date expiredDate;
 		private String quantity="0";
 		private boolean isPPN=false;
 		private String totalPrice="0";
@@ -162,21 +164,33 @@ public interface NewInvoiceView {
 		
 		public double getdiscountDouble(){
 			if(discount!=null){
-				return Double.parseDouble(discount);				
+				if(!discount.equals("")){
+					return Double.parseDouble(discount);									
+				}else{
+					return 0;
+				}
 			}else{
 				return 0;
 			}
 		}
 		public double getPriceDouble(){
 			if(price!=null){
-				return Double.parseDouble(price);				
+				if(!price.equals("")){
+					return Double.parseDouble(price);									
+				}else{
+					return 0;
+				}
 			}else{
 				return 0;
 			}
 		}
 		public int getQuantityInt(){
 			if(quantity!=null){
-				return Integer.parseInt(quantity);				
+				if(!quantity.equals("")){
+					return Integer.parseInt(quantity);				
+				}else{
+					return 0;
+				}
 			}else{
 				return 0;
 			}
@@ -193,6 +207,12 @@ public interface NewInvoiceView {
 		}
 		public PurchaseOrderItem getPurchaseOrderItem() {
 			return purchaseOrderItem;
+		}
+		public Date getExpiredDate() {
+			return expiredDate;
+		}
+		public void setExpiredDate(Date expiredDate) {
+			this.expiredDate = expiredDate;
 		}
 		public String getBatch() {
 			return batch;

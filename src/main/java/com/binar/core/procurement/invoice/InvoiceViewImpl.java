@@ -19,6 +19,7 @@ import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
@@ -78,6 +79,8 @@ public class InvoiceViewImpl extends VerticalLayout implements InvoiceView, Clic
 
 	public InvoiceViewImpl(GeneralFunction function) {
 		this.function=function;
+		this.date=function.getDate();
+		this.text=function.getTextManipulator();
 	}
 	
 	@Override
@@ -139,9 +142,8 @@ public class InvoiceViewImpl extends VerticalLayout implements InvoiceView, Clic
 		
 		table=new Table();
 		table.setSizeFull();
-		table.setWidth("100%");
-		table.setHeight("450px");
-		table.setPageLength(10);
+		table.setWidth("98%");
+		table.setHeight("420px");
 		table.setSortEnabled(true);
 		table.setImmediate(true);
 		table.setRowHeaderMode(RowHeaderMode.INDEX);
@@ -352,7 +354,7 @@ public class InvoiceViewImpl extends VerticalLayout implements InvoiceView, Clic
 			
 			tableDetail =new Table("Daftar Item");
 				tableDetail.setSizeFull();
-				tableDetail.setWidth("100%");
+				tableDetail.setWidth("98%");
 				tableDetail.setHeight("339px");
 				
 				tableDetail.setSortEnabled(true);
@@ -362,15 +364,14 @@ public class InvoiceViewImpl extends VerticalLayout implements InvoiceView, Clic
 			containerDetail=new IndexedContainer(){
 				{
 					addContainerProperty("Jumlah", String.class, null);
-					addContainerProperty("Kode Barang", Integer.class, null);
+					addContainerProperty("Kode Barang", String.class, null);
 					addContainerProperty("Nama Barang", String.class, null);
 					addContainerProperty("Batch", String.class, null);
 					addContainerProperty("ED", String.class, null);
 					addContainerProperty("Harga Satuan", String.class, null);
 					addContainerProperty("Harga + PPN", String.class, null);
-					addContainerProperty("Total", String.class, null);
 					addContainerProperty("Diskon", String.class, null);
-					addContainerProperty("Sub Total", String.class, null);
+					addContainerProperty("Total", String.class, null);
 
 				}
 			};
@@ -379,7 +380,7 @@ public class InvoiceViewImpl extends VerticalLayout implements InvoiceView, Clic
 			layoutDetail.addComponent(layoutContent);
 			layoutDetail.addComponent(tableDetail);
 			
-			detailWindow =new Window("Surat Pesanan"){
+			detailWindow =new Window("Faktur"){
 				{
 					center();
 					setClosable(true);
@@ -394,7 +395,28 @@ public class InvoiceViewImpl extends VerticalLayout implements InvoiceView, Clic
 	}
 
 	public void setDetailData(Invoice invoice){
-		
+		 labelInvoiceNumber.setValue(invoice.getInvoiceNumber());
+		 labelInvoiceName.setValue(invoice.getInvoiceName());
+		 labelDueDate.setValue(date.dateToText(invoice.getDueDate(),true));
+		 labelTimestamp.setValue(invoice.getTimestamp().toString());
+		 labelTotalPrice.setValue(text.doubleToRupiah(invoice.getTotalPrice()));
+		 labelAmountPaid.setValue(text.doubleToRupiah(invoice.getAmountPaid()));
+		 labelItemCount.setValue(invoice.getInvoiceItem().size()+"");
+		 labelInvoiceDate.setValue(date.dateToText(invoice.getInvoiceDate(), true));
+		 containerDetail.removeAllItems();
+		 for(InvoiceItem datum:invoice.getInvoiceItem()){
+				Item item=containerDetail.addItem(datum.getIdInvoiceItem());			
+				item.getItemProperty("Jumlah").setValue(text.intToAngka(datum.getQuantity()));
+				item.getItemProperty("Kode Barang").setValue(datum.getPurchaseOrderItem().getSupplierGoods().getGoods().getIdGoods());
+				item.getItemProperty("Nama Barang").setValue(datum.getPurchaseOrderItem().getSupplierGoods().getGoods().getName());
+				item.getItemProperty("Batch").setValue(datum.getBatch());
+				item.getItemProperty("ED").setValue(date.dateToText(datum.getExpiredDate(), true));
+				item.getItemProperty("Harga Satuan").setValue(text.doubleToRupiah(datum.getPrice()));
+				item.getItemProperty("Harga + PPN").setValue(text.doubleToRupiah(datum.getPricePPN()));
+				item.getItemProperty("Total").setValue(text.doubleToRupiah(datum.getTotalPrice()));
+				item.getItemProperty("Diskon").setValue(datum.getDiscount()+"%");
+		 }
+
 	}
 	@Override
 	public String getSelectedPeriod() {
@@ -408,14 +430,40 @@ public class InvoiceViewImpl extends VerticalLayout implements InvoiceView, Clic
 		}else if(event.getProperty()==selectYear){
 			listener.valueChange("selectYear");
 		}
-		
 	}
 
 	@Override
 	public void buttonClick(ClickEvent event) {
 		if(event.getButton()==buttonNewInvoice){
-			listener.buttonClick("buttonNewPurchase");
+			listener.buttonClick("buttonNewInvoice");
 		}		
 	}
+	Window window;
+	
+	public void displayForm(Component content, String title, String height){
+		displayForm(content, title);
+		window.setHeight(height);
+	}
+	public void displayForm(Component content, String title){
+		//menghapus semua window terlebih dahulu
+		for(Window window:this.getUI().getWindows()){
+			window.close();
+		}
+		if(window==null){
+			window=new Window(title){
+				{
+					center();
+					setClosable(false);
+					setWidth("500px");
+					setHeight("80%");
+				}
+			};
+		}
+		this.getUI().removeWindow(window);
+		window.setCaption(title);
+		window.setContent(content);
+		this.getUI().addWindow(window);
+	}
+	
 
 }

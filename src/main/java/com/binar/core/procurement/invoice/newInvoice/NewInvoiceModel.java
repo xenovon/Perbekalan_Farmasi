@@ -14,6 +14,7 @@ import com.binar.core.procurement.invoice.newInvoice.NewInvoiceView.InvoiceItem;
 import com.binar.entity.Invoice;
 import com.binar.entity.PurchaseOrder;
 import com.binar.entity.PurchaseOrderItem;
+import com.binar.entity.SupplierGoods;
 import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
 import com.binar.generalFunction.GetSetting;
@@ -92,8 +93,16 @@ public class NewInvoiceModel {
 			return error;
 		}else{
 			Invoice invoice=formDataToInvoice(data);
+			error=new ArrayList<String>();
 			try {
 				server.save(invoice);
+				//update harga supplier
+				for(com.binar.entity.InvoiceItem item:invoice.getInvoiceItem()){
+					SupplierGoods supplier=item.getPurchaseOrderItem().getSupplierGoods();
+					supplier.setLastUpdate(new Date());
+					supplier.setLastPrice(item.getPricePPN()); //PRICE PPN 
+					server.update(supplier);
+				}
 				return null;
 			} catch (OptimisticLockException e) {
 				error.add("Kesalahan penyimpanan data " +e.getMessage());
@@ -104,19 +113,20 @@ public class NewInvoiceModel {
 		}
 	}
 	
-	private Invoice formDataToInvoice(FormData data){
+	public Invoice formDataToInvoice(FormData data){
 		Invoice invoice=new Invoice();
 		List<com.binar.entity.InvoiceItem> invoiceItem=new ArrayList<com.binar.entity.InvoiceItem>();
 		invoice.setAmountPaid(data.getAmountPaidDouble());
 		invoice.setDuedate(data.getDueDate());
 		invoice.setInvoiceNumber(data.getInvoiceNumber());
 		invoice.setTimestamp(new Date());
-		
+		invoice.setInvoiceDate(data.getInvoiceDate());
 		for(InvoiceItem item:data.getInvoiceItems()){
 			com.binar.entity.InvoiceItem invo=new com.binar.entity.InvoiceItem();
 			invo.setBatch(item.getBatch());
 			invo.setDiscount(item.getdiscountDouble());
 			invo.setInvoice(invoice);
+			invo.setExpiredDate(item.getExpiredDate());
 			if(item.isPPN()){
 				invo.setPricePPN(item.getPriceDouble());
 				double price=(100/(100+setting.getPPN())*item.getPriceDouble());
@@ -151,7 +161,6 @@ public class NewInvoiceModel {
 			double pricePPN=price+(setting.getPPN()/100*price);
 			return pricePPN*quantity;
 		}
-				
 	}
 	public double countTotalPrice(int quantity, double pricePPN, double discount){
 		double total=quantity*pricePPN;

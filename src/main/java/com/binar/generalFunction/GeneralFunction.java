@@ -1,5 +1,7 @@
 package com.binar.generalFunction;
 
+import java.text.DecimalFormat;
+
 import com.avaje.ebean.EbeanServer;
 import com.binar.database.GetEbeanServer;
 import com.vaadin.data.validator.EmailValidator;
@@ -26,6 +28,7 @@ public class GeneralFunction {
 	private TextManipulator text;
 	private GetSetting setting;
 	private EmailValidator emailValidator;
+	private DecimalFormat format;
 	
 	//Method konstruktor kosong, jaga-jaga aja kalo butuh konstruktor
 	public GeneralFunction() {
@@ -85,5 +88,11 @@ public class GeneralFunction {
 			emailValidator.setErrorMessage(message);
 		}
 		return emailValidator;
+	}
+	public String formatDecimal(Double input){
+		if(format==null){
+			format=new DecimalFormat("#.##");
+		}
+		return format.format(input);
 	}
 }

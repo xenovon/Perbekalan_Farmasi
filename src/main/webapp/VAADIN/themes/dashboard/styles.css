@@ -5539,7 +5539,7 @@ body .dashboard.v-app .v-app-loading {
 }
 
 .dashboard.v-app {
-	background: #fff;
+	background: #353637;
 }
 
 .dashboard.v-app[id*="overlays"] {

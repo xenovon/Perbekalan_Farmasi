@@ -43,8 +43,6 @@ public class InputFormModel {
 		 * input price
 		 * input information
 		 */
-		
-		
 		return null;
 	}
 	//Mendapatkan data daftar barang untuk combo box

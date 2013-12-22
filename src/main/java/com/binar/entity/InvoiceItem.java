@@ -1,5 +1,7 @@
 package com.binar.entity;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -27,7 +29,8 @@ public class InvoiceItem {
 	private double discount;
 	//harga per barang
 	private double price;
-	
+	@Column(name="expired_date")
+	private Date expiredDate;
 	@Column(name="price_ppn")
 	private double pricePPN;
 	private int quantity;
@@ -91,6 +94,13 @@ public class InvoiceItem {
 	public double getPricePPN() {
 		return pricePPN;
 	}
+	public void setExpiredDate(Date expiredDate) {
+		this.expiredDate = expiredDate;
+	}
+	public Date getExpiredDate() {
+		return expiredDate;
+	}
+	
 	
 	
 }	

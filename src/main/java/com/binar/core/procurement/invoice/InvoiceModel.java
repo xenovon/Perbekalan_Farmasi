@@ -38,7 +38,7 @@ public class InvoiceModel {
 			}
 			System.out.println("Month null" + endDate.toString()+" "+startDate.toString());
 			
-			return server.find(Invoice.class).where().between("date", startDate, endDate).order().asc("date").findList();
+			return server.find(Invoice.class).where().between("invoiceDate", startDate, endDate).order().asc("invoiceDate").findList();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

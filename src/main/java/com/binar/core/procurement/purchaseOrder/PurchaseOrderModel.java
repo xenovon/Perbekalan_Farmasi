@@ -18,7 +18,6 @@ public class PurchaseOrderModel {
 		this.function=function;
 		this.server=function.getServer();
 	}
-	
 	public String deletePurchaseOrder(int idPurchaseOrder){
 		try {
 			server.delete(getPurchaseOrder(idPurchaseOrder));
