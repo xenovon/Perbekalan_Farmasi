@@ -37,15 +37,35 @@ public interface NewInvoiceView {
 
 	//form data untuk validasi
 	public class FormData{
+		private int iDInvoice;
 		private String invoiceNumber;
 		private Date dueDate;
 		private Date invoiceDate;
 		private String amountPaid;
+		private String invoiceName;
 		private List<InvoiceItem> invoiceItems;
 		
+		public int getiDInvoice() {
+			return iDInvoice;
+		}
+		public void setiDInvoice(int iDInvoice) {
+			this.iDInvoice = iDInvoice;
+		}
+		public String getInvoiceName() {
+			return invoiceName;
+		}
+		public void setInvoiceName(String invoiceName) {
+			this.invoiceName = invoiceName;
+		}
 		public List<String> validate(){
 			
 			List<String> error=new ArrayList<String>();
+			if(dueDate==null){
+				error.add("Format tanggal salah");
+			}
+			if(invoiceDate==null){
+				error.add("Format tanggal salah");
+			}
 			if(invoiceNumber==null){
 				error.add("Nomor faktur tidak boleh kosong");
 			}
@@ -109,6 +129,7 @@ public interface NewInvoiceView {
 	}
 	
 	public class InvoiceItem{
+		private int idInvoiceItem;
 		private String batch="";
 		private String discount="0";
 		private String price="0";
@@ -118,9 +139,18 @@ public interface NewInvoiceView {
 		private String totalPrice="0";
 		private PurchaseOrderItem purchaseOrderItem;
 		
+		public int getIdInvoiceItem() {
+			return idInvoiceItem;
+		}
+		public void setIdInvoiceItem(int idInvoiceItem) {
+			this.idInvoiceItem = idInvoiceItem;
+		}
 		public List<String> validate(){
 			List<String> data=new ArrayList<String>();
 			data.add("<b>Pesan Untuk obat "+purchaseOrderItem.getSupplierGoods().getGoods().getName()+"</b>");
+			if(expiredDate==null){
+				data.add("Format tanggal salah");
+			}
 			try {
 				double discDouble=getdiscountDouble();
 				if(discDouble>100 || discDouble <0){
@@ -155,7 +185,7 @@ public interface NewInvoiceView {
 			} catch (NumberFormatException e) {
 				data.add("Jumlah harus berupa angka");
 			}
-			if(data.size()>=1){
+			if(data.size()<=1){
 				return null;
 			}else{
 				return data;

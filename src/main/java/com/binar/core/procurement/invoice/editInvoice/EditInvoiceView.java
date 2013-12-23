@@ -17,8 +17,6 @@ public interface EditInvoiceView {
 		public void valueChange();
 		public double countPrice(boolean ppn, String quantity, String price,
 				String discount);
-
-
 	}
 	
 	public void setListener(EditInvoiceListener listener);

@@ -39,7 +39,6 @@ public class NewInvoicePresenter implements NewInvoiceListener{
 		this.date=function.getDate();
 		this.periodChange();
 		this.setting=function.getSetting();
-		
 	}
 	@Override
 	public void buttonClick(String button) {
@@ -123,10 +122,9 @@ public class NewInvoicePresenter implements NewInvoiceListener{
 				view.setComboPurchaseOrder(data);				
 			}
 		}
-		
 	}
-	//	public double countTotalPrice(int quantity, double pricePPN, double discount){
-
+	
+	//	public double countTotalPrice(int quantity, double pricePPN, double discount)
 	@Override
 	public double countPrice(boolean ppn, String quantity, String price, String discount) {
 		try{

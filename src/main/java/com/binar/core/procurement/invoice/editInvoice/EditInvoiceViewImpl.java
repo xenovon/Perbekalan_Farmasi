@@ -41,6 +41,7 @@ public class EditInvoiceViewImpl extends VerticalLayout implements EditInvoiceVi
 	
 	class InvoiceItemForm extends FormLayout implements ValueChangeListener {
 		
+		private int idInvoiceItem;
 		private Label title;
 		private TextField inputBatch;
 		private TextField inputDiscount;
@@ -95,7 +96,7 @@ public class EditInvoiceViewImpl extends VerticalLayout implements EditInvoiceVi
 				isPPN.setValue(true);
 				isPPN.addValueChangeListener(this);
 				isPPN.addValueChangeListener(valueListener);
-				
+			idInvoiceItem=item.getIdInvoiceItem();
 			construct(item);
 		}
 		
@@ -134,6 +135,7 @@ public class EditInvoiceViewImpl extends VerticalLayout implements EditInvoiceVi
 			returnValue.setQuantity(inputQuantity.getValue());
 			returnValue.setTotalPrice(totalPrice.getValue());
 			returnValue.setExpiredDate(expiredDate.getValue());
+			returnValue.setIdInvoiceItem(idInvoiceItem);
 			return returnValue;
 		}
 	}
@@ -163,10 +165,12 @@ public class EditInvoiceViewImpl extends VerticalLayout implements EditInvoiceVi
 	@Override
 	public FormData getEditedInvoice() {
 		FormData data=new FormData();
+		data.setiDInvoice(idInvoice);
 		data.setAmountPaid(inputAmountPaid.getValue());
 		data.setDueDate(inputDueDate.getValue());
 		data.setInvoiceDate(inputInvoiceDate.getValue());
 		data.setInvoiceNumber(inputInvoiceNumber.getValue());
+		data.setInvoiceName(inputInvoiceName.getValue());
 		
 		List<InvoiceItem> items=new ArrayList<NewInvoiceView.InvoiceItem>();
 		Iterator<Component> iterator=this.iterator();
@@ -221,6 +225,7 @@ public class EditInvoiceViewImpl extends VerticalLayout implements EditInvoiceVi
 		this.listener=listener;
 	}
 	//Form untuk edit invoice
+	private int idInvoice;
 	private Label labelError;
 	private TextField inputInvoiceNumber;
 	private DateField inputDueDate;
@@ -300,12 +305,12 @@ public class EditInvoiceViewImpl extends VerticalLayout implements EditInvoiceVi
 	}
 	@Override
 	public void setFormData(Invoice data) {
+		  idInvoice=data.getIdInvoice();
 		  inputInvoiceNumber.setValue(data.getInvoiceNumber());
 		  inputInvoiceName.setValue(data.getInvoiceName());
 		  inputDueDate.setValue(data.getDueDate());
 		  inputInvoiceDate.setValue(data.getInvoiceDate());
 		  inputAmountPaid.setValue(function.formatDecimal(data.getAmountPaid()));
-		  
 	}
 
 }

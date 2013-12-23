@@ -30,7 +30,7 @@ public class GeneralFunction {
 	private EmailValidator emailValidator;
 	private DecimalFormat format;
 	
-	//Method konstruktor kosong, jaga-jaga aja kalo butuh konstruktor
+	//Method konstruktor kosong, jaga-jaga  kalo butuh konstruktor
 	public GeneralFunction() {
 		
 	}	

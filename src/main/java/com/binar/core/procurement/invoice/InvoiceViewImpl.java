@@ -355,7 +355,7 @@ public class InvoiceViewImpl extends VerticalLayout implements InvoiceView, Clic
 			tableDetail =new Table("Daftar Item");
 				tableDetail.setSizeFull();
 				tableDetail.setWidth("98%");
-				tableDetail.setHeight("339px");
+				tableDetail.setHeight("250px");
 				
 				tableDetail.setSortEnabled(true);
 				tableDetail.setImmediate(true);

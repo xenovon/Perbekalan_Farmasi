@@ -109,7 +109,6 @@ public class NewInvoiceModel {
 				e.printStackTrace();
 				return error;
 			}
-			
 		}
 	}
 	
