@@ -216,6 +216,7 @@ public class NewEditUserViewImpl extends FormLayout implements NewEditUserView, 
 			buttonActivation.setVisible(true);
 			buttonResetPassword.setVisible(true);
 			inputUserName.setEnabled(false);
+			buttonReset.setVisible(false);
 		}else{
 			buttonSaveEdit.setVisible(false);
 			buttonSubmit.setVisible(true);
@@ -223,6 +224,7 @@ public class NewEditUserViewImpl extends FormLayout implements NewEditUserView, 
 			inputPassword2.setVisible(true);
 			buttonActivation.setVisible(false);
 			inputUserName.setEnabled(true);
+			buttonReset.setVisible(true);
 			buttonResetPassword.setVisible(false);			
 		}
 		

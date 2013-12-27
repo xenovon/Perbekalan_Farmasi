@@ -292,7 +292,7 @@ public class UserListViewImpl extends VerticalLayout implements UserListView, Cl
 			window=new Window(title){
 				{
 					center();
-					setClosable(false);
+					setClosable(true);
 					setWidth("600px");
 					setHeight("80%");
 				}
