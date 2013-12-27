@@ -9,8 +9,7 @@ public interface UserListView {
 		public void buttonClick(String buttonName);
 		public void editClick(int idUser);
 		public void deleteClick(int idUser);
-		public void showClick(int idUser);	
-		
+		public void showClick(int idUser);
 	}
 	
 	public void init();

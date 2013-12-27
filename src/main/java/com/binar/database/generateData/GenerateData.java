@@ -104,7 +104,7 @@ public class GenerateData {
 		roleFarmasi.setDescription("Petugas gudang farmasi "
 								  +"merupakan pengguna yang bertugas mengelola"
 								  + "proses perbekalan farmasi dalam aplikasi");
-		roleFarmasi.setRoleName("Petugas Gudang </br> Farmasi");
+		roleFarmasi.setRoleName("Petugas Gudang Farmasi");
 		
 		server.save(roleFarmasi);
 		
