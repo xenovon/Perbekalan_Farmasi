@@ -8,15 +8,25 @@ import javax.persistence.PersistenceException;
 import org.joda.time.DateTime;
 
 import com.avaje.ebean.EbeanServer;
+import com.binar.core.procurement.purchaseOrder.printPurchaseOrder.Const;
 import com.binar.entity.PurchaseOrder;
+import com.binar.entity.PurchaseOrderItem;
+import com.binar.entity.enumeration.EnumPurchaseOrderType;
+import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
+import com.binar.generalFunction.GetSetting;
+import com.vaadin.server.BrowserWindowOpener;
 
 public class PurchaseOrderModel {
 	GeneralFunction function;
 	EbeanServer server;
+	GetSetting setting;
+	DateManipulator date;
 	public PurchaseOrderModel(GeneralFunction function) {
 		this.function=function;
 		this.server=function.getServer();
+		this.setting=function.getSetting();
+		this.date=function.getDate();
 	}
 	public String deletePurchaseOrder(int idPurchaseOrder){
 		try {

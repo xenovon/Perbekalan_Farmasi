@@ -51,7 +51,6 @@ public class PurchaseOrderPresenter implements PurchaseOrderListener {
 		
 		this.view.setListener(this);
 		this.view.init();
-		printClick();
 		
 	}
 	@Override
@@ -94,6 +93,7 @@ public class PurchaseOrderPresenter implements PurchaseOrderListener {
 		PurchaseOrder order=model.getPurchaseOrder(idPurchaseOrder);
 		if(order!=null){
 			view.showDetailWindow(order);
+			printClick(idPurchaseOrder);
 			addWIndowCloseListener();
 		}
 	}
@@ -152,14 +152,15 @@ public class PurchaseOrderPresenter implements PurchaseOrderListener {
 		addWIndowCloseListener();
 	}
 	
-	public void printClick(){
+	public void printClick(int idPurchase){
 		// Create an opener extension
 		BrowserWindowOpener opener =
 		new BrowserWindowOpener(GeneralPrint.class);
 		opener.setFeatures("height=200,width=400,resizable");
 		// A button to open the printer-friendly page.
-		opener.setParameter("anu","Gahahahaha");
+		opener.setParameter("ID", idPurchase+"");
 		opener.extend(view.getButtonPrint());
+		
 	}
 	
 	public void saveClick(){

@@ -11,7 +11,9 @@ import org.joda.time.DateTime;
 import com.avaje.ebean.EbeanServer;
 import com.binar.entity.Goods;
 import com.binar.entity.Insurance;
+import com.binar.entity.Invoice;
 import com.binar.entity.Manufacturer;
+import com.binar.entity.PurchaseOrder;
 import com.binar.entity.ReqPlanning;
 import com.binar.entity.Role;
 import com.binar.entity.Setting;
@@ -59,6 +61,9 @@ public class GenerateData {
 		for(ReqPlanning req:reqs){
 			server.delete(req);
 		}
+		List<Invoice> invoice=server.find(Invoice.class).findList();
+		server.delete(invoice);
+		server.delete(server.find(PurchaseOrder.class).findList());
 		List<SupplierGoods> supps=server.find(SupplierGoods.class).findList();
 		for(SupplierGoods supp:supps){
 			server.delete(supp);
@@ -176,7 +181,8 @@ public class GenerateData {
 				userFRM.setPhoneNumber("081327094933");
 				userFRM.setUsername("binar");
 				userFRM.setRole(roleFRM);
-				userFRM.setActive(true);	
+				userFRM.setActive(true);
+			
 		server.save(userFRM);  
 		
 		User userIFRS=new User();
@@ -188,7 +194,7 @@ public class GenerateData {
 			userIFRS.setUsername("nana");
 			userIFRS.setRole(roleIFRS);
 			userIFRS.setActive(true);	
-		
+			userIFRS.setTitle("Kepala IFRS");
 		server.save(userIFRS);  		
 		
 
@@ -224,6 +230,7 @@ public class GenerateData {
 			userTPN.setUsername("nantia");
 			userTPN.setRole(roleTPN);
 			userTPN.setActive(true);	
+			userTPN.setTitle("Penanggung Jawab");
 
 		server.save(userTPN);			
 
@@ -248,6 +255,7 @@ public class GenerateData {
 			supplier1.setSupplierAddress("Jakarta Pusat");
 			supplier1.setFax("0921090312");
 			supplier1.setPhoneNumber("08092022");
+			supplier1.setCity("Jakarta Pusat");
 			supplier1.setDescription("Supplier ini merupakan supplier yang sangat menjunjung tinggi integritas");
 		server.save(supplier1);
 
@@ -257,6 +265,8 @@ public class GenerateData {
 			supplier2.setSupplierName("Sapta Sari");
 			supplier2.setSupplierAddress("Jalan Bulalale 21, Semarang");
 			supplier2.setFax("453535");
+			supplier2.setPhoneNumber("545345");
+			supplier2.setCity("Semarang");
 			supplier2.setPhoneNumber("545345");
 			supplier2.setDescription("Supplier yang suka memberikan banyak diskon");
 			
@@ -317,6 +327,23 @@ public class GenerateData {
 			goods1.setMinimumStock(20);
 			goods1.setHet(100000);
 		server.save(goods1);		
+		Goods goods2 =new Goods();
+		goods2.setIdGoods("BRG-3X");
+		goods2.setCategory(EnumGoodsCategory.PATEN);
+		goods2.setCurrentStock(0);
+		goods2.setDescription("Untuk Anti Depressan");
+		goods2.setGoodsPackage("pack");
+		goods2.setImportant(false);
+		goods2.setInformation("Barang ini mudah sobek");
+		goods2.setInsurance(server.find(Insurance.class).where().eq("name", "Umum").findUnique());
+		goods2.setMinimumStock(12);
+		goods2.setName("Closenin RX2");
+		goods2.setType(EnumGoodsType.NARKOTIKA);
+		goods2.setUnit("bag");
+		goods2.setMinimumStock(20);
+		goods2.setHet(100000);
+	server.save(goods2);		
+
 	}
 	
 	private void setSettingData(){
@@ -385,7 +412,27 @@ public class GenerateData {
 			setting9.setSettingValue("GEN");
 			setting9.setSettingGroup(EnumSettingGroup.SURAT_PESANAN);
 			server.save(setting9);
-		
+		Setting setting10=new Setting();
+			setting10.setSettingDescription("Nomor Telepon Rumah Sakit");
+			setting10.setSettingKey("rs_number");
+			setting10.setSettingName("Nomor Telepon");
+			setting10.setSettingValue("(0281)6570004 Ext. 116");
+			setting10.setSettingGroup(EnumSettingGroup.SURAT_PESANAN);
+			server.save(setting10);
+		Setting setting11=new Setting();
+			setting11.setSettingDescription("Alamat Rumah Sakit");
+			setting11.setSettingKey("rs_address");
+			setting11.setSettingName("Alamat Rumah Sakit");
+			setting11.setSettingValue("Jl Raya Pancasan - Ajibarang");
+			setting11.setSettingGroup(EnumSettingGroup.SURAT_PESANAN);
+			server.save(setting11);		
+		Setting setting12=new Setting();
+			setting12.setSettingDescription("Kota rumah sakit");
+			setting12.setSettingKey("rs_city");
+			setting12.setSettingName("Kota");
+			setting12.setSettingValue("Ajibarang");
+			setting12.setSettingGroup(EnumSettingGroup.SURAT_PESANAN);
+			server.save(setting12);		
 		
 			
 	}

@@ -274,7 +274,6 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 	
 	@Override
 	public void showDetailWindow(PurchaseOrder purchaseOrder) {
-		if(detailWindow==null){
 			layoutDetail = new VerticalLayout(){
 				{
 					setSpacing(true);
@@ -331,6 +330,12 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 			};
 			
 			tableDetail.setContainerDataSource(containerDetail);
+			buttonPrint=new Button("Cetak");
+			buttonPrint.setDescription("Cetak Surat Pesanan");
+			buttonPrint.setIcon(new ThemeResource("icons/image/icon-print.png"));
+			buttonPrint.addStyleName("button-table");
+			buttonPrint.addClickListener(this);
+
 			layoutDetail.addComponent(new CssLayout(){
 				{
 					setStyleName("float-right");
@@ -349,7 +354,7 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 					setHeight("80%");
 				}
 			};
-		}
+
 		detailWindow.setContent(layoutDetail);
 		setDetailData(purchaseOrder);
 		this.getUI().addWindow(detailWindow);
