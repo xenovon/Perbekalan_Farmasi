@@ -11,7 +11,7 @@ import com.avaje.ebean.config.dbplatform.MySqlPlatform;
 import com.binar.entity.DeletedGoods;
 import com.binar.entity.Goods;
 import com.binar.entity.GoodsConsumption;
-import com.binar.entity.GoodsReceipt;
+import com.binar.entity.GoodsReception;
 import com.binar.entity.Insurance;
 import com.binar.entity.Invoice;
 import com.binar.entity.InvoiceItem;
@@ -71,7 +71,7 @@ public class EbeanConfig {
      	config.addClass(DeletedGoods.class);
     	config.addClass(Goods.class);
     	config.addClass(GoodsConsumption.class);
-    	config.addClass(GoodsReceipt.class);
+    	config.addClass(GoodsReception.class);
     	config.addClass(Insurance.class);
     	config.addClass(Invoice.class);
     	config.addClass(InvoiceItem.class);

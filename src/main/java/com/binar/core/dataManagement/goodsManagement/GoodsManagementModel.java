@@ -9,7 +9,7 @@ import com.avaje.ebean.EbeanServer;
 import com.binar.entity.DeletedGoods;
 import com.binar.entity.Goods;
 import com.binar.entity.GoodsConsumption;
-import com.binar.entity.GoodsReceipt;
+import com.binar.entity.GoodsReception;
 import com.binar.entity.InvoiceItem;
 import com.binar.entity.PurchaseOrderItem;
 import com.binar.entity.ReqPlanning;
@@ -73,7 +73,7 @@ public class GoodsManagementModel {
 			List<InvoiceItem> invoiceItem=server.find(InvoiceItem.class).
 							where().in("purchaseOrderItem", purchaseOrderItem).select("idInvoiceItem").findList();
 			
-			List<GoodsReceipt> receiptItem=server.find(GoodsReceipt.class).where().
+			List<GoodsReception> receiptItem=server.find(GoodsReception.class).where().
 					in("invoiceItem", invoiceItem).select("idGoodsReceipt").findList();
 			
 			server.delete(receiptItem);

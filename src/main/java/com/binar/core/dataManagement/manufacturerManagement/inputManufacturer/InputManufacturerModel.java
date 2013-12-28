@@ -8,7 +8,7 @@ import javax.persistence.OptimisticLockException;
 
 import com.avaje.ebean.EbeanServer;
 import com.binar.entity.Goods;
-import com.binar.entity.GoodsReceipt;
+import com.binar.entity.GoodsReception;
 import com.binar.entity.Insurance;
 import com.binar.entity.InvoiceItem;
 import com.binar.entity.Manufacturer;

@@ -36,6 +36,15 @@ public class GoodsConsumption {
 	@Column(columnDefinition="TEXT")
 	private String information;
 
+	private String ward;
+	
+	public String getWard() {
+		return ward;
+	}
+	public void setWard(String ward) {
+		this.ward = ward;
+	}
+	
 	public int getIdGoodsConsumption() {
 		return idGoodsConsumption;
 	}

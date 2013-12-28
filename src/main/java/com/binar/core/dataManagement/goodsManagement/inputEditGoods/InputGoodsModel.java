@@ -10,7 +10,7 @@ import com.avaje.ebean.EbeanServer;
 import com.binar.core.dataManagement.goodsManagement.inputEditGoods.InputGoodsView.ComboDataList;
 import com.binar.core.procurement.PurchaseOrder;
 import com.binar.entity.Goods;
-import com.binar.entity.GoodsReceipt;
+import com.binar.entity.GoodsReception;
 import com.binar.entity.Insurance;
 import com.binar.entity.InvoiceItem;
 import com.binar.entity.PurchaseOrderItem;
@@ -176,7 +176,7 @@ public class InputGoodsModel {
 					List<InvoiceItem> invoiceItems=server.find(InvoiceItem.class).
 							   where().in("purchaseOrderItem", purchaseOrderItems).findList();
 					if(invoiceItems.size()!=0){
-						List<GoodsReceipt> receiptList=server.find(GoodsReceipt.class).
+						List<GoodsReception> receiptList=server.find(GoodsReception.class).
 													   where().in("invoiceItem", invoiceItems).findList();
 						if(receiptList.size()!=0){
 							return false;

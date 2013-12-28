@@ -30,7 +30,41 @@ public class DeletedGoods {
 	@Column(columnDefinition="TEXT")
 	private String information;
 	
+    @Column(name= "fk_goods_supplier")
+    private SupplierGoods supplierGoods ;
+    @Column(name= "deletion_date")
+    private Date deletionDate ;
+    @Column(name= "is_accepted")
+    private boolean isAccepted ;
+   
+    @Column(name= "approval_date" )
+    private boolean approvalDate ;
+
 	
+	public SupplierGoods getSupplierGoods() {
+		return supplierGoods;
+	}
+	public void setSupplierGoods(SupplierGoods supplierGoods) {
+		this.supplierGoods = supplierGoods;
+	}
+	public Date getDeletionDate() {
+		return deletionDate;
+	}
+	public void setDeletionDate(Date deletionDate) {
+		this.deletionDate = deletionDate;
+	}
+	public boolean isAccepted() {
+		return isAccepted;
+	}
+	public void setAccepted(boolean isAccepted) {
+		this.isAccepted = isAccepted;
+	}
+	public boolean isApprovalDate() {
+		return approvalDate;
+	}
+	public void setApprovalDate(boolean approvalDate) {
+		this.approvalDate = approvalDate;
+	}
 	public int getIdDeletedGoods() {
 		return idDeletedGoods;
 	}

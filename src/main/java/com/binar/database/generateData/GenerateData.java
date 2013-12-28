@@ -9,11 +9,16 @@ import javax.swing.text.Segment;
 import org.joda.time.DateTime;
 
 import com.avaje.ebean.EbeanServer;
+import com.binar.entity.DeletedGoods;
 import com.binar.entity.Goods;
+import com.binar.entity.GoodsConsumption;
+import com.binar.entity.GoodsReception;
 import com.binar.entity.Insurance;
 import com.binar.entity.Invoice;
+import com.binar.entity.InvoiceItem;
 import com.binar.entity.Manufacturer;
 import com.binar.entity.PurchaseOrder;
+import com.binar.entity.PurchaseOrderItem;
 import com.binar.entity.ReqPlanning;
 import com.binar.entity.Role;
 import com.binar.entity.Setting;
@@ -51,6 +56,10 @@ public class GenerateData {
 			initiateSupplierData();
 			initiatieManufacturerData();
 			setSettingData();
+            initiateConsumptionData();
+            initiateDeletionData();
+            initiateReceptionData();
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -64,6 +73,11 @@ public class GenerateData {
 		List<Invoice> invoice=server.find(Invoice.class).findList();
 		server.delete(invoice);
 		server.delete(server.find(PurchaseOrder.class).findList());
+        List<GoodsReception> goodsRecs=server.find(GoodsReception.class).findList();
+        for(GoodsReception goodsRec:goodsRecs){
+               server.delete(goodsRec);
+        }
+	
 		List<SupplierGoods> supps=server.find(SupplierGoods.class).findList();
 		for(SupplierGoods supp:supps){
 			server.delete(supp);
@@ -81,6 +95,16 @@ public class GenerateData {
 		for(Goods good:goods){
 			server.delete(good);
 		}
+        List<DeletedGoods> dels= server.find(DeletedGoods. class).findList();
+        for(DeletedGoods del:dels){
+               server.delete(dels);
+        }
+		
+        List<GoodsConsumption> consumptions=server.find(GoodsConsumption.class).findList();
+        for(GoodsConsumption consumption:consumptions){
+               server.delete(consumption);
+        }
+		
 		List<Supplier> suppliers=server.find(Supplier.class).findList();
 		for(Supplier supplier:suppliers){
 			server.delete(supplier);
@@ -352,6 +376,7 @@ public class GenerateData {
 				setting1.setSettingKey("satuan");
 				setting1.setSettingName("Satuan Barang");
 				setting1.setSettingValue("btl=botol, pcs=pieces, roll=roll, tube=tube, bag=bag, tab=tablet, amp=ampul,vial=vial, pair=pair, pack=pack");
+				setting1.setSettingGroup(EnumSettingGroup.BARANG);
 		server.save(setting1);		
 		
 		Setting setting2=new Setting();
@@ -359,7 +384,8 @@ public class GenerateData {
 			setting2.setSettingKey("package");
 			setting2.setSettingName("Kemasan Barang");
 			setting2.setSettingValue("box=boxs, strip=strip, dus=dus, botol=botol, blister=blister");
-		server.save(setting2);	
+			setting2.setSettingGroup(EnumSettingGroup.BARANG);
+			server.save(setting2);	
 		
 		Setting setting3=new Setting();
 			setting3.setSettingDescription("Besaran PPN untuk barang dalam persen");
@@ -417,23 +443,195 @@ public class GenerateData {
 			setting10.setSettingKey("rs_number");
 			setting10.setSettingName("Nomor Telepon");
 			setting10.setSettingValue("(0281)6570004 Ext. 116");
-			setting10.setSettingGroup(EnumSettingGroup.SURAT_PESANAN);
+			setting10.setSettingGroup(EnumSettingGroup.UMUM);
 			server.save(setting10);
 		Setting setting11=new Setting();
 			setting11.setSettingDescription("Alamat Rumah Sakit");
 			setting11.setSettingKey("rs_address");
 			setting11.setSettingName("Alamat Rumah Sakit");
 			setting11.setSettingValue("Jl Raya Pancasan - Ajibarang");
-			setting11.setSettingGroup(EnumSettingGroup.SURAT_PESANAN);
+			setting11.setSettingGroup(EnumSettingGroup.UMUM);
 			server.save(setting11);		
 		Setting setting12=new Setting();
 			setting12.setSettingDescription("Kota rumah sakit");
 			setting12.setSettingKey("rs_city");
 			setting12.setSettingName("Kota");
 			setting12.setSettingValue("Ajibarang");
-			setting12.setSettingGroup(EnumSettingGroup.SURAT_PESANAN);
+			setting12.setSettingGroup(EnumSettingGroup.UMUM);
 			server.save(setting12);		
+		Setting setting13= new Setting();
+            setting13.setSettingDescription( "Instalasi yang membutuhkan perbekalan farmasi");
+            setting13.setSettingKey( "instalasi" );
+            setting13.setSettingName( "Instalasi Rumah Sakit" );
+            setting13.setSettingValue( "farmasi=Instalasi Farmasi, ibs=Instalasi Bedah Sentral, camar=Rawat Inap Camar, Kepodang=Rawat Inap Kepodang, kenari=Rawat Inap Kenari, perinatologi=Rawat Inap Perinatologi, cendrawasih=Rawat Inap Cendrawasih, nuri=Rawat Inap Nuri, IPJ=Instalasi Pemulasaran Jenazah, IPAL=Instalasi Pengelolaan Air Limbah, laundry=Instalasi Laundry, gizi=Instalasi Gizi, laboratorium=Instalasi Laboratorium");
+            setting13.setSettingGroup(EnumSettingGroup.UMUM);
+           server.save(setting13);
+     
 		
 			
 	}
+	
+	
+	private void initiateConsumptionData(){
+		System.out.println("Masukkan data konsumsi");
+		GoodsConsumption consumption1 = new GoodsConsumption();
+		Goods goods1 = server.find(Goods.class, "BRG-1X");
+		
+		consumption1.setGoods(goods1);
+		consumption1.setInformation("Tes info");
+		consumption1.setQuantity(55);
+		consumption1.setStockQuantity(200);
+		consumption1.setConsumptionDate(new DateTime(2013, 12, 11, 11, 12).toDate());
+		consumption1.setTimestamp(new Date());
+		consumption1.setWard("laboratorium");
+		server.save(consumption1);
+		
+		GoodsConsumption consumption = new GoodsConsumption();
+		Goods goods2 =server.find(Goods.class, "BRG-2X");
+		
+		consumption.setGoods(goods2);
+		consumption.setInformation("Tes info");
+		consumption.setQuantity(55);
+		consumption.setStockQuantity(200);
+		consumption.setConsumptionDate(new DateTime(2013, 12, 11, 11, 12).toDate());
+		consumption.setTimestamp(new Date());
+		consumption.setWard("camar");
+		server.save(consumption);
+	}
+	
+	private void initiateDeletionData(){
+		System.out.println("Masukkan data penghapusan");
+		DeletedGoods deletion1 = new DeletedGoods();
+		SupplierGoods supGoods1 = server.find(SupplierGoods.class, "1");
+		
+		deletion1.setSupplierGoods(supGoods1);
+		deletion1.setInformation("Tes info");
+		deletion1.setQuantity(55);
+		deletion1.setStockQuantity(200);
+		deletion1.setDeletionDate(new DateTime(2013, 12, 11, 11, 12).toDate());
+		deletion1.setTimestamp(new Date());
+		server.save(deletion1);
+		
+		DeletedGoods deletion2 = new DeletedGoods();
+		SupplierGoods supGoods2 = server.find(SupplierGoods.class, "2");
+		
+		deletion2.setSupplierGoods(supGoods2);
+		deletion2.setInformation("Tes woohoo");
+		deletion2.setQuantity(20);
+		deletion2.setStockQuantity(60);
+		deletion2.setDeletionDate(new DateTime(2013, 12, 12, 11, 12).toDate());
+		deletion2.setTimestamp(new Date());
+		server.save(deletion2);
+		
+		DeletedGoods deletion3 = new DeletedGoods();
+		SupplierGoods supGoods3 = server.find(SupplierGoods.class, "3");
+		
+		deletion3.setSupplierGoods(supGoods2);
+		deletion3.setInformation("Tes woohoo");
+		deletion3.setQuantity(90);
+		deletion3.setStockQuantity(10);
+		deletion3.setDeletionDate(new DateTime(2013, 11, 12, 11, 12).toDate());
+		deletion3.setTimestamp(new Date());
+		server.save(deletion3);
+	}
+	
+	private void initiateReceptionData(){
+		System.out.println("Masukkan data penerimaan");
+		GoodsReception reception1 = new GoodsReception();
+		InvoiceItem invoItem1 = server.find(InvoiceItem.class,"1");
+		
+		reception1.setInformation("Tes info");
+		reception1.setQuantityReceived(95);
+		reception1.setStockQuantity(200);
+		reception1.setDate(new DateTime(2013, 12, 11, 11, 12).toDate());
+		reception1.setTimestamp(new Date());
+		reception1.setExpiredDate(new DateTime(2015, 1, 1, 11, 11).toDate());
+		reception1.setInvoiceItem(invoItem1);
+		server.save(reception1);
+		
+	}
+	
+	private void initiateInvoiceItemData(){
+		System.out.println("Masukkan data invoice Item");
+		InvoiceItem invoItem1 = new InvoiceItem();
+		Invoice invoice = server.find(Invoice.class, "1");
+		PurchaseOrderItem purc1 = server.find(PurchaseOrderItem.class, "1");
+		
+		invoItem1.setDiscount(10);
+		invoItem1.setBatch("1A");
+		invoItem1.setPrice(20000);
+		invoItem1.setPricePPN(220000);
+		invoItem1.setPurchaseOrderItem(purc1);
+		invoItem1.setQuantity(200);
+		invoItem1.setInvoice(invoice);
+		server.save(invoItem1);
+		
+	}
+	
+	private void initiateInvoiceData(){
+		System.out.println("Masukkan data invoice");
+		Invoice invoice1 = new Invoice();
+		
+		invoice1.setAmountPaid(0);
+		invoice1.setInvoiceName("0io");;
+		invoice1.setTimestamp(new Date());
+		invoice1.setInvoiceNumber("inv-1");
+		server.save(invoice1);
+		
+	}
+	
+	private void initiatePurchaseOrderItem(){
+		System.out.println("Masukkan data penerimaan");
+		PurchaseOrderItem purc1 = new PurchaseOrderItem();
+		SupplierGoods suppgoods1 = server.find(SupplierGoods.class,"1");
+		
+		purc1.setInformation("Tes info");
+		purc1.setQuantity(99);
+		purc1.setSupplierGoods(suppgoods1);
+		
+		server.save(purc1);
+		
+	}
+	
+	private void initiateSupplierGoods(){
+		System.out.println("Masukkan data supplier goods");
+		SupplierGoods suppGoods1 = new SupplierGoods();
+		Goods goods2 = server.find(Goods.class, "BRG-2X");
+		Supplier supp1 = server.find(Supplier.class, "2");
+		Manufacturer man1=server.find(Manufacturer.class, "1");
+		
+		suppGoods1.setLastPrice(90000);
+		suppGoods1.setGoods(goods2);
+		suppGoods1.setSupplier(supp1);
+		suppGoods1.setLastUpdate(new DateTime(2015, 1, 1, 11, 11).toDate());
+		suppGoods1.setManufacturer(man1);
+		server.save(suppGoods1);
+		
+		SupplierGoods suppGoods2 = new SupplierGoods();
+		Goods goods1 = server.find(Goods.class, "BRG-1X");
+		Supplier supp2 = server.find(Supplier.class, "1");
+		Manufacturer man2=server.find(Manufacturer.class, "2");
+		
+		suppGoods2.setLastPrice(8500);
+		suppGoods2.setGoods(goods1);
+		suppGoods2.setSupplier(supp2);
+		suppGoods2.setLastUpdate(new DateTime(2015, 11, 1, 11, 11).toDate());
+		suppGoods2.setManufacturer(man2);
+		server.save(suppGoods2);
+		
+		SupplierGoods suppGoods3 = new SupplierGoods();
+		Goods goods3 = server.find(Goods.class, "BRG-1X");
+		Supplier supp3 = server.find(Supplier.class, "2");
+		Manufacturer man3=server.find(Manufacturer.class, "1");
+		
+		suppGoods3.setLastPrice(47000);
+		suppGoods3.setGoods(goods3);
+		suppGoods3.setSupplier(supp3);
+		suppGoods3.setLastUpdate(new DateTime(2015, 2, 2, 11, 11).toDate());
+		suppGoods3.setManufacturer(man3);
+		server.save(suppGoods3);
+		
+	}
+	
+
 }

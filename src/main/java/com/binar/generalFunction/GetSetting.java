@@ -29,7 +29,11 @@ public class GetSetting {
 		return getMapFromString(value);
 		
 	}
-	
+	public Map<String, String> getWard(){
+        String value = getSetting( "instalasi").getSettingValue();
+         return getMapFromString(value);        
+	}
+
 	public Map<String, String> getPackage(){
 		String value=getSetting("package").getSettingValue();
 		return getMapFromString(value);
