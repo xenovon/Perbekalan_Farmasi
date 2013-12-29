@@ -26,8 +26,12 @@ public class SettingGeneralModel {
 		if(error==null){
 			error=new ArrayList<String>();
 			try {
-				server.update(setting.getSettingMargin());
-				server.update(setting.getSettingPPN());
+				server.update(setting.getSettingAddress());
+				server.update(setting.getSettingCity());
+				server.update(setting.getSettingInstalasi());
+				server.update(setting.getSettingPhone());
+				server.update(setting.getSettingApotek());
+				server.update(setting.getSettingRayon());
 			} catch (Exception e) {
 				error.add("Kesalahan menyimpan data " + e.getMessage());
 			}
@@ -37,13 +41,21 @@ public class SettingGeneralModel {
 		
 	}
 	public List<String> resetDefault(SettingData setting){
-		setting.getSettingMargin().setSettingValue(DefaultSetting.MARGIN);
-		setting.getSettingPPN().setSettingValue(DefaultSetting.PPN);
+		setting.getSettingAddress().setSettingValue(DefaultSetting.RS_ADDRESS);
+		setting.getSettingCity().setSettingValue(DefaultSetting.RS_CITY);
+		setting.getSettingInstalasi().setSettingValue(DefaultSetting.INSTALASI);
+		setting.getSettingPhone().setSettingValue(DefaultSetting.RS_NUMBER);
+		setting.getSettingRayon().setSettingValue(DefaultSetting.RAYON);
+		
 		List<String> error;
 		error=new ArrayList<String>();
 		try {
-			server.update(setting.getSettingMargin());
-			server.update(setting.getSettingPPN());
+			server.update(setting.getSettingAddress());
+			server.update(setting.getSettingCity());
+			server.update(setting.getSettingInstalasi());
+			server.update(setting.getSettingPhone());
+			server.update(setting.getSettingApotek());
+			server.update(setting.getSettingRayon());
 		} catch (Exception e) {
 			error.add("Kesalahan menyimpan data " + e.getMessage());
 		}

@@ -21,8 +21,10 @@ public class SettingPurchaseOrderViewImpl extends VerticalLayout implements Sett
 	private SettingPurchaseOrderListener listener;
 
 	private Label title;
-	private TextField inputPPN;
-	private TextField inputMargin;
+	private TextField inputNarkotika;
+	private TextField inputPsikotropika;
+	private TextField inputGeneral;
+	
 	private Button buttonSave;
 	private Button buttonReset;
 	private Button buttonResetDefault;
@@ -40,15 +42,21 @@ public class SettingPurchaseOrderViewImpl extends VerticalLayout implements Sett
 	public void init() {
 		title=new Label("<h2>Pengaturan Keuangan</h2>", ContentMode.HTML);
 
-		inputPPN =new TextField();
-			inputPPN.setImmediate(true);
-			inputPPN.addValueChangeListener(this);
-			inputPPN.setWidth(function.FORM_WIDTH);
-		inputMargin =new TextField();
-			inputMargin.setImmediate(true);
-			inputMargin.addValueChangeListener(this);
-			inputMargin.setWidth(function.FORM_WIDTH);
-			  
+		inputNarkotika =new TextField();
+			inputNarkotika.setImmediate(true);
+			inputNarkotika.addValueChangeListener(this);
+			inputNarkotika.setWidth(function.FORM_WIDTH);
+		inputPsikotropika =new TextField();
+			inputPsikotropika.setImmediate(true);
+			inputPsikotropika.addValueChangeListener(this);
+			inputPsikotropika.setWidth(function.FORM_WIDTH);
+
+		inputGeneral =new TextField();
+			inputGeneral.setImmediate(true);
+			inputGeneral.addValueChangeListener(this);
+			inputGeneral.setWidth(function.FORM_WIDTH);
+
+			
 		buttonSave =new Button("Simpan");
 			buttonSave.addClickListener(this);
 		buttonReset =new Button("Reset");
@@ -73,8 +81,9 @@ public class SettingPurchaseOrderViewImpl extends VerticalLayout implements Sett
 			{
 				setMargin(true);
 				setSpacing(true);
-				addComponent(inputPPN);
-				addComponent(inputMargin);
+				addComponent(inputNarkotika);
+				addComponent(inputPsikotropika);
+				addComponent(inputGeneral);
 				addComponent(labelError);
 				addComponent(new GridLayout(3, 1){
 					{
@@ -92,13 +101,19 @@ public class SettingPurchaseOrderViewImpl extends VerticalLayout implements Sett
 	@Override
 	public void setData(SettingData data) {
 		this.settingData = data;
-		inputMargin.setValue(settingData.getSettingMargin().getSettingValue());
-		inputPPN.setValue(settingData.getSettingPPN().getSettingValue());
-		inputMargin.setCaption(settingData.getSettingMargin().getSettingName());
-		inputMargin.setDescription(settingData.getSettingMargin().getSettingDescription());
+		inputPsikotropika.setValue(settingData.getSettingPsikotropika().getSettingValue());
+		inputNarkotika.setValue(settingData.getSettingNarkotika().getSettingValue());
+		inputGeneral.setValue(settingData.getSettingGeneral().getSettingValue());
 		
-		inputPPN.setCaption(settingData.getSettingPPN().getSettingName());
-		inputPPN.setDescription(settingData.getSettingPPN().getSettingDescription());
+		inputPsikotropika.setCaption(settingData.getSettingPsikotropika().getSettingName());
+		inputPsikotropika.setDescription(settingData.getSettingPsikotropika().getSettingDescription());
+		
+		inputNarkotika.setCaption(settingData.getSettingNarkotika().getSettingName());
+		inputNarkotika.setDescription(settingData.getSettingNarkotika().getSettingDescription());
+
+		inputGeneral.setCaption(settingData.getSettingGeneral().getSettingName());
+		inputGeneral.setDescription(settingData.getSettingGeneral().getSettingDescription());
+
 	}
 
 	@Override
@@ -114,8 +129,9 @@ public class SettingPurchaseOrderViewImpl extends VerticalLayout implements Sett
 	
 	@Override
 	public SettingData getData() {
-		this.settingData.getSettingMargin().setSettingValue(inputMargin.getValue());
-		this.settingData.getSettingPPN().setSettingValue(inputPPN.getValue());
+		this.settingData.getSettingPsikotropika().setSettingValue(inputPsikotropika.getValue());
+		this.settingData.getSettingNarkotika().setSettingValue(inputNarkotika.getValue());
+		this.settingData.getSettingGeneral().setSettingValue(inputGeneral.getValue());
 		
 		return this.settingData;
 	}

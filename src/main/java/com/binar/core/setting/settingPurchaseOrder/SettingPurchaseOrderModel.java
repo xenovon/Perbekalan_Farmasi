@@ -25,8 +25,9 @@ public class SettingPurchaseOrderModel {
 		if(error==null){
 			error=new ArrayList<String>();
 			try {
-				server.update(setting.getSettingMargin());
-				server.update(setting.getSettingPPN());
+				server.update(setting.getSettingNarkotika());
+				server.update(setting.getSettingPsikotropika());
+				server.update(setting.getSettingGeneral());
 			} catch (Exception e) {
 				error.add("Kesalahan menyimpan data " + e.getMessage());
 			}
@@ -36,13 +37,16 @@ public class SettingPurchaseOrderModel {
 		
 	}
 	public List<String> resetDefault(SettingData setting){
-		setting.getSettingMargin().setSettingValue(DefaultSetting.MARGIN);
-		setting.getSettingPPN().setSettingValue(DefaultSetting.PPN);
+		setting.getSettingNarkotika().setSettingValue(DefaultSetting.NARKOTIKA);
+		setting.getSettingPsikotropika().setSettingValue(DefaultSetting.PSIKOTROPIKA);
+		setting.getSettingGeneral().setSettingValue(DefaultSetting.GENERAL);
 		List<String> error;
 		error=new ArrayList<String>();
 		try {
-			server.update(setting.getSettingMargin());
-			server.update(setting.getSettingPPN());
+			server.update(setting.getSettingNarkotika());
+			server.update(setting.getSettingPsikotropika());
+			server.update(setting.getSettingGeneral());
+
 		} catch (Exception e) {
 			error.add("Kesalahan menyimpan data " + e.getMessage());
 		}

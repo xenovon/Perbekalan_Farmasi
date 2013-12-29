@@ -10,6 +10,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
@@ -22,8 +23,8 @@ public class SettingGoodsViewImpl extends VerticalLayout implements SettingGoods
 	private SettingGoodsListener listener;
 
 	private Label title;
-	private TextField inputPPN;
-	private TextField inputMargin;
+	private TextArea inputSatuan;
+	private TextArea inputPackage;
 	private Button buttonSave;
 	private Button buttonReset;
 	private Button buttonResetDefault;
@@ -41,14 +42,14 @@ public class SettingGoodsViewImpl extends VerticalLayout implements SettingGoods
 	public void init() {
 		title=new Label("<h2>Pengaturan Keuangan</h2>", ContentMode.HTML);
 
-		inputPPN =new TextField();
-			inputPPN.setImmediate(true);
-			inputPPN.addValueChangeListener(this);
-			inputPPN.setWidth(function.FORM_WIDTH);
-		inputMargin =new TextField();
-			inputMargin.setImmediate(true);
-			inputMargin.addValueChangeListener(this);
-			inputMargin.setWidth(function.FORM_WIDTH);
+		inputSatuan =new TextArea();
+			inputSatuan.setImmediate(true);
+			inputSatuan.addValueChangeListener(this);
+			inputSatuan.setWidth(function.FORM_WIDTH);
+		inputPackage =new TextArea();
+			inputPackage.setImmediate(true);
+			inputPackage.addValueChangeListener(this);
+			inputPackage.setWidth(function.FORM_WIDTH);
 			  
 		buttonSave =new Button("Simpan");
 			buttonSave.addClickListener(this);
@@ -74,8 +75,8 @@ public class SettingGoodsViewImpl extends VerticalLayout implements SettingGoods
 			{
 				setMargin(true);
 				setSpacing(true);
-				addComponent(inputPPN);
-				addComponent(inputMargin);
+				addComponent(inputSatuan);
+				addComponent(inputPackage);
 				addComponent(labelError);
 				addComponent(new GridLayout(3, 1){
 					{
@@ -93,13 +94,13 @@ public class SettingGoodsViewImpl extends VerticalLayout implements SettingGoods
 	@Override
 	public void setData(SettingData data) {
 		this.settingData = data;
-		inputMargin.setValue(settingData.getSettingMargin().getSettingValue());
-		inputPPN.setValue(settingData.getSettingPPN().getSettingValue());
-		inputMargin.setCaption(settingData.getSettingMargin().getSettingName());
-		inputMargin.setDescription(settingData.getSettingMargin().getSettingDescription());
+		inputPackage.setValue(settingData.getSettingPackage().getSettingValue());
+		inputSatuan.setValue(settingData.getSettingSatuan().getSettingValue());
+		inputPackage.setCaption(settingData.getSettingPackage().getSettingName());
+		inputPackage.setDescription(settingData.getSettingPackage().getSettingDescription());
 		
-		inputPPN.setCaption(settingData.getSettingPPN().getSettingName());
-		inputPPN.setDescription(settingData.getSettingPPN().getSettingDescription());
+		inputSatuan.setCaption(settingData.getSettingSatuan().getSettingName());
+		inputSatuan.setDescription(settingData.getSettingSatuan().getSettingDescription());
 	}
 
 	@Override
@@ -115,8 +116,8 @@ public class SettingGoodsViewImpl extends VerticalLayout implements SettingGoods
 	
 	@Override
 	public SettingData getData() {
-		this.settingData.getSettingMargin().setSettingValue(inputMargin.getValue());
-		this.settingData.getSettingPPN().setSettingValue(inputPPN.getValue());
+		this.settingData.getSettingPackage().setSettingValue(inputPackage.getValue());
+		this.settingData.getSettingSatuan().setSettingValue(inputSatuan.getValue());
 		
 		return this.settingData;
 	}

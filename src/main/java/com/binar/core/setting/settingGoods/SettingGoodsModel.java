@@ -25,8 +25,8 @@ public class SettingGoodsModel {
 		if(error==null){
 			error=new ArrayList<String>();
 			try {
-				server.update(setting.getSettingMargin());
-				server.update(setting.getSettingPPN());
+				server.update(setting.getSettingPackage());
+				server.update(setting.getSettingSatuan());
 			} catch (Exception e) {
 				error.add("Kesalahan menyimpan data " + e.getMessage());
 			}
@@ -36,13 +36,13 @@ public class SettingGoodsModel {
 		
 	}
 	public List<String> resetDefault(SettingData setting){
-		setting.getSettingMargin().setSettingValue(DefaultSetting.MARGIN);
-		setting.getSettingPPN().setSettingValue(DefaultSetting.PPN);
+		setting.getSettingPackage().setSettingValue(DefaultSetting.PACKAGE);
+		setting.getSettingSatuan().setSettingValue(DefaultSetting.SATUAN);
 		List<String> error;
 		error=new ArrayList<String>();
 		try {
-			server.update(setting.getSettingMargin());
-			server.update(setting.getSettingPPN());
+			server.update(setting.getSettingPackage());
+			server.update(setting.getSettingSatuan());
 		} catch (Exception e) {
 			error.add("Kesalahan menyimpan data " + e.getMessage());
 		}

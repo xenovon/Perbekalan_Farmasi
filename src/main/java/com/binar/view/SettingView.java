@@ -6,6 +6,7 @@ import com.binar.core.setting.SettingFinance;
 import com.binar.core.setting.SettingGeneral;
 import com.binar.core.setting.SettingGoods;
 import com.binar.core.setting.SettingPurchaseOrder;
+import com.binar.core.setting.UserSetting;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -22,6 +23,7 @@ public class SettingView extends CustomComponent  implements View {
 	SettingPurchaseOrder purchaseOrder;
 	SettingGeneral general;
 	SettingGoods goods;
+	UserSetting user;
 	GeneralFunction function;
 	
 	@Override
@@ -31,7 +33,9 @@ public class SettingView extends CustomComponent  implements View {
 		purchaseOrder =new SettingPurchaseOrder(function);
 		general = new SettingGeneral(function);
 		goods =new SettingGoods(function);
-	
+		user=new UserSetting(function);
+		
+		tabSheet.addTab(user).setCaption("Pengaturan Akun");
 		tabSheet.addTab(general).setCaption("Pengaturan Umum");
 		tabSheet.addTab(goods).setCaption("Pengaturan Barang");
 		tabSheet.addTab(finance).setCaption("Pengaturan Keuangan");

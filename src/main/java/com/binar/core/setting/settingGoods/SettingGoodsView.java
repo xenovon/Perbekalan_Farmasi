@@ -26,8 +26,8 @@ public interface SettingGoodsView {
 	
 	public class SettingData{
 	
-		private Setting settingPPN;
-		private Setting settingMargin;
+		private Setting settingSatuan;
+		private Setting settingPackage;
 		
 		private GeneralFunction function;
 		private EbeanServer server;
@@ -38,48 +38,30 @@ public interface SettingGoodsView {
 		}
 		
 		private void init(){
-			settingPPN = server.find(Setting.class).where().eq("settingKey", "ppn").findUnique();
-			settingMargin =server.find(Setting.class).where().eq("settingKey", "margin").findUnique();
+			settingSatuan = server.find(Setting.class).where().eq("settingKey", "satuan").findUnique();
+			settingPackage =server.find(Setting.class).where().eq("settingKey", "package").findUnique();
 		}
 		public List<String> validate(){
 			List<String> error=new ArrayList<String>();
-			String settingPPNValue=settingPPN.getSettingValue();
-			String settingMarginValue=settingMargin.getSettingValue();
+			String settingSatuanValue=settingSatuan.getSettingValue();
+			String settingPackageValue=settingPackage.getSettingValue();
 			
-			if(settingPPNValue==null){
-				error.add("Angka PPN tidak boleh kosong");
-			}else{
-				try {
-					Double ppn=Double.parseDouble(settingPPNValue);
-					if(!(ppn<=100 && ppn>=0)){
-						error.add("PPN harus diantara 0-100");
-					}
-				} catch (NumberFormatException e) {
-					error.add("PPN harus berupa angka");
-				}
+			if(settingSatuanValue==null){
+				error.add("Satuan tidak boleh kosong");
 			}
 			
-			if(settingMarginValue==null){
-				error.add("Angka margin tidak boleh kosong");
-			}else{
-				try {
-					Double ppn=Double.parseDouble(settingMarginValue);
-					if(!(ppn<=100 && ppn>=0)){
-						error.add("Margin harus diantara 0-100");
-					}
-				} catch (NumberFormatException e) {
-					error.add("Margin harus berupa angka");
-				}
+			if(settingPackageValue==null){
+				error.add("Kemasan tidak boleh kosong");
 			}
 			
 			return error.size()==0?null:error;
 		}
 		
-		public Setting getSettingMargin() {
-			return settingMargin;
+		public Setting getSettingPackage() {
+			return settingPackage;
 		}
-		public Setting getSettingPPN() {
-			return settingPPN;
+		public Setting getSettingSatuan() {
+			return settingSatuan;
 		}
 	}
 

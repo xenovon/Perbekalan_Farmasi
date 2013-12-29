@@ -32,8 +32,6 @@ public class SettingGeneralPresenter implements SettingGeneralListener {
 	public void buttonSave() {
 		view.hideError();
 		SettingData settingData=view.getData();
-		System.out.println("Setting Data" +settingData.getSettingMargin().getSettingValue());
-		System.out.println("Setting Data" +settingData.getSettingPPN().getSettingValue());
 		List<String> error=model.save(settingData);
 		if(error==null){
 			Notification.show("Data pengaturan dirubah", Type.TRAY_NOTIFICATION);

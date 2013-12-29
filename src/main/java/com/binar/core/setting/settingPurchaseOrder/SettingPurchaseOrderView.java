@@ -26,8 +26,9 @@ public interface SettingPurchaseOrderView {
 	
 	public class SettingData{
 	
-		private Setting settingPPN;
-		private Setting settingMargin;
+		private Setting settingNarkotika;
+		private Setting settingPsikotropika;
+		private Setting settingGeneral;
 		
 		private GeneralFunction function;
 		private EbeanServer server;
@@ -38,48 +39,40 @@ public interface SettingPurchaseOrderView {
 		}
 		
 		private void init(){
-			settingPPN = server.find(Setting.class).where().eq("settingKey", "ppn").findUnique();
-			settingMargin =server.find(Setting.class).where().eq("settingKey", "margin").findUnique();
+			settingNarkotika = server.find(Setting.class).where().eq("settingKey", "narkotika").findUnique();
+			settingPsikotropika =server.find(Setting.class).where().eq("settingKey", "psikotropika").findUnique();
+			settingGeneral =server.find(Setting.class).where().eq("settingKey", "general").findUnique();
 		}
 		public List<String> validate(){
 			List<String> error=new ArrayList<String>();
-			String settingPPNValue=settingPPN.getSettingValue();
-			String settingMarginValue=settingMargin.getSettingValue();
+			String settingNarkotikaValue=settingNarkotika.getSettingValue();
+			String settingPsikotropikaValue=settingPsikotropika.getSettingValue();
+			String settingGeneralValue=settingGeneral.getSettingValue();
 			
-			if(settingPPNValue==null){
-				error.add("Angka PPN tidak boleh kosong");
-			}else{
-				try {
-					Double ppn=Double.parseDouble(settingPPNValue);
-					if(!(ppn<=100 && ppn>=0)){
-						error.add("PPN harus diantara 0-100");
-					}
-				} catch (NumberFormatException e) {
-					error.add("PPN harus berupa angka");
-				}
+			if(settingNarkotikaValue==null){
+				error.add("prefiks surat pesanan narkotika tidak boleh kosong");
 			}
 			
-			if(settingMarginValue==null){
-				error.add("Angka margin tidak boleh kosong");
-			}else{
-				try {
-					Double ppn=Double.parseDouble(settingMarginValue);
-					if(!(ppn<=100 && ppn>=0)){
-						error.add("Margin harus diantara 0-100");
-					}
-				} catch (NumberFormatException e) {
-					error.add("Margin harus berupa angka");
-				}
+			if(settingPsikotropikaValue==null){
+				error.add("prefiks surat pesanan psikotropika tidak boleh kosong");
 			}
+			if(settingGeneralValue==null){
+				error.add("prefiks nomor surat pesanan umum tidak boleh kosong");
+			}
+	
 			
 			return error.size()==0?null:error;
 		}
 		
-		public Setting getSettingMargin() {
-			return settingMargin;
+		public Setting getSettingPsikotropika() {
+			return settingPsikotropika;
 		}
-		public Setting getSettingPPN() {
-			return settingPPN;
+		public Setting getSettingNarkotika() {
+			return settingNarkotika;
+		}
+		
+		public Setting getSettingGeneral() {
+			return settingGeneral;
 		}
 	}
 

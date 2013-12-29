@@ -22,12 +22,16 @@ public interface SettingGeneralView {
 	public void hideError();
 	public SettingData getData();
 	public void setListener(SettingGeneralListener listener);
-	
-	
+
 	public class SettingData{
 	
-		private Setting settingPPN;
-		private Setting settingMargin;
+		private Setting settingPhone;
+		private Setting settingAddress;
+		private Setting settingCity;
+		private Setting settingInstalasi;
+		private Setting settingApotek;
+		private Setting settingRayon;
+		
 		
 		private GeneralFunction function;
 		private EbeanServer server;
@@ -38,49 +42,79 @@ public interface SettingGeneralView {
 		}
 		
 		private void init(){
-			settingPPN = server.find(Setting.class).where().eq("settingKey", "ppn").findUnique();
-			settingMargin =server.find(Setting.class).where().eq("settingKey", "margin").findUnique();
+			settingPhone = server.find(Setting.class).where().eq("settingKey", "rs_number").findUnique();
+			settingAddress =server.find(Setting.class).where().eq("settingKey", "rs_address").findUnique();
+			settingCity =server.find(Setting.class).where().eq("settingKey", "rs_city").findUnique();
+			settingInstalasi =server.find(Setting.class).where().eq("settingKey", "instalasi").findUnique();
+			settingApotek =server.find(Setting.class).where().eq("settingKey", "apotek").findUnique();
+			settingRayon =server.find(Setting.class).where().eq("settingKey", "rayon").findUnique();
 		}
 		public List<String> validate(){
 			List<String> error=new ArrayList<String>();
-			String settingPPNValue=settingPPN.getSettingValue();
-			String settingMarginValue=settingMargin.getSettingValue();
+			String settingPhoneValue=settingPhone.getSettingValue();
+			String settingAddressValue=settingAddress.getSettingValue();
+			String settingCityValue=settingCity.getSettingValue();
+			String settingInstalasiValue=settingInstalasi.getSettingValue();
+			String settingApotekValue=settingInstalasi.getSettingValue();
+			String settingRayonValue=settingRayon.getSettingValue();
 			
-			if(settingPPNValue==null){
-				error.add("Angka PPN tidak boleh kosong");
-			}else{
-				try {
-					Double ppn=Double.parseDouble(settingPPNValue);
-					if(!(ppn<=100 && ppn>=0)){
-						error.add("PPN harus diantara 0-100");
-					}
-				} catch (NumberFormatException e) {
-					error.add("PPN harus berupa angka");
-				}
+			if(settingPhoneValue==null){
+				error.add("Nomor Telepon tidak boleh kosong");
+			}
+			if(settingCityValue==null){
+				error.add("Kota tidak boleh kosong");
 			}
 			
-			if(settingMarginValue==null){
-				error.add("Angka margin tidak boleh kosong");
-			}else{
-				try {
-					Double ppn=Double.parseDouble(settingMarginValue);
-					if(!(ppn<=100 && ppn>=0)){
-						error.add("Margin harus diantara 0-100");
-					}
-				} catch (NumberFormatException e) {
-					error.add("Margin harus berupa angka");
-				}
+			if(settingInstalasiValue==null){
+				error.add("Instalasi tidak boleh kosong");
 			}
+			if(settingAddressValue==null){
+				error.add("Alamat tidak boleh kosong");
+			}
+			if(settingApotekValue==null){
+				error.add("Nama apotik dan lembaga tidak boleh kosong");
+			}
+			
+			if(settingRayonValue==null){
+				settingRayon.setSettingValue("");
+			}
+			
 			
 			return error.size()==0?null:error;
 		}
+
+		public Setting getSettingPhone() {
+			return settingPhone;
+		}
+
+		public Setting getSettingAddress() {
+			return settingAddress;
+		}
+
+		public Setting getSettingCity() {
+			return settingCity;
+		}
+
+		public Setting getSettingInstalasi() {
+			return settingInstalasi;
+		}
+
+		public GeneralFunction getFunction() {
+			return function;
+		}
+
+		public EbeanServer getServer() {
+			return server;
+		}
 		
-		public Setting getSettingMargin() {
-			return settingMargin;
+		public Setting getSettingApotek() {
+			return settingApotek;
 		}
-		public Setting getSettingPPN() {
-			return settingPPN;
+		
+		public Setting getSettingRayon() {
+			return settingRayon;
 		}
+
 	}
 
 }

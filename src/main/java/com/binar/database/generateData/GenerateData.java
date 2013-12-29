@@ -408,14 +408,14 @@ public class GenerateData {
 			setting5.setSettingKey("apotek");
 			setting5.setSettingName("Nama Apotik Dan Lembaga");
 			setting5.setSettingValue("Instalasi Farmasi RSUD Ajibarang");
-			setting5.setSettingGroup(EnumSettingGroup.SURAT_PESANAN);
+			setting5.setSettingGroup(EnumSettingGroup.UMUM);
 		server.save(setting5);
 		Setting setting6=new Setting();
 			setting6.setSettingDescription("Rayon rumah sakit");
 			setting6.setSettingKey("rayon");
 			setting6.setSettingName("Rayon");
 			setting6.setSettingValue("Jawa Tengah I");
-			setting6.setSettingGroup(EnumSettingGroup.SURAT_PESANAN);
+			setting6.setSettingGroup(EnumSettingGroup.UMUM);
 		server.save(setting6);
 		Setting setting7=new Setting();
 			setting7.setSettingDescription("Prefiks Nomor Surat Pesanan Narkotika");

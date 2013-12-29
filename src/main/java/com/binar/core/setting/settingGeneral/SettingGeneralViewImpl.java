@@ -10,6 +10,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
@@ -22,8 +23,11 @@ public class SettingGeneralViewImpl extends VerticalLayout implements SettingGen
 	private SettingGeneralListener listener;
 
 	private Label title;
-	private TextField inputPPN;
-	private TextField inputMargin;
+	private TextField inputPhone;
+	private TextArea inputAddress;
+	private TextField inputCity;
+	private TextArea inputInstalasi;
+	private TextField inputApotek;
 	private Button buttonSave;
 	private Button buttonReset;
 	private Button buttonResetDefault;
@@ -41,14 +45,29 @@ public class SettingGeneralViewImpl extends VerticalLayout implements SettingGen
 	public void init() {
 		title=new Label("<h2>Pengaturan Keuangan</h2>", ContentMode.HTML);
 
-		inputPPN =new TextField();
-			inputPPN.setImmediate(true);
-			inputPPN.addValueChangeListener(this);
-			inputPPN.setWidth(function.FORM_WIDTH);
-		inputMargin =new TextField();
-			inputMargin.setImmediate(true);
-			inputMargin.addValueChangeListener(this);
-			inputMargin.setWidth(function.FORM_WIDTH);
+		inputPhone =new TextField();
+			inputPhone.setImmediate(true);
+			inputPhone.addValueChangeListener(this);
+			inputPhone.setWidth(function.FORM_WIDTH);
+		inputAddress =new TextArea();
+			inputAddress.setImmediate(true);
+			inputAddress.addValueChangeListener(this);
+			inputAddress.setWidth(function.FORM_WIDTH);
+
+		inputCity =new TextField();
+			inputCity.setImmediate(true);
+			inputCity.addValueChangeListener(this);
+			inputCity.setWidth(function.FORM_WIDTH);
+
+		inputInstalasi =new TextArea();
+			inputInstalasi.setImmediate(true);
+			inputInstalasi.addValueChangeListener(this);
+			inputInstalasi.setWidth(function.FORM_WIDTH);
+
+		inputApotek =new TextField();
+			inputApotek.setImmediate(true);
+			inputApotek.addValueChangeListener(this);
+			inputApotek.setWidth(function.FORM_WIDTH);
 			  
 		buttonSave =new Button("Simpan");
 			buttonSave.addClickListener(this);
@@ -74,8 +93,11 @@ public class SettingGeneralViewImpl extends VerticalLayout implements SettingGen
 			{
 				setMargin(true);
 				setSpacing(true);
-				addComponent(inputPPN);
-				addComponent(inputMargin);
+				addComponent(inputPhone);
+				addComponent(inputAddress);
+				addComponent(inputApotek);
+				addComponent(inputCity);
+				addComponent(inputInstalasi);
 				addComponent(labelError);
 				addComponent(new GridLayout(3, 1){
 					{
@@ -93,13 +115,25 @@ public class SettingGeneralViewImpl extends VerticalLayout implements SettingGen
 	@Override
 	public void setData(SettingData data) {
 		this.settingData = data;
-		inputMargin.setValue(settingData.getSettingMargin().getSettingValue());
-		inputPPN.setValue(settingData.getSettingPPN().getSettingValue());
-		inputMargin.setCaption(settingData.getSettingMargin().getSettingName());
-		inputMargin.setDescription(settingData.getSettingMargin().getSettingDescription());
+		inputPhone.setValue(data.getSettingPhone().getSettingValue());
+		inputAddress.setValue(data.getSettingAddress().getSettingValue());
+		inputCity.setValue(data.getSettingCity().getSettingValue());
+		inputInstalasi.setValue(data.getSettingInstalasi().getSettingValue());
+		inputApotek.setValue(data.getSettingApotek().getSettingValue());
 		
-		inputPPN.setCaption(settingData.getSettingPPN().getSettingName());
-		inputPPN.setDescription(settingData.getSettingPPN().getSettingDescription());
+		inputPhone.setCaption(data.getSettingPhone().getSettingName());
+		inputAddress.setCaption(data.getSettingAddress().getSettingName());
+		inputCity.setCaption(data.getSettingCity().getSettingName());
+		inputInstalasi.setCaption(data.getSettingInstalasi().getSettingName());
+		inputApotek.setCaption(data.getSettingApotek().getSettingName());
+		
+		inputPhone.setDescription(data.getSettingPhone().getSettingDescription());
+		inputAddress.setDescription(data.getSettingAddress().getSettingDescription());
+		inputCity.setDescription(data.getSettingCity().getSettingDescription());
+		inputInstalasi.setDescription(data.getSettingInstalasi().getSettingDescription());
+		inputApotek.setDescription(data.getSettingApotek().getSettingDescription());
+		
+		
 	}
 
 	@Override
@@ -115,9 +149,12 @@ public class SettingGeneralViewImpl extends VerticalLayout implements SettingGen
 	
 	@Override
 	public SettingData getData() {
-		this.settingData.getSettingMargin().setSettingValue(inputMargin.getValue());
-		this.settingData.getSettingPPN().setSettingValue(inputPPN.getValue());
-		
+		this.settingData.getSettingPhone().setSettingValue(inputPhone.getValue());
+		this.settingData.getSettingAddress().setSettingValue(inputAddress.getValue());
+		this.settingData.getSettingCity().setSettingValue(inputCity.getValue());
+		this.settingData.getSettingInstalasi().setSettingValue(inputInstalasi.getValue());
+		this.settingData.getSettingApotek().setSettingValue(inputApotek.getValue());
+
 		return this.settingData;
 	}
 	@Override
@@ -135,8 +172,6 @@ public class SettingGeneralViewImpl extends VerticalLayout implements SettingGen
 			listener.buttonSave();
 		}
 	}
-
-
 	@Override
 	public void setListener(SettingGeneralListener listener) {
 		this.listener=listener;
