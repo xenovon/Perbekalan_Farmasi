@@ -1,10 +1,10 @@
-package com.binar.core.setting.settingPurchaseOrder;
+package com.binar.core.setting.settingGoods;
 
 import java.util.Collection;
 import java.util.List;
 
-import com.binar.core.setting.settingPurchaseOrder.SettingPurchaseOrderView.SettingData;
-import com.binar.core.setting.settingPurchaseOrder.SettingPurchaseOrderView.SettingPurchaseOrderListener;
+import com.binar.core.setting.settingGoods.SettingGoodsView.SettingData;
+import com.binar.core.setting.settingGoods.SettingGoodsView.SettingGoodsListener;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Window;
@@ -12,15 +12,15 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Notification.Type;
 
-public class SettingPurchaseOrderPresenter implements SettingPurchaseOrderListener{
-	private SettingPurchaseOrderModel model;
-	private SettingPurchaseOrderViewImpl view;
+public class SettingGoodsPresenter implements  SettingGoodsListener{
+	private SettingGoodsModel model;
+	private SettingGoodsViewImpl view;
 	private GeneralFunction function;
 	private boolean editMode;
 
 	
-	public SettingPurchaseOrderPresenter(GeneralFunction function, 
-			SettingPurchaseOrderModel model, SettingPurchaseOrderViewImpl view) {
+	public SettingGoodsPresenter(GeneralFunction function, 
+			SettingGoodsModel model, SettingGoodsViewImpl view) {
 		this.function=function;
 		this.view=view;
 		this.model=model;

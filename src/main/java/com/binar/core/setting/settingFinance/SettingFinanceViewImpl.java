@@ -34,9 +34,8 @@ public class SettingFinanceViewImpl extends VerticalLayout implements SettingFin
 	private SettingData settingData;
 
 	
-	public SettingFinanceViewImpl(GeneralFunction function, SettingData settingData) {
+	public SettingFinanceViewImpl(GeneralFunction function) {
 		this.function=function;
-		this.settingData=settingData;
 	}
 	
 	
@@ -44,13 +43,11 @@ public class SettingFinanceViewImpl extends VerticalLayout implements SettingFin
 	public void init() {
 		title=new Label("<h2>Pengaturan Keuangan</h2>", ContentMode.HTML);
 
-		inputPPN =new TextField(settingData.getSettingPPN().getSettingName());
-			inputPPN.setDescription(settingData.getSettingPPN().getSettingDescription());
+		inputPPN =new TextField();
 			inputPPN.setImmediate(true);
 			inputPPN.addValueChangeListener(this);
 			inputPPN.setWidth(function.FORM_WIDTH);
-		inputMargin =new TextField(settingData.getSettingMargin().getSettingName());
-			inputMargin.setDescription(settingData.getSettingMargin().getSettingDescription());
+		inputMargin =new TextField();
 			inputMargin.setImmediate(true);
 			inputMargin.addValueChangeListener(this);
 			inputMargin.setWidth(function.FORM_WIDTH);
@@ -58,10 +55,10 @@ public class SettingFinanceViewImpl extends VerticalLayout implements SettingFin
 		buttonSave =new Button("Simpan");
 			buttonSave.addClickListener(this);
 		buttonReset =new Button("Reset");
-			buttonSave.addClickListener(this);
+			buttonReset.addClickListener(this);
 
 		buttonResetDefault =new Button("Kembali Ke Pengaturan Awal");
-			buttonSave.addClickListener(this);
+			buttonResetDefault.addClickListener(this);
 		labelError=new Label(){
 				{
 					setVisible(false);
@@ -69,7 +66,7 @@ public class SettingFinanceViewImpl extends VerticalLayout implements SettingFin
 					setContentMode(ContentMode.HTML);
 				}
 			};
-
+			construct();
 	}
 
 	@Override
@@ -100,6 +97,11 @@ public class SettingFinanceViewImpl extends VerticalLayout implements SettingFin
 		this.settingData = data;
 		inputMargin.setValue(settingData.getSettingMargin().getSettingValue());
 		inputPPN.setValue(settingData.getSettingPPN().getSettingValue());
+		inputMargin.setCaption(settingData.getSettingMargin().getSettingName());
+		inputMargin.setDescription(settingData.getSettingMargin().getSettingDescription());
+		
+		inputPPN.setCaption(settingData.getSettingPPN().getSettingName());
+		inputPPN.setDescription(settingData.getSettingPPN().getSettingDescription());
 	}
 
 	@Override
@@ -115,8 +117,8 @@ public class SettingFinanceViewImpl extends VerticalLayout implements SettingFin
 	
 	@Override
 	public SettingData getData() {
-		this.settingData.getSettingMargin().setSettingKey(inputMargin.getValue());
-		this.settingData.getSettingPPN().setSettingKey(inputPPN.getValue());
+		this.settingData.getSettingMargin().setSettingValue(inputMargin.getValue());
+		this.settingData.getSettingPPN().setSettingValue(inputPPN.getValue());
 		
 		return this.settingData;
 	}
@@ -124,7 +126,7 @@ public class SettingFinanceViewImpl extends VerticalLayout implements SettingFin
 	public void valueChange(ValueChangeEvent event) {
 		listener.valueChange();
 	}
-
+	
 	@Override
 	public void buttonClick(ClickEvent event) {
 		if(event.getButton()==buttonReset){
@@ -134,6 +136,12 @@ public class SettingFinanceViewImpl extends VerticalLayout implements SettingFin
 		}else if(event.getButton()==buttonSave){
 			listener.buttonSave();
 		}
+	}
+
+
+	@Override
+	public void setListener(SettingFinanceListener listener) {
+		this.listener=listener;
 	}
 
 

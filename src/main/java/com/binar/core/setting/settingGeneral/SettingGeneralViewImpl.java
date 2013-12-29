@@ -1,6 +1,6 @@
-package com.binar.core.setting.settingGoods;
+package com.binar.core.setting.settingGeneral;
 
-import com.binar.core.setting.settingGoods.SettingGoodsView.SettingGoodsListener;
+import com.binar.core.setting.settingGeneral.SettingGeneralView.SettingGeneralListener;
 import com.binar.generalFunction.GeneralFunction;
 import com.binar.generalFunction.TextManipulator;
 import com.vaadin.data.Property.ValueChangeEvent;
@@ -15,11 +15,11 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 
-public class SettingGoodsViewImpl extends VerticalLayout implements SettingGoodsView, ClickListener, ValueChangeListener{
+public class SettingGeneralViewImpl extends VerticalLayout implements SettingGeneralView, ClickListener, ValueChangeListener{
 
 	
 	private GeneralFunction function;
-	private SettingGoodsListener listener;
+	private SettingGeneralListener listener;
 
 	private Label title;
 	private TextField inputPPN;
@@ -32,7 +32,7 @@ public class SettingGoodsViewImpl extends VerticalLayout implements SettingGoods
 	private SettingData settingData;
 
 	
-	public SettingGoodsViewImpl(GeneralFunction function) {
+	public SettingGeneralViewImpl(GeneralFunction function) {
 		this.function=function;
 	}
 	
@@ -138,7 +138,7 @@ public class SettingGoodsViewImpl extends VerticalLayout implements SettingGoods
 
 
 	@Override
-	public void setListener(SettingGoodsListener listener) {
+	public void setListener(SettingGeneralListener listener) {
 		this.listener=listener;
 	}
 

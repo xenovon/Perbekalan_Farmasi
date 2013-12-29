@@ -1,4 +1,4 @@
-package com.binar.core.setting.settingFinance;
+package com.binar.core.setting.settingGeneral;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,8 +7,8 @@ import com.avaje.ebean.EbeanServer;
 import com.binar.entity.Setting;
 import com.binar.generalFunction.GeneralFunction;
 
-public interface SettingFinanceView {
-	interface SettingFinanceListener{
+public interface SettingGeneralView {
+	interface SettingGeneralListener{
 		public void buttonSave();
 		public void resetChange();
 		public void resetToDefault();
@@ -21,7 +21,7 @@ public interface SettingFinanceView {
 	public void showError(String content);
 	public void hideError();
 	public SettingData getData();
-	public void setListener(SettingFinanceListener listener);
+	public void setListener(SettingGeneralListener listener);
 	
 	
 	public class SettingData{
@@ -82,4 +82,5 @@ public interface SettingFinanceView {
 			return settingPPN;
 		}
 	}
+
 }

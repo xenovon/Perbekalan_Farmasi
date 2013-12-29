@@ -18,7 +18,6 @@ public class SettingFinancePresenter implements SettingFinanceListener{
 	private SettingFinanceModel model;
 	private SettingFinanceViewImpl view;
 	private GeneralFunction function;
-	private boolean editMode;
 
 	
 	public SettingFinancePresenter(GeneralFunction function, 
@@ -26,12 +25,17 @@ public class SettingFinancePresenter implements SettingFinanceListener{
 		this.function=function;
 		this.view=view;
 		this.model=model;
+		view.setListener(this);
+		view.init();
+		view.setData(new SettingData(function));
 		
 	}
 	@Override
 	public void buttonSave() {
 		view.hideError();
 		SettingData settingData=view.getData();
+		System.out.println("Setting Data" +settingData.getSettingMargin().getSettingValue());
+		System.out.println("Setting Data" +settingData.getSettingPPN().getSettingValue());
 		List<String> error=model.save(settingData);
 		if(error==null){
 			Notification.show("Data pengaturan dirubah", Type.TRAY_NOTIFICATION);
@@ -68,6 +72,7 @@ public class SettingFinancePresenter implements SettingFinanceListener{
 		List<String> error=model.resetDefault(view.getData());
 		if(error==null){
 			Notification.show("Data pengaturan dirubah ke settingan awal", Type.TRAY_NOTIFICATION);
+			resetChange();
 		}else{
 			String errors="<b>Tidak bisa mereset data</b><br> <br>";
 			for(String err:error){
