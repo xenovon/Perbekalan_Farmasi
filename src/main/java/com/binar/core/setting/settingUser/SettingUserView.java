@@ -15,6 +15,7 @@ public interface SettingUserView {
 		public void updateClick();
 		public void resetClick();
 		public void valueChange();
+		public void modeClick();
 	
 	}
 
@@ -39,33 +40,44 @@ class FormData{
 	private String address;
 	private GeneralFunction function;
 	private EbeanServer server;
-	public FormData(GeneralFunction function) {
+	private boolean editPassword;
+
+	public void setEditPassword(boolean editPassword) {
+		this.editPassword = editPassword;
+	}
+	public FormData(GeneralFunction function, boolean editPassword) {
 		this.function=function;
 		this.server=function.getServer();
+		this.editPassword=editPassword;
 	}
 	public List<String> validate(){
 		List<String> returnValue=new ArrayList<String>();
 		
-		if(userName==null){
-			returnValue.add("Nama pengguna tidak boleh kosong");
-		}
-		try {
-			if(password1.equals("") && password2.equals("")){
-				System.out.println("password null");
-			}else if(!password1.equals(password2)){
-				returnValue.add("Password tidak sama");
-			}else{
-				System.out.println("password tidak null" + password1 +" "+ password2);
+		if(editPassword){
+			try {
+				if(password1.equals("") && password2.equals("")){
+					System.out.println("password null");
+				}else if(!password1.equals(password2)){
+					returnValue.add("Password tidak sama");
+				}else{
+					System.out.println("password tidak null" + password1 +" "+ password2);
 
-				if(!isOldPasswordValid()){
-					returnValue.add("Password saat ini tidak valid");
+					if(!isOldPasswordValid()){
+						returnValue.add("Password saat ini tidak valid");
+					}
 				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		if(name==null){
-			returnValue.add("Nama tidak boleh kosong");
+			
+		}else{
+			if(userName==null){
+				returnValue.add("Nama pengguna tidak boleh kosong");
+			}
+			if(name==null){
+				returnValue.add("Nama tidak boleh kosong");
+			}
+			
 		}
 		return returnValue.size()==0?null:returnValue;
 	}

@@ -43,7 +43,7 @@ public class SettingGeneralViewImpl extends VerticalLayout implements SettingGen
 	
 	@Override
 	public void init() {
-		title=new Label("<h2>Pengaturan Keuangan</h2>", ContentMode.HTML);
+		title=new Label("<h2>Pengaturan Umum</h2>", ContentMode.HTML);
 
 		inputPhone =new TextField();
 			inputPhone.setImmediate(true);

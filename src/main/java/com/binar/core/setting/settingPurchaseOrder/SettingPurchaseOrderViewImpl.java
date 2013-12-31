@@ -40,7 +40,7 @@ public class SettingPurchaseOrderViewImpl extends VerticalLayout implements Sett
 	
 	@Override
 	public void init() {
-		title=new Label("<h2>Pengaturan Keuangan</h2>", ContentMode.HTML);
+		title=new Label("<h2>Pengaturan Surat Pesanan</h2>", ContentMode.HTML);
 
 		inputNarkotika =new TextField();
 			inputNarkotika.setImmediate(true);

@@ -18,23 +18,24 @@ public class SettingUserModel {
 	}
 
 	
-	public List<String> updateData(FormData data, User user){
+	public List<String> updateData(FormData data, int idUser, boolean passwordMode){
 		List<String> error;
 		error=data.validate();
+		User user=getUser(idUser);
 		if(error==null){
 			error=new ArrayList<String>();
 			try {
-				user.setActive(true);
-				user.setAddress(data.getAddress());
-				user.setEmployeeNum(data.getEmployeeNum());
-				user.setName(data.getName());
-				if(data.getPassword1()!=null){
+				if(passwordMode){
 					user.setPasswordHash(data.getPassword1());
+				}else{
+					user.setActive(true);
+					user.setAddress(data.getAddress());
+					user.setEmployeeNum(data.getEmployeeNum());
+					user.setName(data.getName());
+					user.setPhoneNumber(data.getPhoneNumber());
+					user.setTitle(data.getTitle());
+					user.setUsername(data.getUserName());
 				}
-				user.setPasswordHash(user.getPassword());
-				user.setPhoneNumber(data.getPhoneNumber());
-				user.setTitle(data.getTitle());
-				user.setUsername(data.getUserName());
 				server.update(user);
 				return null;
 			} catch (Exception e) {

@@ -40,7 +40,7 @@ public class SettingGoodsViewImpl extends VerticalLayout implements SettingGoods
 	
 	@Override
 	public void init() {
-		title=new Label("<h2>Pengaturan Keuangan</h2>", ContentMode.HTML);
+		title=new Label("<h2>Pengaturan Barang</h2>", ContentMode.HTML);
 
 		inputSatuan =new TextArea();
 			inputSatuan.setImmediate(true);

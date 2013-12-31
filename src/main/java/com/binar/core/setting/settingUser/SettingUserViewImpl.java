@@ -39,11 +39,12 @@ public class SettingUserViewImpl extends VerticalLayout implements SettingUserVi
 	private PasswordField inputPassword1;
 	private PasswordField inputPassword2;
 	
-	
+	private Label labelChangePasswordDesc;
+	private Label labelChangePassword;
 	private Label labelError;
 	private Button buttonSaveEdit;
 	private Button buttonReset;
-	
+	private Button buttonMode;
 	private SettingUserListener listener;
 
 	public SettingUserViewImpl(GeneralFunction function) {
@@ -59,7 +60,8 @@ public class SettingUserViewImpl extends VerticalLayout implements SettingUserVi
 	@Override
 	public void init() {
 		title=new Label("<h2>Pengaturan Data Akun</h2>", ContentMode.HTML);
-
+		labelChangePassword=new Label("<h4>Ubah Password</h4>", ContentMode.HTML);
+		labelChangePasswordDesc=new Label("Kosongkan jika tidak ingin merubah password", ContentMode.HTML);
 		inputUserName= new TextField("Nama Untuk Log In");
 		inputUserName.setDescription("Nama yang digunakan untuk log in");
 		inputUserName.setImmediate(true);
@@ -125,6 +127,8 @@ public class SettingUserViewImpl extends VerticalLayout implements SettingUserVi
 		buttonSaveEdit.addClickListener(this);
 		buttonReset=new Button("Reset Form");
 		buttonReset.addClickListener(this);
+		buttonMode=new Button("Ubah Password");
+		buttonMode.addClickListener(this);
 
 	  construct();
 
@@ -145,23 +149,26 @@ public class SettingUserViewImpl extends VerticalLayout implements SettingUserVi
 				addComponent(inputEmployeeNum);
 				addComponent(selectRole);
 				addComponent(inputPhoneNumber);
-				addComponent(new Label("<h4>Ubah Password</h4>", ContentMode.HTML));
-				addComponent(new Label("Kosongkan jika tidak ingin merubah password", ContentMode.HTML));
+				addComponent(labelChangePassword);
+				addComponent(labelChangePasswordDesc);
 				addComponent(inputOldPassword);
 				addComponent(inputPassword1);
 				addComponent(inputPassword2);
 				addComponent(labelError);
-				addComponent(new GridLayout(2,1){
+				addComponent(new GridLayout(3,1){
 					{
 						setMargin(true);
 						setSpacing(true);
 						addComponent(buttonSaveEdit, 0,0);
 						addComponent(buttonReset, 1,0);
+						addComponent(buttonMode, 2,0);
 					}
 				});		
 				
 			}
 		});
+		
+		changeMode();
 	}
 
 	@Override
@@ -184,7 +191,7 @@ public class SettingUserViewImpl extends VerticalLayout implements SettingUserVi
 
 	@Override
 	public FormData getFormData() {
-		FormData data=new FormData(function);
+		FormData data=new FormData(function, editPassword);
 		data.setAddress(inputAddress.getValue());
 		data.setEmployeeNum(inputEmployeeNum.getValue());
 		data.setName(inputName.getValue());
@@ -217,9 +224,53 @@ public class SettingUserViewImpl extends VerticalLayout implements SettingUserVi
 		}else if(event.getButton()==buttonSaveEdit){
 			listener.updateClick();
 			System.out.println("Button save edit tekan");
+		}else if(event.getButton()==buttonMode){
+			listener.modeClick();
 		}
 		
 	}
+	private boolean editPassword=true;
+	public void changeMode(){
+		if(editPassword){ //jika kondisi mode edit password, maka dirubah ke mode edit data;
+			editPassword=false;
+			inputUserName.setVisible(true);
+			inputTitle.setVisible(true);
+			selectRole.setVisible(true);
+			inputEmployeeNum.setVisible(true);
+			inputName.setVisible(true);
+			inputPhoneNumber.setVisible(true);
+			inputAddress.setVisible(true);
+			inputOldPassword.setVisible(false);
+			inputPassword1.setVisible(false);
+			inputPassword2.setVisible(false);
+			
+			labelChangePasswordDesc.setVisible(false);
+			labelChangePassword.setVisible(false);
+			labelError.setVisible(false);
+			buttonMode.setCaption("Ubah Password");
 
+		}else{
+			editPassword=true;
+			inputUserName.setVisible(false);
+			inputTitle.setVisible(false);
+			selectRole.setVisible(false);
+			inputEmployeeNum.setVisible(false);
+			inputName.setVisible(false);
+			inputPhoneNumber.setVisible(false);
+			inputAddress.setVisible(false);
+			inputOldPassword.setVisible(true);
+			inputPassword1.setVisible(true);
+			inputPassword2.setVisible(true);
+			
+			labelChangePasswordDesc.setVisible(true);
+			labelChangePassword.setVisible(true);
+			labelError.setVisible(true);
+			buttonMode.setCaption("Ubah Data");
+
+		}
+	}
+	public boolean isEditPassword() {
+		return editPassword;
+	}
 
 }

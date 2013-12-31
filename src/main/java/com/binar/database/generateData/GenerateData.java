@@ -91,10 +91,6 @@ public class GenerateData {
 			server.delete(role);
 		}
 		
-		List<Goods> goods=server.find(Goods.class).findList();
-		for(Goods good:goods){
-			server.delete(good);
-		}
         List<DeletedGoods> dels= server.find(DeletedGoods. class).findList();
         for(DeletedGoods del:dels){
                server.delete(dels);
@@ -113,6 +109,11 @@ public class GenerateData {
 		for(Manufacturer manufactur:manufacturers){
 			server.delete(manufactur);
 		}
+		List<Goods> goods=server.find(Goods.class).findList();
+		for(Goods good:goods){
+			server.delete(good);
+		}
+
 		List<Setting> settings=server.find(Setting.class).findList();
 		for(Setting setting:settings){
 			server.delete(setting);

@@ -28,7 +28,7 @@ public class SettingUserPresenter implements SettingUserListener {
 	public void updateClick() {
 		view.hideError();
 		FormData data=view.getFormData();
-		List<String> error=model.updateData(data, function.getLogin().getUserLogin());
+		List<String> error=model.updateData(data, function.getLogin().getUserLogin().getIdUser(), view.isEditPassword());
 		if(error==null){
 			Notification.show("Data telah diperbaharui");
 		}else{
@@ -50,6 +50,11 @@ public class SettingUserPresenter implements SettingUserListener {
 	@Override
 	public void valueChange() {
 		view.hideError();
+	}
+
+	@Override
+	public void modeClick() {
+		view.changeMode();
 	}
 
 }
