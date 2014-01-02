@@ -56,6 +56,7 @@ public class GenerateData {
 			initiateSupplierData();
 			initiatieManufacturerData();
 			setSettingData();
+			
             initiateConsumptionData();
             initiateDeletionData();
             initiateReceptionData();

@@ -30,8 +30,8 @@ public class InvoiceModel {
 			Date startDate;
 			Date endDate;
 			if(month==null){
-				startDate=year.withDayOfYear(year.dayOfYear().getMinimumValue()).toDate();
-				endDate=year.withDayOfYear(year.dayOfYear().getMaximumValue()).toDate();
+				startDate=year.withDayOfYear(year.dayOfYear().getMinimumValue()).withHourOfDay(year.hourOfDay().getMinimumValue()).toDate();
+				endDate=year.withDayOfYear(year.dayOfYear().getMaximumValue()).withHourOfDay(year.hourOfDay().getMaximumValue()).toDate();
 			}else{
 				startDate=month.withDayOfMonth(month.dayOfMonth().getMinimumValue()).withYear(year.getYear()).toDate();	
 				endDate=month.withDayOfMonth(month.dayOfMonth().getMaximumValue()).withYear(year.getYear()).toDate();

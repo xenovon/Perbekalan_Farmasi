@@ -43,8 +43,8 @@ public class ReceptionListPresenter implements ReceptionListListener {
 		this.model=model;
 		this.view=view;
 		this.function=function;
-		view.init();
 		view.setListener(this);
+		view.init();
 		updateTable(view.getSelectedPeriod()); 
 		updateTableByDate(view.getSelectedPeriod());
 	}

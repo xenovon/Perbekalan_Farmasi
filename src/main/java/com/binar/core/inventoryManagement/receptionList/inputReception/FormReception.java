@@ -19,20 +19,24 @@ public class FormReception {
 	 * input date
 	 * input expired date
 	 */
-	
-	private String invoiceItemId="";
-	private String goodsId="";
+	private boolean editMode;
+	private Integer invoiceItemId;
 	private String quantity="";
 	private String information="";
 	private Date receptionDate;
 	private Date expiredDate;
-	private String periode="";
 	
 	private GeneralFunction function;
 	private EbeanServer server;
 	private GetSetting setting;
 	private TextManipulator text;
 	
+	public void setEditMode(boolean editMode) {
+		this.editMode = editMode;
+	}
+	public boolean isEditMode() {
+		return editMode;
+	}
 	public FormReception(GeneralFunction function){
 		this.function=function;
 		this.server=function.getServer();
@@ -81,25 +85,22 @@ public class FormReception {
 		return "";
 	}
 	
-	protected String getInvoiceItemId() {
+	protected Integer getInvoiceItemId() {
 		return invoiceItemId;
 	}
-	protected void setInvoiceItemId(String goodsId) {
+	protected void setInvoiceItemId(Integer invoiceItemId) {
 		this.invoiceItemId = invoiceItemId;
 	}
 	protected String getQuantity() {
 		return quantity;
+	}	
+	protected Integer getQuantityInt() {
+		return Integer.parseInt(quantity);
 	}
 	protected void setQuantity(String quantity) {
 		this.quantity = quantity;
 	}
 	
-	protected void setPeriode(String periode) {
-		this.periode = periode;
-	}
-	public String getPeriode() {
-		return periode;
-	}
 	
 	public Date getReceptionDate() {
 		return receptionDate;
@@ -117,13 +118,6 @@ public class FormReception {
 		this.information = information;
 	}
 	
-	protected String getGoodsId() {
-		return goodsId;
-	}
-	
-	protected void setGoodsId(String goodsId) {
-		this.goodsId = goodsId;
-	}
 
 	public Date getExpiredDate() {
 		return expiredDate;

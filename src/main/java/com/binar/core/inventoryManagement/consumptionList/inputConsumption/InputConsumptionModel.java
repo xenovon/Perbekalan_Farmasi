@@ -61,6 +61,17 @@ public class InputConsumptionModel {
 			consumption.setInformation(data.getInformation());
 			consumption.setGoods(goods);
 			server.save(consumption);
+
+			// untuk mengurangi stock obat ketika ada konsumsi baru
+			Goods goodsStock=server.find(Goods.class, data.getGoodsId());			
+			int currentStock=goodsStock.getCurrentStock();
+			currentStock=currentStock-Integer.parseInt(data.getQuantity());
+			goodsStock.setCurrentStock(currentStock);
+			
+			consumption.setStockQuantity(currentStock);
+			server.update(goodsStock);
+			
+			
 			server.commitTransaction();
 			return null;
 			
@@ -97,10 +108,22 @@ public class InputConsumptionModel {
 		server.beginTransaction();
 		try {
 			GoodsConsumption consumption=server.find(GoodsConsumption.class, idCons);
+			int beforeUpdateQuantity=consumption.getQuantity();
 			consumption.setQuantity(Integer.parseInt(data.getQuantity()));
 			consumption.setWard(data.getWard());
 			consumption.setConsumptionDate(data.getConsumptionDate());
 			consumption.setInformation(data.getInformation());			
+			
+			// untuk mengurangi stock obat ketika ada konsumsi baru
+			Goods goodsStock=server.find(Goods.class, data.getGoodsId());
+			
+			int currentStock=goodsStock.getCurrentStock();
+			currentStock=currentStock+beforeUpdateQuantity;
+			currentStock=currentStock-Integer.parseInt(data.getQuantity());
+			goodsStock.setCurrentStock(currentStock);
+			
+			consumption.setStockQuantity(currentStock);
+			server.update(goodsStock);
 			
 			server.update(consumption);	
 			server.commitTransaction();

@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.joda.time.DateTime;
 
+import com.avaje.ebean.Ebean;
 import com.avaje.ebean.EbeanServer;
 import com.binar.core.requirementPlanning.inputRequierementPlanning.TableData;
 import com.binar.entity.Goods;
@@ -140,13 +141,24 @@ public class ConsumptionListModel {
 	}
 
 	public boolean deleteGoodsConsumption(int consIdFinal) {
+		server.beginTransaction();
 		try {
 			GoodsConsumption goodsCon= server.find(GoodsConsumption.class, consIdFinal);
+			String idGoods=goodsCon.getGoods().getIdGoods();
+			int consumptionCount=goodsCon.getQuantity();
+			Goods goods=server.find(Goods.class, idGoods);
+			int currentStock=goods.getCurrentStock();
+			goods.setCurrentStock(currentStock+consumptionCount);
 			server.delete(goodsCon);
+			server.update(goods);
+			server.commitTransaction();
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
+			server.rollbackTransaction();
 			return false;
+		}finally{
+			server.endTransaction();
 		}
 	}
 	

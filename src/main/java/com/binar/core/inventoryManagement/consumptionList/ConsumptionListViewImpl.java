@@ -181,6 +181,7 @@ public class ConsumptionListViewImpl extends VerticalLayout implements Consumpti
 				addItem("tanggal_pengeluaran");
 				setItemCaption("barang", "Sort berdasarkan barang");
 				setItemCaption("tanggal_pengeluaran", "Sort berdasarkan tanggal");
+				setValue("barang");
 			}
 		};
 		

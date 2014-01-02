@@ -128,6 +128,7 @@ public class PurchaseOrderPresenter implements PurchaseOrderListener {
 		//untuk menampung opsi pilihan "Semua Bulan"
 		if(date==null){
 			year=DateTime.now().withYear(Integer.parseInt(period.split("-")[1]));	
+			System.out.println("Purchase order "+period.split("-")[1]+" "+year.getYear());
 		}else{
 			year=date;
 			month=date;

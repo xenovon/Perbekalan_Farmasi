@@ -1,10 +1,14 @@
 package com.binar.core.inventoryManagement.receptionList.inputReception;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.avaje.ebean.EbeanServer;
 import com.binar.core.inventoryManagement.receptionList.inputReception.InputReceptionView.ErrorLabel;
+import com.binar.entity.GoodsReception;
 import com.binar.entity.InvoiceItem;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.ui.Notification;
@@ -22,45 +26,34 @@ public class InputReceptionPresenter implements InputReceptionView.InputReceptio
 	FormReception data;
 	int idRecs;
 	boolean editMode=false;
-	Date selectedDate;
-	Window window;
 	
 	public InputReceptionPresenter(InputReceptionModel model, InputReceptionViewImpl view,
-			GeneralFunction function, String periode, Window window){
+			GeneralFunction function){
 		this.view=view;
 		this.model=model;
 		this.server=function.getServer();
-		view.init();
-		this.window=window;
 		view.addListener(this);
+		view.init();
 		
 		this.generalFunction=function;
-		this.data=new FormReception(function);
-		this.data.setPeriode(periode);
-		
-		view.resetForm();
-		view.setSelectInvoiceItemsData(model.getInvoiceItemsData());
-		selectedDate=function.getDate().parseDateMonth(periode).toDate();
-		view.setSelectedMonth(selectedDate);
 	}
 	
 	public InputReceptionPresenter (InputReceptionModel model, InputReceptionViewImpl view, 
-		GeneralFunction function, String periode, Window window, int idRecs,boolean isEdit) {
-		this(model, view, function, periode, window );
-		updateEditView(idRecs,isEdit, window);
+		GeneralFunction function, int idRecs,boolean isEdit) {
+		this(model, view, function);
+		setEditMode(true);
+		updateEditView(idRecs);
 	}
 	
-	public void updateEditView(int idRecs, boolean isEdit, Window window) {
-		view.setDataEdit(model.getSingleReception(idRecs));
-		setEditMode(isEdit, window);		
+	public void updateEditView(int idRecs) {
 		this.idRecs=idRecs;
-		this.window=window;
+		GoodsReception reception=model.getSingleReception(idRecs);
+		view.setDataEdit(reception, model.getSingleReceptionList(reception));
 	}
 
-	public void setEditMode(boolean isEdit, Window window) {
+	public void setEditMode(boolean isEdit) {
 		this.editMode=isEdit;
 		view.setInputEditView(isEdit);
-		this.window=window;
 	}
 	
 	private boolean isEditMode() {
@@ -83,7 +76,7 @@ public class InputReceptionPresenter implements InputReceptionView.InputReceptio
 					isEditMode()?"Anda yakin akan membatalkan perubahan data?":"Anda yakin Akan Membatalkan Memasukan Data?",
 					new ClickListener() {
 						public void buttonClick(ClickEvent event) {
-								view.getUI().removeWindow(window);
+								closeWindow();
 								view.resetForm();						
 						}
 					}, view.getUI());			
@@ -91,10 +84,8 @@ public class InputReceptionPresenter implements InputReceptionView.InputReceptio
 	}
 
 	private void submitClick() {
-		setData();
-		System.err.println(data.toString());	
-		
-		List<String> errors=data.validate();
+		FormReception data=view.getFormData();
+		List<String> errors=model.insertData(data); //insert data
 		if(errors!=null){
 			String textError="Penyimpanan Tidak Berhasil, Silahkan koreksi Error berikut : </br>";
 			for(String error:errors){
@@ -102,45 +93,28 @@ public class InputReceptionPresenter implements InputReceptionView.InputReceptio
 			}
 			view.showError(ErrorLabel.GENERAL, textError);
 		}else{
-			String status=model.insertData(data); //insert data
-			if(status!=null){ //penyimpanan gagal
-				view.showError(ErrorLabel.GENERAL, status);
-			}else{ //penyimpanan sukses
-				view.getUI().removeWindow(window);
-				view.resetForm();
-				Notification.show("Penyimpanan rencana kebutuhan berhasil", Type.TRAY_NOTIFICATION);
-			}		
+			closeWindow();
+			view.resetForm();
+			Notification.show("Penyimpanan penerimaan barang berhasil", Type.TRAY_NOTIFICATION);
 		}
+		
 	}
 
-	private void setData() {
-		data.setExpiredDate(view.getInputExpiredDate().getValue());
-		data.setQuantity(view.getInputGoodsQuantity().getValue());
-		data.setInformation(view.getInformation().getValue());
-		data.setReceptionDate(view.getInputReceptionDate().getValue());
-		System.out.println(data.getQuantity());
-	}
 
 	private void saveEditClick() {
-		setData();
-		
-		List<String> errors=data.validate();
+		FormReception data=view.getFormData();
+		List<String> errors=model.saveEdit(data, idRecs); //insert data
 		if(errors!=null){
-			String textError="Penyimpanan Perubahan Data Tidak Berhasil, Silahkan koreksi Error berikut : </br>";
+			String textError="Penyimpanan Tidak Berhasil, Silahkan koreksi Error berikut : </br>";
 			for(String error:errors){
 				textError=textError+error+"</br>";
 			}
 			view.showError(ErrorLabel.GENERAL, textError);
 		}else{
-			String status=model.saveEdit(data, idRecs); //insert data
-			if(status!=null){ //penyimpanan gagal
-				view.showError(ErrorLabel.GENERAL, status);
-			}else{ //penyimpanan sukses
-				view.getUI().removeWindow(window);
-				view.resetForm();
-				Notification.show("Penyimpanan perubahan pengeluaran harian berhasil", Type.TRAY_NOTIFICATION);
-			}					
-		}
+			closeWindow();
+			view.resetForm();
+			Notification.show("Penyimpanan perubahan penerimaan barang berhasil", Type.TRAY_NOTIFICATION);
+		}					
 	}
 
 	@Override
@@ -149,38 +123,57 @@ public class InputReceptionPresenter implements InputReceptionView.InputReceptio
 		if(inputField.equals("inputGoodsQuantity")){
 			goodsQuantityChange();
 		}
-		if(inputField.equals("inputInvoiceItemSelect")){
-			invoiceItemSelectChange();
+		if(inputField.equals("inputInvoiceEndDate")){
+			dateRangeChange();
 		}
-	}
+		if(inputField.equals("inputGoodsSelect")){
+			invoiceItemChange();
+		}	
+		if(inputField.equals("inputInvoiceStartDate")){
+			dateRangeChange();
+		}
+		if(inputField.equals("inputInvoiceSelect")){
+			invoiceChange();
+		}
+		
 
+	}
+	private void dateRangeChange(){
+		
+	}
 	private void invoiceItemSelectChange() {
 		InvoiceItem invId= server.find(InvoiceItem.class,data.getInvoiceItemId());
 		invId.getPurchaseOrderItem().getSupplierGoods().getGoods().getIdGoods();
 		invId.getPurchaseOrderItem().getSupplierGoods().getGoods().getName();
 	}
-
+	
+	FormReception formReception=new FormReception(this.generalFunction);
 	private void goodsQuantityChange() {
-		data.setQuantity(view.getInputGoodsQuantity().getValue());
-		//validasi quantity
-		String errorMessage=data.validateQuantity();
+		String quantity=view.getInputGoodsQuantity();
+		formReception.setQuantity(quantity);
+		String errorMessage=formReception.validateQuantity();
 		if(errorMessage.equals("")){
-			view.hideError(ErrorLabel.QUANTITY);
+			view.hideAllError();
 		}else{
 			view.showError(ErrorLabel.QUANTITY, errorMessage);
 		}	
 	}
-
-	@Override
-	public void setReceptionDate(Date receptionDate) {
-		this.data.setReceptionDate(receptionDate);	
+	
+	private void invoiceChange(){
+		//TODO
+	}
+	private void invoiceItemChange(){
+		//TODO
+	}
+	
+	public void closeWindow(){
+		Collection<Window> list=view.getUI().getWindows();
+		for(Window w:list){
+			view.getUI().removeWindow(w);
+			view.resetForm();
+		}
 		
 	}
 
-	@Override
-	public void setPeriode(String periode, Window window) {
-		this.window=window;
-		this.data.setPeriode(periode);	
-	}
 
 }

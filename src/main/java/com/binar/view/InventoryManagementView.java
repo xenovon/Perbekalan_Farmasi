@@ -1,12 +1,8 @@
 package com.binar.view;
 
-import com.binar.core.inventoryManagement.Consumption;
 import com.binar.core.inventoryManagement.ConsumptionList;
-import com.binar.core.inventoryManagement.Deletion;
 import com.binar.core.inventoryManagement.DeletionList;
-import com.binar.core.inventoryManagement.Receipt;
 import com.binar.core.inventoryManagement.ReceptionList;
-import com.binar.core.inventoryManagement.Stock;
 import com.binar.core.inventoryManagement.StockList;
 import com.binar.core.inventoryManagement.deletionList.DeletionApproval;
 import com.binar.generalFunction.GeneralFunction;

@@ -3,6 +3,9 @@ package com.binar.core.inventoryManagement.receptionList.inputReception;
 import java.util.Date;
 import java.util.Map;
 
+import org.joda.time.DateTime;
+
+import com.binar.core.inventoryManagement.consumptionList.inputConsumption.FormConsumption;
 import com.binar.entity.GoodsConsumption;
 import com.binar.entity.GoodsReception;
 import com.binar.generalFunction.GeneralFunction;
@@ -24,11 +27,15 @@ public class InputReceptionViewImpl extends FormLayout implements InputReception
 Button.ClickListener, ValueChangeListener {
 	
 	private ComboBox inputInvoiceItemSelect;
-	private TextField inputGoodsSelect;
+	private ComboBox inputGoodsSelect;
 	private TextField inputGoodsQuantity;
 	private DateField inputExpiredDate;
 	private DateField inputReceptionDate;
-	private TextArea information;
+	private DateField inputInvoiceStartDate;
+	private DateField inputInvoiceEndDate;
+	
+	private TextArea inputInformation;
+	private Label labelChooseDate;
 	
 	private Label labelSatuan;
 	private Button buttonReset;
@@ -40,6 +47,9 @@ Button.ClickListener, ValueChangeListener {
 	
 	private InputReceptionListener listener;
 	GeneralFunction function;
+	private boolean editMode;
+	
+	
 	
 	public InputReceptionViewImpl(GeneralFunction function){
 		this.function=function;
@@ -71,14 +81,14 @@ Button.ClickListener, ValueChangeListener {
 		};
 		inputGoodsQuantity.addValueChangeListener(this);
 		
-		inputGoodsSelect=new TextField("Nama barang"){
+		inputGoodsSelect=new ComboBox("Pilih Barang"){
 			{
 				setWidth(function.FORM_WIDTH);
 				setEnabled(false);
 			}
 		};
 		
-		inputInvoiceItemSelect=new ComboBox("Invoice Item"){
+		inputInvoiceItemSelect=new ComboBox("Pilih Faktur"){
 			{
 				setImmediate(true);
 				setWidth(function.FORM_WIDTH);
@@ -101,34 +111,57 @@ Button.ClickListener, ValueChangeListener {
 			}
 		};
 		inputExpiredDate.addValueChangeListener(this);
+		inputInvoiceStartDate = new DateField("Rentang Awal"){
+			{
+				setWidth(function.FORM_WIDTH);
+				setImmediate(true);
+				DateTime defaultValue=new DateTime().now();
+				setValue(defaultValue.withDayOfMonth(defaultValue.dayOfMonth().getMinimumValue()).toDate());
+			}
+		};
+		inputInvoiceStartDate.addValueChangeListener(this);
+		inputInvoiceEndDate = new DateField("Rentang Akhir"){
+			{
+				setWidth(function.FORM_WIDTH);
+				DateTime defaultValue=new DateTime().now();
+				setValue(defaultValue.withDayOfMonth(defaultValue.dayOfMonth().getMaximumValue()).toDate());
+				setImmediate(true);
+			}
+		};
+		inputInvoiceEndDate.addValueChangeListener(this);
 		
-		information = new TextArea("informasi");
-		information.setMaxLength(function.MAX_TEXTAREA_LENGTH);
+		inputInformation = new TextArea("informasi");
+		inputInformation.setMaxLength(function.MAX_TEXTAREA_LENGTH);
 
 		labelSatuan =new Label("Satuan");
 		
 		buttonReset=new Button("Reset");
 		buttonReset.addClickListener(this);
 		
-		buttonSubmit=new Button("Submit");
+		buttonSubmit=new Button("Simpan");
 		buttonSubmit.addClickListener(this);
 		buttonSubmit.addStyleName("primary");
 		buttonCancel =new Button("Batal");
 		buttonCancel.addClickListener(this);
+		
+		labelChooseDate=new Label("<b>Pilih Rentang Tanggal Invoice</b>", ContentMode.HTML);
 		construct();		
 	}
-
 	private void construct() {
 		setMargin(true);
 		this.setSpacing(true);
-		this.addComponent(inputReceptionDate);
+		this.addComponent(labelChooseDate);
+		this.addComponent(inputInvoiceStartDate);
+		this.addComponent(inputInvoiceEndDate);
 		this.addComponent(inputInvoiceItemSelect);
 		this.addComponent(inputGoodsSelect);
+		this.addComponent(new Label("<b>Data Penerimaan Barang</b>", ContentMode.HTML));
+		this.addComponent(inputReceptionDate);
 		this.addComponent(labelSatuan);
 		this.addComponent(inputGoodsQuantity);
 		this.addComponent(labelErrorQuantity);
 		this.addComponent(inputExpiredDate);
-		this.addComponent(information);
+		this.addComponent(inputInformation);
 		this.addComponent(labelGeneralError);
 		this.addComponent(new GridLayout(3, 1){
 			{
@@ -146,30 +179,38 @@ Button.ClickListener, ValueChangeListener {
 	}
 
 	public void addListener(InputReceptionPresenter inputReceptionPresenter) {
-		this.listener=listener;
+		this.listener=inputReceptionPresenter;
 	}
-
 	public void resetForm() {
 		this.inputGoodsQuantity.setValue("");
-		this.information.setValue("");		
+		this.inputInformation.setValue("");
+		
+		inputExpiredDate.setValue(DateTime.now().withYear(DateTime.now().getYear()+4).toDate());
+		inputExpiredDate.setValue(DateTime.now().toDate());
+		DateTime defaultValue=new DateTime().now();
+		inputInvoiceStartDate.setValue(defaultValue.withDayOfMonth(defaultValue.dayOfMonth().getMinimumValue()).toDate());
+		inputInvoiceEndDate.setValue(defaultValue.withDayOfMonth(defaultValue.dayOfMonth().getMaximumValue()).toDate());
+		
 	}
 
 	@Override
 	public void valueChange(ValueChangeEvent event) {
-		if(event.getProperty()==inputGoodsQuantity){
-			listener.realTimeValidator("inputGoodsQuantity");
+		if(event.getProperty()==inputGoodsSelect){
+			listener.realTimeValidator("inputGoodsSelect");
 			
 		}else if(event.getProperty()==inputInvoiceItemSelect){
-			listener.realTimeValidator("inputInvoiceItemSelect");			
+			listener.realTimeValidator("inputInvoiceSelect");			
 		}
 		
-		else if(event.getProperty()==inputReceptionDate){
-			listener.realTimeValidator("inputConsumptionDate");			
+		else if(event.getProperty()==inputInvoiceEndDate){
+			listener.realTimeValidator("inputInvoiceEndDate");					
 		}
 		
-		else if(event.getProperty()==inputExpiredDate){
-			listener.realTimeValidator("inputExpiredDate");			
-		}		
+		else if(event.getProperty()==inputInvoiceStartDate){
+			listener.realTimeValidator("inputInvoiceStartDate");			
+		}else if(event.getProperty()==inputGoodsQuantity){
+			listener.realTimeValidator("inputGoodsQUantity");
+		}
 	}
 
 	@Override
@@ -184,19 +225,18 @@ Button.ClickListener, ValueChangeListener {
 	}
 	
 	public void setDataSubmit(){
-		buttonSubmit.setCaption("Submit");
+		buttonSubmit.setCaption("Simpan");
 		resetForm();
 	}
-
-	public void setDataEdit(GoodsReception data){
+	public void setDataEdit(GoodsReception data, Map<Integer, String> goodsData){
 		
+		setSelectGoodsData(goodsData);
 		inputGoodsQuantity.setValue(data.getQuantityReceived()+"");
-		setGoodsName(data.getInvoiceItem().getPurchaseOrderItem().getSupplierGoods().getGoods().getIdGoods());
+		inputGoodsSelect.setValue(data.getInvoiceItem().getPurchaseOrderItem().getSupplierGoods().getGoods().getIdGoods());
 		inputReceptionDate.setValue(data.getDate());
 		inputExpiredDate.setValue(data.getExpiredDate());
-		information.setValue(data.getInformation());
-		
-		buttonSubmit.setCaption("Simpan Perubahan");
+		inputInformation.setValue(data.getInformation());
+				
 	}
 
 	@Override
@@ -214,16 +254,6 @@ Button.ClickListener, ValueChangeListener {
 	}
 
 	@Override
-	public void hideError(ErrorLabel label) {
-		switch (label) {
-		case GENERAL:labelGeneralError.setVisible(false);break;
-		case QUANTITY:labelErrorQuantity.setVisible(false);break;
-		default:
-			break;
-		}
-	}
-
-	@Override
 	public void hideAllError() {
 		labelErrorQuantity.setVisible(false);
 		labelGeneralError.setVisible(false);
@@ -231,17 +261,26 @@ Button.ClickListener, ValueChangeListener {
 
 	@Override
 	public void setInputEditView(boolean isEdit) {
-		if(isEdit){
-			inputReceptionDate.setEnabled(false);
-			inputInvoiceItemSelect.setEnabled(false);
+		this.editMode = editMode;
+		if(editMode){
+			inputInvoiceEndDate.setVisible(false);
 			inputGoodsSelect.setEnabled(false);
-		}else{
-			inputReceptionDate.setEnabled(true);
-			inputInvoiceItemSelect.setEnabled(true);
-			inputGoodsSelect.setEnabled(false);
-		}	
-	}
+			inputInvoiceStartDate.setVisible(false);
+			inputInvoiceItemSelect.setVisible(false);
+			labelChooseDate.setVisible(false);
+			buttonSubmit.setCaption("Simpan Perubahan");
+			buttonReset.setVisible(false);
 
+		}else{
+			inputInvoiceEndDate.setVisible(true);
+			inputGoodsSelect.setEnabled(true);
+			inputInvoiceStartDate.setVisible(true);
+			inputInvoiceItemSelect.setVisible(true);
+			labelChooseDate.setVisible(true);
+			buttonReset.setVisible(false);
+			buttonSubmit.setCaption("Simpan");			
+		}
+	}
 	@Override
 	public void setUnit(String text) {
 		labelSatuan.setValue("Satuan : "+text);
@@ -249,64 +288,42 @@ Button.ClickListener, ValueChangeListener {
 	
 
 	@Override
-	public void setGoodsName(String text) {
-		inputGoodsSelect.setValue(text);
-	}
-
-	@Override
-	public void setSelectInvoiceItemsData(Map<String, String> data) {
-		for (Map.Entry<String, String> entry : data.entrySet()) {
+	public void setSelectInvoiceItemsData(Map<Integer, String> data) {
+		for (Map.Entry<Integer, String> entry : data.entrySet()) {
         	inputInvoiceItemSelect.addItem(entry.getKey());
         	inputInvoiceItemSelect.setItemCaption(entry.getKey(), entry.getValue());
         }		
 	}
 
-	protected TextField getInputGoodsSelect() {		
-		return inputGoodsSelect;
+	@Override
+	public void setSelectGoodsData(Map<Integer, String> data) {
+        for (Map.Entry<Integer, String> entry : data.entrySet()) {
+        	inputGoodsSelect.addItem(entry.getKey());
+        	inputGoodsSelect.setItemCaption(entry.getKey(), entry.getValue());
+        }
+	}
+	public Date getDateRangeStart(){
+		return inputInvoiceStartDate.getValue();
+	}
+	public Date getDateDateRangeEnd(){
+		return inputInvoiceEndDate.getValue();
 	}
 
-	protected void setInputGoodsSelect(TextField inputGoodsSelect) {
-		this.inputGoodsSelect = inputGoodsSelect;
+	@Override
+	public FormReception getFormData() {
+		FormReception data=new FormReception(function);
+		data.setEditMode(this.editMode);
+		data.setExpiredDate(inputExpiredDate.getValue());
+		data.setInformation(inputInformation.getValue());
+		data.setInvoiceItemId((Integer)inputGoodsSelect.getValue());
+		data.setQuantity(inputGoodsQuantity.getValue());
+		data.setReceptionDate(inputReceptionDate.getValue());
+		return data;
 	}
 
-	protected TextField getInputGoodsQuantity() {
-		return inputGoodsQuantity;
+	public String getInputGoodsQuantity() {
+		return inputGoodsQuantity.getValue();
 	}
 
-	protected void setInputGoodsQuantity(TextField inputGoodsQuantity) {
-		this.inputGoodsQuantity = inputGoodsQuantity;
-	}
-
-	public ComboBox getInputInvoiceItemSelect() {
-		return inputInvoiceItemSelect;
-	}
-
-	public void setInputInvoiceItemSelect(ComboBox inputInvoiceItemSelect) {
-		this.inputInvoiceItemSelect = inputInvoiceItemSelect;
-	}
-
-	public DateField getInputExpiredDate() {
-		return inputExpiredDate;
-	}
-
-	public void setInputExpiredDate(DateField inputExpiredDate) {
-		this.inputExpiredDate = inputExpiredDate;
-	}
-
-	public DateField getInputReceptionDate() {
-		return inputReceptionDate;
-	}
-
-	public void setInputReceptionDate(DateField inputReceptionDate) {
-		this.inputReceptionDate = inputReceptionDate;
-	}
-
-	protected TextArea getInformation() {
-		return information;
-	}
-
-	protected void setInformation(TextArea information) {
-		this.information = information;
-	}
 
 }
