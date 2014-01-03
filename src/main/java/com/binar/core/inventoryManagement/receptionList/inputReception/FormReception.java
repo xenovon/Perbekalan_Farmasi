@@ -106,7 +106,7 @@ public class FormReception {
 		return receptionDate;
 	}
 
-	public void setReceptionDate(Date consumptionDate) {
+	public void setReceptionDate(Date receptionDate) {
 		this.receptionDate = receptionDate;
 	}
 

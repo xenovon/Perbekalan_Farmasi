@@ -79,6 +79,7 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 	public ReceptionListViewImpl (GeneralFunction function) {
 		this.generalFunction=function;
 		text=generalFunction.getTextManipulator();
+		this.date=generalFunction.getDate();
 	}
 	
 	public DateTime getCurrentDate() {
@@ -346,7 +347,6 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 		        	addContainerProperty("Nama barang", String.class, null);
 		        	addContainerProperty("Jumlah", String.class, null);
 		        	addContainerProperty("Satuan", String.class, null);
-		        	addContainerProperty("Waktu input", String.class, null);
 		        	addContainerProperty("Keterangan", String.class, null);
 		        	addContainerProperty("Operasi", GridLayout.class, null);
 	        	}
@@ -405,13 +405,12 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 	        
 	        containerDetailByDate = new IndexedContainer(){ //deklarasi kontainer harian
 	        	{
-	        		addContainerProperty("Tanggal", String.class, null);
 					addContainerProperty("PBF", String.class, null);
 		        	addContainerProperty("Nama barang", String.class, null);
 		        	addContainerProperty("Jumlah", String.class, null);
 		        	addContainerProperty("Satuan", String.class, null);
-		        	addContainerProperty("Waktu input", String.class, null);
-		        	addContainerProperty("Keterangan", String.class, null);
+		        	addContainerProperty("Tanggal Kadaluarsa", String.class, null);
+		        	addContainerProperty("Keterangan", Label.class, null);
 		        	addContainerProperty("Operasi", GridLayout.class, null);
 	        	}
 	        };        
@@ -442,20 +441,18 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 		
 		containerDetailByDate.removeAllItems();
 		try {
-			SimpleDateFormat format=new SimpleDateFormat("dd MMMMM yyyy");
-			labelDate.setValue(format.format(receptions.get(0).getDate()));
+			labelDate.setValue(date.dateToText(receptions.get(0).getDate(), true));
 			labelItemQuantity.setValue(receptions.size()+"");	
 						
 			for (GoodsReception reception:receptions){
 				final GoodsReception receptionFinal=reception;
 				Item itemDetailByDate = containerDetailByDate.addItem(reception);
-				itemDetailByDate.getItemProperty("Tanggal").setValue(reception.getDate());
 				itemDetailByDate.getItemProperty("PBF").setValue(reception.getInvoiceItem().getPurchaseOrderItem().getSupplierGoods().getSupplier().getSupplierName());
 				itemDetailByDate.getItemProperty("Nama barang").setValue(reception.getInvoiceItem().getPurchaseOrderItem().getSupplierGoods().getGoods().getName());
 				itemDetailByDate.getItemProperty("Jumlah").setValue(text.intToAngka(reception.getQuantityReceived()));
 				itemDetailByDate.getItemProperty("Satuan").setValue(reception.getInvoiceItem().getPurchaseOrderItem().getSupplierGoods().getGoods().getUnit());
-        		itemDetailByDate.getItemProperty("Waktu input").setValue(format.format(reception.getTimestamp()));
-				itemDetailByDate.getItemProperty("Keterangan").setValue(reception.getInformation());;
+				itemDetailByDate.getItemProperty("Tanggal Kadaluarsa").setValue(date.dateToText(reception.getExpiredDate(),true));;
+				itemDetailByDate.getItemProperty("Keterangan").setValue(new Label(reception.getInformation()){{setWidth("150px");}});;
 				
 				itemDetailByDate.getItemProperty("Operasi").setValue(new GridLayout(2,1){{
 					Button buttonEdit=new Button();
@@ -513,7 +510,6 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 				itemDetail.getItemProperty("Nama barang").setValue(reception.getInvoiceItem().getPurchaseOrderItem().getSupplierGoods().getGoods().getName());
 				itemDetail.getItemProperty("Satuan").setValue(reception.getInvoiceItem().getPurchaseOrderItem().getSupplierGoods().getGoods().getUnit());
 				itemDetail.getItemProperty("Jumlah").setValue(text.intToAngka(reception.getQuantityReceived()));
-				itemDetail.getItemProperty("Waktu input").setValue(dateFormat.format(reception.getTimestamp()));
         		itemDetail.getItemProperty("Keterangan").setValue(reception.getInformation());;
 				itemDetail.getItemProperty("Operasi").setValue(new GridLayout(2,1){{
 					Button buttonEdit=new Button();
@@ -573,7 +569,7 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 		containerByDate.removeAllItems();
 		System.out.println(dataByDate.size());
 		if(dataByDate.size()==0){
-			Notification.show("Data pengeluaran kosong", Type.WARNING_MESSAGE);
+			Notification.show("Data pengeluaran kosong", Type.HUMANIZED_MESSAGE);
 			return false;
 		}
 		
@@ -622,12 +618,13 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 		this.getUI().addWindow(window);
 	}
 	
-	public void displayFormEdit(Component content, String title) {		
+	public Window displayFormEdit(Component content, String title) {		
 		if(windowEdit==null){
 		}
 		windowEdit.setCaption(title);
 		windowEdit.setContent(content);
 		this.getUI().addWindow(windowEdit);
+		return windowEdit;
 	}
 	
 	@Override

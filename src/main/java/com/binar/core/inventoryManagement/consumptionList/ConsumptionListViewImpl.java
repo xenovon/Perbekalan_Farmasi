@@ -10,6 +10,7 @@ import org.joda.time.DateTime;
 
 import com.binar.entity.Goods;
 import com.binar.entity.GoodsConsumption;
+import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
 import com.binar.generalFunction.TableFilter;
 import com.binar.generalFunction.TextManipulator;
@@ -61,10 +62,11 @@ public class ConsumptionListViewImpl extends VerticalLayout implements Consumpti
 	private ComboBox viewMode;
 	private Label labelSearch;
 	private Label labelMode;
-	
+	private DateManipulator dateMan;
 	public ConsumptionListViewImpl (GeneralFunction function) {
 		this.generalFunction=function;
 		text=generalFunction.getTextManipulator();
+		this.dateMan=generalFunction.getDate();
 	}
 	
 	private TableFilter filter;
@@ -239,7 +241,7 @@ public class ConsumptionListViewImpl extends VerticalLayout implements Consumpti
 		container.removeAllItems();
 		System.out.println(dataTable.size());
 		if(dataTable.size()==0){
-			Notification.show("Data pengeluaran kosong", Type.WARNING_MESSAGE);
+			Notification.show("Data pengeluaran kosong", Type.HUMANIZED_MESSAGE);
 			return false;
 		}
 		System.out.println("Jumlah data updateTableData ="+dataTable.size());
@@ -289,10 +291,10 @@ public class ConsumptionListViewImpl extends VerticalLayout implements Consumpti
 		        	final DateTime date=entry.getKey(); //dapatkan key
 		        	final int itemQuantity=entry.getValue(); //dan value	        	
 		        	
-		        	SimpleDateFormat format=new SimpleDateFormat("dd MMMMM yyyy");
+//		        	SimpleDateFormat format=new SimpleDateFormat("dd MMMMM yyyy");
 					Item item = containerByDate.addItem(date);
 					/* add data ke database */
-					item.getItemProperty("Tanggal Pengeluaran").setValue(format.format(date.toDate())); //mengeset nama barang
+					item.getItemProperty("Tanggal Pengeluaran").setValue(dateMan.dateToText(date.toDate(), true)); //mengeset nama barang
 					item.getItemProperty("Total Item").setValue(text.intToAngka(itemQuantity));	
 					item.getItemProperty("Operasi").setValue(new Button(){ //mengeset operasi
 					{

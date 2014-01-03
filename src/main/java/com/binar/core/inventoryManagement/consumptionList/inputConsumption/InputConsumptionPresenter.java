@@ -56,9 +56,7 @@ public class InputConsumptionPresenter implements InputConsumptionView.InputCons
 		setEditMode(isEdit, window);		
 		this.idCons=idCons;
 		this.window=window;
-		
 	}
-
 	public  void setEditMode(boolean isEdit, Window window){
 		this.editMode=isEdit;
 		view.setInputEditView(isEdit);

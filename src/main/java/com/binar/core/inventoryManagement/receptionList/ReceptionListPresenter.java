@@ -119,12 +119,14 @@ public class ReceptionListPresenter implements ReceptionListListener {
 			formRecModel=new InputReceptionModel(function);
 			formRecView=new InputReceptionViewImpl(function);
 			formRecPresenter =new InputReceptionPresenter(formRecModel, formRecView,
-					function, view.getSelectedPeriod(),view.getWindowEdit(), recId, true);
+					function, recId, true );
 			System.out.println("Form model view presenter instantiasi");
 		}else{
-			formRecPresenter.updateEditView(recId, true, view.getWindowEdit());	
+			
+			formRecPresenter.updateEditView(recId);
 		}
-		view.displayFormEdit(formRecView, "Ubah Data Penerimaan");	
+		Window windowEdit=view.displayFormEdit(formRecView, "Ubah Data Penerimaan");	
+		formRecPresenter.setWindow(windowEdit);
 		//menambahkan listener, agar ketika window diclose, tampilan table akan diupdate
 		Collection<Window> windows=view.getUI().getWindows();
 		for(Window window:windows){
@@ -144,13 +146,12 @@ public class ReceptionListPresenter implements ReceptionListListener {
 				formRecModel=new InputReceptionModel(function);
 				formRecView=new InputReceptionViewImpl(function);
 				formRecPresenter =new InputReceptionPresenter(formRecModel, formRecView,
-						function, (String)data,view.getWindowEdit());
+						function);
 				System.out.println("Form model view presenter instantiasi"+view.window.getCaption());
-				formRecPresenter.setEditMode(false, view.getWindow());
+				formRecPresenter.setEditMode(false);
 			}else{
 				System.out.println("Data = "+data.toString());
-				formRecPresenter.setPeriode((String)data,view.getWindow());
-				formRecPresenter.setEditMode(false, view.getWindow());
+				formRecPresenter.setEditMode(false);
 			}
 			//form yang ditampilkan, dan judul jendelanya
 			view.displayForm(formRecView,"Masukan Pengeluaran Harian");			
@@ -166,10 +167,10 @@ public class ReceptionListPresenter implements ReceptionListListener {
 			}			
 		}
 	}
-
 	@Override
 	public void showDetailByDate(DateTime date) {
 		List<GoodsReception> data=model.getReceptionsByDate(date);
+		System.out.println("Good Reception Size"+data.size());
 		view.showDetailWindowByDate(data, date);
 		this.currentDate = date;
 	}

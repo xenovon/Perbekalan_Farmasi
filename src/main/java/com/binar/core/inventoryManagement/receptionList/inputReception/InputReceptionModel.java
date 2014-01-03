@@ -174,4 +174,11 @@ public class InputReceptionModel {
 		data.put(reception.getInvoiceItem().getIdInvoiceItem(),reception.getInvoiceItem().getPurchaseOrderItem().getSupplierGoods().getGoods().getName());
 		return data;
 	}
+	
+	public Invoice getSingleInvoice(int idInvoice){
+		return server.find(Invoice.class, idInvoice);
+	}
+	public InvoiceItem getSingleInvoiceItem(int idInvoiceItem){
+		return server.find(InvoiceItem.class, idInvoiceItem);
+	}
 }

@@ -57,7 +57,6 @@ Button.ClickListener, ValueChangeListener {
 	
 	public void init() {
 		text = new TextManipulator();
-		final String WIDTH="350px";
 		labelErrorQuantity=new Label(){
 			{
 				setVisible(false);
@@ -85,9 +84,10 @@ Button.ClickListener, ValueChangeListener {
 			{
 				setWidth(function.FORM_WIDTH);
 				setEnabled(false);
+				setImmediate(true);
 			}
 		};
-		
+		inputGoodsSelect.addValueChangeListener(this);
 		inputInvoiceItemSelect=new ComboBox("Pilih Faktur"){
 			{
 				setImmediate(true);
@@ -104,7 +104,7 @@ Button.ClickListener, ValueChangeListener {
 		};
 		inputReceptionDate.addValueChangeListener(this);
 		
-		inputExpiredDate = new DateField("Tanggal Penerimaan"){
+		inputExpiredDate = new DateField("Tanggal Kadaluarsa"){
 			{
 				setWidth(function.FORM_WIDTH);
 				setImmediate(true);
@@ -144,7 +144,7 @@ Button.ClickListener, ValueChangeListener {
 		buttonCancel =new Button("Batal");
 		buttonCancel.addClickListener(this);
 		
-		labelChooseDate=new Label("<b>Pilih Rentang Tanggal Invoice</b>", ContentMode.HTML);
+		labelChooseDate=new Label("<b>Pilih Faktur</b></br>Pilih Rentang Tanggal Faktur", ContentMode.HTML);
 		construct();		
 	}
 	private void construct() {
@@ -157,8 +157,8 @@ Button.ClickListener, ValueChangeListener {
 		this.addComponent(inputGoodsSelect);
 		this.addComponent(new Label("<b>Data Penerimaan Barang</b>", ContentMode.HTML));
 		this.addComponent(inputReceptionDate);
-		this.addComponent(labelSatuan);
 		this.addComponent(inputGoodsQuantity);
+		this.addComponent(labelSatuan);
 		this.addComponent(labelErrorQuantity);
 		this.addComponent(inputExpiredDate);
 		this.addComponent(inputInformation);
@@ -195,6 +195,7 @@ Button.ClickListener, ValueChangeListener {
 
 	@Override
 	public void valueChange(ValueChangeEvent event) {
+		System.err.println("Value change event di penerimaan di [pagnggil");
 		if(event.getProperty()==inputGoodsSelect){
 			listener.realTimeValidator("inputGoodsSelect");
 			
@@ -209,7 +210,7 @@ Button.ClickListener, ValueChangeListener {
 		else if(event.getProperty()==inputInvoiceStartDate){
 			listener.realTimeValidator("inputInvoiceStartDate");			
 		}else if(event.getProperty()==inputGoodsQuantity){
-			listener.realTimeValidator("inputGoodsQUantity");
+			listener.realTimeValidator("inputGoodsQuantity");
 		}
 	}
 
@@ -232,10 +233,11 @@ Button.ClickListener, ValueChangeListener {
 		
 		setSelectGoodsData(goodsData);
 		inputGoodsQuantity.setValue(data.getQuantityReceived()+"");
-		inputGoodsSelect.setValue(data.getInvoiceItem().getPurchaseOrderItem().getSupplierGoods().getGoods().getIdGoods());
+		inputGoodsSelect.setValue(data.getInvoiceItem().getIdInvoiceItem());
 		inputReceptionDate.setValue(data.getDate());
 		inputExpiredDate.setValue(data.getExpiredDate());
 		inputInformation.setValue(data.getInformation());
+		setUnit(data.getInvoiceItem().getPurchaseOrderItem().getSupplierGoods().getGoods().getUnit());
 				
 	}
 
@@ -261,7 +263,7 @@ Button.ClickListener, ValueChangeListener {
 
 	@Override
 	public void setInputEditView(boolean isEdit) {
-		this.editMode = editMode;
+		this.editMode = isEdit;
 		if(editMode){
 			inputInvoiceEndDate.setVisible(false);
 			inputGoodsSelect.setEnabled(false);
@@ -284,6 +286,7 @@ Button.ClickListener, ValueChangeListener {
 	@Override
 	public void setUnit(String text) {
 		labelSatuan.setValue("Satuan : "+text);
+		System.out.println(text);
 	}
 	
 
@@ -308,7 +311,20 @@ Button.ClickListener, ValueChangeListener {
 	public Date getDateDateRangeEnd(){
 		return inputInvoiceEndDate.getValue();
 	}
-
+	public int getInvoiceSelect(){
+		try {
+			return (Integer) inputInvoiceItemSelect.getValue();
+		} catch (Exception e) {
+			return 0;
+		}
+	}
+	public int getGoodsSelect(){
+		try {
+			return (Integer) inputGoodsSelect.getValue();
+		} catch (Exception e) {
+			return 0;
+		}
+	}
 	@Override
 	public FormReception getFormData() {
 		FormReception data=new FormReception(function);
@@ -318,6 +334,7 @@ Button.ClickListener, ValueChangeListener {
 		data.setInvoiceItemId((Integer)inputGoodsSelect.getValue());
 		data.setQuantity(inputGoodsQuantity.getValue());
 		data.setReceptionDate(inputReceptionDate.getValue());
+		System.out.println("input reception date"+inputReceptionDate.getValue().toString());
 		return data;
 	}
 

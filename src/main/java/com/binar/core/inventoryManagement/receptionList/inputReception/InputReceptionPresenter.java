@@ -9,6 +9,7 @@ import java.util.Map;
 import com.avaje.ebean.EbeanServer;
 import com.binar.core.inventoryManagement.receptionList.inputReception.InputReceptionView.ErrorLabel;
 import com.binar.entity.GoodsReception;
+import com.binar.entity.Invoice;
 import com.binar.entity.InvoiceItem;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.ui.Notification;
@@ -26,11 +27,14 @@ public class InputReceptionPresenter implements InputReceptionView.InputReceptio
 	FormReception data;
 	int idRecs;
 	boolean editMode=false;
-	
+	FormReception formReception;
+	Window window;
 	public InputReceptionPresenter(InputReceptionModel model, InputReceptionViewImpl view,
 			GeneralFunction function){
 		this.view=view;
 		this.model=model;
+		this.generalFunction=function;
+		this.formReception=new FormReception(this.generalFunction);
 		this.server=function.getServer();
 		view.addListener(this);
 		view.init();
@@ -39,12 +43,15 @@ public class InputReceptionPresenter implements InputReceptionView.InputReceptio
 	}
 	
 	public InputReceptionPresenter (InputReceptionModel model, InputReceptionViewImpl view, 
-		GeneralFunction function, int idRecs,boolean isEdit) {
+		GeneralFunction function, int idRecs, boolean isEdit) {
 		this(model, view, function);
-		setEditMode(true);
+		setEditMode(isEdit);
 		updateEditView(idRecs);
+		System.out.println("Is edit" + isEdit);
 	}
-	
+	public void setWindow(Window window){
+		this.window=window;
+	}
 	public void updateEditView(int idRecs) {
 		this.idRecs=idRecs;
 		GoodsReception reception=model.getSingleReception(idRecs);
@@ -128,6 +135,7 @@ public class InputReceptionPresenter implements InputReceptionView.InputReceptio
 		}
 		if(inputField.equals("inputGoodsSelect")){
 			invoiceItemChange();
+			System.out.println("input good select change");
 		}	
 		if(inputField.equals("inputInvoiceStartDate")){
 			dateRangeChange();
@@ -135,19 +143,13 @@ public class InputReceptionPresenter implements InputReceptionView.InputReceptio
 		if(inputField.equals("inputInvoiceSelect")){
 			invoiceChange();
 		}
-		
-
 	}
 	private void dateRangeChange(){
-		
-	}
-	private void invoiceItemSelectChange() {
-		InvoiceItem invId= server.find(InvoiceItem.class,data.getInvoiceItemId());
-		invId.getPurchaseOrderItem().getSupplierGoods().getGoods().getIdGoods();
-		invId.getPurchaseOrderItem().getSupplierGoods().getGoods().getName();
+		Date startDate=view.getDateRangeStart();
+		Date endDate=view.getDateDateRangeEnd();
+		view.setSelectInvoiceItemsData(model.getInvoiceItemsData(startDate, endDate));
 	}
 	
-	FormReception formReception=new FormReception(this.generalFunction);
 	private void goodsQuantityChange() {
 		String quantity=view.getInputGoodsQuantity();
 		formReception.setQuantity(quantity);
@@ -157,23 +159,32 @@ public class InputReceptionPresenter implements InputReceptionView.InputReceptio
 		}else{
 			view.showError(ErrorLabel.QUANTITY, errorMessage);
 		}	
+		System.out.println("Quantity change");
 	}
 	
 	private void invoiceChange(){
-		//TODO
+		int invoiceSelect=view.getInvoiceSelect();
+		view.setSelectGoodsData(model.getGoodsData(invoiceSelect));
 	}
 	private void invoiceItemChange(){
-		//TODO
+		int invoiceItemId=view.getGoodsSelect();
+		InvoiceItem item=model.getSingleInvoiceItem(invoiceItemId);
+		view.setUnit(item.getPurchaseOrderItem().getSupplierGoods().getGoods().getUnit());
+		System.out.println(item.getPurchaseOrderItem().getSupplierGoods().getGoods().getName()+ " goods unit");
 	}
 	
 	public void closeWindow(){
-		Collection<Window> list=view.getUI().getWindows();
-		for(Window w:list){
-			view.getUI().removeWindow(w);
+		if(isEditMode()){
 			view.resetForm();
+			if(window!=null){				
+				view.getUI().removeWindow(window);
+			}
+		}else{
+			Collection<Window> list=view.getUI().getWindows();
+			for(Window w:list){
+				view.getUI().removeWindow(w);
+				view.resetForm();
+			}			
 		}
-		
 	}
-
-
 }
