@@ -13,19 +13,18 @@ import com.binar.entity.PurchaseOrder;
 public interface StockListView {
 	
 	interface StockListListener{
-		public void buttonClick(String buttonName);
-		public void showClick(int idPurchaseOrder);
-		public void valueChange(String value);
-		public void updateTable();
+		public void showConsumptionDetail(int idConsumption);
+		public void showReceptionDetail(int idReception);
+		public void goodsChange();
+		public void periodChange();
 	
 	}
 	public void init();
 	public void construct();
 	public void setListener(StockListListener listener);
-	public boolean updateTableData(List<GoodsConsumption> consumption, List<GoodsReception> reception);
+	public boolean updateTableData(List<TableData> data);
 	public void showDetailConsumption(GoodsConsumption consumption);
 	public void showDetailReception(GoodsReception reception);
-	public String getSelectedPeriod();
 	public String getSelectedGoods();
 	public void setComboGoodsData(Map<String, String> data);
 	
