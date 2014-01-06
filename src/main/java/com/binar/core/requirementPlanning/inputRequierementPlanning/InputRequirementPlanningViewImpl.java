@@ -112,7 +112,7 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 
 		table.setSizeFull();
 		table.setWidth("100%");
-		table.setHeight("439px");
+		table.setHeight("402px");
         table.setSortEnabled(true);
 		table.setImmediate(true);
         table.setRowHeaderMode(RowHeaderMode.INDEX);

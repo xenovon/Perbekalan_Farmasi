@@ -56,7 +56,7 @@ public class SupportRequirementNonApprovedViewImpl  extends Panel implements Sup
 			}
 		};
 		table.setContainerDataSource(tableContainer);
-		buttonGo=new Button("Ke Halaman Persetujuan Rencana Kabutuhan");
+		buttonGo=new Button("Ke Halaman Persetujuan Rencana Kebutuhan");
 		buttonGo.addClickListener(this);
 		
 		buttonRefresh=new Button("Refresh");

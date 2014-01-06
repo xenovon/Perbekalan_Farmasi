@@ -93,7 +93,7 @@ public class InventoryManagementView extends CustomComponent implements View, Se
 		tabSheet.addTab(consumption).setCaption("Daftar Pengeluaran Harian");
 		tabSheet.addTab(receipt).setCaption("Daftar Penerimaan");
 		tabSheet.addTab(stock).setCaption("Stok Gudang Farmasi");
-		tabSheet.addTab(deletion).setCaption("Pengajuan Barang Kadaluarsa");
+		tabSheet.addTab(deletion).setCaption("Daftar Barang Kadaluarsa");
 		
 		tabSheet.addSelectedTabChangeListener(this);
 		tabSheet.setSizeFull();
