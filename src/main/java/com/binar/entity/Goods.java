@@ -1,9 +1,12 @@
 package com.binar.entity;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.binar.entity.enumeration.EnumGoodsCategory;
@@ -39,6 +42,9 @@ public class Goods {
 	@Column(name="goods_package")
 	private String goodsPackage;
 	
+	@OneToMany
+	private List<SupplierGoods> supplierGoods;
+	
 	private EnumGoodsCategory category;
 	
 	@Column(name="minimum_stock")
@@ -49,6 +55,12 @@ public class Goods {
 
 	private double het;
 	
+	public List<SupplierGoods> getSupplierGoods() {
+		return supplierGoods;
+	}
+	public void setSupplierGoods(List<SupplierGoods> supplierGoods) {
+		this.supplierGoods = supplierGoods;
+	}
 	public String getIdGoods() {
 		return idGoods;
 	}

@@ -504,20 +504,19 @@ public class GenerateData {
 	private void initiateDeletionData(){
 		System.out.println("Masukkan data penghapusan");
 		DeletedGoods deletion1 = new DeletedGoods();
-		SupplierGoods supGoods1 = server.find(SupplierGoods.class, "1");
+		Goods goods1 = server.find(Goods.class, "BRG-1X");
 		
-		deletion1.setSupplierGoods(supGoods1);
+		deletion1.setGoods(goods1);
 		deletion1.setInformation("Tes info");
-		deletion1.setQuantity(55);
-		deletion1.setStockQuantity(200);
+		deletion1.setQuantity(2);
 		deletion1.setDeletionDate(new DateTime(2013, 12, 11, 11, 12).toDate());
 		deletion1.setTimestamp(new Date());
 		server.save(deletion1);
 		
 		DeletedGoods deletion2 = new DeletedGoods();
-		SupplierGoods supGoods2 = server.find(SupplierGoods.class, "2");
+		Goods good2 = server.find(Goods.class, "BRG-2X");
 		
-		deletion2.setSupplierGoods(supGoods2);
+		deletion2.setGoods(good2);
 		deletion2.setInformation("Tes woohoo");
 		deletion2.setQuantity(20);
 		deletion2.setStockQuantity(60);
@@ -526,12 +525,11 @@ public class GenerateData {
 		server.save(deletion2);
 		
 		DeletedGoods deletion3 = new DeletedGoods();
-		SupplierGoods supGoods3 = server.find(SupplierGoods.class, "3");
+		Goods goods = server.find(Goods.class, "BRG-1X");
 		
-		deletion3.setSupplierGoods(supGoods2);
+		deletion3.setGoods(goods);
 		deletion3.setInformation("Tes woohoo");
-		deletion3.setQuantity(90);
-		deletion3.setStockQuantity(10);
+		deletion3.setQuantity(1);
 		deletion3.setDeletionDate(new DateTime(2013, 11, 12, 11, 12).toDate());
 		deletion3.setTimestamp(new Date());
 		server.save(deletion3);
@@ -540,7 +538,7 @@ public class GenerateData {
 	private void initiateReceptionData(){
 		System.out.println("Masukkan data penerimaan");
 		GoodsReception reception1 = new GoodsReception();
-		InvoiceItem invoItem1 = server.find(InvoiceItem.class,"1");
+		InvoiceItem invoItem1 = server.find(InvoiceItem.class,1);
 		
 		reception1.setInformation("Tes info");
 		reception1.setQuantityReceived(95);
@@ -556,8 +554,8 @@ public class GenerateData {
 	private void initiateInvoiceItemData(){
 		System.out.println("Masukkan data invoice Item");
 		InvoiceItem invoItem1 = new InvoiceItem();
-		Invoice invoice = server.find(Invoice.class, "1");
-		PurchaseOrderItem purc1 = server.find(PurchaseOrderItem.class, "1");
+		Invoice invoice = server.find(Invoice.class, 1);
+		PurchaseOrderItem purc1 = server.find(PurchaseOrderItem.class, 1);
 		
 		invoItem1.setDiscount(10);
 		invoItem1.setBatch("1A");

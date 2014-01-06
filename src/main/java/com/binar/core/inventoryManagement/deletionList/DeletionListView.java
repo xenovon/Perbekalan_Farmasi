@@ -1,5 +1,6 @@
 package com.binar.core.inventoryManagement.deletionList;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -12,26 +13,19 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.Window;
 
 public interface DeletionListView {
-	
+
 	interface DeletionListListener{
-		public void updateTable(String input);
-		public void updateTableByDate(String input);
-		public void showDetail(String idGoods, int quantity);
-		void delete(int delGoodsId);
-		void edit(int delGoodsId);
-		void buttonClick(String source, Object data);
-		public void showDetailByDate(DateTime date);
-		public List <DeletedGoods> getDelGoodsByDate (DateTime date);
-		public int getNumberOfDeletionsByDate(DateTime periode);
-		public void getViewMode(String selectedViewMode);
-	}
+		public void buttonClick(String buttonName);
+		public void editClick(String idGoods);
+		public void deleteClick(String idGoods);
+		public void showClick(String idGoods);
 	
-	public boolean updateTableData(Map<Goods, Integer> data);
-	public boolean updateTableDataByDate(Map<DateTime, Integer> data);
+	}
+	public void init();
+	public void construct();
 	public void setListener(DeletionListListener listener);
-	public void showDetailWindow(List<DeletedGoods> data, int quantity);
-	public String getSelectedPeriod();
-	public String getSelectedViewMode();
-	public void displayForm(Component content, String title);
-	public Window getWindow();
+	public boolean updateTableData(List<DeletedGoods> data);
+	public void showDetailWindow(DeletedGoods deletedGoods);
+	public Date getSelectedStartRange();
+	public Date getSelectedEndRange();
 }

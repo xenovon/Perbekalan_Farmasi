@@ -36,7 +36,7 @@ public class InventoryManagementView extends CustomComponent implements View, Se
 		} if(receipt==null){
 			receipt=new ReceptionList(generalFunction);			
 		} if(stock==null){
-			stock=new StockList();			
+			stock=new StockList(generalFunction);			
 		}if(deletionApproval==null){
 			deletionApproval=new DeletionApproval(generalFunction);			
 		}

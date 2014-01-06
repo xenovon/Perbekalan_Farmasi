@@ -32,38 +32,32 @@ Button.ClickListener, ValueChangeListener {
 	private Button buttonReset;
 	private Button buttonSubmit;
 	private Button buttonCancel;
+	private Button buttonUpdate;
+	
 	private TextManipulator text;
 	private Label labelErrorQuantity; //untuk error realtime
 	private Label labelGeneralError; //error saat tombol submit ditekan
-	
-	private InputDeletionPresenter listener;
+	private int deletionId;
+	private InputDeletionListener listener;
 	GeneralFunction function;
 
 	public InputDeletionViewImpl(GeneralFunction function) {
 		this.function=function;
-	}
+		this.text=function.getTextManipulator();
 	
+	}
 	@Override
 	public void valueChange(ValueChangeEvent event) {
 	if(event.getProperty()==inputGoodsQuantity){
-		listener.realTimeValidator("inputGoodsQuantity");
+		listener.quantityChange();
 		
 	}else if(event.getProperty()==inputGoodsSelect){
-		listener.realTimeValidator("inputGoodsSelect");			
-		}
-	
-	else if(event.getProperty()==inputDeletionDate){
-		listener.realTimeValidator("inputDeletionDate");
-		}		
-	}
-
-	public void setSelectedMonth(Date selectedDate){
-		inputDeletionDate.setValue(selectedDate);
+		listener.goodsSelectChange();
+	}	
 	}
 	
 	@Override
 	public void init() {
-		text = new TextManipulator();
 		final String WIDTH="350px";
 		labelErrorQuantity=new Label(){
 			{
@@ -112,11 +106,14 @@ Button.ClickListener, ValueChangeListener {
 		buttonReset=new Button("Reset");
 		buttonReset.addClickListener(this);
 		
-		buttonSubmit=new Button("Submit");
+		buttonSubmit=new Button("Simpan");
 		buttonSubmit.addClickListener(this);
 		buttonSubmit.addStyleName("primary");
 		buttonCancel =new Button("Batal");
 		buttonCancel.addClickListener(this);
+		buttonUpdate =new Button("Simpan Perubahan");
+		buttonUpdate.addClickListener(this);
+		
 		construct();
 	}
 
@@ -131,39 +128,23 @@ Button.ClickListener, ValueChangeListener {
 		this.addComponent(labelSatuan);
 		this.addComponent(labelGeneralError);
 		this.addComponent(information);
-		this.addComponent(new GridLayout(3, 1){
+		this.addComponent(new GridLayout(4, 1){
 			{
 				addComponent(buttonSubmit, 0,0);
-				addComponent(buttonReset, 1, 0);
-				addComponent(buttonCancel, 2, 0);
+				addComponent(buttonUpdate, 1,0);
+				addComponent(buttonReset, 2, 0);
+				addComponent(buttonCancel, 3, 0);
 				this.setMargin(true);
 				this.setSpacing(true);
 			}
 		});
 	}
-
 	@Override
 	public void resetForm() {
 		this.inputGoodsQuantity.setValue("");
 		this.inputGoodsSelect.setValue("");
 		this.information.setValue("");
-	}
-
-	public void setDataSubmit(){
-		buttonSubmit.setCaption("Submit");
-		resetForm();
-	}
-	
-	public void setDataEdit(DeletedGoods data){
-		
-		inputGoodsQuantity.setValue(data.getQuantity()+"");
-		inputGoodsSelect.setValue(data.getSupplierGoods().getGoods().getIdGoods());
-		inputDeletionDate.setValue(data.getDeletionDate());
-		information.setValue(data.getInformation());
-		
-		buttonSubmit.setCaption("Simpan Perubahan");
-	}
-	
+	}	
 	@Override
 	public void showError(ErrorLabel label, String content) {
 		switch (label) {
@@ -197,11 +178,16 @@ Button.ClickListener, ValueChangeListener {
 	@Override
 	public void setInputEditView(boolean isEdit) {
 		if(isEdit){
-		//	inputDeletionDate.setEnabled(false);
+			buttonUpdate.setVisible(true);
+			buttonSubmit.setVisible(false);
+			buttonReset.setVisible(false);
 			inputGoodsSelect.setEnabled(false);
+			
 		}else{
-		//	inputDeletionDate.setEnabled(true);
 			inputGoodsSelect.setEnabled(true);
+			buttonUpdate.setVisible(false);
+			buttonSubmit.setVisible(true);
+			buttonReset.setVisible(true);
 		}
 	}
 	
@@ -219,18 +205,15 @@ Button.ClickListener, ValueChangeListener {
 	}
 
 	@Override
-	public void addListener(InputDeletionPresenter listener) {
-		this.listener=listener;
-	}
-
-	@Override
 	public void buttonClick(ClickEvent event) {
 		if(event.getSource()==buttonReset){
-			listener.buttonClick("reset");
+			listener.buttonReset();
 		}else if(event.getSource()==buttonSubmit){
-			listener.buttonClick("submit");
+			listener.buttonSave();
 		}else if(event.getSource()==buttonCancel){
-			listener.buttonClick("cancel");
+			listener.buttonCancel();
+		}else if(event.getSource()==buttonSubmit){
+			listener.buttonUpdate();
 		}
 	}
 
@@ -265,4 +248,31 @@ Button.ClickListener, ValueChangeListener {
 	public void setInformation(TextArea information) {
 		this.information = information;
 	}
+	@Override
+	public FormDeletion getFormData() {
+		FormDeletion form=new FormDeletion(function);
+		form.setDeletionDate(inputDeletionDate.getValue());
+		form.setInformation(information.getValue());
+		form.setQuantity(inputGoodsQuantity.getValue());
+		form.setIdGoods((String) inputGoodsSelect.getValue());
+		form.setDeletionId(this.deletionId);
+		return form;
+	}
+
+	@Override
+	public void setFormData(DeletedGoods deletion) {
+		this.deletionId=deletion.getIdDeletedGoods();
+		buttonSubmit.setCaption("Simpan Perubahan");
+
+		inputDeletionDate.setValue(deletion.getDeletionDate());
+		information.setValue(deletion.getInformation());
+		inputGoodsQuantity.setValue(deletion.getQuantity()+"");
+		inputGoodsSelect.setValue(deletion.getGoods().getIdGoods());		
+	}
+	
+	@Override
+	public void setListener(InputDeletionListener listener) {
+		this.listener=listener;
+	}
+	
 }

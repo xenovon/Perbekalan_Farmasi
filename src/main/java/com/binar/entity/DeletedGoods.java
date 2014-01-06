@@ -18,20 +18,16 @@ public class DeletedGoods {
 	@Id
 	@Column(name="id_deleted_goods")
 	private int idDeletedGoods;
-	
-	@ManyToOne
-	@Column(name="fk_goods")
-	private Goods goods;
-	
+		
 	private int quantity;
 	private int stockQuantity;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date timestamp;
 	@Column(columnDefinition="TEXT")
 	private String information;
-	
-    @Column(name= "fk_goods_supplier")
-    private SupplierGoods supplierGoods ;
+	@ManyToOne
+    @Column(name= "fk_goods")
+    private Goods goods ;
     @Column(name= "deletion_date")
     private Date deletionDate ;
     @Column(name= "is_accepted")
@@ -41,11 +37,11 @@ public class DeletedGoods {
     private boolean approvalDate ;
 
 	
-	public SupplierGoods getSupplierGoods() {
-		return supplierGoods;
+	public Goods getGoods() {
+		return goods;
 	}
-	public void setSupplierGoods(SupplierGoods supplierGoods) {
-		this.supplierGoods = supplierGoods;
+	public void setGoods(Goods goods) {
+		this.goods = goods;
 	}
 	public Date getDeletionDate() {
 		return deletionDate;
@@ -70,12 +66,6 @@ public class DeletedGoods {
 	}
 	public void setIdDeletedGoods(int idDeletedGoods) {
 		this.idDeletedGoods = idDeletedGoods;
-	}
-	public Goods getGoods() {
-		return goods;
-	}
-	public void setGoods(Goods goods) {
-		this.goods = goods;
 	}
 	public int getQuantity() {
 		return quantity;

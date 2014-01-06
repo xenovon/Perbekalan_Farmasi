@@ -1,8 +1,11 @@
 package com.binar.core.inventoryManagement.deletionList.inputDeletion;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import javax.persistence.OptimisticLockException;
@@ -32,24 +35,35 @@ public class InputDeletionModel {
 		List<Goods> goodsList=server.find(Goods.class).findList();
 		Map<String, String> data=new TreeMap<String, String>();
 		for(Goods goods:goodsList){
-			data.put(goods.getIdGoods(), goods.getName());
+			//get akses
+			if(goods.getInsurance().isShowInDropdown()){
+				data.put(goods.getIdGoods(), goods.getName() + " - "+goods.getInsurance().getName());				
+			}else{
+				data.put(goods.getIdGoods(), goods.getName());				
+			}
 		}
 		return data;
 	}
 	
-	public String insertData(FormDeletion data){
+	public List<String> insertData(FormDeletion data){
 		//mulai transaksi
-		
+		List<String> error=data.validate();
+		if(error!=null){
+			return error;
+		}else{
+			error=new ArrayList<String>();
+		}
 		server.beginTransaction();
 		try {
-			SupplierGoods suppGoods=server.find(SupplierGoods.class, data.getSuppGoodsId());	
+			Goods goods=server.find(Goods.class, data.getIdGoods());	
 			//mulai insert
 			DeletedGoods deletion = new DeletedGoods();
 			deletion.setQuantity(Integer.parseInt(data.getQuantity())); 
-			deletion.setDeletionDate(data.getdeletionDate());
+			deletion.setDeletionDate(data.getDeletionDate());
 			deletion.setTimestamp(new Date());	
 			deletion.setInformation(data.getInformation());
-			deletion.setSupplierGoods(suppGoods);
+			deletion.setGoods(goods);
+		
 			server.save(deletion);
 			server.commitTransaction();
 			return null;
@@ -57,19 +71,20 @@ public class InputDeletionModel {
 		} catch (NumberFormatException e) {
 			server.rollbackTransaction();
 			e.printStackTrace();
-			return "Kesalahan pengisian angka :"+e.getMessage();
+			error.add("Kesalahan pengisian angka :"+e.getMessage());
 		} catch (OptimisticLockException e) {
 			server.rollbackTransaction();
 			e.printStackTrace();
-			return "Kesalahan tulis data ke database " + e.getMessage();
+			error.add("Kesalahan tulis data ke database " + e.getMessage());
 		}catch(Exception e){
 			server.rollbackTransaction();
 			e.printStackTrace();
-			return "Kesalahan submit : " + e.getMessage();
+			error.add("Kesalahan submit : " + e.getMessage());
 		
 		}finally{
 			server.endTransaction();			
 		}
+		return error.size()==0?null:error;
 	}
 	
 	public String getGoodsUnit(String goodsId){
@@ -81,14 +96,19 @@ public class InputDeletionModel {
 		}
 	}
 	
-	public String saveEdit(FormDeletion data, int idDel){
+	public  List<String>  saveEdit(FormDeletion data){
 		//mulai transaksi
-		
+		List<String> error=data.validate();
+		if(error!=null){
+			return error;
+		}else{
+			error=new ArrayList<String>();
+		}
 		server.beginTransaction();
 		try {
-			DeletedGoods deletion=server.find(DeletedGoods.class, idDel);
+			DeletedGoods deletion=server.find(DeletedGoods.class, data.getDeletionId());
 			deletion.setQuantity(Integer.parseInt(data.getQuantity()));
-			deletion.setDeletionDate(data.getdeletionDate());
+			deletion.setDeletionDate(data.getDeletionDate());
 			deletion.setInformation(data.getInformation());			
 			
 			server.update(deletion);	
@@ -97,22 +117,38 @@ public class InputDeletionModel {
 		} catch (NumberFormatException e) {
 			server.rollbackTransaction();
 			e.printStackTrace();
-			return "Kesalahan pengisian angka :"+e.getMessage();
+			error.add("Kesalahan pengisian angka :"+e.getMessage());
 		} catch (OptimisticLockException e) {
 			server.rollbackTransaction();
 			e.printStackTrace();
-			return "Kesalahan tulis data ke database " + e.getMessage();
+			error.add("Kesalahan tulis data ke database " + e.getMessage());
 		}catch(Exception e){
 			server.rollbackTransaction();
 			e.printStackTrace();
-			return "Kesalahan submit : " + e.getMessage();
-		
+			error.add("Kesalahan submit : " + e.getMessage());
 		}finally{
 			server.endTransaction();			
 		}
+		
+		return error.size()==0?null:error;
 	}
 	
 	public DeletedGoods getSingleDeletion(int id){
 		return server.find(DeletedGoods.class, id);
+	}
+	
+	public String deleteDeletionGoods(int idDeletion){
+		try {
+			DeletedGoods deleted=server.find(DeletedGoods.class, idDeletion);
+			server.delete(deleted);
+			return null;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "Kesalahan menghapus data "+e.getMessage();
+		}
+	}
+	
+	public Goods getGoods(String idGoods){
+		return server.find(Goods.class, idGoods);
 	}
 }

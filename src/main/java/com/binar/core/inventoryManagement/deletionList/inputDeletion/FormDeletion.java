@@ -18,11 +18,9 @@ public class FormDeletion {
 	 * input date
 	 * input information
 	 */
-
-	private String goodsId="";
-	private String suppGoodsId="";
+	private Integer deletionId;
+	private String idGoods="";
 	private String quantity="";
-	private String periode="";
 	private Date deletionDate;
 	private String information="";
 	
@@ -40,8 +38,8 @@ public class FormDeletion {
 	
 	public List<String> validate(){
 		List<String> error=new ArrayList<String>();
-		if(goodsId!=null ){
-			if(goodsId.equals("")){
+		if(idGoods!=null ){
+			if(idGoods.equals("")){
 				error.add("Data obat harus diisi");
 			}			
 		}else{
@@ -79,33 +77,17 @@ public class FormDeletion {
 		}
 		return "";
 	}
-	
-	protected String getGoodsId() {
-		return goodsId;
+	public Integer getDeletionId() {
+		return deletionId;
 	}
-	protected void setGoodsId(String goodsId) {
-		this.goodsId = goodsId;
+	public void setDeletionId(Integer deletionId) {
+		this.deletionId = deletionId;
 	}
 	protected String getQuantity() {
 		return quantity;
 	}
 	protected void setQuantity(String quantity) {
 		this.quantity = quantity;
-	}
-	
-	protected void setPeriode(String periode) {
-		this.periode = periode;
-	}
-	public String getPeriode() {
-		return periode;
-	}
-	
-	public Date getdeletionDate() {
-		return deletionDate;
-	}
-
-	public void setdeletionDate(Date deletionDate) {
-		this.deletionDate = deletionDate;
 	}
 	
 	protected String getInformation() {
@@ -116,12 +98,12 @@ public class FormDeletion {
 		this.information = information;
 	}
 
-	public String getSuppGoodsId() {
-		return suppGoodsId;
+	public String getIdGoods() {
+		return idGoods;
 	}
 
-	public void setSuppGoodsId(String suppGoodsId) {
-		this.suppGoodsId = suppGoodsId;
+	public void setIdGoods(String idGoods) {
+		this.idGoods = idGoods;
 	}
 
 	public Date getDeletionDate() {
