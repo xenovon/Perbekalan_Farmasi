@@ -77,8 +77,6 @@ public class StockListViewImpl  extends VerticalLayout implements StockListView,
 		labelYear=new Label("Pilih Rentang Tanggal Mulai  :");
 		labelMonth=new Label("Pilih Rentang Tanggal Akhir  :");
 		
-		List<String> yearList=function.getListFactory().createYearList(8, 3, false);
-		List<String> monthList=function.getListFactory().createMonthList(true);
 		selectStartDate = new DateField("", DateTime.now().minusDays(30).toDate());
 		selectEndDate =new DateField("",DateTime.now().toDate());
 
@@ -86,9 +84,6 @@ public class StockListViewImpl  extends VerticalLayout implements StockListView,
 		selectEndDate.setImmediate(true);
 
 		
-		for(String month:monthList){
-			System.out.println("Bulan "+month);
-		}
 		System.out.println("Bulan ini" + Calendar.getInstance().get(Calendar.MONTH));
 		selectStartDate.addStyleName("non-caption-form");
 		selectEndDate.addStyleName("non-caption-form");

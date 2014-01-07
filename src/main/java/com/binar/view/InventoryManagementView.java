@@ -62,13 +62,13 @@ public class InventoryManagementView extends CustomComponent implements View, Se
 			receipt.getPresenter().updateTable(receipt.getView().getSelectedPeriod());
 		}
 		if(event.getTabSheet().getSelectedTab()==deletion){
-			deletion.getPresenter().updateTable(deletion.getView().getSelectedPeriod());
+			deletion.getPresenter().updateTable();
 		}
 		if(event.getTabSheet().getSelectedTab()==stock){
-	//		stock.getPresenter().updateTable(stock.getView().getSelectedPeriod());
+			stock.getPresenter().goodsChange();
 		}
 		if(event.getTabSheet().getSelectedTab()==deletionApproval){
-			deletionApproval.getPresenter().updateTable(deletionApproval.getView().getSelectedPeriod());
+			deletionApproval.getPresenter().updateTable();
 		}
 	}
 

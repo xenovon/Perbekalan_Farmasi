@@ -26,4 +26,10 @@ public class StockList extends CssLayout {
 		this.addStyleName("tab-content");
 		this.addComponent(view);
 	}
+	public StockListViewImpl getView() {
+		return view;
+	}
+	public StockListPresenter getPresenter() {
+		return presenter;
+	}
 }

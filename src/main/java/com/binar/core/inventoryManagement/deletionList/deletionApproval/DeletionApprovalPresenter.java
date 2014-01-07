@@ -1,6 +1,7 @@
 package com.binar.core.inventoryManagement.deletionList.deletionApproval;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -27,14 +28,7 @@ public class DeletionApprovalPresenter implements DeletionApprovalListener{
 		this.function=function;
 		view.init();
 		view.setListener(this);
-		updateTable(view.getSelectedPeriod());
-	}
-
-	@Override
-	public void buttonClick(String param) {
-		if(param.equals("buttonAccept")){
-			saveData(view.getContainer());
-		}
+		updateTable();
 	}
 
 	@Override
@@ -46,21 +40,36 @@ public class DeletionApprovalPresenter implements DeletionApprovalListener{
 	}
 
 	@Override
-	public void updateTable(String input) {
-		System.out.println("input "+input);
+	public void updateTable() {
 		System.out.println("Bulan ini" + Calendar.getInstance().get(Calendar.MONTH));
-		DateTime date=function.getDate().parseDateMonth(input);
-		List<DeletedGoods> dataTable=model.getTableData(date);
+		Date dateStart=view.getSelectedStartRange();
+		Date dateEnd=view.getSelectedEndRange();
+		List<DeletedGoods> dataTable=model.getDeletedTable(dateStart, dateEnd, view.getApprovalFilter());
 		view.updateTableData(dataTable);	
 	}
 
+
+
 	@Override
-	public void saveData(Container tableContainer) {
-		String status=model.acceptData(tableContainer);
+	public void approveClick() {
+		String status=model.acceptData(view.getContainer());
 		if(status==null){
 			Notification.show("Penyimpanan berhasil");
 		}else{
 			Notification.show("Penyimpanan Gagal : "+status, Type.ERROR_MESSAGE);
 		}
+		updateTable();
+		
+	}
+
+	@Override
+	public void resetClick() {
+		updateTable();
+	}
+
+	@Override
+	public void saveData() {
+		// TODO Auto-generated method stub
+		
 	}
 }

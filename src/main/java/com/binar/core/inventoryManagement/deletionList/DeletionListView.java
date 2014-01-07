@@ -14,11 +14,16 @@ import com.vaadin.ui.Window;
 
 public interface DeletionListView {
 
+	public enum ApprovalFilter{
+		ALL,ACCEPTED, NON_ACCEPTED,
+	}
 	interface DeletionListListener{
-		public void buttonClick(String buttonName);
-		public void editClick(String idGoods);
-		public void deleteClick(String idGoods);
-		public void showClick(String idGoods);
+		public void newDeletion();
+		public void editClick(int idDeletion);
+		public void deleteClick(int idDeletion);
+		public void showClick(int idDeletion);
+		public void dateRangeChange();
+		
 	
 	}
 	public void init();
@@ -28,4 +33,5 @@ public interface DeletionListView {
 	public void showDetailWindow(DeletedGoods deletedGoods);
 	public Date getSelectedStartRange();
 	public Date getSelectedEndRange();
+	public void displayForm(Component content, String title);
 }

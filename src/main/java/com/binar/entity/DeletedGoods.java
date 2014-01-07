@@ -34,7 +34,7 @@ public class DeletedGoods {
     private boolean isAccepted ;
    
     @Column(name= "approval_date" )
-    private boolean approvalDate ;
+    private Date approvalDate;
 
 	
 	public Goods getGoods() {
@@ -55,10 +55,10 @@ public class DeletedGoods {
 	public void setAccepted(boolean isAccepted) {
 		this.isAccepted = isAccepted;
 	}
-	public boolean isApprovalDate() {
+	public Date getApprovalDate() {
 		return approvalDate;
 	}
-	public void setApprovalDate(boolean approvalDate) {
+	public void setApprovalDate(Date approvalDate) {
 		this.approvalDate = approvalDate;
 	}
 	public int getIdDeletedGoods() {
@@ -91,5 +91,4 @@ public class DeletedGoods {
 	public void setInformation(String information) {
 		this.information = information;
 	}
-	
 }

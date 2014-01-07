@@ -36,11 +36,11 @@ public class InputDeletionPresenter implements InputDeletionView.InputDeletionLi
 	public InputDeletionPresenter(InputDeletionModel model, 
 			InputDeletionViewImpl view, GeneralFunction function, int idDel,boolean isEdit) {
 		this(model, view, function);
-		updateEditView(idDel,isEdit);
+		updateEditView(idDel);
 		view.setInputEditView(isEdit);
 	}
 
-	public void updateEditView(int idDel,boolean isEdit) {
+	public void updateEditView(int idDel) {
 		view.setFormData(model.getSingleDeletion(idDel));
 	}	
 

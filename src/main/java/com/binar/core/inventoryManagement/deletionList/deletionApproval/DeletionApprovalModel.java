@@ -8,6 +8,7 @@ import java.util.List;
 import org.joda.time.DateTime;
 
 import com.avaje.ebean.EbeanServer;
+import com.binar.core.inventoryManagement.deletionList.deletionApproval.DeletionApprovalView.ApprovalFilter;
 import com.binar.core.requirementPlanning.approval.ApprovalModel.AcceptData;
 import com.binar.entity.DeletedGoods;
 import com.binar.entity.ReqPlanning;
@@ -25,7 +26,6 @@ public class DeletionApprovalModel {
 	public class AcceptData{
 		private int idDel;
 		private boolean accepted;
-		private int quantityAccepted;
 		protected int getIdDel() {
 			return idDel;
 		}
@@ -38,12 +38,6 @@ public class DeletionApprovalModel {
 		protected void setAccepted(boolean accepted) {
 			this.accepted = accepted;
 		}
-		protected int getQuantityAccepted() {
-			return quantityAccepted;
-		}
-		protected void setQuantityAccepted(int quantityAccepted) {
-			this.quantityAccepted = quantityAccepted;
-		}
 		
 	}
 	
@@ -52,12 +46,28 @@ public class DeletionApprovalModel {
 		this.server=function.getServer();
 	}
 	
-	public List<DeletedGoods> getTableData(DateTime periode){
-		Date startDate=periode.toDate();
-		Date endDate=periode.withDayOfMonth(periode.dayOfMonth().getMaximumValue()).toDate();
-		List<DeletedGoods> returnValue=server.find(DeletedGoods.class).where().
-				between("deletionDate", startDate, endDate).findList();
-		return returnValue;
+	public List<DeletedGoods> getDeletedTable(Date startDate, Date endDate, ApprovalFilter filter ){
+		try {
+			DateTime start=new DateTime(startDate);
+			start=start.withHourOfDay(start.hourOfDay().getMinimumValue());
+			DateTime end=new DateTime(startDate);
+			end=end.withHourOfDay(end.hourOfDay().getMaximumValue());
+			if(start.compareTo(end)>0){
+				DateTime buffer=start;
+				start=end;
+				end=buffer;
+			}
+			switch (filter) {
+				case ACCEPTED: return server.find(DeletedGoods.class).where().between("deletionDate", start.toDate(), end.toDate()).eq("isAccepted", true).findList(); 
+				case ALL: return server.find(DeletedGoods.class).where().between("deletionDate", start.toDate(), end.toDate()).findList();
+				case NON_ACCEPTED: return server.find(DeletedGoods.class).where().between("deletionDate", start.toDate(), end.toDate()).eq("isAccepted", false).findList();
+				default: return null;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<DeletedGoods>();
+		}
+		
 	}
 	
 	private List<AcceptData> getTableData(Container container) {
@@ -68,19 +78,9 @@ public class DeletionApprovalModel {
 			
 			AcceptData acceptData=new AcceptData();
 			CheckBox checkboxResult=(CheckBox)item.getItemProperty("Disetujui?").getValue();
-			TextField textfieldResult=(TextField)item.getItemProperty("Jumlah Disetujui").getValue();
 			int quantityAccepted;
-			try {
-				quantityAccepted=Integer.parseInt(textfieldResult.getValue());
-				
-			} catch (NumberFormatException e) {
-				//jika ada field yang tidak sesuai format misalnya ada teksnya, maka langsung return null
-				//maka nantinya nampilin pesan error
-				return null;
-			}
 			acceptData.setAccepted(checkboxResult.getValue());
 			acceptData.setIdDel((Integer)itemId);
-			acceptData.setQuantityAccepted(quantityAccepted);
 			
 			returnValue.add(acceptData);
 		}
@@ -100,6 +100,7 @@ public class DeletionApprovalModel {
 			for(AcceptData data:acceptData){
 				DeletedGoods delGoods=server.find(DeletedGoods.class, data.getIdDel());
 				delGoods.setAccepted(data.isAccepted());
+				delGoods.setApprovalDate(new Date());
 				server.update(delGoods);
 			}
 			server.commitTransaction();

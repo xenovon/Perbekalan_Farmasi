@@ -1,11 +1,17 @@
 package com.binar.core.inventoryManagement.deletionList.deletionApproval;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
+import org.joda.time.DateTime;
+
+import com.binar.core.inventoryManagement.deletionList.DeletionListView.DeletionListListener;
 import com.binar.core.requirementPlanning.approval.ApprovalView;
 import com.binar.entity.DeletedGoods;
 import com.binar.entity.ReqPlanning;
+import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
 import com.binar.generalFunction.TableFilter;
 import com.binar.generalFunction.TextManipulator;
@@ -20,6 +26,8 @@ import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.DateField;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
@@ -38,24 +46,27 @@ DeletionApprovalView, Button.ClickListener, ValueChangeListener{
 	private Table table;
 
 	private Label labelTitle;
-	private ComboBox selectMonth;
 	private GridLayout layoutFilter;
 	private Button buttonAccept;
 	private Button buttonReset;
-	private GeneralFunction generalFunction;
-	
-	TextManipulator text;
-	IndexedContainer container;
-	TextField inputFilter;
+	private DateField selectStartDate;
+	private DateField selectEndDate;
+	private GeneralFunction function;
+	private ComboBox selectFilter;
+	private TextManipulator text;
+	private IndexedContainer container;
+	private TextField inputFilter;
+	private DateManipulator date;
 	
 	public DeletionApprovalViewImpl(GeneralFunction function) {
-		this.generalFunction=function;
-		text=generalFunction.getTextManipulator();
-	}
-	
+		this.function=function;
+		text=function.getTextManipulator();
+		date=function.getDate();
+	}	
+
 	TableFilter filter;
 	public void init(){
-		filter=generalFunction.getFilter("");
+		filter=function.getFilter("");
 		inputFilter= new TextField("Filter Tabel"){
 			{
 				setImmediate(true);
@@ -75,33 +86,43 @@ DeletionApprovalView, Button.ClickListener, ValueChangeListener{
 			}
 		};
 		
+
 		table=new Table();
 		table.setSizeFull();
-		table.setWidth("100%");
-		table.setHeight("439px");
-        table.setSortEnabled(true);
-        table.setRowHeaderMode(RowHeaderMode.INDEX);
-       
+		table.setWidth("98%");
+		table.setHeight("420px");
+		table.setSortEnabled(true);
+		table.setImmediate(true);
+		table.setRowHeaderMode(RowHeaderMode.INDEX);
+	       
         container=new IndexedContainer(){
         	{
         		addContainerProperty("Tanggal", String.class, null);
         		addContainerProperty("Nama Barang", String.class, null);
-        		addContainerProperty("Satuan", String.class, null);
         		addContainerProperty("Jumlah", String.class, null);
-        		addContainerProperty("Detail", Button.class, null);
-        		addContainerProperty("Disetujui?", CheckBox.class, new CheckBox("Disetujui"){{setValue(false);}});
-        		addContainerProperty("Jumlah Disetujui", TextField.class, null);        		
+        		addContainerProperty("Satuan", String.class, null);
+        		addContainerProperty("Disetujui?", CheckBox.class, null);
+        		addContainerProperty("Operasi", GridLayout.class, null);
         	}
         };
         table.setContainerDataSource(container);		
-		List<String> contentList=generalFunction.getListFactory().createMonthListFromNow(10);
-		selectMonth =new ComboBox("", contentList);
-		selectMonth.setNullSelectionAllowed(false);
-		selectMonth.addStyleName("non-caption-form");
-		selectMonth.setImmediate(true);
-		selectMonth.setValue(contentList.iterator().next());
-		selectMonth.addValueChangeListener(this);
-		selectMonth.setWidth("169px");
+
+		selectStartDate = new DateField("", DateTime.now().minusDays(30).toDate());
+		selectEndDate =new DateField("",DateTime.now().toDate());
+
+		selectStartDate.setImmediate(true);
+		selectEndDate.setImmediate(true);
+
+		
+		System.out.println("Bulan ini" + Calendar.getInstance().get(Calendar.MONTH));
+		selectStartDate.addStyleName("non-caption-form");
+		selectEndDate.addStyleName("non-caption-form");
+
+		selectEndDate.setWidth("120px");
+		selectStartDate.setWidth("120px");
+	
+		selectEndDate.addValueChangeListener(this);
+		selectStartDate.addValueChangeListener(this);
 		
         
         labelTitle =new Label("<h2>Persetujuan Penghapusan Barang</h2>", ContentMode.HTML);
@@ -111,15 +132,31 @@ DeletionApprovalView, Button.ClickListener, ValueChangeListener{
 		
 		buttonReset=new Button("Reset Pilihan");
 		buttonReset.addClickListener(this);
+		
+		selectFilter=new ComboBox("");
+		selectFilter.addStyleName("non-caption-form");
+		selectFilter.addItem("Semua");
+		selectFilter.addItem("Telah Disetujui");
+		selectFilter.addItem("Belum Disetujui");
+		selectFilter.setValue("Semua");
+		selectFilter.setImmediate(true);
+		selectFilter.addValueChangeListener(this);
+
 		construct();		
 	}
 	
 	private void construct() {
-		GridLayout filterLayout=new GridLayout(2,1){
+		GridLayout filterLayout=new GridLayout(5,2){
 			{
-				this.addComponent(new Label("Pilih Bulan : "), 0,0);
-				this.addComponent(selectMonth);
-				this.setSpacing(true);
+				addComponent(new Label("Rentang Periode : "), 0,0);
+				addComponent(new Label(" Awal : "), 1,0);
+				addComponent(selectStartDate, 2,0);
+				addComponent(new Label(" Akhir : "), 3,0);
+				addComponent(selectStartDate, 4,0);
+				setSpacing(true);
+				addComponent(new Label("Filter Persetujuan"), 1, 1);
+				addComponent(selectFilter, 2, 1);
+
 			}
 		};
 		GridLayout buttonLayout=new GridLayout(2,1){
@@ -132,21 +169,23 @@ DeletionApprovalView, Button.ClickListener, ValueChangeListener{
 			}
 		};
 		this.addComponents(labelTitle, filterLayout, inputFilter, buttonLayout, table );
-		
 	}
 
 	@Override
 	public void valueChange(ValueChangeEvent event) {
-		if(event.getProperty()==selectMonth)
-			listener.updateTable(getSelectedPeriod());	
+		if(event.getProperty()==selectEndDate 
+				|| event.getProperty()==selectFilter
+				|| event.getProperty()==selectStartDate){
+			listener.updateTable();
+		}
 	}
 
 	@Override
 	public void buttonClick(ClickEvent event) {
 		if(event.getSource()==buttonAccept){
-			listener.buttonClick("buttonAccept");
+			listener.approveClick();
 		}else if(event.getSource()==buttonReset){
-			listener.updateTable(getSelectedPeriod());
+			listener.resetClick();
 		}
 	}
 	
@@ -160,143 +199,114 @@ DeletionApprovalView, Button.ClickListener, ValueChangeListener{
 	public boolean updateTableData(List<DeletedGoods> data) {
 		container.removeAllItems();
 		System.out.println(data.size());
-		if(data.size()==0){
-			Notification.show("Data persetujuan kosong", Type.WARNING_MESSAGE);
-			return false;
-		}
-		
+
 		for(DeletedGoods datum:data){
 			final DeletedGoods datumFinal=datum;
-			Item item = container.addItem(datum.getIdDeletedGoods());
-			SimpleDateFormat dateFormat=new SimpleDateFormat("dd MMMMM yyyy");
 			
-			/* add data dari database */
-			item.getItemProperty("Tanggal").setValue(dateFormat.format(datum.getDeletionDate()));
-			item.getItemProperty("Nama Barang").setValue(datum.getSupplierGoods().getGoods().getName());
-			item.getItemProperty("Satuan").setValue(datum.getSupplierGoods().getGoods().getUnit());
+			Item item=container.addItem(datum.getIdDeletedGoods());			
+
+			item.getItemProperty("Tanggal").setValue(date.dateToText(datum.getDeletionDate(), true));
+			item.getItemProperty("Nama Barang").setValue(datum.getGoods().getName());
 			item.getItemProperty("Jumlah").setValue(text.intToAngka(datum.getQuantity()));
-			item.getItemProperty("Detail").setValue(new Button(){
-				{
-					{
-						setDescription("Lihat Lebih detail");
-						setIcon(new ThemeResource("icons/image/icon-detail.png"));
-						addStyleName("button-table");
+			item.getItemProperty("Satuan").setValue(datum.getGoods().getUnit());
+			item.getItemProperty("Disetujui?").setValue(new CheckBox("Disetujui",datum.isAccepted()));
+			item.getItemProperty("Operasi").setValue(new GridLayout(1,1){
+			{
+				
+					Button buttonShow=new Button();
+					buttonShow.setDescription("Lihat Lebih detail");
+					buttonShow.setIcon(new ThemeResource("icons/image/icon-detail.png"));
+					buttonShow.addStyleName("button-table");
+					buttonShow.addClickListener(new ClickListener() {
 						
-						addClickListener(new ClickListener() {						
-							@Override
-							public void buttonClick(ClickEvent event) {
-								listener.showDetail(datumFinal.getIdDeletedGoods());
-							}
-						});
-					}
+						@Override
+						public void buttonClick(ClickEvent event) {
+							listener.showDetail(datumFinal.getIdDeletedGoods());
+						}
+					});
+					
+					this.setSpacing(true);
+					this.setMargin(false);
+					this.addComponent(buttonShow, 0, 0);
 				}
 			});
-			item.getItemProperty("Disetujui?").setValue(new CheckBox("Disetujui"){{
-				setValue(datumFinal.isAccepted());
-			}});
 			
 		}
+
 		return true;
-	}
 
-	Label labelName;
-	Label labelSupplier;
-	Label labelProposalDate;
-	Label labelQuantity;
-	Label labelIsAccepted;
-	Label labelAcceptedQuantity;
-	Label labelInformation;
-	Label labelTimestamp;
-	Label labelPrice;	
-	Label labelUnit;
-	Label labelTotalPrice;
+	}
 	
 	
-	Window windowDetail;
-	GridLayout layoutDetail;
+	private Label labelDeletionDate;
+	private Label labelGoodsName;
+	private Label labelQuantity;
+	private Label labelAccepted;
+	private Label labelAcceptedDate;
+	private Label labelTimeStamp;
+	private Label labelInformation;
 	
+	private Window windowDetail;
+	private Window windowInputEdit;
+	private  GridLayout layoutData;
 	@Override
-	public void showDetailWindow(DeletedGoods data) {
-				for(Window window:this.getUI().getWindows()){
-					window.close();
+	public void showDetailWindow(DeletedGoods deletedGoods) {
+		if(layoutData==null){ //jika layout null
+			//buat konten 
+			layoutData= new GridLayout(2,7){ 
+				{
+					setSpacing(true);
+					setMargin(true);
+					addComponent(new Label("Tanggal  "), 0,0);
+					addComponent(new Label("Nama Barang  "), 0, 1);
+					addComponent(new Label("Jumlah : "), 0, 2);
+					addComponent(new Label("Diterima? : "), 0, 3);
+					addComponent(new Label("Tanggal Diterima : "), 0, 4);
+					addComponent(new Label("Waktu input : "), 0, 5);
+					addComponent(new Label("Keterangan : "), 0, 6);
+				}	
+			};
+			//instantiasi label
+			 labelDeletionDate=new Label("");
+			 labelGoodsName=new Label("");
+			 labelQuantity=new Label("");
+			 labelAccepted=new Label("");
+			 labelAcceptedDate=new Label("");
+			 labelTimeStamp=new Label("");
+			 labelInformation=new Label("");
+						
+			//add Component konten ke layout
+			layoutData.addComponent(labelDeletionDate, 1,0);
+			layoutData.addComponent(labelGoodsName, 1,1);
+			layoutData.addComponent(labelQuantity, 1,2);
+			layoutData.addComponent(labelAccepted, 1,3);
+			layoutData.addComponent(labelAcceptedDate, 1,4);
+			layoutData.addComponent(labelTimeStamp, 1,5);
+			layoutData.addComponent(labelInformation, 1,6);
+				        
+		}//menutup jika layoutdetail null
+	    setLabelData(deletedGoods);
+	    if(windowDetail==null){
+			windowDetail=new Window("Detail Penghapusan Data"){
+				{
+					center();
+					setWidth("800px");					
 				}
-				if(layoutDetail==null){
-					//buat konten 
-					layoutDetail= new GridLayout(2,13){
-						{
-							setSpacing(true);
-							setMargin(true);
-							addComponent(new Label("Tanggal"), 0, 1);
-							addComponent(new Label("Nama Barang"), 0,2);
-							addComponent(new Label("Satuan"), 0, 3);
-							addComponent(new Label("Jumlah"), 0,4);
-							addComponent(new Label("PBF"), 0, 5);
-							addComponent(new Label("Harga"), 0,6);
-							addComponent(new Label("Total Harga"), 0,7);
-							addComponent(new Label("Keterangan"), 0, 8);
-							addComponent(new Label("Waktu Input Pengajuan"), 0,9);
-							addComponent(new Label("Disetujui?"), 0, 10);
-							addComponent(new Label("Jumlah yang Disetujui"), 0,11);
-						}	
-					};
-					//instantiasi label
-					labelProposalDate=new Label();
-					labelName=new Label();
-					labelSupplier=new Label();
-					labelUnit =new Label();
-					labelQuantity = new Label();
-					labelIsAccepted =new Label();
-					labelPrice=new Label();
-					labelTotalPrice=new Label();
-					labelAcceptedQuantity =new Label();
-					labelInformation =new Label();
-					labelTimestamp =new Label();						
-					
-					//add Component konten ke layout
-					layoutDetail.addComponent(labelProposalDate, 1,1);
-					layoutDetail.addComponent(labelName, 1,2);
-					layoutDetail.addComponent(labelUnit, 1,3);
-					layoutDetail.addComponent(labelQuantity, 1,4);
-					layoutDetail.addComponent(labelSupplier, 1,5);
-					layoutDetail.addComponent(labelPrice,1,6);
-					layoutDetail.addComponent(labelTotalPrice, 1,7);
-					layoutDetail.addComponent(labelInformation, 1,8);
-					layoutDetail.addComponent(labelTimestamp, 1,9);			
-					layoutDetail.addComponent(labelIsAccepted, 1,10);
-					layoutDetail.addComponent(labelAcceptedQuantity, 1,11);
-					
-				}			
-				setLabelData(data);
-				if(windowDetail==null){
-					windowDetail=new Window("Detail Persetujuan Penghapusan Barang"){
-						{
-							center();
-							setWidth("500px");					
-						}
-					};
-				}
-				windowDetail.setContent(layoutDetail);
-				this.getUI().addWindow(windowDetail);	
+			};					
+		}//menutup jika windowDetail null
+		
+		windowDetail.setContent(layoutData);
+		this.getUI().addWindow(windowDetail);	
+		
 	}
-
-	private void setLabelData(DeletedGoods data) {
-		SimpleDateFormat dateFormat=new SimpleDateFormat("dd MMMMM yyyy");
-		try {
-			labelProposalDate.setValue(dateFormat.format((data.getDeletionDate())));
-			labelName.setValue(data.getSupplierGoods().getGoods().getName());
-			labelSupplier.setValue(data.getSupplierGoods().getSupplier().getSupplierName());
-			labelQuantity.setValue(String.valueOf(data.getQuantity()));
-			labelIsAccepted.setValue(data.isAccepted()?"Ya":"Belum");
-			labelInformation.setValue(data.getInformation());
-			labelTimestamp.setValue(data.getTimestamp().toString());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}		
-	}
-
-	@Override
-	public String getSelectedPeriod() {
-		return (String) selectMonth.getValue();
+	private void setLabelData(DeletedGoods data){
+		 labelDeletionDate.setValue(date.dateToText(data.getDeletionDate(), true));
+		 labelGoodsName.setValue(data.getGoods().getName());
+		 labelQuantity.setValue(data.getQuantity()+" "+data.getGoods().getUnit());
+		 labelAccepted.setValue(data.isAccepted()?"Disetujui":"Belum disetujui");
+		 labelAcceptedDate.setValue(date.dateToText(data.getApprovalDate(), true));
+		 labelTimeStamp.setValue(data.getTimestamp().toString());
+		 labelInformation.setValue(data.getInformation());
 	}
 
 	@Override
@@ -304,8 +314,25 @@ DeletionApprovalView, Button.ClickListener, ValueChangeListener{
 		return container;
 	}
 	
-	public String getPeriodeValue(){
-		return (String) selectMonth.getValue();
+	public ApprovalFilter getApprovalFilter(){
+		if(selectFilter.getValue().equals("Belum Disetujui")){
+			return ApprovalFilter.NON_ACCEPTED;
+		}else if(selectFilter.getValue().equals("Telah Disetujui")){
+			return ApprovalFilter.ACCEPTED;
+		}else{
+			return ApprovalFilter.ALL;
+		}
 	}
+	@Override
+	public Date getSelectedStartRange() {
+		return selectStartDate.getValue();
+	}
+
+	@Override
+	public Date getSelectedEndRange() {
+		return selectEndDate.getValue();
+	}
+
+
 
 }

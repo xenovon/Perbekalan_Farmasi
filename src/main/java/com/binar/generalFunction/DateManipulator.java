@@ -14,6 +14,9 @@ public class DateManipulator {
 	SimpleDateFormat format;
 	//mengubah date menjadi teks (November 2013)
 	public String dateToText(Date date){
+		if(date==null){
+			return "";
+		}
 		if(format==null){
 			format=new SimpleDateFormat("MMMMM");			
 		}else{
