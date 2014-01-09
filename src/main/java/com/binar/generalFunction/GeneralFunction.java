@@ -18,6 +18,13 @@ public class GeneralFunction {
 	//maksimal jumlah teks dalam input text area
 	public final int MAX_TEXTAREA_LENGTH = 300;
 	public final String FORM_WIDTH="250px";
+	
+	//konstanta untuk ke tab
+	public final String VIEW_REQ_PLANNING_LIST="reqlist";
+	public final String vIEW_REQ_PLANNING_INPUT="reqinput";
+	public final String VIEW_REQ_PLANNING_APPROVAL="reqAppr";
+	public final String VIEW_INVOICE="reqList";
+	
 
 	private ListFactory listFactory;
 	private ConfirmationWindow window;
@@ -29,11 +36,18 @@ public class GeneralFunction {
 	private GetSetting setting;
 	private EmailValidator emailValidator;
 	private DecimalFormat format;
+	private MinimumStockUpdater minimumStock;
 	
 	//Method konstruktor kosong, jaga-jaga  kalo butuh konstruktor
 	public GeneralFunction() {
 		
 	}	
+	public MinimumStockUpdater getMinimumStock() {
+		if(minimumStock==null){
+			minimumStock=new MinimumStockUpdater(this.getServer());
+		}
+		return minimumStock;
+	}
 	public ListFactory getListFactory(){
 		if(listFactory==null){
 			listFactory =new ListFactory();

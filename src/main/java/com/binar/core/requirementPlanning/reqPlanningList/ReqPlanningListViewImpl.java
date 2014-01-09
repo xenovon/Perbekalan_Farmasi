@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import com.binar.core.requirementPlanning.inputRequierementPlanning.TableData;
+import com.binar.entity.Goods;
 import com.binar.entity.ReqPlanning;
 import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
@@ -191,7 +192,14 @@ public class ReqPlanningListViewImpl extends VerticalLayout
 			String totalPrice=text.doubleToRupiah(hnaPPNdouble*datum.getQuantity());
 			
 			/* add data ke database */
-			item.getItemProperty("Nama Barang").setValue(datum.getSupplierGoods().getGoods().getName());
+			Goods goods=datum.getSupplierGoods().getGoods();
+			String labelGoods;
+			if(goods.getInsurance().isShowInDropdown()){
+				labelGoods=goods.getName() + " - "+goods.getInsurance().getName();				
+			}else{
+				labelGoods=goods.getName();				
+			}
+			item.getItemProperty("Nama Barang").setValue(labelGoods);
 			item.getItemProperty("Satuan").setValue(datum.getSupplierGoods().getGoods().getUnit());
 			item.getItemProperty("HNA + PPN 10%").setValue(hnaPPN);
 			item.getItemProperty("Kebutuhan").setValue(text.intToAngka(datum.getQuantity()));

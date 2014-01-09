@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.binar.entity.Goods;
 import com.binar.entity.ReqPlanning;
 import com.binar.entity.SupplierGoods;
 import com.binar.generalFunction.GeneralFunction;
@@ -317,8 +318,17 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 	}
 	private void setLabelData(ReqPlanning data){
 		try {
+			
 			labelId.setValue(String.valueOf(data.getIdReqPlanning()));
 			labelName.setValue(data.getSupplierGoods().getGoods().getName());
+			Goods goods=data.getSupplierGoods().getGoods();
+			if(goods.getInsurance().isShowInDropdown()){
+				labelName.setValue(goods.getName() + " - "+goods.getInsurance().getName());				
+			}else{
+				labelName.setValue(goods.getName());				
+			}
+
+			
 			labelSupplier.setValue(data.getSupplierGoods().getSupplier().getSupplierName());
 			labelManufacturer.setValue(data.getSupplierGoods().getManufacturer().getManufacturerName());
 			labelPeriode.setValue(data.getPeriodString());

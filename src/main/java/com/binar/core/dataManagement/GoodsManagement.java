@@ -27,6 +27,8 @@ public class GoodsManagement extends CssLayout {
 		this.setSizeFull();
 		this.setStyleName("tab-content");
 	}
+	
+	
 	public GoodsManagementPresenter getPresenter(){
 		return presenter;
 	}

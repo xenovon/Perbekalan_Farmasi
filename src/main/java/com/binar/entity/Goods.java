@@ -11,6 +11,7 @@ import javax.persistence.Table;
 
 import com.binar.entity.enumeration.EnumGoodsCategory;
 import com.binar.entity.enumeration.EnumGoodsType;
+import com.binar.entity.enumeration.EnumStockStatus;
 
 @Entity
 @Table(name="goods")
@@ -50,11 +51,17 @@ public class Goods {
 	@Column(name="minimum_stock")
 	private int minimumStock;
 	
-	@Column(name="is_important")
-	private boolean isImportant;
-
+	private boolean important;
+	
+	private EnumStockStatus stockStatus;
 	private double het;
 	
+	public EnumStockStatus getStockStatus() {
+		return stockStatus;
+	}
+	public void setStockStatus(EnumStockStatus stockStatus) {
+		this.stockStatus = stockStatus;
+	}
 	public List<SupplierGoods> getSupplierGoods() {
 		return supplierGoods;
 	}
@@ -150,11 +157,11 @@ public class Goods {
 	}
 
 	public boolean isImportant() {
-		return isImportant;
+		return important;
 	}
 
 	public void setImportant(boolean isImportant) {
-		this.isImportant = isImportant;
+		this.important = isImportant;
 	}
 
 	public double getHet() {

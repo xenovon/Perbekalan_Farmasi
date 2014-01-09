@@ -7,6 +7,7 @@ import com.binar.core.requirementPlanning.Approval;
 import com.binar.core.requirementPlanning.InputRequirementPlanning;
 import com.binar.core.requirementPlanning.ReqPlanningList;
 import com.binar.generalFunction.GeneralFunction;
+import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.CustomComponent;
@@ -14,6 +15,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
 import com.vaadin.ui.TabSheet.SelectedTabChangeListener;
+import com.vaadin.ui.UI;
 
 public class DataManagementView extends CustomComponent implements View, SelectedTabChangeListener {
 
@@ -50,6 +52,8 @@ public class DataManagementView extends CustomComponent implements View, Selecte
 		tabSheet.addSelectedTabChangeListener(this);
 		setCompositionRoot(tabSheet);
 		System.out.println("Selesai enter");
+		
+		Navigator navigator=UI.getCurrent().getNavigator();
 		
 	}
 		@Override

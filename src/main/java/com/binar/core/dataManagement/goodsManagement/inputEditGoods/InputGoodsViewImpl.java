@@ -122,7 +122,7 @@ public class InputGoodsViewImpl extends FormLayout implements
 				   inputHET.addValueChangeListener(this);
 				   inputHET.setImmediate(true);
 				   inputHET.setWidth(function.FORM_WIDTH);
-		inputImportant=new ComboBox("Barang Penting?");
+		inputImportant=new ComboBox("Barang Fast Moving?");
 						inputImportant.setImmediate(true);
 						inputImportant.setWidth(function.FORM_WIDTH);
 						inputImportant.setNullSelectionAllowed(false);
