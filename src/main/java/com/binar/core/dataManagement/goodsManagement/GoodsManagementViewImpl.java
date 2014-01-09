@@ -71,7 +71,7 @@ public class GoodsManagementViewImpl extends VerticalLayout
 			}
 		};
 		labelFilter=new Label("Filter Data");
-		buttonInput=new Button("Masukan Barang Baru");
+		buttonInput=new Button("Input data Barang Baru");
 		buttonInput.addClickListener(this);
 		
 		table=new Table();
