@@ -11,6 +11,7 @@ import com.avaje.ebean.EbeanServer;
 import com.binar.core.inventoryManagement.deletionList.deletionApproval.DeletionApprovalView.ApprovalFilter;
 import com.binar.core.requirementPlanning.approval.ApprovalModel.AcceptData;
 import com.binar.entity.DeletedGoods;
+import com.binar.entity.Goods;
 import com.binar.entity.ReqPlanning;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.data.Container;
@@ -100,8 +101,25 @@ public class DeletionApprovalModel {
 			for(AcceptData data:acceptData){
 				DeletedGoods delGoods=server.find(DeletedGoods.class, data.getIdDel());
 				delGoods.setAccepted(data.isAccepted());
+			
 				delGoods.setApprovalDate(new Date());
+
+				Goods goods=delGoods.getGoods();
+				int stock=goods.getCurrentStock();
+
+				if(data.isAccepted()){
+					stock=stock-delGoods.getQuantity();
+				}else{
+					stock=stock+delGoods.getQuantity();
+				}
+				delGoods.setStockQuantity(stock);
+
 				server.update(delGoods);
+				Goods goodsDuplicate=server.find(Goods.class, goods.getIdGoods());
+				goodsDuplicate.setCurrentStock(stock);
+				server.update(goodsDuplicate);
+				function.getMinimumStock().update(goods.getIdGoods());
+	
 			}
 			server.commitTransaction();
 			return null;

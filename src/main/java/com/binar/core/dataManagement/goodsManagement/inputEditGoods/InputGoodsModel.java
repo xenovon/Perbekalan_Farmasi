@@ -119,8 +119,10 @@ public class InputGoodsModel {
 			goods.setName(data.getName());
 			goods.setType(data.getType());
 			goods.setUnit(data.getUnit());
-			
 			server.save(goods);
+			
+			function.getMinimumStock().update(goods.getIdGoods());
+
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 			return "Format angka salah";

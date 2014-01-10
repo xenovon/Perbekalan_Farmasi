@@ -72,7 +72,7 @@ public class SupplierManagementViewImpl extends VerticalLayout implements
 			}
 		};
 		labelFilter=new Label("Filter Data");
-		buttonInput=new Button("Masukan Distributor Baru");
+		buttonInput=new Button("Input Distributor Baru");
 		buttonInput.addClickListener(this);
 		
 		table=new Table();

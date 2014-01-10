@@ -70,7 +70,8 @@ public class InputConsumptionModel {
 			
 			consumption.setStockQuantity(currentStock);
 			server.update(goodsStock);
-			
+			function.getMinimumStock().update(goodsStock.getIdGoods());
+
 			
 			server.commitTransaction();
 			return null;
@@ -125,7 +126,9 @@ public class InputConsumptionModel {
 			consumption.setStockQuantity(currentStock);
 			server.update(goodsStock);
 			
-			server.update(consumption);	
+			server.update(consumption);
+			function.getMinimumStock().update(goodsStock.getIdGoods());
+
 			server.commitTransaction();
 			return null;
 		} catch (NumberFormatException e) {

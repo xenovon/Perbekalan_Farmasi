@@ -82,6 +82,8 @@ public class InputReceptionModel {
 			reception.setStockQuantity(currentStock);
 			server.update(goods);
 			server.save(reception);
+			
+			function.getMinimumStock().update(goods.getIdGoods());
 			server.commitTransaction();
 		} catch (NumberFormatException e) {
 			server.rollbackTransaction();
@@ -144,6 +146,8 @@ public class InputReceptionModel {
 			reception.setStockQuantity(currentStock);
 			
 			server.update(goods);
+			function.getMinimumStock().update(goods.getIdGoods());
+
 			server.update(reception);	
 			server.commitTransaction();
 			return null;

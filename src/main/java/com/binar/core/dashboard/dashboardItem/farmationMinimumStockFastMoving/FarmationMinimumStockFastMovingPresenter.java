@@ -11,11 +11,12 @@ public class FarmationMinimumStockFastMovingPresenter implements FarmationMinimu
 	FarmationMinimumStockFastMovingViewImpl view;
 	GeneralFunction function;
 	public FarmationMinimumStockFastMovingPresenter(GeneralFunction function
-			, FarmationMinimumStockFastMovingViewImpl view, FarmationMinimumStockFastMovingPresenter presenter) {
+			, FarmationMinimumStockFastMovingViewImpl view, FarmationMinimumStockFastMovingModel model) {
 		this.model=model;
 		this.function=function;
 		this.view=view;
 		view.init();
+		view.setListener(this);
 		
 		
 	}
@@ -26,7 +27,16 @@ public class FarmationMinimumStockFastMovingPresenter implements FarmationMinimu
 	@Override
 	public void buttonGo() {
 		Navigator navigator=UI.getCurrent().getNavigator();
-		navigator.navigateTo("");
+		navigator.navigateTo("/datamanagement/"+function.VIEW_SUPPLIER_MANAGEMENT);
 	}
+//  put("/dashboard", DashboardView.class);
+//  put("/requirementplanning/", RequirementPlanningView.class);
+//  put("/procurement", ProcurementView.class);
+//  put("/inventorymanagement", InventoryManagementView.class);
+//  put("/report", ReportView.class);
+//  put("/datamanagement", DataManagementView.class);
+//  put("/usermanagement", UserManagementView.class);
+//  put("/setting", SettingView.class);
+//  put("/usersetting", UserSettingView.class);
 
 }

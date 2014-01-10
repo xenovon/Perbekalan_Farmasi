@@ -151,6 +151,8 @@ public class ConsumptionListModel {
 			goods.setCurrentStock(currentStock+consumptionCount);
 			server.delete(goodsCon);
 			server.update(goods);
+			generalFunction.getMinimumStock().update(goods.getIdGoods());
+
 			server.commitTransaction();
 			return true;
 		} catch (Exception e) {

@@ -54,6 +54,13 @@ public class DataManagementView extends CustomComponent implements View, Selecte
 		System.out.println("Selesai enter");
 		
 		Navigator navigator=UI.getCurrent().getNavigator();
+		String parameter=event.getParameters();
+		if(parameter.equals(function.VIEW_GOODS_MANAGEMENT)){
+			tabSheet.setSelectedTab(goodsManagement);
+		}else if(parameter.equals(function.VIEW_SUPPLIER_MANAGEMENT)){
+			tabSheet.setSelectedTab(supplierManagement);
+			
+		}
 		
 	}
 		@Override

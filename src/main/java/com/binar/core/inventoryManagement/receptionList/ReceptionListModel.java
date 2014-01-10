@@ -162,8 +162,18 @@ public class ReceptionListModel {
 
 	public boolean deleteGoodsReception(int recIdFinal) {
 		try {
+		
 			GoodsReception goodsRec= server.find(GoodsReception.class, recIdFinal);
+			int quantity=goodsRec.getQuantityReceived();
+			
+			String idGoods=goodsRec.getInvoiceItem().getPurchaseOrderItem().getSupplierGoods().getGoods().getIdGoods();
 			server.delete(goodsRec);
+			Goods goods=server.find(Goods.class, idGoods);
+			int currentStock=goods.getCurrentStock();
+			goods.setCurrentStock(currentStock-quantity);
+			server.update(goods);
+			generalFunction.getMinimumStock().update(goods.getIdGoods());
+
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();

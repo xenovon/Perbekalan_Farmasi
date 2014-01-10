@@ -4,6 +4,15 @@ import java.text.DecimalFormat;
 
 import com.avaje.ebean.EbeanServer;
 import com.binar.database.GetEbeanServer;
+import com.binar.view.DashboardView;
+import com.binar.view.DataManagementView;
+import com.binar.view.InventoryManagementView;
+import com.binar.view.ProcurementView;
+import com.binar.view.ReportView;
+import com.binar.view.RequirementPlanningView;
+import com.binar.view.SettingView;
+import com.binar.view.UserManagementView;
+import com.binar.view.UserSettingView;
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.UI;
@@ -23,8 +32,18 @@ public class GeneralFunction {
 	public final String VIEW_REQ_PLANNING_LIST="reqlist";
 	public final String vIEW_REQ_PLANNING_INPUT="reqinput";
 	public final String VIEW_REQ_PLANNING_APPROVAL="reqAppr";
-	public final String VIEW_INVOICE="reqList";
+	public final String VIEW_GOODS_MANAGEMENT="goods";
+	public final String VIEW_SUPPLIER_MANAGEMENT="supplier";
 	
+//    put("/dashboard", DashboardView.class);
+//    put("/requirementplanning/", RequirementPlanningView.class);
+//    put("/procurement", ProcurementView.class);
+//    put("/inventorymanagement", InventoryManagementView.class);
+//    put("/report", ReportView.class);
+//    put("/datamanagement", DataManagementView.class);
+//    put("/usermanagement", UserManagementView.class);
+//    put("/setting", SettingView.class);
+//    put("/usersetting", UserSettingView.class);
 
 	private ListFactory listFactory;
 	private ConfirmationWindow window;

@@ -73,7 +73,7 @@ public class ManufacturerManagementViewImpl extends VerticalLayout implements
 			}
 		};
 		labelFilter=new Label("Filter Data");
-		buttonInput=new Button("Masukan Produsen Baru");
+		buttonInput=new Button("Input Produsen Baru");
 		buttonInput.addClickListener(this);
 		
 		table=new Table();
