@@ -1,13 +1,13 @@
-package com.binar.core.dashboard.dashboardItem.farmationMinimumStock;
+package com.binar.core.dashboard.dashboardItem.ppkRequirementPlanning;
 
 import java.util.List;
 
 import com.binar.entity.Goods;
 import com.vaadin.ui.Panel;
 
-interface  FarmationMinumumStockView {
+interface  PpkRequirementPlanningView {
 	
-	public interface FarmationMinimumStockListener{
+	public interface PpkRequirementPlanningListener{
 		public void updateTable();
 		public void buttonGo();
 	}

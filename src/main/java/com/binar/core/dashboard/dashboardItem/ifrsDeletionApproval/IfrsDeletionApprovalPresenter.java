@@ -1,17 +1,17 @@
-package com.binar.core.dashboard.dashboardItem.farmationMinimumStock;
+package com.binar.core.dashboard.dashboardItem.ifrsDeletionApproval;
 
-import com.binar.core.dashboard.dashboardItem.farmationMinimumStock.FarmationMinumumStockView.FarmationMinimumStockListener;
+import com.binar.core.dashboard.dashboardItem.ifrsDeletionApproval.IfrsDeletionApprovalView.IfrsDeletionApprovalListener;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.UI;
 
-public class FarmationMinimumStockPresenter implements FarmationMinimumStockListener {
+public class IfrsDeletionApprovalPresenter implements IfrsDeletionApprovalListener {
 
-	FarmationMinimumStockModel model;
-	FarmationMinimumStockViewImpl view;
+	IfrsDeletionApprovalModel model;
+	IfrsDeletionApprovalViewImpl view;
 	GeneralFunction function;
-	public FarmationMinimumStockPresenter(GeneralFunction function
-			, FarmationMinimumStockViewImpl view, FarmationMinimumStockModel model) {
+	public IfrsDeletionApprovalPresenter(GeneralFunction function
+			, IfrsDeletionApprovalViewImpl view, IfrsDeletionApprovalModel model) {
 		this.model=model;
 		this.function=function;
 		this.view=view;

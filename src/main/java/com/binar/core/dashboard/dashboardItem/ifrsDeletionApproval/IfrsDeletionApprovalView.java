@@ -1,13 +1,13 @@
-package com.binar.core.dashboard.dashboardItem.farmationMinimumStock;
+package com.binar.core.dashboard.dashboardItem.ifrsDeletionApproval;
 
 import java.util.List;
 
 import com.binar.entity.Goods;
 import com.vaadin.ui.Panel;
 
-interface  FarmationMinumumStockView {
+interface  IfrsDeletionApprovalView {
 	
-	public interface FarmationMinimumStockListener{
+	public interface IfrsDeletionApprovalListener{
 		public void updateTable();
 		public void buttonGo();
 	}

@@ -1,13 +1,13 @@
-package com.binar.core.dashboard.dashboardItem.farmationMinimumStock;
+package com.binar.core.dashboard.dashboardItem.supportRequirementNonApproved;
 
 import java.util.List;
 
 import com.binar.entity.Goods;
 import com.vaadin.ui.Panel;
 
-interface  FarmationMinumumStockView {
+interface  SupportRequirementNonApprovedView {
 	
-	public interface FarmationMinimumStockListener{
+	public interface SupportRequirementNonApprovedListener{
 		public void updateTable();
 		public void buttonGo();
 	}

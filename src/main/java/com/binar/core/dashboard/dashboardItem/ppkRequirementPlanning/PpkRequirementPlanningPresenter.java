@@ -1,17 +1,19 @@
-package com.binar.core.dashboard.dashboardItem.farmationMinimumStock;
+package com.binar.core.dashboard.dashboardItem.ppkRequirementPlanning;
 
-import com.binar.core.dashboard.dashboardItem.farmationMinimumStock.FarmationMinumumStockView.FarmationMinimumStockListener;
+import com.binar.core.dashboard.dashboardItem.ppkGoodsProcurementSummary.PpkGoodsProcurementModel;
+import com.binar.core.dashboard.dashboardItem.ppkGoodsProcurementSummary.PpkGoodsProcurementViewImpl;
+import com.binar.core.dashboard.dashboardItem.ppkRequirementPlanning.PpkRequirementPlanningView.PpkRequirementPlanningListener;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.UI;
 
-public class FarmationMinimumStockPresenter implements FarmationMinimumStockListener {
+public class PpkRequirementPlanningPresenter implements PpkRequirementPlanningListener {
 
-	FarmationMinimumStockModel model;
-	FarmationMinimumStockViewImpl view;
+	PpkRequirementPlanningModel model;
+	PpkRequirementPlanningViewImpl view;
 	GeneralFunction function;
-	public FarmationMinimumStockPresenter(GeneralFunction function
-			, FarmationMinimumStockViewImpl view, FarmationMinimumStockModel model) {
+	public PpkRequirementPlanningPresenter(GeneralFunction function
+			, PpkRequirementPlanningViewImpl view, PpkRequirementPlanningModel model) {
 		this.model=model;
 		this.function=function;
 		this.view=view;

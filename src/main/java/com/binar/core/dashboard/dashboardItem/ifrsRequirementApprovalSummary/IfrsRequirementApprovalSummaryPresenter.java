@@ -1,17 +1,17 @@
-package com.binar.core.dashboard.dashboardItem.farmationMinimumStock;
+package com.binar.core.dashboard.dashboardItem.ifrsRequirementApprovalSummary;
 
-import com.binar.core.dashboard.dashboardItem.farmationMinimumStock.FarmationMinumumStockView.FarmationMinimumStockListener;
+import com.binar.core.dashboard.dashboardItem.ifrsRequirementApprovalSummary.IfrsRequirementApprovalSummaryView.IfrsRequirementApprovalSummaryListener;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.UI;
 
-public class FarmationMinimumStockPresenter implements FarmationMinimumStockListener {
+public class IfrsRequirementApprovalSummaryPresenter implements IfrsRequirementApprovalSummaryListener {
 
-	FarmationMinimumStockModel model;
-	FarmationMinimumStockViewImpl view;
+	IfrsRequirementApprovalSummaryModel model;
+	IfrsRequirementApprovalSummaryViewImpl view;
 	GeneralFunction function;
-	public FarmationMinimumStockPresenter(GeneralFunction function
-			, FarmationMinimumStockViewImpl view, FarmationMinimumStockModel model) {
+	public IfrsRequirementApprovalSummaryPresenter(GeneralFunction function
+			, IfrsRequirementApprovalSummaryViewImpl view, IfrsRequirementApprovalSummaryModel model) {
 		this.model=model;
 		this.function=function;
 		this.view=view;

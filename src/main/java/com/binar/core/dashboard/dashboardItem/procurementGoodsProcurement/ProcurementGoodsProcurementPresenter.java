@@ -1,24 +1,23 @@
-package com.binar.core.dashboard.dashboardItem.farmationMinimumStock;
+package com.binar.core.dashboard.dashboardItem.procurementGoodsProcurement;
 
-import com.binar.core.dashboard.dashboardItem.farmationMinimumStock.FarmationMinumumStockView.FarmationMinimumStockListener;
+import com.binar.core.dashboard.dashboardItem.procurementGoodsProcurement.ProcurementGoodsProcurementView.ProcurementGoodsProcurementListener;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.UI;
 
-public class FarmationMinimumStockPresenter implements FarmationMinimumStockListener {
+public class ProcurementGoodsProcurementPresenter implements ProcurementGoodsProcurementListener {
 
-	FarmationMinimumStockModel model;
-	FarmationMinimumStockViewImpl view;
+	ProcurementGoodsProcurementModel model;
+	ProcurementGoodsProcurementViewImpl view;
 	GeneralFunction function;
-	public FarmationMinimumStockPresenter(GeneralFunction function
-			, FarmationMinimumStockViewImpl view, FarmationMinimumStockModel model) {
+	public ProcurementGoodsProcurementPresenter(GeneralFunction function
+			, ProcurementGoodsProcurementViewImpl view, ProcurementGoodsProcurementModel model) {
 		this.model=model;
 		this.function=function;
 		this.view=view;
 		view.init();
 		view.setListener(this);
-		
-		
+	
 	}
 	@Override
 	public void updateTable() {

@@ -5,7 +5,7 @@ import java.util.List;
 import com.binar.entity.Goods;
 import com.vaadin.ui.Panel;
 
-interface  FarmationExpiredGoodsStatusView {
+interface  SupportRequirementNonApprovedView {
 	
 	public interface FarmationExpiredGoodsStatusListener{
 		public void updateTable();

@@ -1,17 +1,17 @@
-package com.binar.core.dashboard.dashboardItem.farmationMinimumStock;
+package com.binar.core.dashboard.dashboardItem.supportRequirementNonApproved;
 
-import com.binar.core.dashboard.dashboardItem.farmationMinimumStock.FarmationMinumumStockView.FarmationMinimumStockListener;
+import com.binar.core.dashboard.dashboardItem.supportRequirementNonApproved.SupportRequirementNonApprovedView.SupportRequirementNonApprovedListener;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.UI;
 
-public class FarmationMinimumStockPresenter implements FarmationMinimumStockListener {
+public class SupportRequirementNonApprovedPresenter implements SupportRequirementNonApprovedListener {
 
-	FarmationMinimumStockModel model;
-	FarmationMinimumStockViewImpl view;
+	SupportRequirementNonApprovedModel model;
+	SupportRequirementNonApprovedViewImpl view;
 	GeneralFunction function;
-	public FarmationMinimumStockPresenter(GeneralFunction function
-			, FarmationMinimumStockViewImpl view, FarmationMinimumStockModel model) {
+	public SupportRequirementNonApprovedPresenter(GeneralFunction function
+			, SupportRequirementNonApprovedViewImpl view, SupportRequirementNonApprovedModel model) {
 		this.model=model;
 		this.function=function;
 		this.view=view;

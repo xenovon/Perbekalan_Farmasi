@@ -1,8 +1,8 @@
-package com.binar.core.dashboard.dashboardItem.farmationMinimumStock;
+package com.binar.core.dashboard.dashboardItem.ifrsGoodProcurement;
 
 import java.util.List;
 
-import com.binar.core.dashboard.dashboardItem.farmationMinimumStock.FarmationMinumumStockView.FarmationMinimumStockListener;
+import com.binar.core.dashboard.dashboardItem.ifrsGoodProcurement.IfrsGoodsProcurementView.IfrsGoodsProcurementListener;
 import com.binar.entity.Goods;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.data.Container;
@@ -17,7 +17,7 @@ import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.RowHeaderMode;
 import com.vaadin.ui.VerticalLayout;
 
-public class FarmationMinimumStockViewImpl  extends Panel implements FarmationMinumumStockView, ClickListener{
+public class IfrsGoodsProcurementViewImpl  extends Panel implements IfrsGoodsProcurementView, ClickListener{
 /*
  * Stok barang 'fast moving' dengan stok hampir atau mendekati stok minimum. 
 > Nama barang, jumlah stok, satuan
@@ -28,7 +28,7 @@ public class FarmationMinimumStockViewImpl  extends Panel implements FarmationMi
 	private Button buttonRefresh;
 	private Button buttonGo;
 	private GeneralFunction function;
-	public FarmationMinimumStockViewImpl(GeneralFunction function) {
+	public IfrsGoodsProcurementViewImpl(GeneralFunction function) {
 		this.function=function;
 	}
 	
@@ -95,8 +95,8 @@ public class FarmationMinimumStockViewImpl  extends Panel implements FarmationMi
 			item.getItemProperty("Satuan").setValue(datum.getUnit());
 		}
 	}
-	private FarmationMinimumStockListener listener;
-	public void setListener(FarmationMinimumStockListener listener) {
+	private IfrsGoodsProcurementListener listener;
+	public void setListener(IfrsGoodsProcurementListener listener) {
 		this.listener = listener;
 	}
 	

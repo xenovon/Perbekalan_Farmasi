@@ -1,17 +1,17 @@
-package com.binar.core.dashboard.dashboardItem.farmationMinimumStock;
+package com.binar.core.dashboard.dashboardItem.procurementManufacturRank;
 
-import com.binar.core.dashboard.dashboardItem.farmationMinimumStock.FarmationMinumumStockView.FarmationMinimumStockListener;
+import com.binar.core.dashboard.dashboardItem.procurementManufacturRank.ProcurementManufacturRankView.ProcurementManufacturRankListener;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.UI;
 
-public class FarmationMinimumStockPresenter implements FarmationMinimumStockListener {
+public class ProcurementManufacturRankPresenter implements ProcurementManufacturRankListener {
 
-	FarmationMinimumStockModel model;
-	FarmationMinimumStockViewImpl view;
+	ProcurementManufacturRankModel model;
+	ProcurementManufacturRankViewImpl view;
 	GeneralFunction function;
-	public FarmationMinimumStockPresenter(GeneralFunction function
-			, FarmationMinimumStockViewImpl view, FarmationMinimumStockModel model) {
+	public ProcurementManufacturRankPresenter(GeneralFunction function
+			, ProcurementManufacturRankViewImpl view, ProcurementManufacturRankModel model) {
 		this.model=model;
 		this.function=function;
 		this.view=view;

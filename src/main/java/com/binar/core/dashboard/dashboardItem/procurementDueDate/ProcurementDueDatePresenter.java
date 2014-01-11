@@ -1,17 +1,17 @@
-package com.binar.core.dashboard.dashboardItem.farmationMinimumStock;
+package com.binar.core.dashboard.dashboardItem.procurementDueDate;
 
-import com.binar.core.dashboard.dashboardItem.farmationMinimumStock.FarmationMinumumStockView.FarmationMinimumStockListener;
+import com.binar.core.dashboard.dashboardItem.procurementDueDate.ProcurementDueDateView.ProcurementDueDateListener;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.UI;
 
-public class FarmationMinimumStockPresenter implements FarmationMinimumStockListener {
+public class ProcurementDueDatePresenter implements ProcurementDueDateListener {
 
-	FarmationMinimumStockModel model;
-	FarmationMinimumStockViewImpl view;
+	ProcurementDueDateModel model;
+	ProcurementDueDateViewImpl view;
 	GeneralFunction function;
-	public FarmationMinimumStockPresenter(GeneralFunction function
-			, FarmationMinimumStockViewImpl view, FarmationMinimumStockModel model) {
+	public ProcurementDueDatePresenter(GeneralFunction function
+			, ProcurementDueDateViewImpl view, ProcurementDueDateModel model) {
 		this.model=model;
 		this.function=function;
 		this.view=view;
