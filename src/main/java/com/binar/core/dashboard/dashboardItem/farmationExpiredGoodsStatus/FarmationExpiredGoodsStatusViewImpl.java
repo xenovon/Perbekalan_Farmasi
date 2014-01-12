@@ -2,6 +2,7 @@ package com.binar.core.dashboard.dashboardItem.farmationExpiredGoodsStatus;
 
 import java.util.List;
 
+import com.binar.entity.DeletedGoods;
 import com.binar.entity.Goods;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.data.Container;
@@ -43,9 +44,9 @@ public class FarmationExpiredGoodsStatusViewImpl  extends Panel implements Farma
 		tableContainer=new IndexedContainer(){
 			{
 				addContainerProperty("Nama Barang", String.class,null);
-				addContainerProperty("Jumlah Stok",String.class,null);
-				addContainerProperty("Stok Minimal", String.class,null);
 				addContainerProperty("Satuan",String.class,null);
+				addContainerProperty("Status Pengajuan", String.class,null);
+				addContainerProperty("Jumlah",String.class,null);
 			}
 		};
 		table.setContainerDataSource(tableContainer);
@@ -60,7 +61,7 @@ public class FarmationExpiredGoodsStatusViewImpl  extends Panel implements Farma
 
 	@Override
 	public void construct() {
-		setCaption("Obat Fast-Moving dengan Stok Minimum");
+		setCaption("Status Pengajuan Penghapusan Barang");
 		setHeight("350px");
 		setWidth("470px");
 		final GridLayout layout=new GridLayout(2,1){
@@ -82,16 +83,16 @@ public class FarmationExpiredGoodsStatusViewImpl  extends Panel implements Farma
 	}
 
 	@Override
-	public void updateTable(List<Goods> data) {
+	public void updateTable(List<DeletedGoods> data) {
 		tableContainer.removeAllItems();
 		System.out.println(data.size());
 
-		for(Goods datum:data){
-			Item item=tableContainer.addItem(datum.getIdGoods());
-			item.getItemProperty("Nama Barang").setValue(datum.getName());
-			item.getItemProperty("Jumlah Stok").setValue(datum.getCurrentStock());
-			item.getItemProperty("Stok Minimal").setValue(datum.getMinimumStock());
-			item.getItemProperty("Satuan").setValue(datum.getUnit());
+		for(DeletedGoods datum:data){
+			Item item=tableContainer.addItem(datum.getIdDeletedGoods());
+			item.getItemProperty("Nama Barang").setValue(datum.getGoods().getName());
+			item.getItemProperty("Satuan").setValue(datum.getGoods().getUnit());
+			item.getItemProperty("Status Pengajuan").setValue(datum.isAccepted()?"Diterima":"Belum Diterima");
+			item.getItemProperty("Jumlah").setValue(datum.getGoods().getUnit());
 		}
 	}
 	private FarmationExpiredGoodsStatusListener listener;

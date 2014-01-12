@@ -7,6 +7,12 @@ import com.vaadin.ui.UI;
 
 public class FarmationMinimumStockPresenter implements FarmationMinimumStockListener {
 
+	/*
+	 * Barang dengan stok mendekati minimum
+> Nama barang, jumlah stok, satuan
+
+	 */
+			
 	FarmationMinimumStockModel model;
 	FarmationMinimumStockViewImpl view;
 	GeneralFunction function;

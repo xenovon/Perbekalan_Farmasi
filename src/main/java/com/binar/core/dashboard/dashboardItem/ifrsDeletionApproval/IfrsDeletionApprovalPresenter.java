@@ -6,7 +6,17 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.UI;
 
 public class IfrsDeletionApprovalPresenter implements IfrsDeletionApprovalListener {
+/*
+ * Daftar barang kadaluarsa yang belum disetujui
 
+Format :
+Pengajuan barang kadaluarsa tanggal <<Tanggal Pengajuan>>
+<<Nama barang>>
+<<Satuan>>
+<<Jumlah>>
+
+
+ */
 	IfrsDeletionApprovalModel model;
 	IfrsDeletionApprovalViewImpl view;
 	GeneralFunction function;

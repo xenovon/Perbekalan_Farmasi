@@ -6,7 +6,11 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.UI;
 
 public class ProcurementReceiptPresenter implements ProcurementReceiptListener {
+/*
+ * Summary daftar penerimaan barang (Berapa % dari pengadaan yg udah dilakukan barangny sudah diterima di gudang farmasi?)
+> Pie chart
 
+ */
 	ProcurementReceiptModel model;
 	ProcurementReceiptViewImpl view;
 	GeneralFunction function;

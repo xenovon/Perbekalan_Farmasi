@@ -34,6 +34,15 @@ public class GeneralFunction {
 	public final String VIEW_REQ_PLANNING_APPROVAL="reqAppr";
 	public final String VIEW_GOODS_MANAGEMENT="goods";
 	public final String VIEW_SUPPLIER_MANAGEMENT="supplier";
+	public final String VIEW_MANUFACTURER_MANAGEMENT="manufacturer";
+	
+	public final String VIEW_INVENTORY_DELETION="deletion";
+	public final String VIEW_INVENTORY_CONSUMPTION="consumption";
+	public final String VIEW_INVENTORY_RECEPTION="reception";
+	public final String VIEW_INVENTORY_STOCK="stock";
+	
+	public final String VIEW_PROCUREMENT_INVOICE="invoice";
+	public final String VIEW_PROCUREMENT_PURCHASE="purchaseOrder";
 	
 //    put("/dashboard", DashboardView.class);
 //    put("/requirementplanning/", RequirementPlanningView.class);

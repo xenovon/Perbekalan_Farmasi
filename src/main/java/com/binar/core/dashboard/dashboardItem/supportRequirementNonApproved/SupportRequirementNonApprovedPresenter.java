@@ -6,7 +6,15 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.UI;
 
 public class SupportRequirementNonApprovedPresenter implements SupportRequirementNonApprovedListener {
+/*
+ * Pengajuan rencana kebutuhan yang belum disetujui 
+Format :
 
+Pengajuan Rencana Kebutuhan tanggal <<Tanggal Pengajuan>>
+<<Nama barang>>
+<<Satuan>>
+<<Jumlah>>
+ */
 	SupportRequirementNonApprovedModel model;
 	SupportRequirementNonApprovedViewImpl view;
 	GeneralFunction function;

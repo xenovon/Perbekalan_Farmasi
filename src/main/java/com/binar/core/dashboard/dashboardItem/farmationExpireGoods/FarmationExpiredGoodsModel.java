@@ -17,7 +17,7 @@ public class FarmationExpiredGoodsModel {
 		this.function=function;
 		this.server=function.getServer();
 	}
-	public List<Goods> getGoodsList(){
+	public List<Goods> getFarmationExpiredGoods(){
 		//
 		
 		Collection<String> collection=new ArrayList<String>();

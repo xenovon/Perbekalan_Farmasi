@@ -7,6 +7,12 @@ import com.vaadin.ui.UI;
 
 public class FarmationExpiredGoodsPresenter implements FarmationExpiredGoodsListener {
 
+	
+/*
+ * Barang mendekati kadaluarsa
+> Nama barang, jumlah stok, satuan, expired date
+
+ */
 	FarmationExpiredGoodsModel model;
 	FarmationExpiredGoodsViewImpl view;
 	GeneralFunction function;
@@ -22,7 +28,7 @@ public class FarmationExpiredGoodsPresenter implements FarmationExpiredGoodsList
 	}
 	@Override
 	public void updateTable() {
-		view.updateTable(model.getGoodsList());
+		view.updateTable(model.getFarmationExpiredGoods());
 	}
 	@Override
 	public void buttonGo() {

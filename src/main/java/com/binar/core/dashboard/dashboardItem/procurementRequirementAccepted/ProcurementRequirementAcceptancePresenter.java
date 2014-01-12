@@ -6,7 +6,10 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.UI;
 
 public class ProcurementRequirementAcceptancePresenter implements ProcurementRequirementAcceptanceListener {
+/*
+ * Pengajuan rencana kebutuhan yang sudah disetujui (maksudnya daftar barang yang perlu dibeli)
 
+ */
 	ProcurementRequirementAcceptanceModel model;
 	ProcurementRequirementAcceptanceViewImpl view;
 	GeneralFunction function;

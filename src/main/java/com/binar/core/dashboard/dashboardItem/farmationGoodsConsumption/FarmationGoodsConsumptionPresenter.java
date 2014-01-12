@@ -6,7 +6,11 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.UI;
 
 public class FarmationGoodsConsumptionPresenter implements FarmationGoodsConsumptionListener {
+/*
+ * Daftar obat paling banyak keluar selama bulan ini :
+> Bar chart, nama obat dan jumlahnya
 
+ */
 	FarmationGoodsConsumptionModel model;
 	FarmationGoodsConsumptionViewImpl view;
 	GeneralFunction function;

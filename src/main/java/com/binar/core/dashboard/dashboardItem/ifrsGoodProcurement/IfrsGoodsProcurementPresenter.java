@@ -6,7 +6,11 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.UI;
 
 public class IfrsGoodsProcurementPresenter implements IfrsGoodsProcurementListener {
+/*
+ * Summary daftar pengadaan barang (Berapa % dari jumlah yg sudah disetujui yg udah dilakukan pengadaan barang?)
+> Pie chart
 
+ */
 	IfrsGoodsProcurementModel model;
 	IfrsGoodsProcurementViewImpl view;
 	GeneralFunction function;

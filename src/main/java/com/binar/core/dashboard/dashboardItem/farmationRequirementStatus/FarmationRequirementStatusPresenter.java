@@ -6,7 +6,17 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.UI;
 
 public class FarmationRequirementStatusPresenter implements FarmationRequirementStatusListener {
+/*
+ * Pengajuan Rencana Kebutuhan tanggal <<Tanggal Pengajuan>>
 
+<<Nama barang>>
+<<Satuan>>
+<<Jumlah pengajuan>>
+<<Jumlah disetujui>>
+<<Oleh*>>
+*yang posisinya lebih tinggi. Misal sudah disetujui oleh Ka IFRS sama kabis penunjang, yg ditampilin kabid penunjang
+
+ */
 	FarmationRequirementStatusModel model;
 	FarmationRequirementStatusViewImpl view;
 	GeneralFunction function;

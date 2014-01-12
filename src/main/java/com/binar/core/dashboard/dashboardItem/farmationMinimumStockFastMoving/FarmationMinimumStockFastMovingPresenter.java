@@ -6,7 +6,12 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.UI;
 
 public class FarmationMinimumStockFastMovingPresenter implements FarmationMinimumStockFastMovingViewListener {
+/*
+ * 
+Stok barang 'fast moving' dengan stok hampir atau mendekati stok minimum. 
+> Nama barang, jumlah stok, satuan
 
+ */
 	FarmationMinimumStockFastMovingModel model;
 	FarmationMinimumStockFastMovingViewImpl view;
 	GeneralFunction function;

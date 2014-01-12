@@ -6,7 +6,16 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.UI;
 
 public class IfrsRequirementApprovalSummaryPresenter implements IfrsRequirementApprovalSummaryListener {
+/*
+ * Pengajuan rencana kebutuhan yang belum disetujui 
+Format :
 
+Pengajuan Rencana Kebutuhan tanggal <<Tanggal Pengajuan>>
+<<Nama barang>>
+<<Satuan>>
+<<Jumlah>>
+
+ */
 	IfrsRequirementApprovalSummaryModel model;
 	IfrsRequirementApprovalSummaryViewImpl view;
 	GeneralFunction function;

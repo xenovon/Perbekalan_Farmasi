@@ -6,7 +6,11 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.UI;
 
 public class ProcurementSupplierLoanPresenter implements ProcurementSupplierLoanListener {
+/*
+ * Supplier yang belum dibayarkan hutangnya beserta jumlah hutang 
+> nama produsen, nama supplier, jumlah hutang
 
+ */
 	ProcurementSupplierLoanModel model;
 	ProcurementSupplierLoanViewImpl view;
 	GeneralFunction function;

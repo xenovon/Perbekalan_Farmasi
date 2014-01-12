@@ -6,7 +6,12 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.UI;
 
 public class ProcurementManufacturRankPresenter implements ProcurementManufacturRankListener {
+/*
+ * 
+5 Produsen dengan jumlah transaksi terbanyak selama...(blm tau berapa, misal 3 bulan) 
+> Grafik batang produsen dan nilai transaksinya
 
+ */
 	ProcurementManufacturRankModel model;
 	ProcurementManufacturRankViewImpl view;
 	GeneralFunction function;

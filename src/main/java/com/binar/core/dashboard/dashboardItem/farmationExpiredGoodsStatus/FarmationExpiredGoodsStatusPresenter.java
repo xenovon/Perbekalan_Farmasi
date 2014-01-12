@@ -7,6 +7,16 @@ import com.vaadin.ui.UI;
 
 public class FarmationExpiredGoodsStatusPresenter implements FarmationExpiredGoodsStatusListener {
 
+/*
+ * Status daftar obat kadaluarsa diterima atau ditolak.
+
+<<Nama barang>>
+<<Satuan>>
+<<Status pengajuan>>
+<<Oleh>>
+
+ */
+	
 	FarmationExpiredGoodsStatusModel model;
 	FarmationExpiredGoodsStatusViewImpl view;
 	GeneralFunction function;
@@ -21,12 +31,12 @@ public class FarmationExpiredGoodsStatusPresenter implements FarmationExpiredGoo
 	}
 	@Override
 	public void updateTable() {
-		view.updateTable(model.getGoodsList());
+		view.updateTable(model.getDeletedGoodsList());
 	}
 	@Override
 	public void buttonGo() {
 		Navigator navigator=UI.getCurrent().getNavigator();
-		navigator.navigateTo("/datamanagement/"+function.VIEW_SUPPLIER_MANAGEMENT);
+		navigator.navigateTo("/inventorymanagement"+function.VIEW_SUPPLIER_MANAGEMENT);
 	}
 //  put("/dashboard", DashboardView.class);
 //  put("/requirementplanning/", RequirementPlanningView.class);

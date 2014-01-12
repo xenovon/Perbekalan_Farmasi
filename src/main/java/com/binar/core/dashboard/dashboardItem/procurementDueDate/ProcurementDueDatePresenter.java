@@ -6,7 +6,11 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.UI;
 
 public class ProcurementDueDatePresenter implements ProcurementDueDateListener {
+/*
+ * Barang dengan jatuh tempo paling dekat 
+> nama produsen, nama supplier, tanggal jatuh tempo, jumlah hutang
 
+ */
 	ProcurementDueDateModel model;
 	ProcurementDueDateViewImpl view;
 	GeneralFunction function;

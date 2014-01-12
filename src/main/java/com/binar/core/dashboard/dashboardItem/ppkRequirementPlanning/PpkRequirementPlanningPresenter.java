@@ -8,7 +8,13 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.UI;
 
 public class PpkRequirementPlanningPresenter implements PpkRequirementPlanningListener {
-
+ /*
+  * 
+Pengajuan Rencana Kebutuhan tanggal <<Tanggal Pengajuan>>
+<<Nama barang>>
+<<Satuan>>
+<<Jumlah>>
+  */
 	PpkRequirementPlanningModel model;
 	PpkRequirementPlanningViewImpl view;
 	GeneralFunction function;

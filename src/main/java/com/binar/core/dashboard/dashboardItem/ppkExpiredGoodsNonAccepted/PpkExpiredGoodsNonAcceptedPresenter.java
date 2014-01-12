@@ -6,7 +6,16 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.UI;
 
 public class PpkExpiredGoodsNonAcceptedPresenter implements PpkExpiredGoodsNonAcceptedListener {
+/*
+ * Daftar barang kadaluarsa yang belum disetujui
 
+Format :
+Pengajuan barang kadaluarsa tanggal <<Tanggal Pengajuan>>
+<<Nama barang>>
+<<Satuan>>
+<<Jumlah>>
+
+ */
 	PpkExpiredGoodsNonAcceptedModel model;
 	PpkExpiredGoodsNonAcceptedViewImpl view;
 	GeneralFunction function;
