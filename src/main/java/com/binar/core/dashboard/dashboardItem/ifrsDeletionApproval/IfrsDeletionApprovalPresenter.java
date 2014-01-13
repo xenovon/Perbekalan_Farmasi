@@ -15,7 +15,7 @@ Pengajuan barang kadaluarsa tanggal <<Tanggal Pengajuan>>
 <<Satuan>>
 <<Jumlah>>
 
-
+DONE
  */
 	IfrsDeletionApprovalModel model;
 	IfrsDeletionApprovalViewImpl view;
@@ -27,17 +27,15 @@ Pengajuan barang kadaluarsa tanggal <<Tanggal Pengajuan>>
 		this.view=view;
 		view.init();
 		view.setListener(this);
-		
-		
 	}
 	@Override
 	public void updateTable() {
-		view.updateTable(model.getGoodsList());
+		view.updateTable(model.getDeletedGoodsList());
 	}
 	@Override
 	public void buttonGo() {
 		Navigator navigator=UI.getCurrent().getNavigator();
-		navigator.navigateTo("/datamanagement/"+function.VIEW_SUPPLIER_MANAGEMENT);
+		navigator.navigateTo("/inventorymanagement/"+function.VIEW_INVENTORY_DELETION_APPROVAL);
 	}
 //  put("/dashboard", DashboardView.class);
 //  put("/requirementplanning/", RequirementPlanningView.class);

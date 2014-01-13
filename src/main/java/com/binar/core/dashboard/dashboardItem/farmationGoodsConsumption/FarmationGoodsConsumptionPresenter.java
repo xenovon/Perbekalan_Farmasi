@@ -9,7 +9,9 @@ public class FarmationGoodsConsumptionPresenter implements FarmationGoodsConsump
 /*
  * Daftar obat paling banyak keluar selama bulan ini :
 > Bar chart, nama obat dan jumlahnya
-
+		
+		
+		BELUM
  */
 	FarmationGoodsConsumptionModel model;
 	FarmationGoodsConsumptionViewImpl view;
@@ -31,7 +33,7 @@ public class FarmationGoodsConsumptionPresenter implements FarmationGoodsConsump
 	@Override
 	public void buttonGo() {
 		Navigator navigator=UI.getCurrent().getNavigator();
-		navigator.navigateTo("/datamanagement/"+function.VIEW_SUPPLIER_MANAGEMENT);
+		navigator.navigateTo("/inventorymanagement/"+function.VIEW_INVENTORY_CONSUMPTION);
 	}
 //  put("/dashboard", DashboardView.class);
 //  put("/requirementplanning/", RequirementPlanningView.class);

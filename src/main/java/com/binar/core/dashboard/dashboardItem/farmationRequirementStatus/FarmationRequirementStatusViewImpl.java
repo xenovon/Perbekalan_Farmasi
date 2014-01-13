@@ -3,6 +3,7 @@ package com.binar.core.dashboard.dashboardItem.farmationRequirementStatus;
 import java.util.List;
 
 import com.binar.entity.Goods;
+import com.binar.entity.ReqPlanning;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
@@ -41,11 +42,18 @@ public class FarmationRequirementStatusViewImpl  extends Panel implements Farmat
 		table.setImmediate(true);
 		table.setRowHeaderMode(RowHeaderMode.INDEX);
 		tableContainer=new IndexedContainer(){
-			{
+			{ /*
+			<<Nama barang>>
+<<Satuan>>
+<<Jumlah pengajuan>>
+<<Jumlah disetujui>>
+<<Oleh*>>
+			*/
 				addContainerProperty("Nama Barang", String.class,null);
-				addContainerProperty("Jumlah Stok",String.class,null);
-				addContainerProperty("Stok Minimal", String.class,null);
 				addContainerProperty("Satuan",String.class,null);
+				addContainerProperty("Jumlah Pengajuan", String.class,null);
+				addContainerProperty("Sudah disetujui?",String.class,null);
+				addContainerProperty("Jumlah disetujui",String.class,null);
 			}
 		};
 		table.setContainerDataSource(tableContainer);
@@ -82,16 +90,19 @@ public class FarmationRequirementStatusViewImpl  extends Panel implements Farmat
 	}
 
 	@Override
-	public void updateTable(List<Goods> data) {
+	public void updateTable(List<ReqPlanning> data) {
 		tableContainer.removeAllItems();
 		System.out.println(data.size());
 
-		for(Goods datum:data){
-			Item item=tableContainer.addItem(datum.getIdGoods());
-			item.getItemProperty("Nama Barang").setValue(datum.getName());
-			item.getItemProperty("Jumlah Stok").setValue(datum.getCurrentStock());
-			item.getItemProperty("Stok Minimal").setValue(datum.getMinimumStock());
-			item.getItemProperty("Satuan").setValue(datum.getUnit());
+		for(ReqPlanning datum:data){
+			Item item=tableContainer.addItem(datum.getIdReqPlanning());
+			item.getItemProperty("Nama Barang").setValue(datum.getSupplierGoods().getGoods().getName());
+			item.getItemProperty("Satuan").setValue(datum.getSupplierGoods().getGoods().getUnit());
+			item.getItemProperty("Jumlah Pengajuan").setValue(datum.getQuantity());
+			item.getItemProperty("Sudah disetujui?").setValue(datum.isAccepted()?"Disetujui":"Belum Disetujui");
+			item.getItemProperty("Jumlah disetujui").setValue(datum.getAcceptedQuantity());
+			
+			
 		}
 	}
 	private FarmationRequirementStatusListener listener;

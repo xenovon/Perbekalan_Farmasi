@@ -15,6 +15,7 @@ public class FarmationExpiredGoodsStatusPresenter implements FarmationExpiredGoo
 <<Status pengajuan>>
 <<Oleh>>
 
+udah
  */
 	
 	FarmationExpiredGoodsStatusModel model;
@@ -36,7 +37,7 @@ public class FarmationExpiredGoodsStatusPresenter implements FarmationExpiredGoo
 	@Override
 	public void buttonGo() {
 		Navigator navigator=UI.getCurrent().getNavigator();
-		navigator.navigateTo("/inventorymanagement"+function.VIEW_SUPPLIER_MANAGEMENT);
+		navigator.navigateTo("/inventorymanagement/"+function.VIEW_INVENTORY_RECEPTION);
 	}
 //  put("/dashboard", DashboardView.class);
 //  put("/requirementplanning/", RequirementPlanningView.class);

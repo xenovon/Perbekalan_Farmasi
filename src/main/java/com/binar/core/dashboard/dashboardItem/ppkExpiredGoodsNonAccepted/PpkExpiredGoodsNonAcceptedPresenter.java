@@ -36,7 +36,7 @@ Pengajuan barang kadaluarsa tanggal <<Tanggal Pengajuan>>
 	@Override
 	public void buttonGo() {
 		Navigator navigator=UI.getCurrent().getNavigator();
-		navigator.navigateTo("/datamanagement/"+function.VIEW_SUPPLIER_MANAGEMENT);
+		navigator.navigateTo("/datamanagement/"+function.VIEW_INVENTORY_DELETION_APPROVAL);
 	}
 //  put("/dashboard", DashboardView.class);
 //  put("/requirementplanning/", RequirementPlanningView.class);

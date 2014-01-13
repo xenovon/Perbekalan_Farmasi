@@ -3,6 +3,8 @@ package com.binar.core.dashboard.dashboardItem.farmationExpireGoods;
 import java.util.List;
 
 import com.binar.entity.Goods;
+import com.binar.entity.GoodsReception;
+import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
@@ -27,8 +29,10 @@ public class FarmationExpiredGoodsViewImpl  extends Panel implements FarmationEx
 	private Button buttonRefresh;
 	private Button buttonGo;
 	private GeneralFunction function;
+	private DateManipulator date;
 	public FarmationExpiredGoodsViewImpl(GeneralFunction function) {
 		this.function=function;
+		this.date=function.getDate();
 	}
 	
 	@Override
@@ -44,8 +48,8 @@ public class FarmationExpiredGoodsViewImpl  extends Panel implements FarmationEx
 			{
 				addContainerProperty("Nama Barang", String.class,null);
 				addContainerProperty("Jumlah Stok",String.class,null);
-				addContainerProperty("Stok Minimal", String.class,null);
-				addContainerProperty("Satuan",String.class,null);
+				addContainerProperty("Tanggal Masuk", String.class,null);
+				addContainerProperty("Tanggal Kadaluarsa",String.class,null);
 			}
 		};
 		table.setContainerDataSource(tableContainer);
@@ -82,16 +86,18 @@ public class FarmationExpiredGoodsViewImpl  extends Panel implements FarmationEx
 	}
 
 	@Override
-	public void updateTable(List<Goods> data) {
+	public void updateTable(List<GoodsReception> data) {
 		tableContainer.removeAllItems();
 		System.out.println(data.size());
 
-		for(Goods datum:data){
-			Item item=tableContainer.addItem(datum.getIdGoods());
-			item.getItemProperty("Nama Barang").setValue(datum.getName());
-			item.getItemProperty("Jumlah Stok").setValue(datum.getCurrentStock());
-			item.getItemProperty("Stok Minimal").setValue(datum.getMinimumStock());
-			item.getItemProperty("Satuan").setValue(datum.getUnit());
+		for(GoodsReception datum:data){
+
+
+			Item item=tableContainer.addItem(datum.getIdGoodsReceipt());
+			item.getItemProperty("Nama Barang").setValue(datum.getInvoiceItem().getPurchaseOrderItem().getSupplierGoods().getGoods().getName());
+			item.getItemProperty("Jumlah").setValue(datum.getQuantityReceived());
+			item.getItemProperty("Tanggal Masuk").setValue(date.dateToText(datum.getDate()));
+			item.getItemProperty("Tanggal Kadaluarsa").setValue(date.dateToText(datum.getExpiredDate()));
 		}
 	}
 	private FarmationExpiredGoodsListener listener;

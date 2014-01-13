@@ -9,7 +9,7 @@ public class IfrsGoodsProcurementPresenter implements IfrsGoodsProcurementListen
 /*
  * Summary daftar pengadaan barang (Berapa % dari jumlah yg sudah disetujui yg udah dilakukan pengadaan barang?)
 > Pie chart
-
+	Belum
  */
 	IfrsGoodsProcurementModel model;
 	IfrsGoodsProcurementViewImpl view;
@@ -31,7 +31,7 @@ public class IfrsGoodsProcurementPresenter implements IfrsGoodsProcurementListen
 	@Override
 	public void buttonGo() {
 		Navigator navigator=UI.getCurrent().getNavigator();
-		navigator.navigateTo("/datamanagement/"+function.VIEW_SUPPLIER_MANAGEMENT);
+		navigator.navigateTo("/datamanagement/"+function.VIEW_PROCUREMENT_PURCHASE);
 	}
 //  put("/dashboard", DashboardView.class);
 //  put("/requirementplanning/", RequirementPlanningView.class);

@@ -2,7 +2,9 @@ package com.binar.core.dashboard.dashboardItem.ifrsDeletionApproval;
 
 import java.util.List;
 
+import com.binar.entity.DeletedGoods;
 import com.binar.entity.Goods;
+import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
@@ -18,17 +20,20 @@ import com.vaadin.ui.VerticalLayout;
 
 public class IfrsDeletionApprovalViewImpl  extends Panel implements IfrsDeletionApprovalView, ClickListener{
 /*
- * Stok barang 'fast moving' dengan stok hampir atau mendekati stok minimum. 
-> Nama barang, jumlah stok, satuan
-
+<<Tanggal Pengajuan>>
+<<Nama barang>>
+<<Satuan>>
+<<Jumlah>>
  */
 	private Table table;
 	private IndexedContainer tableContainer;
 	private Button buttonRefresh;
 	private Button buttonGo;
 	private GeneralFunction function;
+	private DateManipulator date;
 	public IfrsDeletionApprovalViewImpl(GeneralFunction function) {
 		this.function=function;
+		this.date=function.getDate();
 	}
 	
 	@Override
@@ -42,10 +47,10 @@ public class IfrsDeletionApprovalViewImpl  extends Panel implements IfrsDeletion
 		table.setRowHeaderMode(RowHeaderMode.INDEX);
 		tableContainer=new IndexedContainer(){
 			{
-				addContainerProperty("Nama Barang", String.class,null);
-				addContainerProperty("Jumlah Stok",String.class,null);
-				addContainerProperty("Stok Minimal", String.class,null);
-				addContainerProperty("Satuan",String.class,null);
+				addContainerProperty("Tanggal", String.class,null);
+				addContainerProperty("Nama Barang",String.class,null);
+				addContainerProperty("Satuan", String.class,null);
+				addContainerProperty("Jumlah",String.class,null);
 			}
 		};
 		table.setContainerDataSource(tableContainer);
@@ -60,7 +65,7 @@ public class IfrsDeletionApprovalViewImpl  extends Panel implements IfrsDeletion
 
 	@Override
 	public void construct() {
-		setCaption("Obat Fast-Moving dengan Stok Minimum");
+		setCaption("Daftar Penghapusan Obat");
 		setHeight("350px");
 		setWidth("470px");
 		final GridLayout layout=new GridLayout(2,1){
@@ -82,16 +87,16 @@ public class IfrsDeletionApprovalViewImpl  extends Panel implements IfrsDeletion
 	}
 
 	@Override
-	public void updateTable(List<Goods> data) {
+	public void updateTable(List<DeletedGoods> data) {
 		tableContainer.removeAllItems();
 		System.out.println(data.size());
 
-		for(Goods datum:data){
-			Item item=tableContainer.addItem(datum.getIdGoods());
-			item.getItemProperty("Nama Barang").setValue(datum.getName());
-			item.getItemProperty("Jumlah Stok").setValue(datum.getCurrentStock());
-			item.getItemProperty("Stok Minimal").setValue(datum.getMinimumStock());
-			item.getItemProperty("Satuan").setValue(datum.getUnit());
+		for(DeletedGoods datum:data){
+			Item item=tableContainer.addItem(datum.getIdDeletedGoods());
+			item.getItemProperty("Tanggal").setValue(date.dateToText(datum.getDeletionDate(), true));
+			item.getItemProperty("Nama Barang").setValue(datum.getGoods().getName());
+			item.getItemProperty("Satuan").setValue(datum.getGoods().getUnit());
+			item.getItemProperty("Jumlah").setValue(datum.getQuantity());
 		}
 	}
 	private IfrsDeletionApprovalListener listener;

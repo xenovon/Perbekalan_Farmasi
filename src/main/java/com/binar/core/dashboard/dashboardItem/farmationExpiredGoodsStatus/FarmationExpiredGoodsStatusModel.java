@@ -23,7 +23,7 @@ public class FarmationExpiredGoodsStatusModel {
 	public List<DeletedGoods> getDeletedGoodsList(){
 		DateTime endDate=DateTime.now();
 		List<DeletedGoods> deletedGoods=server.find(DeletedGoods.class).
-				where().between("deletion_date", endDate.minusMonths(12).toDate(), endDate).order().desc("deletion_date").setMaxRows(15).findList();		
+				where().between("deletion_date", endDate.minusMonths(6).toDate(), endDate).order().desc("deletion_date").setMaxRows(15).findList();		
 		return deletedGoods;
 		
 	}

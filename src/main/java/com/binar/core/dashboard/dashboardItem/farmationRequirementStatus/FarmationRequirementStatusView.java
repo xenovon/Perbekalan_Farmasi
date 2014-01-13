@@ -3,9 +3,10 @@ package com.binar.core.dashboard.dashboardItem.farmationRequirementStatus;
 import java.util.List;
 
 import com.binar.entity.Goods;
+import com.binar.entity.ReqPlanning;
 import com.vaadin.ui.Panel;
 
-interface  FarmationRequirementStatusView {
+public interface  FarmationRequirementStatusView {
 	
 	public interface FarmationRequirementStatusListener{
 		public void updateTable();
@@ -13,5 +14,5 @@ interface  FarmationRequirementStatusView {
 	}
 	public void init();
 	public void construct();
-	public void updateTable(List<Goods> goods);
+	public void updateTable(List<ReqPlanning> reqPlanning);
 }

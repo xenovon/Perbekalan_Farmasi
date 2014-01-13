@@ -31,9 +31,5 @@ public class IfrsGoodsProcurementModel {
 		
 	}
 	
-	public void dummyGood(){
-		Goods goods= server.find(Goods.class, "BRG-5x");
-		goods.setStockStatus(EnumStockStatus.LESS);
-		
-	}
+
 }

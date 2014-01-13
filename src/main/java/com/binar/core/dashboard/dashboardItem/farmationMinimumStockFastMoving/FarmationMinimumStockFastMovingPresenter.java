@@ -11,6 +11,7 @@ public class FarmationMinimumStockFastMovingPresenter implements FarmationMinimu
 Stok barang 'fast moving' dengan stok hampir atau mendekati stok minimum. 
 > Nama barang, jumlah stok, satuan
 
+udah
  */
 	FarmationMinimumStockFastMovingModel model;
 	FarmationMinimumStockFastMovingViewImpl view;
@@ -32,7 +33,7 @@ Stok barang 'fast moving' dengan stok hampir atau mendekati stok minimum.
 	@Override
 	public void buttonGo() {
 		Navigator navigator=UI.getCurrent().getNavigator();
-		navigator.navigateTo("/datamanagement/"+function.VIEW_SUPPLIER_MANAGEMENT);
+		navigator.navigateTo("/datamanagement/"+function.VIEW_GOODS_MANAGEMENT);
 	}
 //  put("/dashboard", DashboardView.class);
 //  put("/requirementplanning/", RequirementPlanningView.class);

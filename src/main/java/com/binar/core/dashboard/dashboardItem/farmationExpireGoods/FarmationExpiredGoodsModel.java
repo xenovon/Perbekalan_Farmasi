@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.avaje.ebean.EbeanServer;
 import com.binar.entity.Goods;
+import com.binar.entity.GoodsReception;
 import com.binar.entity.enumeration.EnumStockStatus;
 import com.binar.generalFunction.GeneralFunction;
 
@@ -17,17 +18,15 @@ public class FarmationExpiredGoodsModel {
 		this.function=function;
 		this.server=function.getServer();
 	}
-	public List<Goods> getFarmationExpiredGoods(){
+	public List<GoodsReception> getFarmationExpiredGoods(){
 		//
 		
-		Collection<String> collection=new ArrayList<String>();
-		collection.add(EnumStockStatus.LESS.toString());
-		collection.add(EnumStockStatus.WARNING.toString());
+		//cuma mengurutkan kadaluarsa...bukan mendekati kadaluarsa
+		//implementasi sementara
+		List<GoodsReception> goodsExpired=server.find(GoodsReception.class).
+				orderBy().desc("expired_date").setMaxRows(50).findList();
 		
-		List<Goods> goods=server.find(Goods.class).where().in("stockStatus", collection).eq("important", true).
-				order().asc("currentStock").findList();
-		
-		return goods;
+		return goodsExpired;
 		
 	}
 	

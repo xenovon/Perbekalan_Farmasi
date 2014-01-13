@@ -11,6 +11,7 @@ public class FarmationMinimumStockPresenter implements FarmationMinimumStockList
 	 * Barang dengan stok mendekati minimum
 > Nama barang, jumlah stok, satuan
 
+UDah
 	 */
 			
 	FarmationMinimumStockModel model;
@@ -33,7 +34,7 @@ public class FarmationMinimumStockPresenter implements FarmationMinimumStockList
 	@Override
 	public void buttonGo() {
 		Navigator navigator=UI.getCurrent().getNavigator();
-		navigator.navigateTo("/datamanagement/"+function.VIEW_SUPPLIER_MANAGEMENT);
+		navigator.navigateTo("/datamanagement/"+function.VIEW_GOODS_MANAGEMENT);
 	}
 //  put("/dashboard", DashboardView.class);
 //  put("/requirementplanning/", RequirementPlanningView.class);

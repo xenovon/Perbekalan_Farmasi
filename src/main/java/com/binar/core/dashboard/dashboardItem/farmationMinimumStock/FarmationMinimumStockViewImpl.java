@@ -61,7 +61,7 @@ public class FarmationMinimumStockViewImpl  extends Panel implements FarmationMi
 
 	@Override
 	public void construct() {
-		setCaption("Obat Fast-Moving dengan Stok Minimum");
+		setCaption("Obat dengan Stok Minimum");
 		setHeight("350px");
 		setWidth("470px");
 		final GridLayout layout=new GridLayout(2,1){

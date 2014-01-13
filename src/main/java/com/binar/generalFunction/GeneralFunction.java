@@ -37,6 +37,7 @@ public class GeneralFunction {
 	public final String VIEW_MANUFACTURER_MANAGEMENT="manufacturer";
 	
 	public final String VIEW_INVENTORY_DELETION="deletion";
+	public final String VIEW_INVENTORY_DELETION_APPROVAL="approval";
 	public final String VIEW_INVENTORY_CONSUMPTION="consumption";
 	public final String VIEW_INVENTORY_RECEPTION="reception";
 	public final String VIEW_INVENTORY_STOCK="stock";

@@ -11,7 +11,8 @@ public class FarmationExpiredGoodsPresenter implements FarmationExpiredGoodsList
 /*
  * Barang mendekati kadaluarsa
 > Nama barang, jumlah stok, satuan, expired date
-
+	
+	Udah, belum sempurna
  */
 	FarmationExpiredGoodsModel model;
 	FarmationExpiredGoodsViewImpl view;
@@ -33,7 +34,7 @@ public class FarmationExpiredGoodsPresenter implements FarmationExpiredGoodsList
 	@Override
 	public void buttonGo() {
 		Navigator navigator=UI.getCurrent().getNavigator();
-		navigator.navigateTo("/datamanagement/"+function.VIEW_SUPPLIER_MANAGEMENT);
+		navigator.navigateTo("/inventorymanagement/"+function.VIEW_INVENTORY_RECEPTION);
 	}
 //  put("/dashboard", DashboardView.class);
 //  put("/requirementplanning/", RequirementPlanningView.class);

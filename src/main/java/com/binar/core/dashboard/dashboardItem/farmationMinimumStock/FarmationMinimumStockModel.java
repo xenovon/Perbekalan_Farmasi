@@ -24,9 +24,8 @@ public class FarmationMinimumStockModel {
 		collection.add(EnumStockStatus.LESS.toString());
 		collection.add(EnumStockStatus.WARNING.toString());
 		
-		List<Goods> goods=server.find(Goods.class).where().in("stockStatus", collection).eq("important", true).
+		List<Goods> goods=server.find(Goods.class).where().in("stockStatus", collection).eq("important", false).
 				order().asc("currentStock").findList();
-		
 		return goods;
 		
 	}

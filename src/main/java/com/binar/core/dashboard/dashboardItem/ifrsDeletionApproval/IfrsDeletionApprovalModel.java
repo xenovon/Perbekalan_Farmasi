@@ -2,9 +2,13 @@ package com.binar.core.dashboard.dashboardItem.ifrsDeletionApproval;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
+import org.joda.time.DateTime;
+
 import com.avaje.ebean.EbeanServer;
+import com.binar.entity.DeletedGoods;
 import com.binar.entity.Goods;
 import com.binar.entity.enumeration.EnumStockStatus;
 import com.binar.generalFunction.GeneralFunction;
@@ -17,17 +21,15 @@ public class IfrsDeletionApprovalModel {
 		this.function=function;
 		this.server=function.getServer();
 	}
-	public List<Goods> getGoodsList(){
+	public List<DeletedGoods> getDeletedGoodsList(){
 		//
 		
-		Collection<String> collection=new ArrayList<String>();
-		collection.add(EnumStockStatus.LESS.toString());
-		collection.add(EnumStockStatus.WARNING.toString());
-		
-		List<Goods> goods=server.find(Goods.class).where().in("stockStatus", collection).eq("important", true).
-				order().asc("currentStock").findList();
-		
-		return goods;
+		Date startDate=DateTime.now().minusMonths(1).dayOfMonth().withMinimumValue().hourOfDay().withMinimumValue().toDate();
+		Date endDate=DateTime.now().dayOfMonth().withMaximumValue().toDate();
+		List<DeletedGoods> deletedGoods=server.find(DeletedGoods.class).
+				where().between("deletion_date", startDate, endDate).eq("isAccepted",false).findList();
+
+		return deletedGoods;
 		
 	}
 	

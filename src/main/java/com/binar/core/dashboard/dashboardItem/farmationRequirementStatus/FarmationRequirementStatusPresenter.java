@@ -15,7 +15,7 @@ public class FarmationRequirementStatusPresenter implements FarmationRequirement
 <<Jumlah disetujui>>
 <<Oleh*>>
 *yang posisinya lebih tinggi. Misal sudah disetujui oleh Ka IFRS sama kabis penunjang, yg ditampilin kabid penunjang
-
+ Udah
  */
 	FarmationRequirementStatusModel model;
 	FarmationRequirementStatusViewImpl view;
@@ -32,12 +32,12 @@ public class FarmationRequirementStatusPresenter implements FarmationRequirement
 	}
 	@Override
 	public void updateTable() {
-		view.updateTable(model.getGoodsList());
+		view.updateTable(model.getReqList());
 	}
 	@Override
 	public void buttonGo() {
 		Navigator navigator=UI.getCurrent().getNavigator();
-		navigator.navigateTo("/datamanagement/"+function.VIEW_SUPPLIER_MANAGEMENT);
+		navigator.navigateTo("/requirementplanning/"+function.vIEW_REQ_PLANNING_INPUT);
 	}
 //  put("/dashboard", DashboardView.class);
 //  put("/requirementplanning/", RequirementPlanningView.class);
