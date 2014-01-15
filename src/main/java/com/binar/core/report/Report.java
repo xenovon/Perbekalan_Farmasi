@@ -1,6 +1,10 @@
 package com.binar.core.report;
 
 public class Report {
+	
+	public Report() {
+		
+	}
 /*
 YANG HANYA PER PERIODE (BULAN)!
 	Laporan rencana kebutuhan obat per periode (bulan) (yg belum disetujui)
@@ -26,6 +30,7 @@ LAPORAN YANG TIDAK PERIODIK. CUMA DI-GENERATE SEKALI-SEKALI. BIASANYA SETAUN SEK
 
 
  */
+
 	
 	
 }

@@ -107,6 +107,10 @@ public class NewPurchaseOrderModel {
 			return 0;
 		}
 	}
+	
+	List<Integer> reqPlanningList;  //menyimpan daftar rencana kebutuhan, 
+	//digunakan untuk mengganti status rencana kebutuhan, bahwa sudah dibuatkan purchase order
+	
 	//menghasilkan obyek purchase order dari req planning
 	//Disini dilakukan pemisahan antar tiap supplier dan jenis obat
 	public List<PurchaseOrder> generatePurchaseOrder(FormData data){
@@ -115,6 +119,9 @@ public class NewPurchaseOrderModel {
 		int generalNumber=0;
 		try {
 			List<Integer> reqPlanningIds=data.getReqPlanningId();
+			
+			reqPlanningList = data.getReqPlanningId();  //untuk fungsi update status reqPlanning
+			
 			Date purchaseDate=data.getPurchaseDate(); 
 			int IdUser=data.getIdUser();
 			
@@ -213,12 +220,27 @@ public class NewPurchaseOrderModel {
 			return null;
 		}
 	}
+	public void saveReqPlanning(){
+		try {
+			if(reqPlanningList!=null){
+				for(Integer i:reqPlanningList){
+					ReqPlanning reqPlanning=server.find(ReqPlanning.class, i);
+					reqPlanning.setPurchaseOrderCreated(true);
+					 
+					server.save(reqPlanning);
+				}
+			}
+		} catch (Exception e) {
+			// Nothing TODO
+		}
+	}
 	public String savePurchaseOrder(List<PurchaseOrder> orders){
 		server.beginTransaction();
 		try {
 			for(PurchaseOrder order:orders){
 				saveSinglePurchaseOrder(order);
 			}
+			saveReqPlanning();
 			server.commitTransaction();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -232,7 +254,9 @@ public class NewPurchaseOrderModel {
 	}
 	//pastikan nomor purchase order di update lagi
 	public void saveSinglePurchaseOrder(PurchaseOrder order) throws Exception{
+		PurchaseOrderItem item;
 		order.setTimestamp(new Date());
+		
 		order.setPurchaseOrderName(generateName(order));
 		
 		server.save(order);

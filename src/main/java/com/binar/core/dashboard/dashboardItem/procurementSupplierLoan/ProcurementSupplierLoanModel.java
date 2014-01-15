@@ -19,7 +19,6 @@ public class ProcurementSupplierLoanModel {
 	}
 	public List<Goods> getGoodsList(){
 		//
-		
 		Collection<String> collection=new ArrayList<String>();
 		collection.add(EnumStockStatus.LESS.toString());
 		collection.add(EnumStockStatus.WARNING.toString());

@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.binar.entity.Goods;
 import com.binar.generalFunction.GeneralFunction;
+import com.binar.generalFunction.TextManipulator;
+import com.google.gwt.dom.client.Text;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;
@@ -27,8 +29,10 @@ public class FarmationMinimumStockFastMovingViewImpl  extends Panel implements F
 	private Button buttonRefresh;
 	private Button buttonGo;
 	private GeneralFunction function;
+	private TextManipulator text;
 	public FarmationMinimumStockFastMovingViewImpl(GeneralFunction function) {
 		this.function=function;
+		this.text=function.getTextManipulator();
 	}
 	
 	@Override
@@ -89,8 +93,8 @@ public class FarmationMinimumStockFastMovingViewImpl  extends Panel implements F
 		for(Goods datum:data){
 			Item item=tableContainer.addItem(datum.getIdGoods());
 			item.getItemProperty("Nama Barang").setValue(datum.getName());
-			item.getItemProperty("Jumlah Stok").setValue(datum.getCurrentStock());
-			item.getItemProperty("Stok Minimal").setValue(datum.getMinimumStock());
+			item.getItemProperty("Jumlah Stok").setValue(text.intToAngka(datum.getCurrentStock()));
+			item.getItemProperty("Stok Minimal").setValue(text.intToAngka(datum.getMinimumStock()));
 			item.getItemProperty("Satuan").setValue(datum.getUnit());
 		}
 	}

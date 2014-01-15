@@ -83,7 +83,6 @@ public class ApprovalModel {
 			
 			returnValue.add(acceptData);
 		}
-		
 		return returnValue;
 	}
 

@@ -51,6 +51,13 @@ public class ReqPlanning {
 	@Column(name="price_estimation_ppn")
 	private double priceEstimationPPN; 
 	
+	private boolean isPurchaseOrderCreated;
+	public boolean isPurchaseOrderCreated() {
+		return isPurchaseOrderCreated;
+	}
+	public void setPurchaseOrderCreated(boolean isPurchaseOrderCreated) {
+		this.isPurchaseOrderCreated = isPurchaseOrderCreated;
+	}
 	public int getIdReqPlanning() {
 		return idReqPlanning;
 	}

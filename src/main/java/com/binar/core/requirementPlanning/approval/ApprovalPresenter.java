@@ -27,7 +27,6 @@ public class ApprovalPresenter implements ApprovalListener {
 		view.setListener(this);
 		updateTable(view.getSelectedPeriod());
 	}
-
 	@Override
 	public void buttonClick(String param) {
 		if(param.equals("buttonAccept")){

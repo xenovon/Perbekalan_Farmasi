@@ -6,6 +6,7 @@ import com.binar.entity.DeletedGoods;
 import com.binar.entity.Goods;
 import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
+import com.binar.generalFunction.TextManipulator;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;
@@ -30,8 +31,10 @@ public class FarmationExpiredGoodsStatusViewImpl  extends Panel implements Farma
 	private Button buttonGo;
 	private GeneralFunction function;
 	private DateManipulator date;
+	private TextManipulator text;
 	public FarmationExpiredGoodsStatusViewImpl(GeneralFunction function) {
 		this.function=function;
+		this.text=function.getTextManipulator();
 		this.date=function.getDate();
 	}
 	
@@ -97,7 +100,7 @@ public class FarmationExpiredGoodsStatusViewImpl  extends Panel implements Farma
 			item.getItemProperty("Nama Barang").setValue(datum.getGoods().getName());
 			item.getItemProperty("Satuan").setValue(datum.getGoods().getUnit());
 			item.getItemProperty("Status Pengajuan").setValue(datum.isAccepted()?"Diterima":"Belum Diterima");
-			item.getItemProperty("Jumlah").setValue(datum.getGoods().getUnit());
+			item.getItemProperty("Jumlah").setValue(text.intToAngka(datum.getQuantity()));
 		}
 	}
 	private FarmationExpiredGoodsStatusListener listener;

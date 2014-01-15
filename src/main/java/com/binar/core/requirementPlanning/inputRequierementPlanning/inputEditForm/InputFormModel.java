@@ -114,6 +114,7 @@ public class InputFormModel {
 			reqPlanning.setQuantity(Integer.parseInt(data.getQuantity()));
 			reqPlanning.setSupplierGoods(supplierGoods);
 			reqPlanning.setTimestamp(new Date());
+			reqPlanning.setPurchaseOrderCreated(false);
 			
 			server.save(reqPlanning);
 			
