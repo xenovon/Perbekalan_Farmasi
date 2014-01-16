@@ -1,8 +1,15 @@
 package com.binar.core.report.reportInterface.reportContent;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import org.joda.time.DateTime;
 
 import com.binar.core.report.reportInterface.reportContent.ReportContentView.ReportType;
+import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
 
 public class ReportData {
@@ -21,6 +28,52 @@ public class ReportData {
 	private String accepted;
 	private PeriodeType periodeType;
 	private GeneralFunction function;
+	
+	//untuk dikirim ke UI lain
+	private String dateRange; //dd-MM-yyyy--dd-MM-yyyy
+	private String dateMonth; //month-year 
+	private String date;  //dd-MM-yyyy
+	
+	SimpleDateFormat format=new SimpleDateFormat("dd-MM-yyyy");
+	
+	public void setDate(String date) {
+		this.date = date;
+	}
+	public void setDateMonth(String dateMonth) {
+		this.dateMonth = dateMonth;
+	}
+	public void setDateRange(String dateRange) {
+		this.dateRange = dateRange;
+	}
+	public Date getDate() {
+		try {
+			return format.parse(date);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return new Date();
+		}
+	}
+	public Date getDateMonth() {
+		DateManipulator date=function.getDate();
+		DateTime dateTime=date.parseDateMonth(dateMonth);
+		if(dateTime!=null){
+			return dateTime.toDate();
+		}else{
+			return new Date();
+		}
+	}
+	public Date[] getDateRange() {
+		String[] range=dateRange.split("--");
+		Date[] date=new Date[2];
+		try {
+			date[0] = format.parse(range[0]);
+			date[1] = format.parse(range[1]);
+			
+			return date;
+		} catch (Exception e) {
+			return null;
+		}
+	}
 	
 	public ReportData(GeneralFunction function) {
 		this.function=function;

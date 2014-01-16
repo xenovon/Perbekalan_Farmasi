@@ -77,7 +77,7 @@ public class ReportDailyConsumptionViewImpl extends VerticalLayout implements Cl
 		
 		selectGoodsType=new OptionGroup();
 		Item itemType1=selectGoodsType.addItem("obat");
-		Item itemType2=selectGoodsType.addItem("alkes/bmhp");
+		Item itemType2=selectGoodsType.addItem("alkesbmhp");
 		selectGoodsType.setImmediate(true);
 		
 		selectGoodsType.setItemCaption(itemType1, "Laporan Penerimaan Obat");

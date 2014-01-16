@@ -32,7 +32,7 @@ public class GeneralPrint extends UI {
 		EbeanServer server=function.getServer();
 		
 		int idPurchaseOrder=0;
-		try {
+		try { 
 			idPurchaseOrder = Integer.parseInt((String)request.getParameter("ID"));
 		} catch (NumberFormatException e1) {
 			e1.printStackTrace();
