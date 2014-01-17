@@ -1,8 +1,10 @@
 package com.binar.core.report.reportInterface;
 
 import com.binar.generalFunction.GeneralFunction;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -18,7 +20,7 @@ public class ReportInterfaceViewImpl extends VerticalLayout implements ReportInt
 	private Button buttonConsumption;
 	private Button buttonStock;
 	private Button buttonExpiredGoods;
-	
+	private Label title;
 	
 /*
  * YANG HANYA PER PERIODE (BULAN)!
@@ -52,6 +54,8 @@ D	Laporan barang kadaluarsa (udah disetujui)
 	}
 	@Override
 	public void init() {
+		title=new Label("<h2>Laporan</h2>", ContentMode.HTML);
+
 		buttonConsumption= new Button("Laporan Pemakaian Barang");
 		buttonConsumption.addClickListener(this);
 		
@@ -73,7 +77,7 @@ D	Laporan barang kadaluarsa (udah disetujui)
 		buttonStock=new Button("Laporan Stock");
 		buttonStock.addClickListener(this);
 		
-		
+		construct();
 	}
 
 	@Override
@@ -81,7 +85,7 @@ D	Laporan barang kadaluarsa (udah disetujui)
 		this.setMargin(true);
 		this.setSpacing(true);
 		
-		addComponents(buttonConsumption, buttonDailyConsumption, buttonProcurement, buttonReceipt, buttonRequirement, buttonStock);
+		addComponents(title, buttonConsumption, buttonDailyConsumption, buttonProcurement, buttonReceipt, buttonRequirement, buttonStock);
 	}
 	ReportInterfaceListener listener;
 	

@@ -14,9 +14,15 @@ import com.binar.generalFunction.GeneralFunction;
 
 public class ReportData {
 
+	/*
+	 * Menampung data parameter laporan
+	 */
 	public enum PeriodeType{
 		BY_MONTH, BY_DAY, BY_RANGE
 	}
+	public static final String SELECT_GOODS_OBAT="obat";
+	public static final String SELECT_GOODS_ALKES="alkesbmhp";
+	
 	private ReportType type;
 	
 	private String selectedGoods;

@@ -82,7 +82,8 @@ public class ReportDailyConsumptionViewImpl extends VerticalLayout implements Cl
 		
 		selectGoodsType.setItemCaption(itemType1, "Laporan Penerimaan Obat");
 		selectGoodsType.setItemCaption(itemType2, "Laporan Penerimaan Alkes & BMHP");
-				
+		
+		construct();
 	}
 
 	@Override
@@ -112,7 +113,7 @@ public class ReportDailyConsumptionViewImpl extends VerticalLayout implements Cl
 	@Override
 	public void buttonClick(ClickEvent event) {
 		if(event.getButton()==buttonCancel){
-			listener.cancelClick();
+			listener.cancelClick(ReportType.DAILY_CONSUMPTION);
 		}if(event.getButton()==buttonPrint){
 			listener.printClick(ReportType.RECEIPT, getReportData());
 		}

@@ -12,5 +12,7 @@ public class ReportStockModel extends Label {
 		this.function=function;
 		this.setContentMode(ContentMode.HTML);
 
+		this.setValue(data.getDate()+" "+data.getSelectedGoods()+" "+data.getType().toString()+" ");
+
 	}
 }

@@ -9,7 +9,7 @@ public interface ReportContentView {
 		CONSUMPTION, DAILY_CONSUMPTION, EXPIRED_GOODS, PROCUREMENT, RECEIPT,REQUIREMENT, STOCK,
 	}
 	interface ReportContentListener{
-		public void cancelClick();
+		public void cancelClick(ReportType report);
 		public void printClick(ReportType report, ReportData data);
 	}
 	

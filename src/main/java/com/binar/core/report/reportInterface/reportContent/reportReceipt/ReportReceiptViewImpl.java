@@ -88,9 +88,11 @@ public class ReportReceiptViewImpl extends FormLayout implements ClickListener, 
 		Item itemPeriode2=selectPeriode.addItem("harian");
 		selectPeriode.setImmediate(true);
 		
-		selectPeriode.setItemCaption(itemType1, "Laporam Bulanan");
-		selectPeriode.setItemCaption(itemType2, "Laporan Harian");
+		selectPeriode.setItemCaption(itemPeriode1, "Laporan Bulanan");
+		selectPeriode.setItemCaption(itemPeriode2, "Laporan Harian");
 		
+		construct();
+
 	}
 
 	@Override
@@ -127,7 +129,7 @@ public class ReportReceiptViewImpl extends FormLayout implements ClickListener, 
 	@Override
 	public void buttonClick(ClickEvent event) {
 		if(event.getButton()==buttonCancel){
-			listener.cancelClick();
+			listener.cancelClick(ReportType.RECEIPT);
 		}if(event.getButton()==buttonPrint){
 			listener.printClick(ReportType.RECEIPT, getReportData());
 		}

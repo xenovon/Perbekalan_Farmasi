@@ -77,6 +77,7 @@ public class ReportExpiredGoodsViewImpl extends VerticalLayout implements ClickL
 		selectAcceptance.setItemCaption(itemType1, "Barang Kadaluarsa Disetujui");
 		selectAcceptance.setItemCaption(itemType2, "Barang Kadaluarsa Belum Disetujui");
 				
+		construct();
 
 		
 	}
@@ -107,7 +108,7 @@ public class ReportExpiredGoodsViewImpl extends VerticalLayout implements ClickL
 	@Override
 	public void buttonClick(ClickEvent event) {
 		if(event.getButton()==buttonCancel){
-			listener.cancelClick();
+			listener.cancelClick(ReportType.EXPIRED_GOODS);
 		}if(event.getButton()==buttonPrint){
 			listener.printClick(ReportType.RECEIPT, getReportData());
 		}

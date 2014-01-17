@@ -12,5 +12,7 @@ public class ReportRequirementModel extends Label{
 		this.function=function;
 		this.setContentMode(ContentMode.HTML);
 
+		this.setValue(data.getDateMonth()+" "+data.getSelectedGoods()+" "+data.getType().toString()+" ");
+
 	}
 }

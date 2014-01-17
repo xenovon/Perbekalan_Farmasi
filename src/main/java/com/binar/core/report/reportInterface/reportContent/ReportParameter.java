@@ -67,9 +67,32 @@ public class ReportParameter {
 		return null;
 		
 	}
+	
+	public ReportData generateParameter(VaadinRequest request){
+		String reportType=request.getParameter(REPORT_TYPE);
+		if(reportType.equals(ReportType.CONSUMPTION.toString())){
+			return processConsumption(request);
+		}else if(reportType.equals(ReportType.DAILY_CONSUMPTION.toString())){
+			return processDailyConsumption(request);
+		}else if(reportType.equals(ReportType.EXPIRED_GOODS.toString())){
+			return processExpiredGoods(request);
+		}else if(reportType.equals(ReportType.PROCUREMENT.toString())){
+			return processProcurement(request);
+		}else if(reportType.equals(ReportType.RECEIPT.toString())){
+			return processReceipt(request);
+		}else if(reportType.equals(ReportType.REQUIREMENT.toString())){
+			return processRequirement(request);
+		}else if(reportType.equals(ReportType.STOCK.toString())){
+			return processStock(request);
+		}else{
+			return null;
+		}
+	}
+	
 	GeneralFunction function;
 	SimpleDateFormat format;
 	public ReportParameter(GeneralFunction function) {
+		this.function=function;
 		format=new SimpleDateFormat("dd-MM-yyyy");
 	}
 	private Map<String, String> processConsumption(ReportType reportType, ReportData reportData){
@@ -81,7 +104,7 @@ public class ReportParameter {
 		parameter.put(DATE, format.format(reportData.getSelectedDay()));
 		return parameter;
 	}
-	public ReportData processConsumption(VaadinRequest request){
+	private ReportData processConsumption(VaadinRequest request){
 		try {
 			ReportData data=new ReportData(function);
 			data.setType(ReportType.valueOf(request.getParameter(REPORT_TYPE)));
@@ -103,7 +126,7 @@ public class ReportParameter {
 		
 		return parameter;
 	}
-	public ReportData processDailyConsumption(VaadinRequest request){
+	private ReportData processDailyConsumption(VaadinRequest request){
 		ReportData data=new ReportData(function);
 		
 		try {
@@ -127,7 +150,7 @@ public class ReportParameter {
 		parameter.put(DATE_RANGE, format.format(reportData.getDateStart()+"--"+format.format(reportData.getDateEnd())));
 		return parameter;
 	}
-	public ReportData processExpiredGoods(VaadinRequest request){
+	private ReportData processExpiredGoods(VaadinRequest request){
 		ReportData data=new ReportData(function);
 		try {
 			data.setType(ReportType.valueOf(request.getParameter(REPORT_TYPE)));
@@ -149,7 +172,7 @@ public class ReportParameter {
 		return parameter;
 
 	}
-	public ReportData processProcurement(VaadinRequest request){
+	private ReportData processProcurement(VaadinRequest request){
 		ReportData data=new ReportData(function);
 		try {
 			data.setType(ReportType.valueOf(request.getParameter(REPORT_TYPE)));
@@ -166,14 +189,14 @@ public class ReportParameter {
 	private Map<String, String> processReceipt(ReportType reportType, ReportData reportData){
 		return processConsumption(reportType, reportData);
 	}
-	public ReportData processReceipt(VaadinRequest request){
+	private ReportData processReceipt(VaadinRequest request){
 		return processConsumption(request);
 	}
 
 	private Map<String, String> processRequirement(ReportType reportType, ReportData reportData){
 		return processProcurement(reportType, reportData);
 	}
-	public ReportData processRequirement(VaadinRequest request){
+	private ReportData processRequirement(VaadinRequest request){
 		return processProcurement(request);
 	}
 
@@ -184,7 +207,7 @@ public class ReportParameter {
 		parameter.put(DATE, format.format(reportData.getSelectedDay()));
 		return parameter;
 	}
-	public ReportData processStock(VaadinRequest request){
+	private ReportData processStock(VaadinRequest request){
 		ReportData data=new ReportData(function);
 		try {
 			data.setType(ReportType.valueOf(request.getParameter(REPORT_TYPE)));
