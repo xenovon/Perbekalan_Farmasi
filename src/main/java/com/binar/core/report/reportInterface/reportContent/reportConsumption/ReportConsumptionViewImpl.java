@@ -1,7 +1,11 @@
 package com.binar.core.report.reportInterface.reportContent.reportConsumption;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
+
+import org.joda.time.DateTime;
 
 import com.binar.core.report.reportInterface.ReportInterfaceView.ReportInterfaceListener;
 import com.binar.core.report.reportInterface.reportContent.ReportContentView;
@@ -9,10 +13,13 @@ import com.binar.core.report.reportInterface.reportContent.ReportData;
 import com.binar.core.report.reportInterface.reportContent.ReportContentView.ReportContentListener;
 import com.binar.core.report.reportInterface.reportContent.ReportContentView.ReportType;
 import com.binar.core.report.reportInterface.reportContent.ReportData.PeriodeType;
+import com.binar.core.report.reportInterface.reportContent.ReportPrint;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
+import com.vaadin.server.BrowserWindowOpener;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
@@ -42,18 +49,32 @@ public class ReportConsumptionViewImpl extends VerticalLayout implements ClickLi
 	
 	private GeneralFunction function;
 	
+	private BrowserWindowOpener opener;
 	
 	private ReportContentListener listener;
 	public ReportConsumptionViewImpl(GeneralFunction function) {
 		this.function=function;
 	}
 	
+	
 	@Override
 	public void init() {
+		buttonCancel=new Button("Batalkan");
+		buttonCancel.addClickListener(this);
+		buttonPrint=new Button("Cetak");
+		buttonPrint.addClickListener(this);
+		buttonPrint.setIcon(new ThemeResource("icons/image/icon-print.png"));
+
+		opener=new BrowserWindowOpener(ReportPrint.class);
+		opener.setFeatures("height=200,width=400,resizable");
+		// A button to open the printer-friendly page.
+		opener.extend(buttonPrint);
+
 		selectDate=new DateField("Pilih Tanggal Laporan");
 		selectDate.setImmediate(true);
+		selectDate.setValue(new Date());
 		
-		List<String> yearList=function.getListFactory().createYearList(6, 2, false);
+		List<String> yearList=function.getListFactory().createYearList(8, 0, false);
 		List<String> monthList=function.getListFactory().createMonthList();
 		selectYear = new ComboBox("Pilih Tahun", yearList);
 		selectMonth =new ComboBox("Pilih Bulan", monthList);
@@ -66,6 +87,7 @@ public class ReportConsumptionViewImpl extends VerticalLayout implements ClickLi
 		selectMonth.setNullSelectionAllowed(false);
 		selectYear.setValue(yearList.get(2));
 		selectMonth.setValue(monthList.get(Calendar.getInstance().get(Calendar.MONTH)));
+		
 		for(String month:monthList){
 			System.out.println("Bulan "+month);
 		}
@@ -75,27 +97,33 @@ public class ReportConsumptionViewImpl extends VerticalLayout implements ClickLi
 		selectMonth.setWidth(function.FORM_WIDTH);
 		selectYear.setWidth(function.FORM_WIDTH);
 		
-		
-		buttonCancel=new Button("Batalkan");
-		buttonCancel.addClickListener(this);
-		buttonPrint=new Button("Cetak");
-		buttonPrint.addClickListener(this);
-		
-		selectGoodsType=new OptionGroup();
-		Item itemType1=selectGoodsType.addItem("obat");
-		Item itemType2=selectGoodsType.addItem("alkesbmhp");
+
+		selectGoodsType=new OptionGroup("Tipe Laporan");
+		selectGoodsType.addItem("obat");
+		selectGoodsType.addItem("alkesbmhp");
 		selectGoodsType.setImmediate(true);
+		selectGoodsType.setValue("obat");
 		
-		selectGoodsType.setItemCaption(itemType1, "Laporan Penerimaan Obat");
-		selectGoodsType.setItemCaption(itemType2, "Laporan Penerimaan Alkes & BMHP");
+		selectGoodsType.setItemCaption("obat", "Laporan Pemakaian Obat");
+		selectGoodsType.setItemCaption("alkesbmhp", "Laporan Pemakaian Alkes & BMHP");
 		
-		selectPeriode=new OptionGroup();
-		Item itemPeriode1=selectPeriode.addItem("bulanan");
-		Item itemPeriode2=selectPeriode.addItem("harian");
+		selectPeriode=new OptionGroup("Periode Laporan");
+		selectPeriode.addItem("bulanan");
+		selectPeriode.addItem("harian");
 		selectPeriode.setImmediate(true);
+		selectPeriode.addValueChangeListener(this);
+		selectPeriode.setItemCaption("bulanan", "Laporan Bulanan");
+		selectPeriode.setItemCaption("harian", "Laporan Harian");
+		selectPeriode.setValue("bulanan");
 		
-		selectPeriode.setItemCaption(itemPeriode1, "Laporan Bulanan");
-		selectPeriode.setItemCaption(itemPeriode2, "Laporan Harian");
+		 selectGoodsType.addValueChangeListener(this);
+		 selectPeriode.addValueChangeListener(this);
+		 selectDate.addValueChangeListener(this);
+		 selectYear.addValueChangeListener(this);
+		 selectMonth.addValueChangeListener(this);
+		
+		 updateWindowOpener();
+		changeViewMode(true);
 		construct();
 
 	}
@@ -107,18 +135,21 @@ public class ReportConsumptionViewImpl extends VerticalLayout implements ClickLi
 		GridLayout layout=new GridLayout(2, 1){
 			{
 				addComponent(buttonPrint, 0,0);
-				addComponent(buttonPrint, 1, 0);
+				addComponent(buttonCancel, 1, 0);
 				setSpacing(true);
 				setMargin(true);
 			}
 		};
 		this.addComponents(selectGoodsType, selectPeriode, selectDate, selectYear, selectMonth, layout);
+
 	}
 	@Override
 	public void setListener(ReportContentListener listener) {
 		this.listener=listener;
 	}
-
+	public BrowserWindowOpener getOpener() {
+		return opener;
+	}
 	@Override
 	public void valueChange(ValueChangeEvent event) {
 		if(event.getProperty()==selectPeriode){
@@ -129,6 +160,7 @@ public class ReportConsumptionViewImpl extends VerticalLayout implements ClickLi
 				changeViewMode(false);
 			}
 		}
+		updateWindowOpener();
 	}
 
 	@Override
@@ -136,7 +168,7 @@ public class ReportConsumptionViewImpl extends VerticalLayout implements ClickLi
 		if(event.getButton()==buttonCancel){
 			listener.cancelClick(ReportType.CONSUMPTION);
 		}if(event.getButton()==buttonPrint){
-			listener.printClick(ReportType.RECEIPT, getReportData());
+//			listener.printClick(ReportType.CONSUMPTION, getReportData());
 		}
 	}
 	
@@ -181,5 +213,8 @@ public class ReportConsumptionViewImpl extends VerticalLayout implements ClickLi
 		data.setSelectedGoods((String)selectGoodsType.getValue());
 		data.setType(ReportType.CONSUMPTION);
 		return data;
+	}
+	public void updateWindowOpener(){
+		listener.printClick(ReportType.CONSUMPTION, getReportData());
 	}
 }

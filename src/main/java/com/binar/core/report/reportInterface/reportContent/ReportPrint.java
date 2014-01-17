@@ -38,7 +38,7 @@ public class ReportPrint extends UI{
 	protected void init(VaadinRequest request) {
 		function=new GeneralFunction();
 		parameter=new ReportParameter(function);
-		
+		getPage().setTitle("Laporan");
 		try {
 			ReportData data=parameter.generateParameter(request);
 			if(data!=null){

@@ -6,11 +6,14 @@ import java.util.List;
 import com.binar.core.report.reportInterface.ReportInterfaceView.ReportInterfaceListener;
 import com.binar.core.report.reportInterface.reportContent.ReportContentView;
 import com.binar.core.report.reportInterface.reportContent.ReportData;
+import com.binar.core.report.reportInterface.reportContent.ReportPrint;
 import com.binar.core.report.reportInterface.reportContent.ReportData.PeriodeType;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
+import com.vaadin.server.BrowserWindowOpener;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -36,6 +39,7 @@ public class ReportReceiptViewImpl extends FormLayout implements ClickListener, 
 	
 	private GeneralFunction function;
 	
+	BrowserWindowOpener opener;
 	
 	private ReportContentListener listener;
 	public ReportReceiptViewImpl(GeneralFunction function) {
@@ -44,10 +48,21 @@ public class ReportReceiptViewImpl extends FormLayout implements ClickListener, 
 	
 	@Override
 	public void init() {
+		buttonCancel=new Button("Batalkan");
+		buttonCancel.addClickListener(this);
+		buttonPrint=new Button("Cetak");
+		buttonPrint.addClickListener(this);
+		buttonPrint.setIcon(new ThemeResource("icons/image/icon-print.png"));
+
+		opener=new BrowserWindowOpener(ReportPrint.class);
+		opener.setFeatures("height=200,width=400,resizable");
+		// A button to open the printer-friendly page.
+		opener.extend(buttonPrint);
+
 		selectDate=new DateField("Pilih Tanggal Laporan");
 		selectDate.setImmediate(true);
 		
-		List<String> yearList=function.getListFactory().createYearList(6, 2, false);
+		List<String> yearList=function.getListFactory().createYearList(8, 0, false);
 		List<String> monthList=function.getListFactory().createMonthList();
 		selectYear = new ComboBox("Pilih Tahun", yearList);
 		selectMonth =new ComboBox("Pilih Bulan", monthList);
@@ -70,31 +85,39 @@ public class ReportReceiptViewImpl extends FormLayout implements ClickListener, 
 		selectYear.setWidth(function.FORM_WIDTH);
 		
 		
-		buttonCancel=new Button("Batalkan");
-		buttonCancel.addClickListener(this);
-		buttonPrint=new Button("Cetak");
-		buttonPrint.addClickListener(this);
-		
-		selectGoodsType=new OptionGroup();
+	
+		selectGoodsType=new OptionGroup("Tipe Laporan");
 		Item itemType1=selectGoodsType.addItem("obat");
 		Item itemType2=selectGoodsType.addItem("alkesbmhp");
 		selectGoodsType.setImmediate(true);
+		selectGoodsType.setValue("obat");
+		selectGoodsType.setItemCaption("obat", "Laporan Penerimaan Obat");
+		selectGoodsType.setItemCaption("alkesbmhp", "Laporan Penerimaan Alkes & BMHP");
 		
-		selectGoodsType.setItemCaption(itemType1, "Laporan Penerimaan Obat");
-		selectGoodsType.setItemCaption(itemType2, "Laporan Penerimaan Alkes & BMHP");
-		
-		selectPeriode=new OptionGroup();
+		selectPeriode=new OptionGroup("Periode Laporan");
 		Item itemPeriode1=selectPeriode.addItem("bulanan");
 		Item itemPeriode2=selectPeriode.addItem("harian");
 		selectPeriode.setImmediate(true);
+		selectPeriode.addValueChangeListener(this);
 		
-		selectPeriode.setItemCaption(itemPeriode1, "Laporan Bulanan");
-		selectPeriode.setItemCaption(itemPeriode2, "Laporan Harian");
-		
+		selectPeriode.setItemCaption("bulanan", "Laporan Bulanan");
+		selectPeriode.setItemCaption("harian", "Laporan Harian");
+		selectPeriode.setValue("bulanan");
+		changeViewMode(true);
+
+		 selectGoodsType.addValueChangeListener(this);
+		 selectPeriode.addValueChangeListener(this);
+		 selectDate.addValueChangeListener(this);
+		 selectYear.addValueChangeListener(this);
+		 selectMonth.addValueChangeListener(this);
+		 
+		 updateWindowOpener();
 		construct();
 
 	}
-
+	public BrowserWindowOpener getOpener() {
+		return opener;
+	}
 	@Override
 	public void construct() {
 		this.setSpacing(true);
@@ -102,7 +125,7 @@ public class ReportReceiptViewImpl extends FormLayout implements ClickListener, 
 		GridLayout layout=new GridLayout(2, 1){
 			{
 				addComponent(buttonPrint, 0,0);
-				addComponent(buttonPrint, 1, 0);
+				addComponent(buttonCancel, 1, 0);
 				setSpacing(true);
 				setMargin(true);
 			}
@@ -124,6 +147,8 @@ public class ReportReceiptViewImpl extends FormLayout implements ClickListener, 
 				changeViewMode(false);
 			}
 		}
+		updateWindowOpener();
+
 	}
 
 	@Override
@@ -131,10 +156,11 @@ public class ReportReceiptViewImpl extends FormLayout implements ClickListener, 
 		if(event.getButton()==buttonCancel){
 			listener.cancelClick(ReportType.RECEIPT);
 		}if(event.getButton()==buttonPrint){
-			listener.printClick(ReportType.RECEIPT, getReportData());
 		}
 	}
-	
+	public void updateWindowOpener(){
+		listener.printClick(ReportType.RECEIPT, getReportData());
+	}
 	@Override
 	public Button getPrintButton() {
 		return buttonPrint;

@@ -18,6 +18,8 @@ public class ReportInterfacePresenter implements ReportInterfaceListener{
 		this.view=view;
 		this.function=function;
 		this.view.init();
+		this.view.setListener(this);
+		this.parameter=new ReportParameter(function);
 		reportPresenter=new ReportContentPresenter(function, parameter);
 	}
 
@@ -43,7 +45,7 @@ public class ReportInterfacePresenter implements ReportInterfaceListener{
 	@Override
 	public void buttonDailyConsumptionClick() {
 		try {
-			view.displayForm(reportPresenter.getViewDailyConsumption(), "Buat Laporan Pengeluaran");
+			view.displayForm(reportPresenter.getViewDailyConsumption(), "Buat Laporan Pemakaian Harian");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -62,7 +64,7 @@ public class ReportInterfacePresenter implements ReportInterfaceListener{
 	@Override
 	public void buttonConsumptionClick() {
 		try {
-			view.displayForm(reportPresenter.getViewConsumption(), "Buat Laporan Pengeluaran");
+			view.displayForm(reportPresenter.getViewConsumption(), "Buat Laporan Pemakaian Barang");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

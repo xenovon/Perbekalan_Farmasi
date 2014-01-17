@@ -94,22 +94,43 @@ public class ReportData {
 	}
 
 	public void setSelectedGoods(String selectedGoods) {
-		this.selectedGoods = selectedGoods;
+		if(selectedGoods==null){
+			this.selectedGoods="";
+		}else{
+			this.selectedGoods = selectedGoods;			
+		}
 	}
 
 	public void setSelectedMonth(String selectedMonth) {
-		this.selectedMonth = selectedMonth;
+		if(selectedMonth==null){
+			this.selectedMonth="";
+		}else{
+			this.selectedMonth = selectedMonth;			
+		}
 	}
 
 	public void setSelectedYear(String selectedYear) {
-		this.selectedYear = selectedYear;
+		if(selectedYear==null){
+			this.selectedYear="";
+		}else{
+			this.selectedYear = selectedYear;			
+		}
+		
 	}
 
 	public void setSelectedDay(Date selectedDay) {
-		this.selectedDay = selectedDay;
+		if(selectedDay==null){
+			this.selectedDay=new Date();
+		}else{
+			this.selectedDay = selectedDay;			
+		}
 	}
 	public void setPeriodeType(PeriodeType periodeType) {
-		this.periodeType = periodeType;
+		if(periodeType==null){
+			this.periodeType= PeriodeType.BY_MONTH;
+		}else{
+			this.periodeType = periodeType;			
+		}
 	}
 	public void setFunction(GeneralFunction function) {
 		this.function = function;
@@ -144,7 +165,11 @@ public class ReportData {
 	}
 
 	public void setDateStart(Date dateStart) {
-		this.dateStart = dateStart;
+		if(dateStart==null){
+			this.dateStart =  new Date();
+		}else{
+			this.dateStart = dateStart;			
+		}
 	}
 
 	public Date getDateEnd() {
@@ -152,10 +177,18 @@ public class ReportData {
 	}
 
 	public void setDateEnd(Date dateEnd) {
-		this.dateEnd = dateEnd;
+		if(dateEnd==null){
+			dateEnd=new Date();
+		}else{
+			this.dateEnd = dateEnd;			
+		}
 	}
 	public void setAccepted(String accepted) {
-		this.accepted = accepted;
+		if(accepted==null){
+			this.accepted="";
+		}else{
+			this.accepted = accepted;			
+		}
 	}
 	public String getAccepted() {
 		return accepted;

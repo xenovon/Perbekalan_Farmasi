@@ -21,6 +21,7 @@ public class ReportInterfaceViewImpl extends VerticalLayout implements ReportInt
 	private Button buttonStock;
 	private Button buttonExpiredGoods;
 	private Label title;
+	private final String BUTTON_WIDTH="250px";
 	
 /*
  * YANG HANYA PER PERIODE (BULAN)!
@@ -58,24 +59,31 @@ D	Laporan barang kadaluarsa (udah disetujui)
 
 		buttonConsumption= new Button("Laporan Pemakaian Barang");
 		buttonConsumption.addClickListener(this);
+		buttonConsumption.setWidth(BUTTON_WIDTH);
 		
 		buttonDailyConsumption=new Button("Pemakaian Barang Harian");
 		buttonDailyConsumption.addClickListener(this);
+		buttonDailyConsumption.setWidth(BUTTON_WIDTH);
 		
 		buttonExpiredGoods=new Button("Laporan Barang Kadaluarsa");
 		buttonExpiredGoods.addClickListener(this);
+		buttonExpiredGoods.setWidth(BUTTON_WIDTH);
 		
 		buttonProcurement=new Button("Laporan Pengadaan Barang");
 		buttonProcurement.addClickListener(this);
+		buttonProcurement.setWidth(BUTTON_WIDTH);
 		
 		buttonReceipt=new Button("Laporan Penerimaan Barang");
 		buttonReceipt.addClickListener(this);
-		
+		buttonReceipt.setWidth(BUTTON_WIDTH);
+	
 		buttonRequirement = new Button("Laporan Rencana Kebutuhan");
 		buttonRequirement.addClickListener(this);
-		
-		buttonStock=new Button("Laporan Stock");
+		buttonRequirement.setWidth(BUTTON_WIDTH);
+	
+		buttonStock=new Button("Laporan Stok Opname");
 		buttonStock.addClickListener(this);
+		buttonStock.setWidth(BUTTON_WIDTH);
 		
 		construct();
 	}
@@ -134,7 +142,6 @@ D	Laporan barang kadaluarsa (udah disetujui)
 			window=new Window(title){
 				{
 					center();
-					setClosable(false);
 					setWidth("500px");
 					setHeight("80%");
 				}

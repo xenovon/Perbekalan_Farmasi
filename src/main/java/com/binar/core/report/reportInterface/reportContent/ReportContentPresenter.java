@@ -1,6 +1,7 @@
 package com.binar.core.report.reportInterface.reportContent;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import com.binar.core.procurement.purchaseOrder.printPurchaseOrder.GeneralPrint;
@@ -16,6 +17,7 @@ import com.binar.core.report.reportInterface.reportContent.reportStock.ReportSto
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.server.BrowserWindowOpener;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Window;
 
@@ -42,16 +44,16 @@ public class ReportContentPresenter  implements ReportContentListener{
 	public Component getViewConsumption(){
 		if(reportConsumption==null){
 			reportConsumption=new ReportConsumptionViewImpl(function);
-			reportConsumption.init();
 			reportConsumption.setListener(this);
+			reportConsumption.init();
 		}
 		return reportConsumption;
 	}
 	public Component getViewDailyConsumption(){
 		if(reportDailyConsumption==null){
 			reportDailyConsumption=new ReportDailyConsumptionViewImpl(function);
-			reportDailyConsumption.init();
 			reportDailyConsumption.setListener(this);
+			reportDailyConsumption.init();
 		}
 		return reportDailyConsumption;
 
@@ -60,8 +62,8 @@ public class ReportContentPresenter  implements ReportContentListener{
 	public Component getExpiredGoods(){
 		if(reportExpiredGoods==null){
 			reportExpiredGoods=new ReportExpiredGoodsViewImpl(function);
-			reportExpiredGoods.init();
 			reportExpiredGoods.setListener(this);
+			reportExpiredGoods.init();
 		}
 		return reportExpiredGoods;
 	}
@@ -69,32 +71,32 @@ public class ReportContentPresenter  implements ReportContentListener{
 	public Component getProcurement(){
 		if(reportProcurement==null){
 			reportProcurement=new ReportProcurementViewImpl(function);
-			reportProcurement.init();
 			reportProcurement.setListener(this);
+			reportProcurement.init();
 		}
 		return reportProcurement;
 	}
 	public Component getReceipt(){
 		if(reportReceipt==null){
 			reportReceipt=new ReportReceiptViewImpl(function);
-			reportReceipt.init();
 			reportReceipt.setListener(this);
+			reportReceipt.init();
 		}
 		return reportReceipt;
 	}
 	public Component getRequirement(){
 		if(reportRequirement==null){
 			reportRequirement=new ReportRequirementViewImpl(function);
-			reportRequirement.init();
 			reportRequirement.setListener(this);
+			reportRequirement.init();
 		}
 		return reportRequirement;
 	}
 	public Component getStock(){
 		if(reportStock==null){
 			reportStock=new ReportStockViewImpl(function);
-			reportStock.init();
 			reportStock.setListener(this);
+			reportStock.init();
 		}
 		return reportStock;
 	}
@@ -111,9 +113,9 @@ public class ReportContentPresenter  implements ReportContentListener{
 			
 			break;
 		case DAILY_CONSUMPTION: 
-			list=reportConsumption.getUI().getWindows();
+			list=reportDailyConsumption.getUI().getWindows();
 			for(Window w:list){
-				reportConsumption.getUI().removeWindow(w);
+				reportDailyConsumption.getUI().removeWindow(w);
 			}
 			break;
 		case EXPIRED_GOODS:
@@ -155,30 +157,29 @@ public class ReportContentPresenter  implements ReportContentListener{
 	@Override
 	public void printClick(ReportType report, ReportData data) {
 		Map<String, String>  param=parameter.generateParameter(report, data);
-		Button button;
-		
+		BrowserWindowOpener opener;
 		switch (report) {
-		case CONSUMPTION:button=reportConsumption.getPrintButton();
-						 showPrintWindow(param, button);
+		case CONSUMPTION:opener=reportConsumption.getOpener();
+						 setOpenerParameter(opener, param);
 						break;
-		case DAILY_CONSUMPTION : button=reportDailyConsumption.getPrintButton();
-		 						showPrintWindow(param, button);
+		case DAILY_CONSUMPTION : opener=reportDailyConsumption.getOpener();
+								setOpenerParameter(opener, param);
 		 						break;
-		case EXPIRED_GOODS : button=reportExpiredGoods.getPrintButton();
-		 					 showPrintWindow(param, button);
-		 					 break;
-		case PROCUREMENT : button=reportProcurement.getPrintButton();
-		 				   showPrintWindow(param, button);
-		break;
-		case RECEIPT :button=reportReceipt.getPrintButton();
-					  showPrintWindow(param, button);
-					  break;
-		case REQUIREMENT : button=reportRequirement.getPrintButton();
-						   showPrintWindow(param, button);
-		 				   break;
-		case STOCK : button=reportStock.getPrintButton();
-					 showPrintWindow(param, button);
-					 break;
+		case EXPIRED_GOODS : opener=reportExpiredGoods.getOpener();
+							 setOpenerParameter(opener, param);
+							 					 break;
+		case PROCUREMENT : opener=reportProcurement.getOpener();
+							 setOpenerParameter(opener, param);
+							 break;
+		case RECEIPT :opener=reportReceipt.getOpener();
+							 setOpenerParameter(opener, param);	
+							 break;
+		case REQUIREMENT : opener=reportRequirement.getOpener();
+						 setOpenerParameter(opener, param);
+						 break;
+		case STOCK : opener=reportStock.getOpener();
+						 setOpenerParameter(opener, param);
+						 break;
 		default:
 			break;
 		}
@@ -206,21 +207,16 @@ public class ReportContentPresenter  implements ReportContentListener{
 	 * value : bulan-tahun
 	 * 
 	 */
-	public void showPrintWindow(Map<String, String> param, Button button){
-		// Create an opener extension
-		BrowserWindowOpener opener =
-		new BrowserWindowOpener(ReportPrint.class);
-		opener.setFeatures("height=200,width=400,resizable");
-		// A button to open the printer-friendly page.
+	
+	//untuk menambahkan parameter untuk pembuka window, parameter ditambahkan setiap data berubah
+	public void setOpenerParameter(BrowserWindowOpener opener, Map<String, String> param){
+		
 		for(Map.Entry<String, String> entry:param.entrySet()){
 			String key=entry.getKey();
 			String value=entry.getValue();
-			
 			opener.setParameter(key, value);
-		}
-		opener.extend(button);
-		button.click();
-
+		}		
+		
 	}
 	
 }

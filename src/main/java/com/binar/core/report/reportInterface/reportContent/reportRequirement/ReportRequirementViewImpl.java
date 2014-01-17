@@ -6,12 +6,15 @@ import java.util.List;
 import com.binar.core.report.reportInterface.ReportInterfaceView.ReportInterfaceListener;
 import com.binar.core.report.reportInterface.reportContent.ReportContentView;
 import com.binar.core.report.reportInterface.reportContent.ReportData;
+import com.binar.core.report.reportInterface.reportContent.ReportPrint;
 import com.binar.core.report.reportInterface.reportContent.ReportContentView.ReportContentListener;
 import com.binar.core.report.reportInterface.reportContent.ReportContentView.ReportType;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
+import com.vaadin.server.BrowserWindowOpener;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
@@ -36,7 +39,7 @@ public class ReportRequirementViewImpl extends VerticalLayout implements ClickLi
 	private ComboBox selectMonth;
 	
 	private GeneralFunction function;
-	
+	BrowserWindowOpener opener;
 	
 	private ReportContentListener listener;
 	public ReportRequirementViewImpl(GeneralFunction function) {
@@ -44,8 +47,18 @@ public class ReportRequirementViewImpl extends VerticalLayout implements ClickLi
 	}	
 	@Override
 	public void init() {
+		buttonCancel=new Button("Batalkan");
+		buttonCancel.addClickListener(this);
+		buttonPrint=new Button("Cetak");
+		buttonPrint.addClickListener(this);
+		buttonPrint.setIcon(new ThemeResource("icons/image/icon-print.png"));
+
+		opener=new BrowserWindowOpener(ReportPrint.class);
+		opener.setFeatures("height=200,width=400,resizable");
+		// A button to open the printer-friendly page.
+		opener.extend(buttonPrint);
 		
-		List<String> yearList=function.getListFactory().createYearList(6, 2, false);
+		List<String> yearList=function.getListFactory().createYearList(8, 0, false);
 		List<String> monthList=function.getListFactory().createMonthList();
 		selectYear = new ComboBox("Pilih Tahun", yearList);
 		selectMonth =new ComboBox("Pilih Bulan", monthList);
@@ -68,20 +81,23 @@ public class ReportRequirementViewImpl extends VerticalLayout implements ClickLi
 		selectYear.setWidth(function.FORM_WIDTH);
 		
 		
-		buttonCancel=new Button("Batalkan");
-		buttonCancel.addClickListener(this);
-		buttonPrint=new Button("Cetak");
-		buttonPrint.addClickListener(this);
 		
-		selectGoodsType=new OptionGroup();
+		selectGoodsType=new OptionGroup("Tipe Laporan");
 		Item itemType1=selectGoodsType.addItem("obat");
 		Item itemType2=selectGoodsType.addItem("alkesbmhp");
 		selectGoodsType.setImmediate(true);
+		selectGoodsType.setValue("obat");
 		
-		selectGoodsType.setItemCaption(itemType1, "Laporan Penerimaan Obat");
-		selectGoodsType.setItemCaption(itemType2, "Laporan Penerimaan Alkes & BMHP");
-		construct();
+		selectGoodsType.setItemCaption("obat", "Laporan Kebutuhan Obat");
+		selectGoodsType.setItemCaption("alkesbmhp", "Laporan Kebutuhan Alkes & BMHP");
 
+		selectGoodsType.addValueChangeListener(this);
+		 selectYear.addValueChangeListener(this);
+		 selectMonth.addValueChangeListener(this);
+
+		 updateWindowOpener();
+		construct();
+		
 		
 	}
 
@@ -92,7 +108,7 @@ public class ReportRequirementViewImpl extends VerticalLayout implements ClickLi
 		GridLayout layout=new GridLayout(2, 1){
 			{
 				addComponent(buttonPrint, 0,0);
-				addComponent(buttonPrint, 1, 0);
+				addComponent(buttonCancel, 1, 0);
 				setSpacing(true);
 				setMargin(true);
 			}
@@ -103,10 +119,12 @@ public class ReportRequirementViewImpl extends VerticalLayout implements ClickLi
 	public void setListener(ReportContentListener listener) {
 		this.listener=listener;
 	}
-
+	public BrowserWindowOpener getOpener() {
+		return opener;
+	}
 	@Override
 	public void valueChange(ValueChangeEvent event) {
-
+		updateWindowOpener();
 	}
 
 	@Override
@@ -114,10 +132,11 @@ public class ReportRequirementViewImpl extends VerticalLayout implements ClickLi
 		if(event.getButton()==buttonCancel){
 			listener.cancelClick(ReportType.REQUIREMENT);
 		}if(event.getButton()==buttonPrint){
-			listener.printClick(ReportType.RECEIPT, getReportData());
 		}
 	}
-	
+	public void updateWindowOpener(){
+		listener.printClick(ReportType.REQUIREMENT, getReportData());
+	}
 	@Override
 	public Button getPrintButton() {
 		return buttonPrint;
