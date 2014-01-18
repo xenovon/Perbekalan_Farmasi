@@ -41,8 +41,8 @@ public class ReportConsumptionModel extends Label{
 	private String userNum; //ok
 	private String timecycle; //ok
 	
-	private String html="";
-	
+	private String html="<html> <head> <title> Laporan Pengeluaran {{Timecycle}} </title> <style type='text/css'>body{width:750px;font-family:arial}h1.title{display:block;margin:0 auto;font-size:24px;text-align:center}h2.address{display:block;margin:0 auto;font-size:16px;font-weight:normal;text-align:center}.center{padding-bottom:20px;margin-bottom:30px}.kepada{width:400px;margin-top:30px;line-height:1.5em}.PONumber{float:right;top:40px}table{width:100%;border:1px solid black;border-collapse:collapse}table tr td,table tr th{border:1px solid black;padding:2px;margin:0}table tr th{text-align:center}.footer{float:right;margin-top:60px}.tapak-asma{text-align:center}.kepala{margin-bottom:100px}</style> </head> <body> <div class='center'> <h1 class='title'>Laporan Pengeluaran {{GoodsType}}</h1> <h2 class='address'> {{Periode}} </h2> </div> <table> <tr> <th>No</th> <th>Nama</th> <th>Satuan</th> <th>Jumlah Pengeluaran</th> </tr> {{TableCode}} </table> <div class='footer'> {{City}} , {{ReportDate}} <div class='tapak-asma'> <div class='kepala'>Petugas Gudang Farmasi </br>RSUD Ajibarang</div> <div>{{UserName}}</div> <div>NIP: {{UserNum}}</div> </div> </div> </body> </html>";
+
 	public ReportConsumptionModel(GeneralFunction function, ReportData data) {
 		this.function=function;
 		this.setContentMode(ContentMode.HTML);
@@ -105,6 +105,9 @@ public class ReportConsumptionModel extends Label{
 		String returnValue="";
 		
 		int i=0;
+		if(data.size()==0){
+			return "<tr><td style='text-align:center;font-style:italic;' colspan='4'>Data kosong</td></tr>";
+		}
 		for(Map.Entry<Goods, Integer> entry:data.entrySet()){
 			i++;
 			returnValue=returnValue+"<tr>";
