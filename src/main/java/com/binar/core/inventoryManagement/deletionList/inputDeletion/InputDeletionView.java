@@ -18,7 +18,7 @@ public interface InputDeletionView {
 	}
 	
 	public enum ErrorLabel{
-		QUANTITY,GENERAL
+		QUANTITY,GENERAL, PRICE
 	}
 
 	public void init();

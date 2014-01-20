@@ -112,6 +112,8 @@ public class DeletionListViewImpl extends VerticalLayout implements DeletionList
         		addContainerProperty("Nama Barang", String.class, null);
         		addContainerProperty("Jumlah", String.class, null);
         		addContainerProperty("Satuan", String.class, null);
+        		addContainerProperty("Harga", String.class, null);
+        		addContainerProperty("Total Harga", String.class, null);
         		addContainerProperty("Disetujui?", String.class, null);
         		addContainerProperty("Tanggal Disetujui", String.class, null);
         		addContainerProperty("Operasi", GridLayout.class, null);
@@ -220,6 +222,8 @@ public class DeletionListViewImpl extends VerticalLayout implements DeletionList
 			item.getItemProperty("Nama Barang").setValue(datum.getGoods().getName());
 			item.getItemProperty("Jumlah").setValue(text.intToAngka(datum.getQuantity()));
 			item.getItemProperty("Satuan").setValue(datum.getGoods().getUnit());
+			item.getItemProperty("Harga").setValue(text.doubleToRupiah(datum.getPrice()));
+			item.getItemProperty("Total Harga").setValue(text.doubleToRupiah(datum.getPrice()*datum.getQuantity()));
 			item.getItemProperty("Disetujui?").setValue(datum.isAccepted()?"Disetujui":"Belum Disetujui");
 			item.getItemProperty("Tanggal Disetujui").setValue(date.dateToText(datum.getApprovalDate(), true));
 			item.getItemProperty("Operasi").setValue(new GridLayout(3,1){
@@ -283,6 +287,8 @@ public class DeletionListViewImpl extends VerticalLayout implements DeletionList
 	private Label labelDeletionDate;
 	private Label labelGoodsName;
 	private Label labelQuantity;
+	private Label labelPrice;
+	private Label labelTotalPrice;
 	private Label labelAccepted;
 	private Label labelAcceptedDate;
 	private Label labelTimeStamp;
@@ -295,23 +301,27 @@ public class DeletionListViewImpl extends VerticalLayout implements DeletionList
 	public void showDetailWindow(DeletedGoods deletedGoods) {
 		if(layoutData==null){ //jika layout null
 			//buat konten 
-			layoutData= new GridLayout(2,7){ 
+			layoutData= new GridLayout(2,9){ 
 				{
 					setSpacing(true);
 					setMargin(true);
 					addComponent(new Label("Tanggal  "), 0,0);
 					addComponent(new Label("Nama Barang  "), 0, 1);
 					addComponent(new Label("Jumlah : "), 0, 2);
-					addComponent(new Label("Diterima? : "), 0, 3);
-					addComponent(new Label("Tanggal Diterima : "), 0, 4);
-					addComponent(new Label("Waktu input : "), 0, 5);
-					addComponent(new Label("Keterangan : "), 0, 6);
+					addComponent(new Label("Harga : "), 0, 3);
+					addComponent(new Label("Total Harga : "), 0, 4);
+					addComponent(new Label("Diterima? : "), 0, 5);
+					addComponent(new Label("Tanggal Diterima : "), 0, 6);
+					addComponent(new Label("Waktu input : "), 0, 7);
+					addComponent(new Label("Keterangan : "), 0, 8);
 				}	
 			};
 			//instantiasi label
 			 labelDeletionDate=new Label("");
 			 labelGoodsName=new Label("");
 			 labelQuantity=new Label("");
+			 labelPrice=new Label("");
+			 labelTotalPrice=new Label("");
 			 labelAccepted=new Label("");
 			 labelAcceptedDate=new Label("");
 			 labelTimeStamp=new Label("");
@@ -321,10 +331,12 @@ public class DeletionListViewImpl extends VerticalLayout implements DeletionList
 			layoutData.addComponent(labelDeletionDate, 1,0);
 			layoutData.addComponent(labelGoodsName, 1,1);
 			layoutData.addComponent(labelQuantity, 1,2);
-			layoutData.addComponent(labelAccepted, 1,3);
-			layoutData.addComponent(labelAcceptedDate, 1,4);
-			layoutData.addComponent(labelTimeStamp, 1,5);
-			layoutData.addComponent(labelInformation, 1,6);
+			layoutData.addComponent(labelPrice, 1,3);
+			layoutData.addComponent(labelTotalPrice, 1, 4);
+			layoutData.addComponent(labelAccepted, 1,5);
+			layoutData.addComponent(labelAcceptedDate, 1,6);
+			layoutData.addComponent(labelTimeStamp, 1,7);
+			layoutData.addComponent(labelInformation, 1,8);
 				        
 		}//menutup jika layoutdetail null
 	    setLabelData(deletedGoods);
@@ -344,6 +356,9 @@ public class DeletionListViewImpl extends VerticalLayout implements DeletionList
 	private void setLabelData(DeletedGoods data){
 		 labelDeletionDate.setValue(date.dateToText(data.getDeletionDate(), true));
 		 labelGoodsName.setValue(data.getGoods().getName());
+		 labelQuantity.setValue(data.getQuantity()+" "+data.getGoods().getUnit());
+		 labelPrice.setValue(text.doubleToRupiah(data.getPrice()));
+		 labelTotalPrice.setValue(text.doubleToRupiah(data.getPrice()*data.getQuantity()));
 		 labelQuantity.setValue(data.getQuantity()+" "+data.getGoods().getUnit());
 		 labelAccepted.setValue(data.isAccepted()?"Disetujui":"Belum disetujui");
 		 labelAcceptedDate.setValue(date.dateToText(data.getApprovalDate(), true));

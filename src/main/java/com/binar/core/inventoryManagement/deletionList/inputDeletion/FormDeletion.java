@@ -23,6 +23,7 @@ public class FormDeletion {
 	private String quantity="";
 	private Date deletionDate;
 	private String information="";
+	private String price="";
 	
 	private GeneralFunction function;
 	private EbeanServer server;
@@ -46,10 +47,15 @@ public class FormDeletion {
 			error.add("Data obat harus diisi");			
 		}
 		String errorQuantity=validateQuantity();
+		String errorPrice=validatePrice();
 		
 		if(!errorQuantity.equals("")){
 			error.add(errorQuantity);
 		}
+		if(!errorPrice.equals("")){
+			error.add(errorPrice);
+		}
+		
 		if(deletionDate!=null ){
 			if(deletionDate.equals("")){
 				error.add("Data tanggal harus diisi");
@@ -77,6 +83,23 @@ public class FormDeletion {
 		}
 		return "";
 	}
+	public String validatePrice(){
+		if(this.price!=null){	
+			if(!this.price.equals("")){
+				try {
+					int quantity=Integer.parseInt(this.price);
+					if(quantity<0){
+						return "Harga harus lebih dari 0";
+					}
+				} catch (NumberFormatException e) {
+					e.printStackTrace();
+					return "Data harus berupa angka";
+				}
+			}
+		}
+		return "";
+	}
+
 	public Integer getDeletionId() {
 		return deletionId;
 	}
@@ -113,4 +136,11 @@ public class FormDeletion {
 	public void setDeletionDate(Date deletionDate) {
 		this.deletionDate = deletionDate;
 	}
+	public String getPrice() {
+		return price;
+	}
+	public void setPrice(String price) {
+		this.price = price;
+	}
+	
 }

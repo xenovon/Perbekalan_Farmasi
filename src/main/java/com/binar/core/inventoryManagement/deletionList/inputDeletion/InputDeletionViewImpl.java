@@ -26,6 +26,7 @@ Button.ClickListener, ValueChangeListener {
 
 	private ComboBox inputGoodsSelect;
 	private TextField inputGoodsQuantity;
+	private TextField inputGoodsPrice;
 	private DateField inputDeletionDate;
 	private TextArea information;
 	private Label labelSatuan;
@@ -37,6 +38,8 @@ Button.ClickListener, ValueChangeListener {
 	private TextManipulator text;
 	private Label labelErrorQuantity; //untuk error realtime
 	private Label labelGeneralError; //error saat tombol submit ditekan
+	private Label labelErrorPrice;
+	private Label labelPriceGuide;
 	private int deletionId;
 	private InputDeletionListener listener;
 	GeneralFunction function;
@@ -53,7 +56,7 @@ Button.ClickListener, ValueChangeListener {
 		
 	}else if(event.getProperty()==inputGoodsSelect){
 		listener.goodsSelectChange();
-	}	
+	}
 	}
 	
 	@Override
@@ -66,7 +69,13 @@ Button.ClickListener, ValueChangeListener {
 				setContentMode(ContentMode.HTML);
 			}
 		};
-		
+		labelErrorPrice=new Label(){
+			{
+				setVisible(false);
+				addStyleName("form-error");
+				setContentMode(ContentMode.HTML);
+			}
+		};		
 		labelGeneralError=new Label(){
 			{
 				setVisible(false);
@@ -90,6 +99,10 @@ Button.ClickListener, ValueChangeListener {
 		};
 		inputGoodsSelect.addValueChangeListener(this);
 		
+		inputGoodsPrice=new TextField("Harga Barang");
+		inputGoodsPrice.setImmediate(true);
+		inputGoodsPrice.setWidth(function.FORM_WIDTH);
+		
 		inputDeletionDate = new DateField("Tanggal"){
 			{
 				setWidth(function.FORM_WIDTH);
@@ -100,7 +113,9 @@ Button.ClickListener, ValueChangeListener {
 		
 		information = new TextArea("informasi");
 		information.setMaxLength(function.MAX_TEXTAREA_LENGTH);
-
+		labelPriceGuide =new Label("");
+		labelPriceGuide.setContentMode(ContentMode.HTML);
+		
 		labelSatuan =new Label("Satuan");
 		
 		buttonReset=new Button("Reset");
@@ -126,6 +141,9 @@ Button.ClickListener, ValueChangeListener {
 		this.addComponent(inputGoodsQuantity);
 		this.addComponent(labelErrorQuantity);
 		this.addComponent(labelSatuan);
+		this.addComponent(inputGoodsPrice);
+		this.addComponent(labelPriceGuide);
+		this.addComponent(labelErrorPrice);
 		this.addComponent(labelGeneralError);
 		this.addComponent(information);
 		this.addComponent(new GridLayout(4, 1){
@@ -144,6 +162,7 @@ Button.ClickListener, ValueChangeListener {
 		this.inputGoodsQuantity.setValue("");
 		this.inputGoodsSelect.setValue("");
 		this.information.setValue("");
+		this.inputGoodsPrice.setValue("");
 	}	
 	@Override
 	public void showError(ErrorLabel label, String content) {
@@ -154,6 +173,9 @@ Button.ClickListener, ValueChangeListener {
 		case QUANTITY:labelErrorQuantity.setVisible(true);
 					  labelErrorQuantity.setValue(content);
 					  break;
+		case PRICE : labelErrorPrice.setVisible(true);
+					 labelErrorPrice.setValue(content);
+					 break;
 		default:
 			break;
 		}
@@ -164,6 +186,7 @@ Button.ClickListener, ValueChangeListener {
 		switch (label) {
 		case GENERAL:labelGeneralError.setVisible(false);break;
 		case QUANTITY:labelErrorQuantity.setVisible(false);break;
+		case PRICE : labelErrorPrice.setVisible(false);break;
 		default:
 			break;
 		}
@@ -173,6 +196,7 @@ Button.ClickListener, ValueChangeListener {
 	public void hideAllError() {
 		labelErrorQuantity.setVisible(false);
 		labelGeneralError.setVisible(false);
+		labelErrorPrice.setVisible(false);
 	}
 
 	@Override
@@ -256,6 +280,7 @@ Button.ClickListener, ValueChangeListener {
 		form.setQuantity(inputGoodsQuantity.getValue());
 		form.setIdGoods((String) inputGoodsSelect.getValue());
 		form.setDeletionId(this.deletionId);
+		form.setPrice(inputGoodsPrice.getValue());
 		return form;
 	}
 
@@ -267,7 +292,8 @@ Button.ClickListener, ValueChangeListener {
 		inputDeletionDate.setValue(deletion.getDeletionDate());
 		information.setValue(deletion.getInformation());
 		inputGoodsQuantity.setValue(deletion.getQuantity()+"");
-		inputGoodsSelect.setValue(deletion.getGoods().getIdGoods());		
+		inputGoodsSelect.setValue(deletion.getGoods().getIdGoods());
+		inputGoodsPrice.setValue(deletion.getPrice()+"");
 	}
 	
 	@Override
@@ -275,4 +301,7 @@ Button.ClickListener, ValueChangeListener {
 		this.listener=listener;
 	}
 	
+	public void setPriceGuideValue(String content){
+		this.labelPriceGuide.setValue(content);
+	}
 }

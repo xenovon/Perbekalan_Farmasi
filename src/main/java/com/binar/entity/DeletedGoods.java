@@ -32,7 +32,8 @@ public class DeletedGoods {
     private Date deletionDate ;
     @Column(name= "is_accepted")
     private boolean isAccepted ;
-   
+    
+    private double price;
     @Column(name= "approval_date" )
     private Date approvalDate;
 
@@ -45,6 +46,12 @@ public class DeletedGoods {
 	}
 	public Date getDeletionDate() {
 		return deletionDate;
+	}
+	public void setPrice(double price) {
+		this.price = price;
+	}
+	public double getPrice() {
+		return price;
 	}
 	public void setDeletionDate(Date deletionDate) {
 		this.deletionDate = deletionDate;

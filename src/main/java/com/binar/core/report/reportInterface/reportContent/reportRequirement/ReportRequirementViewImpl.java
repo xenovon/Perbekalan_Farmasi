@@ -27,7 +27,7 @@ public class ReportRequirementViewImpl extends VerticalLayout implements ClickLi
 
 	/*
 	 * Per bulan
-	 * Alkes/bmhp dan obat
+	 * Alkes/bmhp dan obat belum disetujui
 	 * (non-Javadoc)
 	 * @see com.binar.core.report.reportInterface.reportContent.ReportContentView#init()
 	 */

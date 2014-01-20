@@ -11,6 +11,7 @@ import java.util.TreeMap;
 import javax.persistence.OptimisticLockException;
 
 import com.avaje.ebean.EbeanServer;
+import com.binar.core.procurement.invoice.newInvoice.NewInvoiceView.InvoiceItem;
 import com.binar.entity.DeletedGoods;
 import com.binar.entity.Goods;
 import com.binar.entity.SupplierGoods;
@@ -63,7 +64,7 @@ public class InputDeletionModel {
 			deletion.setTimestamp(new Date());	
 			deletion.setInformation(data.getInformation());
 			deletion.setGoods(goods);
-		
+			deletion.setPrice(Integer.parseInt(data.getPrice()));
 			server.save(deletion);
 			server.commitTransaction();
 			return null;
@@ -110,7 +111,8 @@ public class InputDeletionModel {
 			deletion.setQuantity(Integer.parseInt(data.getQuantity()));
 			deletion.setDeletionDate(data.getDeletionDate());
 			deletion.setInformation(data.getInformation());			
-			
+			deletion.setPrice(Integer.parseInt(data.getPrice()));
+
 			server.update(deletion);	
 			server.commitTransaction();
 			return null;
@@ -150,5 +152,27 @@ public class InputDeletionModel {
 	
 	public Goods getGoods(String idGoods){
 		return server.find(Goods.class, idGoods);
+	}
+	public String generatePriceGuide(String idGoods){
+		try {
+			Goods goods=server.find(Goods.class, idGoods);
+			String returnValue="Harga untuk "+goods.getName() +"<br>";
+			
+
+			List<SupplierGoods> supplierGoods=server.find(SupplierGoods.class).where().eq("goods",goods).findList();
+			for(SupplierGoods datum:supplierGoods){
+				returnValue=returnValue+text.doubleToRupiah(datum.getLastPrice())+"</br>";
+			}
+			
+			if(supplierGoods.size()==0){
+				return "";
+			}else{
+				return returnValue;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "";
+		}
+		
 	}
 }

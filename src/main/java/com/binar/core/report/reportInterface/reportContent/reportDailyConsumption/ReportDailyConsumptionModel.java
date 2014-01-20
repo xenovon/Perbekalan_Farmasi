@@ -43,7 +43,8 @@ public class ReportDailyConsumptionModel extends Label{
 	
 	//Variabel untuk ditampilkan di surat pesanan
 		
-	private String html="<html> <head> <title>Daftar Pengeluaran {{GoodsType}} Gudang Farmasi </title> <style type='text/css'>body{width:750px;font-family:arial}h1.title{display:block;margin:0 auto;font-size:24px;text-align:center}h2.address{display:block;margin:0 auto;font-size:16px;font-weight:normal;text-align:center}.center{padding-bottom:20px;margin-bottom:30px}.kepada{width:400px;margin-top:30px;line-height:1.5em}.PONumber{float:right;top:40px}table{width:100%;border:1px solid black;border-collapse:collapse}table tr td,table tr th{border:1px solid black;padding:2px;margin:0}.footer{float:right;margin-top:60px}.tapak-asma{text-align:center}.kepala{margin-bottom:100px}</style> </head> <body> <div class='center'> <h1 class='title'>Daftar Pengeluaran Obat Gudang Farmasi</h1> <h2 class='address'> {{Periode}} </h2> </div> <table> <tr> <th rowspan='2'>No</th> <th rowspan='2'>Nama</th> <th rowspan='2'>Sat</th> <th colspan='31'>Tanggal</th> </tr> <tr> <th>1</th> <th>2</th> <th>3</th> <th>4</th> <th>5</th> <th>6</th> <th>7</th> <th>8</th> <th>9</th> <th>10</th> <th>11</th> <th>12</th> <th>13</th> <th>14</th> <th>15</th> <th>16</th> <th>17</th> <th>18</th> <th>19</th> <th>20</th> <th>21</th> <th>22</th> <th>23</th> <th>24</th> <th>25</th> <th>26</th> <th>27</th> <th>28</th> <th>29</th> <th>30</th> <th>31</th> </tr> {{TableCode}} </table> <div class='footer'> {{City}} , {{ReportDate}} <div class='tapak-asma'> <div class='kepala'>Petugas Gudang Farmasi </br>RSUD Ajibarang</div> <div>{{UserName}}</div> <div>NIP: {{UserNum}}</div> </div> </div> </body> </html>";
+	private String html="<html> <head> <title>Daftar Pengeluaran {{GoodsType}} Gudang Farmasi </title> <style type='text/css'>body{width:750px;font-family:arial}h1.title{display:block;margin:0 auto;font-size:24px;text-align:center}h2.address{display:block;margin:0 auto;font-size:16px;font-weight:normal;text-align:center}.center{padding-bottom:20px;margin-bottom:30px}.kepada{width:400px;margin-top:30px;line-height:1.5em}.PONumber{float:right;top:40px}table{width:100%;border:1px solid black;border-collapse:collapse}table tr td,table tr th{border:1px solid black;padding:2px;margin:0}.footer{float:right;margin-top:60px}.tapak-asma{text-align:center}.kepala{margin-bottom:100px}</style> </head> <body> <div class='center'> <h1 class='title'>Daftar Pengeluaran {{GoodsType}} Gudang Farmasi</h1> <h2 class='address'> {{Periode}} </h2> </div> <table> <tr> <th rowspan='2'>No</th> <th rowspan='2'>Nama</th> <th rowspan='2'>Sat</th> <th colspan='31'>Tanggal</th> </tr> <tr> <th>1</th> <th>2</th> <th>3</th> <th>4</th> <th>5</th> <th>6</th> <th>7</th> <th>8</th> <th>9</th> <th>10</th> <th>11</th> <th>12</th> <th>13</th> <th>14</th> <th>15</th> <th>16</th> <th>17</th> <th>18</th> <th>19</th> <th>20</th> <th>21</th> <th>22</th> <th>23</th> <th>24</th> <th>25</th> <th>26</th> <th>27</th> <th>28</th> <th>29</th> <th>30</th> <th>31</th> </tr> {{TableCode}} </table> <div class='footer'> {{City}} , {{ReportDate}} <div class='tapak-asma'> <div class='kepala'>Petugas Gudang Farmasi </br>RSUD Ajibarang</div> <div>{{UserName}}</div> <div>NIP: {{UserNum}}</div> </div> </div> </body> </html>";
+
 	public ReportDailyConsumptionModel(GeneralFunction function, ReportData data) {
 		this.function=function;
 		this.setContentMode(ContentMode.HTML);
@@ -51,8 +52,6 @@ public class ReportDailyConsumptionModel extends Label{
 		this.server=function.getServer();
 		this.date=function.getDate();
 		this.setting=function.getSetting();
-		this.user=function.getLogin().getUserLogin();
-		
 		setContent();
 		replaceText();
 	}
@@ -60,16 +59,13 @@ public class ReportDailyConsumptionModel extends Label{
 	private void setContent(){
 		if(data.getSelectedGoods().equals(ReportData.SELECT_GOODS_OBAT.toString())){
 			goodsType="Obat";
+			tableCode=generateTableCode(getDailyConsumption(data.getDateMonth(), true));
 			
 		}else if(data.getSelectedGoods().equals(ReportData.SELECT_GOODS_ALKES.toString())){
 			goodsType="Alkes & BMHP";
-			
+			tableCode=generateTableCode(getDailyConsumption(data.getDateMonth(), false));
 		}
-		if(data.getPeriodeType()==PeriodeType.BY_MONTH){
-			periode="Periode "+date.dateToText(data.getDateMonth());
-		}else if(data.getPeriodeType()==PeriodeType.BY_DAY){
-			periode="Per "+date.dateToText(data.getDate(), true);
-		}
+		periode="Periode "+date.dateToText(data.getDateMonth());
 		reportDate = date.dateToText(new Date(),true);
 		city=setting.getSetting("rs_city").getSettingValue();
 		user=function.getLogin().getUserLogin();
@@ -89,20 +85,23 @@ public class ReportDailyConsumptionModel extends Label{
 		
 		this.setValue(html);
 	}
-	private String generateTableCode(Map<Goods, Integer> data){
+	private String generateTableCode(Map<Goods, List<Integer>> data){
 		String returnValue="";
 		
 		int i=0;
 		if(data.size()==0){
 			return "<tr><td style='text-align:center;font-style:italic;' colspan='4'>Data kosong</td></tr>";
 		}
-		for(Map.Entry<Goods, Integer> entry:data.entrySet()){
+		for(Map.Entry<Goods, List<Integer>> entry:data.entrySet()){
+			
 			i++;
 			returnValue=returnValue+"<tr>";
 				returnValue=returnValue+"<td>"+i+"</td>";
 				returnValue=returnValue+"<td>"+entry.getKey().getName()+"</td>";
 				returnValue=returnValue+"<td>"+entry.getKey().getUnit()+"</td>";
-				returnValue=returnValue+"<td>"+entry.getValue()+"</td>";
+				for(Integer quantity:entry.getValue()){
+					returnValue=returnValue+"<td>"+quantity+"</td>";					
+				}
 			returnValue=returnValue+"</tr>";
 			
 		}
@@ -110,14 +109,21 @@ public class ReportDailyConsumptionModel extends Label{
 		
 		return returnValue;
 	}
-	//untuk mendapatkan konsumsi barang dalam hari tertentu
-	private Map<Goods, Integer> getDailyConsumption(Date periode, boolean isObat){
+	//untuk mendapatkan konsumsi barang dalam satu hari tiap bulannya
+	//format data
+	//Nama Obat    1 2 3 4 5 6 7 8 9 10  dst
+	//Panadol 	   5 6  dst   -> 
+	//Goods			List<Integer>
+	private Map<Goods, List<Integer>> getDailyConsumption(Date periode, boolean isObat){
 		System.out.println("Mendapatkan periode");
 		
+		//set periode (satu bulan
 		DateTime startDate=new DateTime(periode);
 			startDate=startDate.withHourOfDay(startDate.hourOfDay().getMinimumValue());
+			startDate=startDate.withDayOfMonth(startDate.dayOfMonth().getMinimumValue());
 		DateTime endDate=startDate.withHourOfDay(startDate.hourOfDay().getMaximumValue());
-
+			startDate=startDate.withDayOfMonth(startDate.dayOfMonth().getMaximumValue());
+			
 		List<String> goodsTypeList=new ArrayList<String>();
 		if(isObat){
 			goodsTypeList.add(EnumGoodsType.NARKOTIKA.toString());
@@ -127,66 +133,45 @@ public class ReportDailyConsumptionModel extends Label{
 			goodsTypeList.add(EnumGoodsType.ALAT_KESEHATAN.toString());
 			goodsTypeList.add(EnumGoodsType.BMHP.toString());
 		}
-		
+		//mendata daftar barang yang dikonsumsi pada bulan terpilih
 		List<GoodsConsumption> consumptionOfMonth=server.find(GoodsConsumption.class).where().in("goods.type", goodsTypeList).
 				between("consumptionDate", startDate.toDate(), endDate.toDate()).findList();
 		System.out.println("Start Date : "+startDate);
 		System.out.println("End Date : "+endDate);
 		
-		Map<Goods, Integer> returnValue=new HashMap<Goods, Integer>();		
+		List<Goods> goodsList=new ArrayList<Goods>();
 		for (GoodsConsumption consumption : consumptionOfMonth){
-			if(returnValue.containsKey(consumption.getGoods())){
-				int quantity=returnValue.get(consumption.getGoods());
-				int quantityNow=quantity+consumption.getQuantity();
-				
-				returnValue.remove(consumption.getGoods());
-				returnValue.put(consumption.getGoods(), quantityNow);
-			}else{
-				returnValue.put(consumption.getGoods(), consumption.getQuantity());
-			}
+			if(!goodsList.contains(consumption.getGoods())){
+				goodsList.add(consumption.getGoods());
+			}	
 		}
+		
+		//Memasukan data barang terpilih beserta konsumsi hariannya ke MAP
+		Map<Goods, List<Integer>> returnValue=new HashMap<Goods, List<Integer>>();
+		for(Goods goods:goodsList){
+			DateTime currentDate=startDate;
+			List<Integer> quantityList=new ArrayList<Integer>();
+			while(currentDate.compareTo(endDate) < 0){
+				int totalDailyConsumption=0;
+				DateTime todayStart=currentDate.withHourOfDay(currentDate.hourOfDay().getMinimumValue());
+				DateTime todayEnd=currentDate.withHourOfDay(currentDate.hourOfDay().getMaximumValue());
+				List<GoodsConsumption> consumptions=server.find(GoodsConsumption.class).where().eq("goods", goods).
+						where().between("consumptionDate", todayStart, todayEnd).findList();
+				
+				for(GoodsConsumption consumption:consumptions){
+					totalDailyConsumption=totalDailyConsumption+consumption.getQuantity();
+				}
+				quantityList.add(totalDailyConsumption);
+				currentDate=currentDate.plusDays(1);
+			}
+			
+			returnValue.put(goods, quantityList);
+		}
+			
 		return returnValue; 
 
 	}
 	
-	//mendapatkan konsumsi barang pada tanggal tertentu
-	private Map<Goods, Integer> getConsumptionDataMonthly(Date periode, boolean isObat){
-		System.out.println("Mendapatkan periode");
-		
-		DateTime startDate=new DateTime(periode);
-			startDate=startDate.withDayOfMonth(startDate.dayOfMonth().getMinimumValue());
-		DateTime endDate=startDate.withDayOfMonth(startDate.dayOfMonth().getMaximumValue());
-		
-		List<String> goodsTypeList=new ArrayList<String>();
-		if(isObat){
-			goodsTypeList.add(EnumGoodsType.NARKOTIKA.toString());
-			goodsTypeList.add(EnumGoodsType.PSIKOTROPIKA.toString());
-			goodsTypeList.add(EnumGoodsType.OBAT.toString());
-		}else{
-			goodsTypeList.add(EnumGoodsType.ALAT_KESEHATAN.toString());
-			goodsTypeList.add(EnumGoodsType.BMHP.toString());
-		}
-		
-		
-		List<GoodsConsumption> consumptionOfMonth=server.find(GoodsConsumption.class).where().in("goods.type", goodsTypeList).
-				between("consumptionDate", startDate.toDate(), endDate.toDate()).findList();
-		System.out.println("Start Date : "+startDate);
-		System.out.println("End Date : "+endDate);
-		
-		Map<Goods, Integer> returnValue=new HashMap<Goods, Integer>();		
-		for (GoodsConsumption consumption : consumptionOfMonth){
-			if(returnValue.containsKey(consumption.getGoods())){
-				int quantity=returnValue.get(consumption.getGoods());
-				int quantityNow=quantity+consumption.getQuantity();
-				
-				returnValue.remove(consumption.getGoods());
-				returnValue.put(consumption.getGoods(), quantityNow);
-			}else{
-				returnValue.put(consumption.getGoods(), consumption.getQuantity());
-			}
-		}
-		return returnValue; 
-	}
 	
 
 }

@@ -102,6 +102,8 @@ public class InputDeletionPresenter implements InputDeletionView.InputDeletionLi
 		Goods goods=model.getGoods(form.getIdGoods());
 		if(goods!=null){
 			view.setUnit(goods.getUnit());
+			view.setPriceGuideValue(model.generatePriceGuide(goods.getIdGoods()));
+
 		}		
 	}
 	@Override

@@ -88,9 +88,9 @@ public class ReportExpiredGoodsViewImpl extends VerticalLayout implements ClickL
 		selectAcceptance.setItemCaption("diterima", "Barang Kadaluarsa Disetujui");
 
 		selectAcceptance.setItemCaption("belumditerima", "Barang Kadaluarsa Belum Disetujui");
-		 selectAcceptance.addValueChangeListener(this);
-		 selectStartDate.addValueChangeListener(this);
-		 selectEndDate.addValueChangeListener(this);
+		selectAcceptance.addValueChangeListener(this);
+		selectStartDate.addValueChangeListener(this);
+		selectEndDate.addValueChangeListener(this);
 		
 		 updateWindowOpener();
 
