@@ -38,7 +38,7 @@ public class ReportProcurementViewImpl extends VerticalLayout implements ClickLi
 	private Button buttonPrint;
 	
 	private OptionGroup selectGoodsType;
-	private ComboBox   selectYear;
+	private ComboBox  selectYear;
 	private ComboBox selectMonth;
 	
 	private GeneralFunction function;

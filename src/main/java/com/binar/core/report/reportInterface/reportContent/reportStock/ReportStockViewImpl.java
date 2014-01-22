@@ -80,12 +80,9 @@ public class ReportStockViewImpl extends VerticalLayout implements ClickListener
 		selectGoodsType.setItemCaption("obat", "Laporan Stok Opname Obat");
 		selectGoodsType.setItemCaption("alkesbmhp", "Laporan Stok Opname Alkes & BMHP");
 		
-		 selectDate.addValueChangeListener(this);
-		 selectGoodsType.addValueChangeListener(this);
-
-		 updateWindowOpener();
-
-		
+		selectDate.addValueChangeListener(this);
+		selectGoodsType.addValueChangeListener(this);
+		updateWindowOpener();
 		construct();
 
 	}

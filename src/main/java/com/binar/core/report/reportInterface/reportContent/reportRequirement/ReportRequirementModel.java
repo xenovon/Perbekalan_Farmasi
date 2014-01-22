@@ -131,7 +131,7 @@ public class ReportRequirementModel extends Label{
 		}
 		
 		List<ReqPlanning> reqPlannings=server.find(ReqPlanning.class).where().eq("isAccepted",false).
-				between("deletionDate", start.toDate(), end.toDate()).in("supplierGoods.goods", goodsTypeList).order().desc("timestamp").findList();
+				between("period", start.toDate(), end.toDate()).in("supplierGoods.goods.type", goodsTypeList).order().desc("timestamp").findList();
 		System.out.println("Start Date : "+start);
 		System.out.println("End Date : "+end);
 		
