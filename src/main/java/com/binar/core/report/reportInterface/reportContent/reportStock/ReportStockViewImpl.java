@@ -1,6 +1,7 @@
 package com.binar.core.report.reportInterface.reportContent.reportStock;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import com.binar.core.report.reportInterface.ReportInterfaceView.ReportInterfaceListener;
@@ -65,7 +66,7 @@ public class ReportStockViewImpl extends VerticalLayout implements ClickListener
 
 		selectDate=new DateField("Pilih Tanggal Laporan");
 		selectDate.setImmediate(true);
-		
+		selectDate.setValue(new Date());
 		List<String> yearList=function.getListFactory().createYearList(8, 0, false);
 		List<String> monthList=function.getListFactory().createMonthList();
 		

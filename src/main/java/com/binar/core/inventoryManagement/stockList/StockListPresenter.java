@@ -21,6 +21,7 @@ public class StockListPresenter implements StockListListener{
 		this.view=view;
 		this.model=model;
 		this.function=function;
+		this.view.setListener(this);
 		view.init();
 		view.setComboGoodsData(model.getGoodsData());
 	}

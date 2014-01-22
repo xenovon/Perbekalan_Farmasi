@@ -108,7 +108,7 @@ public class ReportReceiptModel extends Label {
 		
 		int i=0;
 		if(data.size()==0){
-			return "<tr><td style='text-align:center;font-style:italic;' colspan='4'>Data kosong</td></tr>";
+			return "<tr><td style='text-align:center;font-style:italic;' colspan='8'>Data kosong</td></tr>";
 		}
 		for(GoodsReception reception:data){
 			i++;

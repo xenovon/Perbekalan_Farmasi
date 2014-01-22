@@ -88,7 +88,7 @@ public class ReportProcurementModel extends Label{
 		String returnValue="";		
 		int i=0;
 		if(data.size()==0){
-			return "<tr><td style='text-align:center;font-style:italic;' colspan='4'>Data kosong</td></tr>";
+			return "<tr><td style='text-align:center;font-style:italic;' colspan='7'>Data kosong</td></tr>";
 		}
 		for(Map.Entry<PurchaseOrder, List<PurchaseOrderItem>> entry:data.entrySet()){
 			i++;

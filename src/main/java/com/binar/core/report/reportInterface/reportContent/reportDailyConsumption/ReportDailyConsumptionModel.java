@@ -90,7 +90,7 @@ public class ReportDailyConsumptionModel extends Label{
 		
 		int i=0;
 		if(data.size()==0){
-			return "<tr><td style='text-align:center;font-style:italic;' colspan='4'>Data kosong</td></tr>";
+			return "<tr><td style='text-align:center;font-style:italic;' colspan='34'>Data kosong</td></tr>";
 		}
 		for(Map.Entry<Goods, List<Integer>> entry:data.entrySet()){
 			

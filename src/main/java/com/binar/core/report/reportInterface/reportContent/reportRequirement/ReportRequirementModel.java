@@ -51,6 +51,7 @@ public class ReportRequirementModel extends Label{
 		this.date=function.getDate();
 		this.setting=function.getSetting();
 		this.text=function.getTextManipulator();
+		System.out.println("Start requirement");
 		setContent();
 		replaceText();
 	}
@@ -83,7 +84,8 @@ public class ReportRequirementModel extends Label{
 		html=html.replace("{{ReportDate}}", reportDate);
 		html=html.replace("{{UserName}}", userName);
 		html=html.replace("{{UserNum}}", userNum);		
-		html=html.replace("{{GoodsType}}", userNum);		
+		html=html.replace("{{GoodsType}}", goodsType);		
+		System.out.println("html "+html);
 		this.setValue(html);
 	}
 	private String generateTableCode(List<ReqPlanning> data){
@@ -91,7 +93,7 @@ public class ReportRequirementModel extends Label{
 		
 		int i=0;
 		if(data.size()==0){
-			return "<tr><td style='text-align:center;font-style:italic;' colspan='4'>Data kosong</td></tr>";
+			return "<tr><td style='text-align:center;font-style:italic;' colspan='7'>Data kosong</td></tr>";
 		}
 		for(ReqPlanning datum:data){
 			i++;

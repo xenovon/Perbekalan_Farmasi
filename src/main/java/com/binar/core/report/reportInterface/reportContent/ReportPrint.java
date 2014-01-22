@@ -45,7 +45,8 @@ public class ReportPrint extends UI{
 				setContent(data);
 			}
 		} catch (Exception e) {
-			setContent(new Label(e.getMessage() +" "+e.getCause().toString()));
+			e.printStackTrace();
+			this.setContent(new Label(e.getMessage() +" "+e.getCause().toString()));
 		}
 		JavaScript.getCurrent().execute(
 				"setTimeout(function() {" +
@@ -70,7 +71,7 @@ public class ReportPrint extends UI{
 			setContent(modelReceipt);
 		}else if(data.getType()==ReportType.REQUIREMENT){
 			modelRequirement=new ReportRequirementModel(function, data);
-			setContent(modelConsumption);
+			setContent(modelRequirement);
 		}else if(data.getType()==ReportType.STOCK){
 			modelStock=new ReportStockModel(function, data);
 			setContent(modelStock);

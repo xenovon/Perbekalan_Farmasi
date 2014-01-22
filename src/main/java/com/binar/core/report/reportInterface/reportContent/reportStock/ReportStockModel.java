@@ -44,7 +44,7 @@ public class ReportStockModel extends Label {
 	
 	//Variabel untuk ditampilkan di surat pesanan
 		
-	private String html="<html> <head> <title> Laporan Stok Opname {[GoodsType]} </title> <style type='text/css'>body{width:750px;font-family:arial}h1.title{display:block;margin:0 auto;font-size:24px;text-align:center}h2.address{display:block;margin:0 auto;font-size:16px;font-weight:normal;text-align:center}.center{padding-bottom:20px;margin-bottom:30px}.kepada{width:400px;margin-top:30px;line-height:1.5em}.PONumber{float:right;top:40px}table{width:100%;border:1px solid black;border-collapse:collapse}table tr td,table tr th{border:1px solid black;padding:2px;margin:0}.footer{float:right;margin-top:60px}.tapak-asma{text-align:center}.kepala{margin-bottom:100px}</style> </head> <body> <div class='center'> <h1 class='title'>Laporan Stok Opname {{GoodsType}}</h1> <h2 class='address'> {{Periode}} </h2> </div> <table> <tr> <th>No</th> <th>Nama</th> <th>Satuan</th> <th>Stok</th> <th>Jumlah</th> </tr> {{TableCode}} </table> <div class='footer'> {{City}} , {{ReportDate}} <div class='tapak-asma'> <div class='kepala'>Petugas Gudang Farmasi </br>RSUD Ajibarang</div> <div>{{UserName}}</div> <div>NIP: {{UserNum}}</div> </div> </div> </body> </html>";
+	private String html="<html><head><title>Laporan Stok Opname {{GoodsType}} </title> <style type='text/css'>body{width:750px;font-family:arial}h1.title{display:block;margin:0 auto;font-size:24px;text-align:center}h2.address{display:block;margin:0 auto;font-size:16px;font-weight:normal;text-align:center}.center{padding-bottom:20px;margin-bottom:30px}.kepada{width:400px;margin-top:30px;line-height:1.5em}.PONumber{float:right;top:40px}table{width:100%;border:1px solid black;border-collapse:collapse}table tr td,table tr th{border:1px solid black;padding:2px;margin:0}.footer{float:right;margin-top:60px}.tapak-asma{text-align:center}.kepala{margin-bottom:100px}</style> </head> <body> <div class='center'> <h1 class='title'>Laporan Stok Opname {{GoodsType}}</h1> <h2 class='address'> {{Periode}} </h2> </div> <table> <tr> <th>No</th> <th>Nama</th> <th>Satuan</th> <th>Stok</th> <th>Jumlah</th> </tr> {{TableCode}} </table> <div class='footer'> {{City}} , {{ReportDate}} <div class='tapak-asma'> <div class='kepala'>Petugas Gudang Farmasi </br>RSUD Ajibarang</div> <div>{{UserName}}</div> <div>NIP: {{UserNum}}</div> </div> </div> </body> </html>";
 	public ReportStockModel(GeneralFunction function, ReportData data) {
 		this.function=function;
 		this.setContentMode(ContentMode.HTML);
@@ -60,7 +60,7 @@ public class ReportStockModel extends Label {
 	//untuk mengeset konten-konten yang ada di laporan
 	private void setContent(){
 		
-		DateTime periodeDate=new DateTime(data.getDateMonth());
+		DateTime periodeDate=new DateTime(data.getDate());
 		periode="Periode "+date.dateToText(periodeDate.toDate());
 		
 		reportDate = date.dateToText(new Date(),true);
@@ -86,7 +86,7 @@ public class ReportStockModel extends Label {
 		html=html.replace("{{ReportDate}}", reportDate);
 		html=html.replace("{{UserName}}", userName);
 		html=html.replace("{{UserNum}}", userNum);		
-		html=html.replace("{{GoodsType}}", userNum);		
+		html=html.replace("{{GoodsType}}", goodsType);		
 		this.setValue(html);
 	}
 	private String generateTableCode(Map<Goods, Double[]> data){
@@ -139,7 +139,7 @@ public class ReportStockModel extends Label {
 				between("date", startDate.toDate(), endDate.toDate()).order().desc("date").findList();
 
 		
-		List<Goods> goodsList=server.find(Goods.class).where().in("type", goodsTypeList).order().desc("timestamp").findList();
+		List<Goods> goodsList=server.find(Goods.class).where().in("type", goodsTypeList).findList();
 		
 		Map<Goods, Double[]> returnValue=new HashMap<Goods, Double[]>();
 		
@@ -229,8 +229,8 @@ public class ReportStockModel extends Label {
 	}
 	//menghitung total harga
 	private double getTotalPrice(Goods goods, int stock){
-		SupplierGoods supplierGoods=server.find(SupplierGoods.class).where().eq("goods", goods).order().desc("lastUpdate").findList().get(0);
 		try {
+			SupplierGoods supplierGoods=server.find(SupplierGoods.class).where().eq("goods", goods).order().desc("lastUpdate").findList().get(0);
 			return supplierGoods.getLastPrice()*stock;
 		} catch (Exception e) {
 			return 0;

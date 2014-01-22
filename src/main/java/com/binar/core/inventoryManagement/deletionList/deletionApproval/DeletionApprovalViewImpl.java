@@ -152,7 +152,7 @@ DeletionApprovalView, Button.ClickListener, ValueChangeListener{
 				addComponent(new Label(" Awal : "), 1,0);
 				addComponent(selectStartDate, 2,0);
 				addComponent(new Label(" Akhir : "), 3,0);
-				addComponent(selectStartDate, 4,0);
+				addComponent(selectEndDate, 4,0);
 				setSpacing(true);
 				addComponent(new Label("Filter Persetujuan"), 1, 1);
 				addComponent(selectFilter, 2, 1);
