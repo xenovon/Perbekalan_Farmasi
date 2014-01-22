@@ -46,7 +46,6 @@ DeletionApprovalView, Button.ClickListener, ValueChangeListener{
 	private Table table;
 
 	private Label labelTitle;
-	private GridLayout layoutFilter;
 	private Button buttonAccept;
 	private Button buttonReset;
 	private DateField selectStartDate;
@@ -77,7 +76,6 @@ DeletionApprovalView, Button.ClickListener, ValueChangeListener{
 						System.out.println("Text change event fired");
 				        if (filter != null)
 				            container.removeContainerFilter(filter);
-				        
 				        //set filter baru
 				        filter.updateData(event.getText());
 				        container.addContainerFilter(filter);
@@ -89,7 +87,7 @@ DeletionApprovalView, Button.ClickListener, ValueChangeListener{
 
 		table=new Table();
 		table.setSizeFull();
-		table.setWidth("98%");
+		table.setWidth("100%");
 		table.setHeight("420px");
 		table.setSortEnabled(true);
 		table.setImmediate(true);
@@ -107,16 +105,14 @@ DeletionApprovalView, Button.ClickListener, ValueChangeListener{
         };
         table.setContainerDataSource(container);		
 
-		selectStartDate = new DateField("", DateTime.now().minusDays(30).toDate());
-		selectEndDate =new DateField("",DateTime.now().toDate());
+		selectStartDate = new DateField("Rentang Awal", DateTime.now().minusMonths(10).toDate());
+		selectEndDate =new DateField("Rentang Awal",DateTime.now().plusMonths(2).toDate());
 
 		selectStartDate.setImmediate(true);
 		selectEndDate.setImmediate(true);
 
 		
 		System.out.println("Bulan ini" + Calendar.getInstance().get(Calendar.MONTH));
-		selectStartDate.addStyleName("non-caption-form");
-		selectEndDate.addStyleName("non-caption-form");
 
 		selectEndDate.setWidth("120px");
 		selectStartDate.setWidth("120px");
@@ -133,8 +129,7 @@ DeletionApprovalView, Button.ClickListener, ValueChangeListener{
 		buttonReset=new Button("Reset Pilihan");
 		buttonReset.addClickListener(this);
 		
-		selectFilter=new ComboBox("");
-		selectFilter.addStyleName("non-caption-form");
+		selectFilter=new ComboBox("Filter Persetujuan");
 		selectFilter.addItem("Semua");
 		selectFilter.addItem("Telah Disetujui");
 		selectFilter.addItem("Belum Disetujui");
@@ -146,16 +141,17 @@ DeletionApprovalView, Button.ClickListener, ValueChangeListener{
 	}
 	
 	private void construct() {
-		GridLayout filterLayout=new GridLayout(5,2){
+		GridLayout filterLayout=new GridLayout(7,1){
 			{
-				addComponent(new Label("Rentang Periode : "), 0,0);
-				addComponent(new Label(" Awal : "), 1,0);
-				addComponent(selectStartDate, 2,0);
-				addComponent(new Label(" Akhir : "), 3,0);
-				addComponent(selectEndDate, 4,0);
+				addComponent(selectStartDate, 0,0);
+				addComponent(new Label("<div style='padding-left:20px'></div>", ContentMode.HTML), 1,0);
+				addComponent(selectEndDate, 2,0);
+				addComponent(new Label("<div style='padding-left:20px'></div>", ContentMode.HTML), 3,0);
+				addComponent(selectFilter, 4, 0);
+				addComponent(new Label("<div style='padding-left:20px'></div>", ContentMode.HTML), 5,0);
+				addComponent(inputFilter, 6, 0);
 				setSpacing(true);
-				addComponent(new Label("Filter Persetujuan"), 1, 1);
-				addComponent(selectFilter, 2, 1);
+				setMargin(true);
 
 			}
 		};
@@ -168,7 +164,7 @@ DeletionApprovalView, Button.ClickListener, ValueChangeListener{
 				this.addStyleName("float-right");
 			}
 		};
-		this.addComponents(labelTitle, filterLayout, inputFilter, buttonLayout, table );
+		this.addComponents(labelTitle, filterLayout, buttonLayout, table );
 	}
 
 	@Override
@@ -212,7 +208,6 @@ DeletionApprovalView, Button.ClickListener, ValueChangeListener{
 			item.getItemProperty("Disetujui?").setValue(new CheckBox("Disetujui",datum.isAccepted()));
 			item.getItemProperty("Operasi").setValue(new GridLayout(1,1){
 			{
-				
 					Button buttonShow=new Button();
 					buttonShow.setDescription("Lihat Lebih detail");
 					buttonShow.setIcon(new ThemeResource("icons/image/icon-detail.png"));
@@ -224,7 +219,6 @@ DeletionApprovalView, Button.ClickListener, ValueChangeListener{
 							listener.showDetail(datumFinal.getIdDeletedGoods());
 						}
 					});
-					
 					this.setSpacing(true);
 					this.setMargin(false);
 					this.addComponent(buttonShow, 0, 0);
@@ -234,10 +228,7 @@ DeletionApprovalView, Button.ClickListener, ValueChangeListener{
 		}
 
 		return true;
-
 	}
-	
-	
 	private Label labelDeletionDate;
 	private Label labelGoodsName;
 	private Label labelQuantity;

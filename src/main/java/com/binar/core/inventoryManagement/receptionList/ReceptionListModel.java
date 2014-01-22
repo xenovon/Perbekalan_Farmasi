@@ -1,5 +1,6 @@
 package com.binar.core.inventoryManagement.receptionList;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -7,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.joda.time.DateTime;
+
+
 
 
 
@@ -152,12 +155,17 @@ public class ReceptionListModel {
 	}
 	
 	public List<GoodsReception> getReceptionsByDate(DateTime periode) {
-		Date startDate=periode.withHourOfDay(periode.hourOfDay().getMinimumValue()).toDate();
-		Date endDate=periode.withHourOfDay(periode.hourOfDay().getMaximumValue()).toDate();
-		
-		return server.find(GoodsReception.class).where().
-				between("date", startDate, endDate).
-				order().asc("date").findList();	
+		try {
+			Date startDate=periode.withHourOfDay(periode.hourOfDay().getMinimumValue()).toDate();
+			Date endDate=periode.withHourOfDay(periode.hourOfDay().getMaximumValue()).toDate();
+			
+			return server.find(GoodsReception.class).where().
+					between("date", startDate, endDate).
+					order().asc("date").findList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<GoodsReception>();
+		}	
 	}
 
 	public boolean deleteGoodsReception(int recIdFinal) {

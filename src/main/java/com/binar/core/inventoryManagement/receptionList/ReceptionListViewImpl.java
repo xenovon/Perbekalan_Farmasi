@@ -262,7 +262,7 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 		container.removeAllItems();
 		System.out.println(dataTable.size());
 		if(dataTable.size()==0){
-			Notification.show("Data penerimaan kosong", Type.WARNING_MESSAGE);
+			Notification.show("Data penerimaan kosong", Type.TRAY_NOTIFICATION);
 			return false;
 		}
 		
@@ -569,7 +569,7 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 		containerByDate.removeAllItems();
 		System.out.println(dataByDate.size());
 		if(dataByDate.size()==0){
-			Notification.show("Data pengeluaran kosong", Type.HUMANIZED_MESSAGE);
+			Notification.show("Data pengeluaran kosong", Type.TRAY_NOTIFICATION);
 			return false;
 		}
 		

@@ -51,7 +51,7 @@ public class DeletionApprovalModel {
 		try {
 			DateTime start=new DateTime(startDate);
 			start=start.withHourOfDay(start.hourOfDay().getMinimumValue());
-			DateTime end=new DateTime(startDate);
+			DateTime end=new DateTime(endDate);
 			end=end.withHourOfDay(end.hourOfDay().getMaximumValue());
 			if(start.compareTo(end)>0){
 				DateTime buffer=start;
@@ -102,18 +102,19 @@ public class DeletionApprovalModel {
 				DeletedGoods delGoods=server.find(DeletedGoods.class, data.getIdDel());
 				delGoods.setAccepted(data.isAccepted());
 			
-				delGoods.setApprovalDate(new Date());
 
 				Goods goods=delGoods.getGoods();
 				int stock=goods.getCurrentStock();
 
 				if(data.isAccepted()){
+					delGoods.setApprovalDate(new Date());
 					stock=stock-delGoods.getQuantity();
 				}else{
 					stock=stock+delGoods.getQuantity();
+					delGoods.setApprovalDate(null);
 				}
 				delGoods.setStockQuantity(stock);
-
+				
 				server.update(delGoods);
 				Goods goodsDuplicate=server.find(Goods.class, goods.getIdGoods());
 				goodsDuplicate.setCurrentStock(stock);

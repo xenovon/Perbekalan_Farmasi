@@ -108,6 +108,7 @@ public class InputGoodsModel {
 			Goods goods=new Goods();
 			goods.setCategory(data.getCategory());
 			goods.setCurrentStock(data.getInitialStockInt());
+			System.out.println("Initial stock" + data.getInitialStockInt());
 			goods.setDescription(data.getDescription());
 			goods.setGoodsPackage(data.getGoodsPackage());
 			goods.setHet(data.getHETDouble());
@@ -138,6 +139,8 @@ public class InputGoodsModel {
 			Goods goods=server.find(Goods.class, data.getId());
 			goods.setCategory(data.getCategory());
 			goods.setCurrentStock(data.getInitialStockInt());
+			System.out.println("Initial stock" + data.getInitialStockInt());
+
 			goods.setDescription(data.getDescription());
 			goods.setGoodsPackage(data.getGoodsPackage());
 			goods.setHet(data.getHETDouble());

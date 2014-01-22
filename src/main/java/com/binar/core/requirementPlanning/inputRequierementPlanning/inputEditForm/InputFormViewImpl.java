@@ -117,7 +117,7 @@ public class InputFormViewImpl extends FormLayout implements
 			}
 		};
 		inputSupplier.addValueChangeListener(this);
-		inputPrice= new TextField("Harga Obat"){
+		inputPrice= new TextField("Harga Barang"){
 			{
 				setImmediate(true);
 				setWidth(function.FORM_WIDTH);

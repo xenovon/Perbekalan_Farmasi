@@ -201,7 +201,7 @@ public class FormData {
 		this.initialStock = initialStock;
 	}
 	public int getInitialStockInt() throws NumberFormatException{
-		if(initialStock.equals("")){
+		if(!initialStock.equals("")){
 			return Integer.parseInt(initialStock);			
 		}
 		return 0;

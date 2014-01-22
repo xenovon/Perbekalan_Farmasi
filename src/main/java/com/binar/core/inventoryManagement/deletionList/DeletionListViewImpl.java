@@ -50,10 +50,6 @@ public class DeletionListViewImpl extends VerticalLayout implements DeletionList
 
 	private Table table;
 	private Label title;
-	private Label labelFilter;
-	private Label labelYear;
-	private Label labelMonth;
-	private Label labelTitle;
 	private ComboBox selectFilter;
 	private DateField selectStartDate;
 	private DateField selectEndDate;
@@ -77,7 +73,7 @@ public class DeletionListViewImpl extends VerticalLayout implements DeletionList
 
 	@Override
 	public void init() {
-		title=new Label("<h2>Stok Barang Gudang Farmasi</h2>", ContentMode.HTML);
+		title=new Label("<h2>Daftar Penghapusan Barang</h2>", ContentMode.HTML);
 
 		filter=function.getFilter("");
 		inputFilter= new TextField("Filter Tabel"){
@@ -100,7 +96,7 @@ public class DeletionListViewImpl extends VerticalLayout implements DeletionList
 		};
 		table=new Table();
 		table.setSizeFull();
-		table.setWidth("98%");
+		table.setWidth("100%");
 		table.setHeight("420px");
 		table.setSortEnabled(true);
 		table.setImmediate(true);
@@ -121,17 +117,14 @@ public class DeletionListViewImpl extends VerticalLayout implements DeletionList
         };
         table.setContainerDataSource(container);		
 		
-		selectStartDate = new DateField("", DateTime.now().minusDays(30).toDate());
-		selectEndDate =new DateField("",DateTime.now().toDate());
+		selectStartDate = new DateField("Rentang Awal", DateTime.now().minusMonths(10).toDate());
+		selectEndDate =new DateField("Rentang Awal",DateTime.now().plusMonths(2).toDate());
 
 		selectStartDate.setImmediate(true);
 		selectEndDate.setImmediate(true);
 
 		
 		System.out.println("Bulan ini" + Calendar.getInstance().get(Calendar.MONTH));
-		selectStartDate.addStyleName("non-caption-form");
-		selectEndDate.addStyleName("non-caption-form");
-
 		selectEndDate.setWidth("120px");
 		selectStartDate.setWidth("120px");
 	
@@ -139,19 +132,14 @@ public class DeletionListViewImpl extends VerticalLayout implements DeletionList
 		selectStartDate.addValueChangeListener(this);
 		
 
-		labelFilter=new Label("<b style='font-size:14px'>Filter : </b> ", ContentMode.HTML);
-		labelYear=new Label("Pilih Rentang Awal  :");
-		labelMonth=new Label("Pilih Rentang Akhir  :");
 		
-		selectFilter=new ComboBox("");
-		selectFilter.addStyleName("non-caption-form");
+		selectFilter=new ComboBox("Pilih Persetujuan ");
 		selectFilter.addItem("Semua");
 		selectFilter.addItem("Telah Disetujui");
 		selectFilter.addItem("Belum Disetujui");
 		selectFilter.setValue("Semua");
 		selectFilter.setImmediate(true);
 		selectFilter.addValueChangeListener(this);
-		labelTitle =new Label("<h2>Daftar Penghapusan Barang</h2>", ContentMode.HTML);
 		buttonNew=new Button("Penghapusan Baru");
 		buttonNew.addClickListener(this);
 		construct();
@@ -161,25 +149,23 @@ public class DeletionListViewImpl extends VerticalLayout implements DeletionList
 	@Override
 	public void construct() {
 		this.addComponent(title);
-
-		GridLayout layoutFilter =new GridLayout(5,2);
+		
+		GridLayout layoutFilter =new GridLayout(7,1);
 			layoutFilter.setMargin(true);
 			layoutFilter.setSpacing(true);
-			layoutFilter.addComponent(labelFilter, 0, 0);
-			layoutFilter.addComponent(labelYear, 1, 0);
-			layoutFilter.addComponent(selectStartDate, 2, 0);
-			layoutFilter.addComponent(labelMonth, 3, 0);
-			layoutFilter.addComponent(new Label("Filter Persetujuan"), 1, 1);
-			layoutFilter.addComponent(selectFilter, 2, 1);
+			layoutFilter.addComponent(selectStartDate, 0, 0);
+			layoutFilter.addComponent(new Label("<div style='padding-left:20px'></div>", ContentMode.HTML), 1,0);
+			layoutFilter.addComponent(selectEndDate, 2,0);
+			layoutFilter.addComponent(new Label("<div style='padding-left:20px'></div>", ContentMode.HTML), 3,0);
+			layoutFilter.addComponent(selectFilter, 4, 0);
+			layoutFilter.addComponent(new Label("<div style='padding-left:20px'></div>", ContentMode.HTML), 5,0);
+			layoutFilter.addComponent(inputFilter, 6, 0);
 			
 		this.addComponent(layoutFilter);
-		this.addComponent(new GridLayout(3,1){
-			{
-				setMargin(true);
-				setSpacing(true);
-				addComponent(new Label("<b style='font-size:14px'>Filter Teks : </b> ", ContentMode.HTML), 0, 0);
-				addComponent(inputFilter, 1, 0);
-				addComponent(buttonNew, 2,0);
+		this.addComponent(new GridLayout(){
+			{	
+				this.setMargin(true);
+				addComponent(buttonNew);
 			}
 		});
 		this.addComponent(table);
@@ -211,7 +197,7 @@ public class DeletionListViewImpl extends VerticalLayout implements DeletionList
 	@Override
 	public boolean updateTableData(List<DeletedGoods> data) {
 		container.removeAllItems();
-		System.out.println(data.size());
+		System.out.println("Ukuran data"+data.size());
 
 		for(DeletedGoods datum:data){
 			final DeletedGoods datumFinal=datum;
@@ -225,7 +211,9 @@ public class DeletionListViewImpl extends VerticalLayout implements DeletionList
 			item.getItemProperty("Harga").setValue(text.doubleToRupiah(datum.getPrice()));
 			item.getItemProperty("Total Harga").setValue(text.doubleToRupiah(datum.getPrice()*datum.getQuantity()));
 			item.getItemProperty("Disetujui?").setValue(datum.isAccepted()?"Disetujui":"Belum Disetujui");
-			item.getItemProperty("Tanggal Disetujui").setValue(date.dateToText(datum.getApprovalDate(), true));
+			if(datum.getApprovalDate()!=null){
+				item.getItemProperty("Tanggal Disetujui").setValue(date.dateToText(datum.getApprovalDate(), true));				
+			}
 			item.getItemProperty("Operasi").setValue(new GridLayout(3,1){
 			{
 					if(!datumFinal.isAccepted()){
@@ -361,7 +349,9 @@ public class DeletionListViewImpl extends VerticalLayout implements DeletionList
 		 labelTotalPrice.setValue(text.doubleToRupiah(data.getPrice()*data.getQuantity()));
 		 labelQuantity.setValue(data.getQuantity()+" "+data.getGoods().getUnit());
 		 labelAccepted.setValue(data.isAccepted()?"Disetujui":"Belum disetujui");
-		 labelAcceptedDate.setValue(date.dateToText(data.getApprovalDate(), true));
+		 if(data.getApprovalDate()!=null){
+			 labelAcceptedDate.setValue(date.dateToText(data.getApprovalDate(), true));
+		 }
 		 labelTimeStamp.setValue(data.getTimestamp().toString());
 		 labelInformation.setValue(data.getInformation());
 	}
@@ -392,6 +382,10 @@ public class DeletionListViewImpl extends VerticalLayout implements DeletionList
 		}
 		if(windowInputEdit==null){
 			windowInputEdit=new Window();
+			windowInputEdit.center();
+			windowInputEdit.setClosable(false);
+			windowInputEdit.setWidth("500px");					
+
 		}
 		windowInputEdit.setCaption(title);
 		windowInputEdit.setContent(content);

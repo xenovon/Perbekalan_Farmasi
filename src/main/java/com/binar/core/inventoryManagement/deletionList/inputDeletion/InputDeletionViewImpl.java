@@ -111,8 +111,9 @@ Button.ClickListener, ValueChangeListener {
 		};
 		inputDeletionDate.addValueChangeListener(this);
 		
-		information = new TextArea("informasi");
+		information = new TextArea("Informasi");
 		information.setMaxLength(function.MAX_TEXTAREA_LENGTH);
+		information.setWidth(function.FORM_WIDTH);
 		labelPriceGuide =new Label("");
 		labelPriceGuide.setContentMode(ContentMode.HTML);
 		
@@ -236,7 +237,7 @@ Button.ClickListener, ValueChangeListener {
 			listener.buttonSave();
 		}else if(event.getSource()==buttonCancel){
 			listener.buttonCancel();
-		}else if(event.getSource()==buttonSubmit){
+		}else if(event.getSource()==buttonUpdate){
 			listener.buttonUpdate();
 		}
 	}
@@ -294,6 +295,9 @@ Button.ClickListener, ValueChangeListener {
 		inputGoodsQuantity.setValue(deletion.getQuantity()+"");
 		inputGoodsSelect.setValue(deletion.getGoods().getIdGoods());
 		inputGoodsPrice.setValue(deletion.getPrice()+"");
+		System.out.println("deletionDate "+deletion.getDeletionDate());
+		System.out.println("inputGoodsQuantity "+deletion.getQuantity());
+		System.out.println("deletionDate "+deletion.getPrice());
 	}
 	
 	@Override

@@ -64,7 +64,7 @@ public class InputDeletionModel {
 			deletion.setTimestamp(new Date());	
 			deletion.setInformation(data.getInformation());
 			deletion.setGoods(goods);
-			deletion.setPrice(Integer.parseInt(data.getPrice()));
+			deletion.setPrice(Double.parseDouble(data.getPrice()));
 			server.save(deletion);
 			server.commitTransaction();
 			return null;
@@ -111,7 +111,7 @@ public class InputDeletionModel {
 			deletion.setQuantity(Integer.parseInt(data.getQuantity()));
 			deletion.setDeletionDate(data.getDeletionDate());
 			deletion.setInformation(data.getInformation());			
-			deletion.setPrice(Integer.parseInt(data.getPrice()));
+			deletion.setPrice(Double.parseDouble(data.getPrice()));
 
 			server.update(deletion);	
 			server.commitTransaction();

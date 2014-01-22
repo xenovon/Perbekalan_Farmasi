@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.binar.core.PresenterInterface;
 import com.binar.core.requirementPlanning.inputRequierementPlanning.inputEditForm.InputFormView.ErrorLabel;
+import com.binar.entity.Goods;
 import com.binar.entity.ReqPlanning;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.client.ui.VNotification.HideEvent;
@@ -143,7 +144,6 @@ public class InputFormPresenter implements PresenterInterface, InputFormView.Inp
 			view.hideError(ErrorLabel.SUPPLIER);
 			String messageHET=data.validatePriceHET();
 			if(messageHET.equals("")){
-				view.hideError(ErrorLabel.SUPPLIER);
 			}else{
 				view.showError(ErrorLabel.SUPPLIER, messageHET);
 			}
@@ -154,6 +154,9 @@ public class InputFormPresenter implements PresenterInterface, InputFormView.Inp
 	//Dijalankan ketika goods select berubah
 	private void goodsSelectChange(){
 		String unit=model.getGoodsUnit((String)view.getInputGoodsSelect().getValue());
+		Goods goods=model.getGoods((String) view.getInputGoodsSelect().getValue());
+		String het="HET "+generalFunction.getTextManipulator().doubleToRupiah(goods.getHet());
+		view.showError(ErrorLabel.SUPPLIER, het);
 		view.setUnit(unit);
 		
 	}

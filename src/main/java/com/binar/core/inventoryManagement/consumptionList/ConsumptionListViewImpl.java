@@ -241,7 +241,7 @@ public class ConsumptionListViewImpl extends VerticalLayout implements Consumpti
 		container.removeAllItems();
 		System.out.println(dataTable.size());
 		if(dataTable.size()==0){
-			Notification.show("Data pengeluaran kosong", Type.HUMANIZED_MESSAGE);
+			Notification.show("Data pengeluaran kosong", Type.TRAY_NOTIFICATION);
 			return false;
 		}
 		System.out.println("Jumlah data updateTableData ="+dataTable.size());
@@ -283,7 +283,7 @@ public class ConsumptionListViewImpl extends VerticalLayout implements Consumpti
 				containerByDate.removeAllItems();
 				System.out.println(dataByDate.size());
 				if(dataByDate.size()==0){
-					Notification.show("Data pengeluaran kosong", Type.WARNING_MESSAGE);
+					Notification.show("Data pengeluaran kosong", Type.TRAY_NOTIFICATION);
 					return false;
 				}
 				

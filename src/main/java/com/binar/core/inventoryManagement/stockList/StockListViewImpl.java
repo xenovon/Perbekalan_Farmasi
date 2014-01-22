@@ -32,6 +32,7 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
@@ -61,8 +62,7 @@ public class StockListViewImpl  extends VerticalLayout implements StockListView,
 	private TextManipulator text;
 	private DateField selectStartDate;
 	private DateField selectEndDate;
-	private Label labelYear;
-	private Label labelMonth;
+
 	private DateManipulator date;
 	public StockListViewImpl(GeneralFunction function){
 		this.function=function;
@@ -74,11 +74,9 @@ public class StockListViewImpl  extends VerticalLayout implements StockListView,
 	public void init() {
 		title=new Label("<h2>Stok Barang Gudang Farmasi</h2>", ContentMode.HTML);
 		labelFilter=new Label("<b style='font-size:14px'>Filter : </b> ", ContentMode.HTML);
-		labelYear=new Label("Pilih Rentang Tanggal Mulai  :");
-		labelMonth=new Label("Pilih Rentang Tanggal Akhir  :");
 		
-		selectStartDate = new DateField("", DateTime.now().minusDays(30).toDate());
-		selectEndDate =new DateField("",DateTime.now().toDate());
+		selectStartDate = new DateField("Rentang Tanggal Mulai", DateTime.now().minusDays(30).toDate());
+		selectEndDate =new DateField("Rentang Tanggal Akhir",DateTime.now().toDate());
 
 		selectStartDate.setImmediate(true);
 		selectEndDate.setImmediate(true);
@@ -104,7 +102,7 @@ public class StockListViewImpl  extends VerticalLayout implements StockListView,
 		labelManufacturer=new Label();
 		
 		filter=function.getFilter("");
-		inputFilter=new TextField(){
+		inputFilter=new TextField("Filter Data"){
 			{
 				setImmediate(true);
 				addTextChangeListener(new TextChangeListener() {
@@ -121,12 +119,11 @@ public class StockListViewImpl  extends VerticalLayout implements StockListView,
 				});
 			}
 		};
-		labelFilter=new Label("Filter Data");
 		
 		table=new Table();
 		table.setSizeFull();
 		table.setWidth("100%");
-		table.setHeight("450px");
+		table.setHeight("340px");
 		table.setPageLength(10);
 		table.setSortEnabled(true);
 		table.setImmediate(true);
@@ -137,13 +134,13 @@ public class StockListViewImpl  extends VerticalLayout implements StockListView,
 				addContainerProperty("Tanggal", Label.class,null);
 				addContainerProperty("PBF",String.class,null);
 				addContainerProperty("ED", String.class,null);
-				addContainerProperty("Jumlah",String.class,null);
-				addContainerProperty("Detail",Button.class,null);
-				addContainerProperty("space",Label.class,new Label(" | ", ContentMode.HTML));
-				addContainerProperty("Jumlah", String.class, null);
+				addContainerProperty("Jumlah Masuk",String.class,null);
+				addContainerProperty("Detail Masuk",Button.class,null);
+				addContainerProperty("_",Label.class,new Label(" | ", ContentMode.HTML));
+				addContainerProperty("Jumlah Keluar", String.class, null);
 				addContainerProperty("Sisa", String.class, null);
 				addContainerProperty("Keterangan", String.class, null);
-				addContainerProperty("Detail", Button.class,null);
+				addContainerProperty("Detail Keluar", Button.class,null);
 			}
 		};
 		table.setContainerDataSource(tableContainer);
@@ -154,25 +151,22 @@ public class StockListViewImpl  extends VerticalLayout implements StockListView,
 	@Override
 	public void construct() {
 		this.addComponent(title);
-		this.addComponent(selectGoods);
 
 		GridLayout layoutFilter =new GridLayout(5,1);
 			layoutFilter.setMargin(true);
 			layoutFilter.setSpacing(true);
-			layoutFilter.addComponent(labelFilter, 0, 0);
-			layoutFilter.addComponent(labelYear, 1, 0);
-			layoutFilter.addComponent(selectStartDate, 2, 0);
-			layoutFilter.addComponent(labelMonth, 3, 0);
-			layoutFilter.addComponent(selectEndDate, 4, 0);
+			layoutFilter.addComponent(selectGoods, 0,0);
+			layoutFilter.addComponent(selectStartDate, 1, 0);
+			layoutFilter.addComponent(selectEndDate, 2, 0);
+			//untuk spasi
+			layoutFilter.addComponent(new Label("<div style='padding-left:20px'></div>", ContentMode.HTML), 3,0);
+			layoutFilter.addComponent(inputFilter, 4, 0);
 			
 		this.addComponent(layoutFilter);
-		this.addComponent(new GridLayout(3,5){
+		this.addComponent(new GridLayout(2,5){
 			{
 				setMargin(true);
 				setSpacing(true);
-				addComponent(labelFilter, 0, 0);
-				addComponent(inputFilter, 1, 0);
-				addComponent(new Label("</br></br>", ContentMode.HTML), 2,0);
 				addComponent(new Label("Nama Barang"), 0,1);
 				addComponent(new Label("Stok Saat Ini"), 0,2);
 				addComponent(new Label("Kemasan"), 0,3);
@@ -198,7 +192,6 @@ public class StockListViewImpl  extends VerticalLayout implements StockListView,
 		if(event.getProperty()==selectStartDate ){
 			listener.periodChange();
 		}
-		
 	}
 
 	@Override
@@ -206,6 +199,15 @@ public class StockListViewImpl  extends VerticalLayout implements StockListView,
 		this.listener=listener;
 	}
 
+	public boolean updateTableData(Goods goods){
+		if(goods!=null){
+			labelGoodsName.setValue(goods.getName());
+			labelUnit.setValue(goods.getUnit());;
+			labelPackage.setValue(goods.getGoodsPackage());			
+		}
+		
+		return true;
+	}
 	@Override
 	public boolean updateTableData(List<TableData> data) {
 		if(data.size()!=0){
@@ -217,7 +219,6 @@ public class StockListViewImpl  extends VerticalLayout implements StockListView,
 			if(data.get(0).getReception()!=null){
 				SupplierGoods goods=data.get(0).getReception().getInvoiceItem().
 						getPurchaseOrderItem().getSupplierGoods();
-				
 				goodsName=goods.getGoods().getName();
 				unit=goods.getGoods().getUnit();
 				goodsPackage=goods.getGoods().getGoodsPackage();
@@ -246,8 +247,8 @@ public class StockListViewImpl  extends VerticalLayout implements StockListView,
 					item.getItemProperty("Tanggal").setValue(date.dateToText(datum.getDate().toDate(), true));
 					item.getItemProperty("PBF").setValue(reception.getInvoiceItem().getPurchaseOrderItem().getSupplierGoods().getSupplier().getSupplierName());;
 					item.getItemProperty("ED").setValue(date.dateToText(reception.getExpiredDate(), true));
-					item.getItemProperty("Jumlah").setValue(reception.getQuantityReceived());
-					item.getItemProperty("Detail").setValue(new Button(){ //mengeset operasi
+					item.getItemProperty("Jumlah Masuk").setValue(reception.getQuantityReceived());
+					item.getItemProperty("Detail Masuk").setValue(new Button(){ //mengeset operasi
 						{
 							{
 								setDescription("Lihat Lebih detail");
@@ -265,11 +266,12 @@ public class StockListViewImpl  extends VerticalLayout implements StockListView,
 						}});
 										
 				}
+				
 				if(consumption!=null){
-					item.getItemProperty("Jumlah").setValue(consumption.getQuantity());
+					item.getItemProperty("Jumlah Keluar").setValue(consumption.getQuantity());
 					item.getItemProperty("Sisa").setValue(consumption.getStockQuantity());
 					item.getItemProperty("Keterangan").setValue(consumption.getInformation());
-					item.getItemProperty("Detail").setValue(new Button(){ //mengeset operasi
+					item.getItemProperty("Detail Keluar").setValue(new Button(){ //mengeset operasi
 						{
 							{
 								setDescription("Lihat Lebih detail");

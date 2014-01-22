@@ -30,13 +30,14 @@ public class DeletionListModel {
 		try {
 			DateTime start=new DateTime(startDate);
 			start=start.withHourOfDay(start.hourOfDay().getMinimumValue());
-			DateTime end=new DateTime(startDate);
+			DateTime end=new DateTime(endDate);
 			end=end.withHourOfDay(end.hourOfDay().getMaximumValue());
 			if(start.compareTo(end)>0){
 				DateTime buffer=start;
 				start=end;
 				end=buffer;
 			}
+			System.out.println("Start "+start.toString()+" end "+end.toString() );
 			switch (filter) {
 				case ACCEPTED: return server.find(DeletedGoods.class).where().between("deletionDate", start.toDate(), end.toDate()).eq("isAccepted", true).findList(); 
 				case ALL: return server.find(DeletedGoods.class).where().between("deletionDate", start.toDate(), end.toDate()).findList();

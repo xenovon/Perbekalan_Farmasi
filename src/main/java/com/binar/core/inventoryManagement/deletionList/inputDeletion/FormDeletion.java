@@ -87,7 +87,7 @@ public class FormDeletion {
 		if(this.price!=null){	
 			if(!this.price.equals("")){
 				try {
-					int quantity=Integer.parseInt(this.price);
+					Double quantity=Double.parseDouble(this.price);
 					if(quantity<0){
 						return "Harga harus lebih dari 0";
 					}

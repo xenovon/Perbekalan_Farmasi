@@ -94,7 +94,7 @@ public class GoodsManagementViewImpl extends VerticalLayout
 				addContainerProperty("Kemasan", String.class,null);
 				addContainerProperty("Kategori", String.class, null);
 				addContainerProperty("HET", String.class, null);
-				addContainerProperty("Barang Penting?", String.class, null);
+				addContainerProperty("Fast Moving?", String.class, null);
 				addContainerProperty("Operasi", GridLayout.class,null);
 				
 			}
@@ -154,7 +154,7 @@ public class GoodsManagementViewImpl extends VerticalLayout
 					addComponent(new Label("Kemasan Barang"), 0,8);
 					addComponent(new Label("Kategori"), 0, 9);
 					addComponent(new Label("Stok Minimum"), 0,10);
-					addComponent(new Label("Barang Penting?"), 0, 11);
+					addComponent(new Label("Fast Moving?"), 0, 11);
 					addComponent(new Label("HET"), 0, 12);
 					addComponent(new Label("Keterangan"), 0, 13);
 				}	
@@ -241,7 +241,7 @@ public class GoodsManagementViewImpl extends VerticalLayout
 			item.getItemProperty("Kemasan").setValue(datum.getGoodsPackage());
 			item.getItemProperty("Kategori").setValue(datum.getCategory().toString());
 			item.getItemProperty("HET").setValue(text.doubleToRupiah(datum.getHet()));
-			item.getItemProperty("Barang Penting?").setValue(datum.isImportant()?"Ya":"Tidak");			
+			item.getItemProperty("Fast Moving?").setValue(datum.isImportant()?"Ya":"Tidak");			
 			
 			item.getItemProperty("Operasi").setValue(new GridLayout(3,1){
 			{

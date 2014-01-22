@@ -44,7 +44,13 @@ public class StockListPresenter implements StockListListener{
 		Date startDate = view.getSelectStartDate();
 		Date endDate =view.getSelectEndDate();
 		String idGoods=view.getSelectedGoods();
-		view.updateTableData(model.getTableData(idGoods, startDate, endDate));
+		List<TableData> data=model.getTableData(idGoods, startDate, endDate);
+		if(data.size()>0){
+			view.updateTableData(data);					
+		}else{
+			view.updateTableData(model.getGoods(idGoods));
+			Notification.show("Data kosong",Type.TRAY_NOTIFICATION);
+		}
 	}
 
 	@Override
@@ -53,9 +59,11 @@ public class StockListPresenter implements StockListListener{
 		Date endDate =view.getSelectEndDate();
 		String idGoods=view.getSelectedGoods();
 		List<TableData> data=model.getTableData(idGoods, startDate, endDate);
+		System.out.println("Data size : "+data.size());
 		if(data.size()>0){
 			view.updateTableData(data);					
 		}else{
+			view.updateTableData(model.getGoods(idGoods));
 			Notification.show("Data kosong",Type.TRAY_NOTIFICATION);
 		}
 	}

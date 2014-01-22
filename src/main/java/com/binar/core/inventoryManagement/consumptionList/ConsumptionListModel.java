@@ -1,5 +1,6 @@
 package com.binar.core.inventoryManagement.consumptionList;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -126,12 +127,17 @@ public class ConsumptionListModel {
 	
 	public List<GoodsConsumption> getConsumptionsByDate(DateTime periode){
 
-		Date startDate=periode.withHourOfDay(periode.hourOfDay().getMinimumValue()).toDate();
-		Date endDate=periode.withHourOfDay(periode.hourOfDay().getMaximumValue()).toDate();
-		
-		return server.find(GoodsConsumption.class).where().
-				between("consumptionDate", startDate, endDate).
-				order().asc("consumptionDate").findList();	
+		try {
+			Date startDate=periode.withHourOfDay(periode.hourOfDay().getMinimumValue()).toDate();
+			Date endDate=periode.withHourOfDay(periode.hourOfDay().getMaximumValue()).toDate();
+			
+			return server.find(GoodsConsumption.class).where().
+					between("consumptionDate", startDate, endDate).
+					order().asc("consumptionDate").findList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<GoodsConsumption>();
+		}	
 	}
 	
 	public int getNumberOfConsumptionsByDate(DateTime periode){		

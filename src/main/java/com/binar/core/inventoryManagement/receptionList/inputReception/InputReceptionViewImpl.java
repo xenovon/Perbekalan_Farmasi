@@ -130,8 +130,9 @@ Button.ClickListener, ValueChangeListener {
 		};
 		inputInvoiceEndDate.addValueChangeListener(this);
 		
-		inputInformation = new TextArea("informasi");
+		inputInformation = new TextArea("Informasi");
 		inputInformation.setMaxLength(function.MAX_TEXTAREA_LENGTH);
+		inputInformation.setWidth(function.FORM_WIDTH);
 
 		labelSatuan =new Label("Satuan");
 		

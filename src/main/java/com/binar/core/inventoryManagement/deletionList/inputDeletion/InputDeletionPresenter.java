@@ -1,5 +1,6 @@
 package com.binar.core.inventoryManagement.deletionList.inputDeletion;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -42,14 +43,15 @@ public class InputDeletionPresenter implements InputDeletionView.InputDeletionLi
 
 	public void updateEditView(int idDel) {
 		view.setFormData(model.getSingleDeletion(idDel));
+		System.out.println("id deletion "+idDel);
 	}	
 
 	@Override
 	public void buttonUpdate() {
 		FormDeletion data=view.getFormData();
-		List<String> errors=model.insertData(data);
+		List<String> errors=model.saveEdit(data);
 		if(errors==null){
-			view.getUI().removeWindow(window);
+			closeWindow();
 			view.resetForm();
 			Notification.show("Penyimpanan rencana kebutuhan berhasil", Type.TRAY_NOTIFICATION);
 
@@ -69,7 +71,7 @@ public class InputDeletionPresenter implements InputDeletionView.InputDeletionLi
 		FormDeletion data=view.getFormData();
 		List<String> errors=model.insertData(data);
 		if(errors==null){
-			view.getUI().removeWindow(window);
+			closeWindow();
 			view.resetForm();
 			Notification.show("Penyimpanan rencana kebutuhan berhasil", Type.TRAY_NOTIFICATION);
 
@@ -112,7 +114,7 @@ public class InputDeletionPresenter implements InputDeletionView.InputDeletionLi
 				"Yakin akan membatalkan memproses data penghapusan?",
 				new ClickListener() {
 					public void buttonClick(ClickEvent event) {
-							view.getUI().removeWindow(window);
+							closeWindow();
 							view.resetForm();						
 					}
 				}, view.getUI());			
@@ -122,6 +124,13 @@ public class InputDeletionPresenter implements InputDeletionView.InputDeletionLi
 	@Override
 	public void buttonReset() {
 		view.resetForm();
+	}
+	public void closeWindow(){
+		Collection<Window> list=view.getUI().getWindows();
+		for(Window w:list){
+			view.getUI().removeWindow(w);
+			view.resetForm();
+		}
 	}
 
 

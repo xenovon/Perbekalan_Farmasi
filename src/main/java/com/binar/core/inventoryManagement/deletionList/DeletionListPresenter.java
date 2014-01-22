@@ -60,6 +60,7 @@ public class DeletionListPresenter implements DeletionListListener{
 		
 		ApprovalFilter approval=view.getApprovalFilter();
 		List<DeletedGoods> data=model.getDeletedTable(rangeStart, rangeEnd, approval);
+		System.out.println("ukuran deleted goods "+data.size());
 		view.updateTableData(data);
 	}
 
@@ -94,7 +95,7 @@ public class DeletionListPresenter implements DeletionListListener{
 			formDelEditPresenter =new InputDeletionPresenter(formDelEditModel, formDelEditView, function, idDeletion, true);
 			System.out.println("Form model view presenter instantiasi");
 		}else{
-			formDelPresenter.updateEditView(idDeletion);	
+			formDelEditPresenter.updateEditView(idDeletion);	
 		}
 		view.displayForm(formDelEditView, "Ubah Data Pengajuan Penghapusan");
 		

@@ -53,7 +53,7 @@ public class StockListModel {
 			while(currentDate.compareTo(endDate) < 0){
 				DateTime todayStart=currentDate.withHourOfDay(currentDate.hourOfDay().getMinimumValue());
 				DateTime todayEnd=currentDate.withHourOfDay(currentDate.hourOfDay().getMaximumValue());
-				System.out.println(currentDate.toString());
+				System.out.println("currentDate "+currentDate.toString());
 				List<GoodsReception> receptions=server.find(GoodsReception.class).where().eq("invoiceItem.purchaseOrderItem.supplierGoods.goods", 
 						goods).between("date", todayStart, todayEnd).findList();
 				List<GoodsConsumption> consumptions=server.find(GoodsConsumption.class).where().eq("goods", goods).
@@ -84,7 +84,6 @@ public class StockListModel {
 						output.add(data);
 					}				
 				}
-				
 				currentDate=currentDate.plusDays(1);
 			}
 		} catch (Exception e) {
@@ -99,7 +98,7 @@ public class StockListModel {
 	public GoodsReception getReception(int idReception){
 		return server.find(GoodsReception.class, idReception);
 	}
-	private Goods getGoods(String idGoods){
+	public Goods getGoods(String idGoods){
 		return server.find(Goods.class, idGoods);
 	}
 	

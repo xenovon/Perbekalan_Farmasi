@@ -45,6 +45,9 @@ public class InputFormModel {
 		 */
 		return null;
 	}
+	public Goods getGoods(String idGoods){
+		return server.find(Goods.class, idGoods);
+	}
 	//Mendapatkan data daftar barang untuk combo box
 	public Map<String,String> getGoodsData(){
 		List<Goods> goodsList=server.find(Goods.class).findList();
