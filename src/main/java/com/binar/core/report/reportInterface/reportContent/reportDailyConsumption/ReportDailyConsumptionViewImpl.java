@@ -3,6 +3,8 @@ package com.binar.core.report.reportInterface.reportContent.reportDailyConsumpti
 import java.util.Calendar;
 import java.util.List;
 
+import org.joda.time.DateTime;
+
 import com.binar.core.report.reportInterface.ReportInterfaceView.ReportInterfaceListener;
 import com.binar.core.report.reportInterface.reportContent.ReportContentView;
 import com.binar.core.report.reportInterface.reportContent.ReportData;
@@ -71,7 +73,7 @@ public class ReportDailyConsumptionViewImpl extends VerticalLayout implements Cl
 		
 		selectYear.setNullSelectionAllowed(false);
 		selectMonth.setNullSelectionAllowed(false);
-		selectYear.setValue(yearList.get(2));
+		selectYear.setValue(new DateTime().getYear()+"");
 		selectMonth.setValue(monthList.get(Calendar.getInstance().get(Calendar.MONTH)));
 		for(String month:monthList){
 			System.out.println("Bulan "+month);

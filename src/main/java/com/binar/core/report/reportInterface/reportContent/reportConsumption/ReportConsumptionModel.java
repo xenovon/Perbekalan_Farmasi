@@ -62,7 +62,7 @@ public class ReportConsumptionModel extends Label{
 			if(data.getPeriodeType()==PeriodeType.BY_MONTH){
 				tableCode=generateTableCode(getConsumptionDataMonthly(data.getDateMonth(), true));
 			}else{
-				tableCode=generateTableCode(getConsumptionDataDaily(data.getDateMonth(), true));				
+				tableCode=generateTableCode(getConsumptionDataDaily(data.getDate(), true));				
 			}
 			
 		}else if(data.getSelectedGoods().equals(ReportData.SELECT_GOODS_ALKES.toString())){
@@ -70,7 +70,7 @@ public class ReportConsumptionModel extends Label{
 			if(data.getPeriodeType()==PeriodeType.BY_MONTH){
 				tableCode=generateTableCode(getConsumptionDataMonthly(data.getDateMonth(), false));
 			}else{
-				tableCode=generateTableCode(getConsumptionDataDaily(data.getDateMonth(), false));				
+				tableCode=generateTableCode(getConsumptionDataDaily(data.getDate(), false));				
 			}
 		}
 		if(data.getPeriodeType()==PeriodeType.BY_MONTH){

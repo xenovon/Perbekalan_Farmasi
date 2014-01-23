@@ -147,7 +147,9 @@ public class ReportParameter {
 		Map<String, String> parameter=new HashMap<String, String>();
 		parameter.put(REPORT_TYPE, reportType.toString());
 		parameter.put(ACCEPTANCE, reportData.getAccepted());
-		parameter.put(DATE_RANGE, format.format(reportData.getDateStart()+"--"+format.format(reportData.getDateEnd())));
+		System.out.println("reportData.getDateStart() "+reportData.getDateStart().toString());
+		System.out.println("reportData.getDateEnd() "+reportData.getDateEnd().toString());
+		parameter.put(DATE_RANGE, format.format(reportData.getDateStart())+"--"+format.format(reportData.getDateEnd()));
 		return parameter;
 	}
 	private ReportData processExpiredGoods(VaadinRequest request){

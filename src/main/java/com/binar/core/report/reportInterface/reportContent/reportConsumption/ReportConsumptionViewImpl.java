@@ -85,7 +85,7 @@ public class ReportConsumptionViewImpl extends VerticalLayout implements ClickLi
 		
 		selectYear.setNullSelectionAllowed(false);
 		selectMonth.setNullSelectionAllowed(false);
-		selectYear.setValue(yearList.get(2));
+		selectYear.setValue(new DateTime().getYear()+"");
 		selectMonth.setValue(monthList.get(Calendar.getInstance().get(Calendar.MONTH)));
 		
 		for(String month:monthList){

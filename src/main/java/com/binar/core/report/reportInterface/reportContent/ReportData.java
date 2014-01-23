@@ -50,6 +50,9 @@ public class ReportData {
 	}
 	public void setDateRange(String dateRange) {
 		this.dateRange = dateRange;
+		Date[] date=getDateRange();
+		setDateStart(date[0]);
+		setDateEnd(date[1]);
 	}
 	public Date getDate() {
 		try {
@@ -68,13 +71,14 @@ public class ReportData {
 			return new Date();
 		}
 	}
-	public Date[] getDateRange() {
+	private Date[] getDateRange() {
 		String[] range=dateRange.split("--");
 		Date[] date=new Date[2];
 		try {
 			date[0] = format.parse(range[0]);
 			date[1] = format.parse(range[1]);
-			
+			System.out.println("Report Data date range start "+date[0].toString());
+			System.out.println("Report Data date range end "+date[1].toString());
 			return date;
 		} catch (Exception e) {
 			return null;
@@ -164,11 +168,11 @@ public class ReportData {
 		return dateStart;
 	}
 
-	public void setDateStart(Date dateStart) {
-		if(dateStart==null){
+	public void setDateStart(Date dateStartInput) {
+		if(dateStartInput==null){
 			this.dateStart =  new Date();
 		}else{
-			this.dateStart = dateStart;			
+			this.dateStart = dateStartInput;			
 		}
 	}
 
@@ -176,11 +180,11 @@ public class ReportData {
 		return dateEnd;
 	}
 
-	public void setDateEnd(Date dateEnd) {
-		if(dateEnd==null){
-			dateEnd=new Date();
+	public void setDateEnd(Date dateEndInput) {
+		if(dateEndInput==null){
+			this.dateEnd=new Date();
 		}else{
-			this.dateEnd = dateEnd;			
+			this.dateEnd = dateEndInput;			
 		}
 	}
 	public void setAccepted(String accepted) {

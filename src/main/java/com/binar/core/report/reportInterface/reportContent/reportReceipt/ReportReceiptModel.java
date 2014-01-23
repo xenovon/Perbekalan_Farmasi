@@ -73,7 +73,7 @@ public class ReportReceiptModel extends Label {
 			if(data.getPeriodeType()==PeriodeType.BY_MONTH){
 				tableCode=generateTableCode(getReception(data.getDateMonth(), false, false));
 			}else{
-				tableCode=generateTableCode(getReception(data.getDateMonth(), true, false));
+				tableCode=generateTableCode(getReception(data.getDate(), true, false));
 			}
 		}
 		if(data.getPeriodeType()==PeriodeType.BY_MONTH){
@@ -119,10 +119,9 @@ public class ReportReceiptModel extends Label {
 				returnValue=returnValue+"<td>"+goods.getName()+"</td>";
 				returnValue=returnValue+"<td>"+goods.getUnit()+"</td>";
 				returnValue=returnValue+"<td>"+supplier.getSupplierName()+"</td>";
-				returnValue=returnValue+"<td>"+supplier.getSupplierName()+"</td>";
 				returnValue=returnValue+"<td>"+reception.getQuantityReceived()+"</td>";
 				returnValue=returnValue+"<td>"+reception.getInvoiceItem().getInvoice().getInvoiceNumber()+"</td>";
-				returnValue=returnValue+"<td>"+reception.getInvoiceItem().getPricePPN()+"</td>";
+				returnValue=returnValue+"<td>"+function.getTextManipulator().doubleToRupiah(reception.getInvoiceItem().getPricePPN())+"</td>";
 				returnValue=returnValue+"<td style='max-size:220px;'>"+reception.getInformation()+"</td>";
 				
 			returnValue=returnValue+"</tr>";

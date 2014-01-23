@@ -43,7 +43,7 @@ public class ReportDailyConsumptionModel extends Label{
 	
 	//Variabel untuk ditampilkan di surat pesanan
 		
-	private String html="<html> <head> <title>Daftar Pengeluaran {{GoodsType}} Gudang Farmasi </title> <style type='text/css'>body{width:750px;font-family:arial}h1.title{display:block;margin:0 auto;font-size:24px;text-align:center}h2.address{display:block;margin:0 auto;font-size:16px;font-weight:normal;text-align:center}.center{padding-bottom:20px;margin-bottom:30px}.kepada{width:400px;margin-top:30px;line-height:1.5em}.PONumber{float:right;top:40px}table{width:100%;border:1px solid black;border-collapse:collapse}table tr td,table tr th{border:1px solid black;padding:2px;margin:0}.footer{float:right;margin-top:60px}.tapak-asma{text-align:center}.kepala{margin-bottom:100px}</style> </head> <body> <div class='center'> <h1 class='title'>Daftar Pengeluaran {{GoodsType}} Gudang Farmasi</h1> <h2 class='address'> {{Periode}} </h2> </div> <table> <tr> <th rowspan='2'>No</th> <th rowspan='2'>Nama</th> <th rowspan='2'>Sat</th> <th colspan='31'>Tanggal</th> </tr> <tr> <th>1</th> <th>2</th> <th>3</th> <th>4</th> <th>5</th> <th>6</th> <th>7</th> <th>8</th> <th>9</th> <th>10</th> <th>11</th> <th>12</th> <th>13</th> <th>14</th> <th>15</th> <th>16</th> <th>17</th> <th>18</th> <th>19</th> <th>20</th> <th>21</th> <th>22</th> <th>23</th> <th>24</th> <th>25</th> <th>26</th> <th>27</th> <th>28</th> <th>29</th> <th>30</th> <th>31</th> </tr> {{TableCode}} </table> <div class='footer'> {{City}} , {{ReportDate}} <div class='tapak-asma'> <div class='kepala'>Petugas Gudang Farmasi </br>RSUD Ajibarang</div> <div>{{UserName}}</div> <div>NIP: {{UserNum}}</div> </div> </div> </body> </html>";
+	private String html="<html> <head> <title>Daftar Pengeluaran {{GoodsType}} Gudang Farmasi </title> <style type='text/css'>body{width:750px;font-family:arial}h1.title{display:block;margin:0 auto;font-size:24px;text-align:center}h2.address{display:block;margin:0 auto;font-size:16px;font-weight:normal;text-align:center}.center{padding-bottom:20px;margin-bottom:30px}.kepada{width:400px;margin-top:30px;line-height:1.5em}.PONumber{float:right;top:40px}table{width:100%;border:1px solid black;border-collapse:collapse}table tr td,table tr th{border:1px solid black;padding:2px;margin:0}.footer{float:right;margin-top:60px}.tapak-asma{text-align:center}.kepala{margin-bottom:100px}</style> </head> <body> <div class='center'> <h1 class='title'>Daftar Pengeluaran {{GoodsType}} Gudang Farmasi</h1> <h2 class='address'> {{Periode}} </h2> </div> <table> <tr> <th rowspan='2'>No</th> <th rowspan='2'>Nama</th> <th rowspan='2'>Sat</th> <th colspan='31' style='text-align:center'>Tanggal</th> </tr> <tr> <th>1</th> <th>2</th> <th>3</th> <th>4</th> <th>5</th> <th>6</th> <th>7</th> <th>8</th> <th>9</th> <th>10</th> <th>11</th> <th>12</th> <th>13</th> <th>14</th> <th>15</th> <th>16</th> <th>17</th> <th>18</th> <th>19</th> <th>20</th> <th>21</th> <th>22</th> <th>23</th> <th>24</th> <th>25</th> <th>26</th> <th>27</th> <th>28</th> <th>29</th> <th>30</th> <th>31</th> </tr> {{TableCode}} </table> <div class='footer'> {{City}} , {{ReportDate}} <div class='tapak-asma'> <div class='kepala'>Petugas Gudang Farmasi </br>RSUD Ajibarang</div> <div>{{UserName}}</div> <div>NIP: {{UserNum}}</div> </div> </div> </body> </html>";
 
 	public ReportDailyConsumptionModel(GeneralFunction function, ReportData data) {
 		this.function=function;
@@ -119,10 +119,10 @@ public class ReportDailyConsumptionModel extends Label{
 		
 		//set periode (satu bulan
 		DateTime startDate=new DateTime(periode);
-			startDate=startDate.withHourOfDay(startDate.hourOfDay().getMinimumValue());
+			startDate=startDate.withTimeAtStartOfDay();
 			startDate=startDate.withDayOfMonth(startDate.dayOfMonth().getMinimumValue());
-		DateTime endDate=startDate.withHourOfDay(startDate.hourOfDay().getMaximumValue());
-			startDate=startDate.withDayOfMonth(startDate.dayOfMonth().getMaximumValue());
+		DateTime endDate=startDate.withHourOfDay(startDate.hourOfDay().getMaximumValue()).withMinuteOfHour(startDate.minuteOfHour().getMaximumValue());
+			endDate=endDate.withDayOfMonth(startDate.dayOfMonth().getMaximumValue());
 			
 		List<String> goodsTypeList=new ArrayList<String>();
 		if(isObat){

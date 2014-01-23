@@ -94,7 +94,7 @@ public class ReportProcurementModel extends Label{
 			i++;
 			if(entry.getValue().size()!=0){
 				returnValue=returnValue+"<tr>";
-				returnValue=returnValue+"<td>"+i+"</td>";
+				returnValue=returnValue+"<td rowspan='"+entry.getValue().size()+"'>"+i+"</td>";
 				returnValue=returnValue+"<td rowspan='"+entry.getValue().size()+"'>"+entry.getKey().getPurchaseOrderNumber()+"</td>";
 				returnValue=returnValue+"<td rowspan='"+entry.getValue().size()+"'>"+date.dateToText(entry.getKey().getDate(), true)+"</td>";
 				returnValue=returnValue+"<td rowspan='"+entry.getValue().size()+"'>"+entry.getValue().get(0).getSupplierGoods().getSupplier().getSupplierName()+"</td>";

@@ -67,6 +67,7 @@ public class StockListViewImpl  extends VerticalLayout implements StockListView,
 	public StockListViewImpl(GeneralFunction function){
 		this.function=function;
 		this.date=function.getDate();
+		this.text=function.getTextManipulator();
 		
 	}
 	
@@ -131,7 +132,7 @@ public class StockListViewImpl  extends VerticalLayout implements StockListView,
 		
 		tableContainer=new IndexedContainer(){
 			{
-				addContainerProperty("Tanggal", Label.class,null);
+				addContainerProperty("Tanggal", String.class,null);
 				addContainerProperty("PBF",String.class,null);
 				addContainerProperty("ED", String.class,null);
 				addContainerProperty("Jumlah Masuk",String.class,null);
@@ -210,6 +211,7 @@ public class StockListViewImpl  extends VerticalLayout implements StockListView,
 	}
 	@Override
 	public boolean updateTableData(List<TableData> data) {
+		tableContainer.removeAllItems(); //sempat error karena konten belum diremove
 		if(data.size()!=0){
 			String goodsName="";
 			String unit="";
@@ -237,17 +239,33 @@ public class StockListViewImpl  extends VerticalLayout implements StockListView,
 			labelManufacturer.setValue(manufacturer);
 			
 	        for (TableData datum:data) { 
-	        	
+	        
+	        	System.out.println("Table data insert "+datum.getDate().toString());
 	        	final GoodsConsumption consumption=datum.getConsumption();
 	        	final GoodsReception reception=datum.getReception();
 	        	
-				Item item = tableContainer.addItem(datum.getDate());
+				Item item = tableContainer.addItem(datum.getDate().toDate());
 				/* add data ke tabel */
+				if(item==null){
+					System.err.println("Item null");
+				}
+				if(datum==null){
+					System.err.println("Datum null");
+				}
+				if(datum.getDate()==null){
+					System.out.println("Date null");
+				}
+				if(date==null){
+					System.err.println("Date Null");
+				}
+				
+				item.getItemProperty("Tanggal").setValue(date.dateToText(datum.getDate().toDate(), true));
+				item.getItemProperty("_").setValue(new Label(" | ", ContentMode.HTML));
 				if(reception!=null){
-					item.getItemProperty("Tanggal").setValue(date.dateToText(datum.getDate().toDate(), true));
+					System.out.println("Resepsi tidak null");
 					item.getItemProperty("PBF").setValue(reception.getInvoiceItem().getPurchaseOrderItem().getSupplierGoods().getSupplier().getSupplierName());;
 					item.getItemProperty("ED").setValue(date.dateToText(reception.getExpiredDate(), true));
-					item.getItemProperty("Jumlah Masuk").setValue(reception.getQuantityReceived());
+					item.getItemProperty("Jumlah Masuk").setValue(text.intToAngka(reception.getQuantityReceived()));
 					item.getItemProperty("Detail Masuk").setValue(new Button(){ //mengeset operasi
 						{
 							{
@@ -268,8 +286,8 @@ public class StockListViewImpl  extends VerticalLayout implements StockListView,
 				}
 				
 				if(consumption!=null){
-					item.getItemProperty("Jumlah Keluar").setValue(consumption.getQuantity());
-					item.getItemProperty("Sisa").setValue(consumption.getStockQuantity());
+					item.getItemProperty("Jumlah Keluar").setValue(text.intToAngka(consumption.getQuantity()));
+					item.getItemProperty("Sisa").setValue(text.intToAngka(consumption.getStockQuantity()));
 					item.getItemProperty("Keterangan").setValue(consumption.getInformation());
 					item.getItemProperty("Detail Keluar").setValue(new Button(){ //mengeset operasi
 						{

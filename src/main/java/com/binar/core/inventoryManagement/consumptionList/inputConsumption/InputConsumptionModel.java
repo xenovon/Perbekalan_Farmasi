@@ -60,7 +60,6 @@ public class InputConsumptionModel {
 			consumption.setTimestamp(new Date());	
 			consumption.setInformation(data.getInformation());
 			consumption.setGoods(goods);
-			server.save(consumption);
 
 			// untuk mengurangi stock obat ketika ada konsumsi baru
 			Goods goodsStock=server.find(Goods.class, data.getGoodsId());			
@@ -70,8 +69,9 @@ public class InputConsumptionModel {
 			
 			consumption.setStockQuantity(currentStock);
 			server.update(goodsStock);
+			server.update(consumption);
 			function.getMinimumStock().update(goodsStock.getIdGoods());
-
+			
 			
 			server.commitTransaction();
 			return null;

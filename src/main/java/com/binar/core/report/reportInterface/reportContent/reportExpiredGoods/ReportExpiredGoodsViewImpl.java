@@ -55,10 +55,10 @@ public class ReportExpiredGoodsViewImpl extends VerticalLayout implements ClickL
 	public void init() {
 		buttonCancel=new Button("Batalkan");
 		buttonCancel.addClickListener(this);
-		buttonPrint.setIcon(new ThemeResource("icons/image/icon-print.png"));
 		
 		buttonPrint=new Button("Cetak");
 		buttonPrint.addClickListener(this);
+		buttonPrint.setIcon(new ThemeResource("icons/image/icon-print.png"));
 
 		opener=new BrowserWindowOpener(ReportPrint.class);
 		opener.setFeatures("height=200,width=400,resizable");
@@ -152,6 +152,7 @@ public class ReportExpiredGoodsViewImpl extends VerticalLayout implements ClickL
 	public ReportData getReportData() {
 		ReportData data=new ReportData(function);
 		data.setAccepted((String) selectAcceptance.getValue());
+		System.out.println(selectEndDate.getValidators().toString());
 		data.setDateEnd(selectEndDate.getValue());
 		data.setDateStart(selectStartDate.getValue());
 		data.setType(ReportType.EXPIRED_GOODS);

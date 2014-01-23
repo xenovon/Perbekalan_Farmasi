@@ -85,7 +85,6 @@ public class ReportRequirementModel extends Label{
 		html=html.replace("{{UserName}}", userName);
 		html=html.replace("{{UserNum}}", userNum);		
 		html=html.replace("{{GoodsType}}", goodsType);		
-		System.out.println("html "+html);
 		this.setValue(html);
 	}
 	private String generateTableCode(List<ReqPlanning> data){
@@ -93,7 +92,7 @@ public class ReportRequirementModel extends Label{
 		
 		int i=0;
 		if(data.size()==0){
-			return "<tr><td style='text-align:center;font-style:italic;' colspan='7'>Data kosong</td></tr>";
+			return "<tr><td style='text-align:center;font-style:italic;' colspan='9'>Data kosong</td></tr>";
 		}
 		for(ReqPlanning datum:data){
 			i++;
@@ -119,9 +118,10 @@ public class ReportRequirementModel extends Label{
 		System.out.println("Mendapatkan periode");
 		
 		
-		DateTime start=periode.withDayOfMonth(periode.dayOfMonth().getMinimumValue()).withHourOfDay(periode.hourOfDay().getMinimumValue());
-		DateTime end=periode.withDayOfMonth(periode.dayOfMonth().getMaximumValue()).withHourOfDay(periode.hourOfDay().getMaximumValue());
-
+		DateTime start=periode.withDayOfMonth(periode.dayOfMonth().getMinimumValue()).withHourOfDay(periode.hourOfDay().getMinimumValue()).withMinuteOfHour(periode.minuteOfHour().getMinimumValue());
+		DateTime end=periode.withDayOfMonth(periode.dayOfMonth().getMaximumValue()).withHourOfDay(periode.hourOfDay().getMaximumValue()).withMinuteOfHour(periode.minuteOfHour().getMaximumValue());
+		
+		start=start.minusSeconds(5);
 		List<String> goodsTypeList=new ArrayList<String>();
 		if(isObat){
 			goodsTypeList.add(EnumGoodsType.NARKOTIKA.toString());

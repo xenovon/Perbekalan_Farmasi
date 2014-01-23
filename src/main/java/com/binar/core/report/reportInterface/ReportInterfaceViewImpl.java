@@ -93,7 +93,7 @@ D	Laporan barang kadaluarsa (udah disetujui)
 		this.setMargin(true);
 		this.setSpacing(true);
 		
-		addComponents(title, buttonConsumption, buttonDailyConsumption, buttonProcurement, buttonReceipt, buttonRequirement, buttonStock);
+		addComponents(title, buttonConsumption, buttonDailyConsumption, buttonExpiredGoods, buttonProcurement, buttonReceipt, buttonRequirement, buttonStock);
 	}
 	ReportInterfaceListener listener;
 	
