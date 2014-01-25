@@ -1,6 +1,7 @@
 package com.binar.view;
 
 import com.binar.core.requirementPlanning.Approval;
+import com.binar.core.requirementPlanning.Forecast;
 import com.binar.core.requirementPlanning.InputRequirementPlanning;
 import com.binar.core.requirementPlanning.ReqPlanningList;
 import com.binar.generalFunction.GeneralFunction;
@@ -21,6 +22,8 @@ public class RequirementPlanningView extends CustomComponent implements View, Se
 	InputRequirementPlanning inputReqPl;
 	Approval approval;
 	ReqPlanningList reqPlanning;
+	Forecast forecast;
+	
 	@Override
 	public void enter(ViewChangeEvent event) {
 		//Inisiasi General function		
@@ -35,12 +38,15 @@ public class RequirementPlanningView extends CustomComponent implements View, Se
 		if(reqPlanning==null){
 			reqPlanning=new ReqPlanningList(generalFunction);			
 		}
-		
+		if(forecast==null){
+			forecast=new Forecast(generalFunction);
+		}
 		
 		tabSheet=new TabSheet();
 		tabSheet.addTab(reqPlanning).setCaption("Daftar Rencana Kebutuhan");
 		tabSheet.addTab(inputReqPl).setCaption("Input Rencana Kebutuhan");;
 		tabSheet.addTab(approval).setCaption("Persetujuan");
+		tabSheet.addTab(forecast).setCaption("Peramalan");
 
 		tabSheet.addSelectedTabChangeListener(this);
 		tabSheet.setSizeFull();

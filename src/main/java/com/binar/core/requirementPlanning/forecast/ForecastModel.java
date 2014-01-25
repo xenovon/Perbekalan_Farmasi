@@ -1,5 +1,13 @@
 package com.binar.core.requirementPlanning.forecast;
 
-public class ForecastModel {
+import com.binar.generalFunction.GeneralFunction;
 
+public class ForecastModel {
+	
+	GeneralFunction function;
+	public ForecastModel(GeneralFunction function) {
+		this.function=function;
+	}
+	
+	
 }

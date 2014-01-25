@@ -5,8 +5,10 @@ import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 
 public class ForecastViewImpl extends VerticalLayout implements ForecastView, ClickListener{
 
@@ -31,8 +33,8 @@ public class ForecastViewImpl extends VerticalLayout implements ForecastView, Cl
 							"membantu petugas gudang farmasi dalam mengajukan rencana kebutuhan");
 		
 		buttonStart=new Button("Mulai buat Peramalan");
-		labelTitle =new Label("<h2>Input Rencana Kebutuhan</h2>", ContentMode.HTML);
-		
+		buttonStart.addClickListener(this);
+		labelTitle =new Label("<h2>Peramalan</h2>", ContentMode.HTML);
 		construct();
 	}
 	@Override
@@ -44,14 +46,32 @@ public class ForecastViewImpl extends VerticalLayout implements ForecastView, Cl
 		this.addComponent(buttonStart);
 		
 	}
-	@Override
-	public void showWindow() {
-		
+	Window window;
+
+	public void displayForm(Component content, String title){
+		//menghapus semua window terlebih dahulu
+		for(Window window:this.getUI().getWindows()){
+			window.close();
+		}
+		if(window==null){
+			window=new Window(title){
+				{
+					center();
+					setClosable(false);
+					setWidth("70%");
+					setHeight("80%");
+				}
+			};
+
+		}
+		this.getUI().removeWindow(window);
+		window.setCaption(title);
+		window.setContent(content);
+		this.getUI().addWindow(window);
 	}
 	@Override
 	public void buttonClick(ClickEvent event) {
-		// TODO Auto-generated method stub
-		
+		listener.buttonStartClick();
 	}
 	public void setListener(ForecastListener listener){
 		this.listener=listener;

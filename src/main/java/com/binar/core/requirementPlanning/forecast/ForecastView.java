@@ -7,6 +7,5 @@ interface  ForecastView {
 	
 	public void init();
 	public void construct();
-	public void showWindow();
 	
 }
