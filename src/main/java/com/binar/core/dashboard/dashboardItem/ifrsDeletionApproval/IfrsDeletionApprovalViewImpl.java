@@ -6,6 +6,7 @@ import com.binar.entity.DeletedGoods;
 import com.binar.entity.Goods;
 import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
+import com.binar.generalFunction.TextManipulator;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;
@@ -31,8 +32,11 @@ public class IfrsDeletionApprovalViewImpl  extends Panel implements IfrsDeletion
 	private Button buttonGo;
 	private GeneralFunction function;
 	private DateManipulator date;
+	private TextManipulator text;
+	
 	public IfrsDeletionApprovalViewImpl(GeneralFunction function) {
 		this.function=function;
+		this.text=function.getTextManipulator();
 		this.date=function.getDate();
 	}
 	
@@ -40,7 +44,7 @@ public class IfrsDeletionApprovalViewImpl  extends Panel implements IfrsDeletion
 	public void init() {
 		table=new Table();
 		table.setSizeFull();
-		table.setPageLength(8);
+		table.setPageLength(6);
 		table.setWidth(function.DASHBOARD_TABLE_WIDTH);
 		table.setSortEnabled(true);
 		table.setImmediate(true);
@@ -96,7 +100,7 @@ public class IfrsDeletionApprovalViewImpl  extends Panel implements IfrsDeletion
 			item.getItemProperty("Tanggal").setValue(date.dateToText(datum.getDeletionDate(), true));
 			item.getItemProperty("Nama Barang").setValue(datum.getGoods().getName());
 			item.getItemProperty("Satuan").setValue(datum.getGoods().getUnit());
-			item.getItemProperty("Jumlah").setValue(datum.getQuantity());
+			item.getItemProperty("Jumlah").setValue(text.intToAngka(datum.getQuantity()));
 		}
 	}
 	private IfrsDeletionApprovalListener listener;

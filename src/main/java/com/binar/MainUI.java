@@ -54,21 +54,42 @@ public class MainUI extends UI
 	LoginManager loginManager;
 	GeneralFunction generalFunction;
 	LoginView loginView;
-	
-    HashMap<String, Class<? extends View>> routes = new HashMap<String, Class<? extends View>>() {
-        {
-            put("/dashboard", DashboardView.class);
-            put("/requirementplanning", RequirementPlanningView.class);
-            put("/procurement", ProcurementView.class);
-            put("/inventorymanagement", InventoryManagementView.class);
-            put("/report", ReportView.class);
-            put("/datamanagement", DataManagementView.class);
-            put("/usermanagement", UserManagementView.class);
-            put("/setting", SettingView.class);
-            put("/usersetting", UserSettingView.class);
-        }
-    };    	
-	
+	/*
+	 * Manajemen Role untuk Level MENU
+	 * 
+	 */
+    //Method Untuk Memilih menu apa saja yang ditampilkan 
+    private HashMap<String, Class<? extends View>> getRoutes(){
+    	String role=loginManager.getRoleId();
+    	HashMap<String, Class<? extends View>> routes;
+    	if(role.equals(loginManager.ADM)){
+            routes= new HashMap<String, Class<? extends View>>() {
+                {
+                    put("/usermanagement", UserManagementView.class);
+                    put("/setting", SettingView.class);
+                    put("/usersetting", UserSettingView.class);
+                }
+            };     		
+    	}else{
+            routes= new HashMap<String, Class<? extends View>>() {
+                {
+                    put("/dashboard", DashboardView.class);
+                    put("/requirementplanning", RequirementPlanningView.class);
+                    put("/procurement", ProcurementView.class);
+                    put("/inventorymanagement", InventoryManagementView.class);
+                    put("/report", ReportView.class);
+                    put("/datamanagement", DataManagementView.class);
+                    put("/setting", SettingView.class);
+                }
+            };     		
+    	}
+    	
+    	return routes;
+   	
+   	
+    }
+    
+    
 //    HashMap<String, Button> viewNameToMenuButton = new HashMap<String, Button>();
     private Navigator nav;
 
@@ -84,7 +105,7 @@ public class MainUI extends UI
     	loginManager=generalFunction.getLogin();
     	GenerateData dataGenerator=new GenerateData(generalFunction);
 //    	dataGenerator.insertData();
-    	
+
     	root.addStyleName("root");
     	root.setSizeFull();
     	setContent(root);   
@@ -112,6 +133,8 @@ public class MainUI extends UI
     	//Add view untuk ""
     	nav.addView("", DashboardView.class);
     	nav.addView("/", DashboardView.class);
+    	
+    	HashMap<String, Class<? extends View>> routes=getRoutes();
     	
     	for(String route: routes.keySet()){
     		nav.addView(route, routes.get(route));

@@ -18,6 +18,7 @@ import com.binar.entity.Goods;
 import com.binar.entity.Manufacturer;
 import com.binar.entity.Supplier;
 import com.binar.generalFunction.GeneralFunction;
+import com.binar.generalFunction.LoginManager;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
@@ -38,18 +39,37 @@ public class ManufacturerManagementPresenter implements ManufacturerManagementLi
 	
 	InputManufacturerViewImpl viewEdit;
 	InputManufacturerPresenter presenterEdit;
-	
+	LoginManager loginManager;
+
 	
 	public ManufacturerManagementPresenter(ManufacturerManagementModel model, 
 			ManufacturerManagementViewImpl view, GeneralFunction function) {
 		this.model=model;
 		this.view=view;
 		this.function=function;
+		this.loginManager=function.getLogin();
+
 		this.view.setListener(this);
 		this.view.init();
-		view.updateTableData(model.getManufacturer());
+		roleProcessor();
+		updateTable();
 	}
-
+	/*
+	 *  Manajemen ROLE level Fungsionalitas
+	 *   
+	 */
+	boolean withEditInvoice = false;
+	public void roleProcessor(){
+		String role=loginManager.getRoleId();
+		if(!role.equals(loginManager.FRM)){
+			view.hideButtonNew();
+			withEditInvoice=false;
+		}else{
+			view.showButtonNew();
+			withEditInvoice=true;
+		}
+		
+	}
 	@Override
 	public void buttonClick(String buttonName) {
 		if(buttonName.equals("buttonInput")){
@@ -113,7 +133,7 @@ public class ManufacturerManagementPresenter implements ManufacturerManagementLi
 		
 	}
 	public void updateTable(){
-		view.updateTableData(model.getManufacturer());
+		view.updateTableData(model.getManufacturer(), withEditInvoice);
 	}
 	public void addWIndowCloseListener(){
 		Collection<Window> windows=view.getUI().getWindows();

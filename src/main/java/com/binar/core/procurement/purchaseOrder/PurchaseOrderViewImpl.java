@@ -188,8 +188,9 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 	}	
 
 	@Override
-	public boolean updateTableData(List<PurchaseOrder> data) {
+	public boolean updateTableData(List<PurchaseOrder> data, boolean withEditPurchaseOrder) {
 		tableContainer.removeAllItems();
+		final boolean withEditPurchaseOrderFinal=withEditPurchaseOrder;
 		System.out.println(data.size());
 		if(data.size()==0){
 			Notification.show("Data Surat Pesanan kosong", Type.WARNING_MESSAGE);
@@ -245,8 +246,10 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 					this.setSpacing(true);
 					this.setMargin(false);
 					this.addComponent(buttonShow, 0, 0);
-					this.addComponent(buttonDelete, 2, 0);						
-					this.addComponent(buttonEdit, 1, 0);					
+					if(withEditPurchaseOrderFinal){
+						this.addComponent(buttonDelete, 2, 0);						
+						this.addComponent(buttonEdit, 1, 0);											
+					}
 				}
 			});
 			
@@ -441,6 +444,11 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 		return buttonPrint;
 	}
 
-	
+	public void hideButtonNew(){
+		buttonNewPurchase.setVisible(false);		
+	}
+	public void showButtonNew(){
+		buttonNewPurchase.setVisible(true);
+	}
 
 }

@@ -26,6 +26,7 @@ DONE
 		this.function=function;
 		this.view=view;
 		view.init();
+		updateChart();
 	}
 	@Override
 	public void buttonGo() {

@@ -21,6 +21,7 @@ import com.binar.core.procurement.purchaseOrder.newPurchaseOrder.NewPurchaseOrde
 import com.binar.entity.Invoice;
 import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
+import com.binar.generalFunction.LoginManager;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Notification;
@@ -36,7 +37,8 @@ public class InvoicePresenter implements InvoiceListener{
 	InvoiceViewImpl view;
 	GeneralFunction function;
 	DateManipulator date;
-	
+	LoginManager loginManager;
+
 	NewInvoiceModel modelNew;
 	NewInvoicePresenter presenterNew;
 	NewInvoiceViewImpl viewNew;
@@ -50,10 +52,32 @@ public class InvoicePresenter implements InvoiceListener{
 		this.model=model;
 		this.view=view;
 		this.date=function.getDate();
+		this.loginManager=function.getLogin();
+
 		this.view.setListener(this);
 		this.view.init();
+		roleProcessor();
+		this.updateTable();
 	
 	}
+	/*
+	 *  Manajemen ROLE level Fungsionalitas
+	 *   
+	 */
+	boolean withEditInvoice = false;
+	public void roleProcessor(){
+		String role=loginManager.getRoleId();
+		if(!role.equals(loginManager.FRM)){
+			view.hideButtonNew();
+			withEditInvoice=false;
+		}else{
+			view.showButtonNew();
+			withEditInvoice=true;
+		}
+		
+	}
+
+	
 	@Override
 	public void buttonClick(String buttonName) {
 		if(buttonName.equals("buttonNewInvoice")){
@@ -131,7 +155,7 @@ public class InvoicePresenter implements InvoiceListener{
 		}
 		List<Invoice> data=model.getInvoiceList(month, year);
 		if(data!=null){
-			view.updateTableData(data);			
+			view.updateTableData(data, withEditInvoice);			
 		}else{
 //			Notification.show("Terjadi kesalahan pengambilan data");
 		}

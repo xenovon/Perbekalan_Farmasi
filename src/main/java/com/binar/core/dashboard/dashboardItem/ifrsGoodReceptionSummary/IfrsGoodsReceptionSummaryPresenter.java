@@ -22,8 +22,9 @@ public class IfrsGoodsReceptionSummaryPresenter implements IfrsGoodsReceptionSum
 		this.model=model;
 		this.function=function;
 		this.view=view;
+		this.view.setListener(this);
 		view.init();
-		
+		updateChart();
 		
 	}
 	@Override

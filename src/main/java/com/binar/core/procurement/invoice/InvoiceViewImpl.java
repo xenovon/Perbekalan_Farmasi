@@ -200,8 +200,9 @@ public class InvoiceViewImpl extends VerticalLayout implements InvoiceView, Clic
 	}
 
 	@Override
-	public boolean updateTableData(List<Invoice> data) {
+	public boolean updateTableData(List<Invoice> data, boolean withEditInvoice) {
 		tableContainer.removeAllItems();
+		final boolean withEditInvoiceFinal=withEditInvoice;
 		System.out.println(data.size());
 		if(data.size()==0){
 			Notification.show("Data Faktur kosong", Type.WARNING_MESSAGE);
@@ -258,8 +259,10 @@ public class InvoiceViewImpl extends VerticalLayout implements InvoiceView, Clic
 					this.setSpacing(true);
 					this.setMargin(false);
 					this.addComponent(buttonShow, 0, 0);
-					this.addComponent(buttonDelete, 2, 0);						
-					this.addComponent(buttonEdit, 1, 0);					
+					if(withEditInvoiceFinal){
+						this.addComponent(buttonDelete, 2, 0);						
+						this.addComponent(buttonEdit, 1, 0);											
+					}
 				}
 			});
 			
@@ -465,5 +468,10 @@ public class InvoiceViewImpl extends VerticalLayout implements InvoiceView, Clic
 		this.getUI().addWindow(window);
 	}
 	
-
+	public void hideButtonNew(){
+		buttonNewInvoice.setVisible(false);
+	}
+	public void showButtonNew(){
+		buttonNewInvoice.setVisible(true);
+	}
 }

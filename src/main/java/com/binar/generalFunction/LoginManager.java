@@ -10,19 +10,28 @@ public class LoginManager{
 	VaadinSession session;
 	EbeanServer server;
 	
+	public static final String FRM="FRM";
+	public static final String IFRS="IFRS";
+	public static final String PPK="PPK";
+	public static final String PNJ="PNJ";
+	public static final String TPN="TPN";
+	public static final String ADM="ADM";
+	
+		
+
 	public LoginManager(VaadinSession session, EbeanServer server){
 		this.session=session;
 		this.server=server;
 	}
 	
 	public boolean login(String username, String password){
-//		if(authenticate(username, password)){
-//			session.setAttribute("login", username);
-//			return true;
-//		}
-//		return false;
-		session.setAttribute("login", "binar");
-		return true;
+		if(authenticate(username, password)){
+			session.setAttribute("login", username);
+			return true;
+		}
+		return false;
+//		session.setAttribute("login", "binar");
+//		return true;
 	}
 	public boolean isLogin(){
 		if(session.getAttribute("login")==null){
@@ -54,7 +63,9 @@ public class LoginManager{
 	public Role getRole(){
 		return getUserLogin().getRole();
 	}
-	
+	public String getRoleId(){
+		return getUserLogin().getRole().getIdRole();
+	}
 	private boolean authenticate(String username, String password){
 		User user=server.find(User.class).where().eq("username", username).findUnique();
 		if(user!=null){

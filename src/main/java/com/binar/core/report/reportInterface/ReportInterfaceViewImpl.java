@@ -95,6 +95,9 @@ D	Laporan barang kadaluarsa (udah disetujui)
 		
 		addComponents(title, buttonConsumption, buttonDailyConsumption, buttonExpiredGoods, buttonProcurement, buttonReceipt, buttonRequirement, buttonStock);
 	}
+	
+	
+	
 	ReportInterfaceListener listener;
 	
 	@Override
@@ -151,6 +154,27 @@ D	Laporan barang kadaluarsa (udah disetujui)
 		window.setCaption(title);
 		window.setContent(content);
 		this.getUI().addWindow(window);
+	}
+	public Button getButtonRequirement() {
+		return buttonRequirement;
+	}
+	public Button getButtonProcurement() {
+		return buttonProcurement;
+	}
+	public Button getButtonDailyConsumption() {
+		return buttonDailyConsumption;
+	}
+	public Button getButtonReceipt() {
+		return buttonReceipt;
+	}
+	public Button getButtonConsumption() {
+		return buttonConsumption;
+	}
+	public Button getButtonStock() {
+		return buttonStock;
+	}
+	public Button getButtonExpiredGoods() {
+		return buttonExpiredGoods;
 	}
 	
 	

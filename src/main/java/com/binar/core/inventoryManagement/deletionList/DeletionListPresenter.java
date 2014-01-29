@@ -20,6 +20,7 @@ import com.binar.entity.DeletedGoods;
 import com.binar.entity.Goods;
 import com.binar.entity.GoodsConsumption;
 import com.binar.generalFunction.GeneralFunction;
+import com.binar.generalFunction.LoginManager;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
@@ -39,6 +40,7 @@ public class DeletionListPresenter implements DeletionListListener{
 	InputDeletionModel formDelEditModel;
 	InputDeletionViewImpl formDelEditView;
 	InputDeletionPresenter formDelEditPresenter;
+	LoginManager loginManager;
 
 	String currentIdGoods;
 	int currentQuantity;
@@ -49,11 +51,30 @@ public class DeletionListPresenter implements DeletionListListener{
 		this.model=model;
 		this.view=view;
 		this.function=function;
+		this.loginManager=function.getLogin();
+
 		view.init();
 		view.setListener(this);
+		roleProcessor();
+
 		updateTable();
 	}
-
+	/*
+	 *  Manajemen ROLE level Fungsionalitas
+	 *   
+	 */
+	boolean withEditDeletion = false;
+	public void roleProcessor(){
+		String role=loginManager.getRoleId();
+		if(!role.equals(loginManager.FRM)){
+			view.hideButtonNew();
+			withEditDeletion=false;
+		}else{
+			view.showButtonNew();
+			withEditDeletion=true;
+		}
+		
+	}
 	public void updateTable() {
 		Date rangeStart=view.getSelectedEndRange();
 		Date rangeEnd=view.getSelectedStartRange();
@@ -61,7 +82,7 @@ public class DeletionListPresenter implements DeletionListListener{
 		ApprovalFilter approval=view.getApprovalFilter();
 		List<DeletedGoods> data=model.getDeletedTable(rangeStart, rangeEnd, approval);
 		System.out.println("ukuran deleted goods "+data.size());
-		view.updateTableData(data);
+		view.updateTableData(data, withEditDeletion);
 	}
 
 

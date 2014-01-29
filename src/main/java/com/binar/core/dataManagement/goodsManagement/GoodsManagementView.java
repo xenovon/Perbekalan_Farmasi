@@ -18,7 +18,7 @@ interface  GoodsManagementView {
 	public void init();
 	public void construct();
 	public void setListener(GoodsManagementListener listener);
-	public boolean updateTableData(List<Goods> data);
+	public boolean updateTableData(List<Goods> data, final boolean withEditGoods);
 	public void showDetailWindow(Goods goods);
 
 }

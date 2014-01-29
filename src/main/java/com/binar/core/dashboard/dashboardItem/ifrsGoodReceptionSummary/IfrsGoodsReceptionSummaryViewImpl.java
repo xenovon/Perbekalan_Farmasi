@@ -55,7 +55,7 @@ public class IfrsGoodsReceptionSummaryViewImpl  extends Panel implements IfrsGoo
 
 	@Override
 	public void construct() {
-		setCaption("Konsumsi Barang Bulan Ini");
+		setCaption("Pengadaan dan Penerimaan Barang Bulan Ini");
 		setHeight("430px");
 		setWidth("500px");
 		

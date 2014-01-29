@@ -19,7 +19,7 @@ public interface ManufacturerManagementView {
 	
 	public void init();
 	public void construct();
-	public boolean updateTableData(List<Manufacturer> data);
+	public boolean updateTableData(List<Manufacturer> data, final boolean withEditManufacturer);
 	public void showDetailWindow(Manufacturer manufacturer, String goods);
 	public void setListener(ManufacturerManagementListener listener);
 }

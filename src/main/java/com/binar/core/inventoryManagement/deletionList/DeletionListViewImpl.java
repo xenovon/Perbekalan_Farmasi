@@ -195,7 +195,7 @@ public class DeletionListViewImpl extends VerticalLayout implements DeletionList
 	}
 
 	@Override
-	public boolean updateTableData(List<DeletedGoods> data) {
+	public boolean updateTableData(List<DeletedGoods> data, final boolean withEditDeletion) {
 		container.removeAllItems();
 		System.out.println("Ukuran data"+data.size());
 
@@ -241,8 +241,10 @@ public class DeletionListViewImpl extends VerticalLayout implements DeletionList
 							}
 						});	
 						
-						this.addComponent(buttonDelete, 2, 0);						
-						this.addComponent(buttonEdit, 1, 0);					
+						if(withEditDeletion){
+							this.addComponent(buttonDelete, 2, 0);						
+							this.addComponent(buttonEdit, 1, 0);												
+						}
 
 					}
 
@@ -392,6 +394,11 @@ public class DeletionListViewImpl extends VerticalLayout implements DeletionList
 		this.getUI().addWindow(windowInputEdit);
 		
 	}
-
+	public void hideButtonNew(){
+		buttonNew.setVisible(false);
+	}
+	public void showButtonNew(){
+		buttonNew.setVisible(true);
+	}	
 
 }

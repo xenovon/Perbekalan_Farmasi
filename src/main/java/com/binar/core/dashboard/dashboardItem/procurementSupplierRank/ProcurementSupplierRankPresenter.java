@@ -25,7 +25,7 @@ DONE
 		this.view=view;
 		view.init();
 		view.setListener(this);
-		
+		updateChart();
 		
 	}
 	@Override

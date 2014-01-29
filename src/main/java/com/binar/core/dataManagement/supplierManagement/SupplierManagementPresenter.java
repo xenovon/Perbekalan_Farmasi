@@ -13,6 +13,7 @@ import com.binar.core.dataManagement.supplierManagement.inputEditSupplier.InputS
 import com.binar.entity.Goods;
 import com.binar.entity.Supplier;
 import com.binar.generalFunction.GeneralFunction;
+import com.binar.generalFunction.LoginManager;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
@@ -33,18 +34,37 @@ public class SupplierManagementPresenter implements SupplierManagementListener{
 	
 	InputSupplierViewImpl viewEdit;
 	InputSupplierPresenter presenterEdit;
-	
+	LoginManager loginManager;
 	
 	public SupplierManagementPresenter(SupplierManagementModel model, 
 			SupplierManagementViewImpl view, GeneralFunction function) {
 		this.model=model;
 		this.view=view;
 		this.function=function;
+		this.loginManager=function.getLogin();
+
 		this.view.setListener(this);
 		this.view.init();
-		view.updateTableData(model.getSuppliers());
+		roleProcessor();
+		updateTable();
 	}
 
+	/*
+	 *  Manajemen ROLE level Fungsionalitas
+	 *   
+	 */
+	boolean withEditSupplier = false;
+	public void roleProcessor(){
+		String role=loginManager.getRoleId();
+		if(!role.equals(loginManager.TPN)){
+			view.hideButtonNew();
+			withEditSupplier=false;
+		}else{
+			view.showButtonNew();
+			withEditSupplier=true;
+		}
+		
+	}
 	@Override
 	public void buttonClick(String buttonName) {
 		if(buttonName.equals("buttonInput")){
@@ -108,7 +128,7 @@ public class SupplierManagementPresenter implements SupplierManagementListener{
 		
 	}
 	public void updateTable(){
-		view.updateTableData(model.getSuppliers());
+		view.updateTableData(model.getSuppliers(), withEditSupplier);
 	}
 	public void addWIndowCloseListener(){
 		Collection<Window> windows=view.getUI().getWindows();

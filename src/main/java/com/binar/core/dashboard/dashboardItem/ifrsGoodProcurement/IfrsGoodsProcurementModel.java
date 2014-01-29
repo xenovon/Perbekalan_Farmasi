@@ -26,7 +26,7 @@ public class IfrsGoodsProcurementModel {
 		this.server=function.getServer();
 	}
 	
-	public Map<Integer, String> getReceptionRequirementCount(){
+	public Map<String, Integer> getReceptionRequirementCount(){
 		
 		try {
 			//inisialisasi tanggal dan return Value
@@ -35,7 +35,7 @@ public class IfrsGoodsProcurementModel {
 			LocalDate endDate=baseDate.withDayOfMonth(baseDate.dayOfMonth().getMaximumValue());
 			LocalDate startDate=baseDate.withDayOfMonth(baseDate.dayOfMonth().getMinimumValue());
 			
-			Map<Integer, String> returnValue=new HashMap<Integer, String>();
+			Map<String,Integer> returnValue=new HashMap<String, Integer>();
 			//mendapatkan jumlah rencana kebutuhan
 			int procurementCount=getProcurementCount(startDate.toDate(), endDate.toDate());
 			int reqPlanningCount=getReqPlanningCount(startDate.toDate(), endDate.toDate());
@@ -43,9 +43,9 @@ public class IfrsGoodsProcurementModel {
 			if(procurementCount==0 && reqPlanningCount ==0){
 				return null;
 			}
-			returnValue.put(procurementCount, "Rencana Kebutuhan Bulan Ini" );
-			returnValue.put(reqPlanningCount, "Jumlah Pengadaan Bulan Ini");
-			
+			returnValue.put("Jumlah Pengadaan Bulan Ini", procurementCount);
+			returnValue.put("Rencana Kebutuhan Bulan Ini",reqPlanningCount);
+
 			return returnValue;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -57,10 +57,12 @@ public class IfrsGoodsProcurementModel {
 	private Integer getReqPlanningCount(Date startDate, Date endDate){
 		List<ReqPlanning> reqList=server.find(ReqPlanning.class).where().eq("isAccepted", true)
 				.between("period", startDate, endDate).findList();
+		System.out.println("Req Planning size "+reqList.size());
 		int returnValue=0;
 		for(ReqPlanning planning:reqList){
 			returnValue=returnValue+planning.getAcceptedQuantity();
 		}
+		System.out.println(returnValue);
 		return returnValue;
 	}
 	
@@ -69,9 +71,12 @@ public class IfrsGoodsProcurementModel {
 		List<PurchaseOrder> purchaseList=server.find(PurchaseOrder.class).where()
 				.between("date", startDate, endDate).findList();
 		int returnValue=0;
+		System.out.println("Procurement Count"+purchaseList.size());
 		for(PurchaseOrder purchase:purchaseList){
 			for(PurchaseOrderItem item:purchase.getPurchaseOrderItem()){
 				returnValue=returnValue+item.getQuantity();
+				System.out.println("Quantity "+item.getSupplierGoods().getGoods().getName()+" "+item.getQuantity());
+
 			}
 		}
 		return returnValue;

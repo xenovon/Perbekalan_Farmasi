@@ -18,6 +18,7 @@ import com.binar.entity.Goods;
 import com.binar.entity.GoodsConsumption;
 import com.binar.entity.GoodsReception;
 import com.binar.generalFunction.GeneralFunction;
+import com.binar.generalFunction.LoginManager;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
@@ -38,13 +39,39 @@ public class ReceptionListPresenter implements ReceptionListListener {
 	int currentQuantity;
 	DateTime currentDate;
 	
+	LoginManager loginManager;
+	
+
+	/*
+	 *  Manajemen ROLE level Fungsionalitas
+	 *   
+	 */
+	boolean withEditReceipt= false;
+	public void roleProcessor(){
+		String role=loginManager.getRoleId();
+		if(!role.equals(loginManager.FRM)){
+			view.hideButtonNew();
+			withEditReceipt=false;
+		}else{
+			view.showButtonNew();
+			withEditReceipt=true;
+		}
+		
+	}
+
+	
 	public ReceptionListPresenter(GeneralFunction function, 
 			ReceptionListModel model, ReceptionListViewImpl view){
 		this.model=model;
 		this.view=view;
 		this.function=function;
+		this.loginManager=function.getLogin();
+
 		view.setListener(this);
+		
 		view.init();
+		roleProcessor();
+
 		updateTable(view.getSelectedPeriod()); 
 		updateTableByDate(view.getSelectedPeriod());
 	}
@@ -62,7 +89,7 @@ public class ReceptionListPresenter implements ReceptionListListener {
 					function.getDate().parseDateMonth(view.getSelectedPeriod()));
 			int quantity=model.getTableDataQuantity(function.getDate().
 					parseDateMonth(view.getSelectedPeriod()), currentIdGoods);
-			view.setLabelData(reception, quantity);
+			view.setLabelData(reception, quantity, withEditReceipt);
 		}
 	}
 
@@ -75,7 +102,7 @@ public class ReceptionListPresenter implements ReceptionListListener {
 		view.updateTableDataByDate(dataTableByDate);
 		try {
 			List<GoodsReception> data=model.getReceptionsByDate(this.currentDate);
-			view.setLabelDataByDate(data);
+			view.setLabelDataByDate(data, withEditReceipt);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -86,7 +113,7 @@ public class ReceptionListPresenter implements ReceptionListListener {
 		List<GoodsReception> reception=model.getReceptions(idGoods, 
 				function.getDate().parseDateMonth(view.getSelectedPeriod()));
 		this.currentIdGoods=idGoods;
-		view.showDetailWindow(reception, quantity);
+		view.showDetailWindow(reception, quantity, withEditReceipt);
 	}
 
 	@Override
@@ -107,7 +134,7 @@ public class ReceptionListPresenter implements ReceptionListListener {
 						updateTable(view.getSelectedPeriod());
 						updateTableByDate(view.getSelectedPeriod());
 						List<GoodsReception> data=model.getReceptionsByDate(view.getCurrentDate());
-						view.setLabelDataByDate(data);						
+						view.setLabelDataByDate(data, withEditReceipt);						
 					}
 				}, 
 				view.getUI());
@@ -171,7 +198,7 @@ public class ReceptionListPresenter implements ReceptionListListener {
 	public void showDetailByDate(DateTime date) {
 		List<GoodsReception> data=model.getReceptionsByDate(date);
 		System.out.println("Good Reception Size"+data.size());
-		view.showDetailWindowByDate(data, date);
+		view.showDetailWindowByDate(data, date, withEditReceipt);
 		this.currentDate = date;
 	}
 

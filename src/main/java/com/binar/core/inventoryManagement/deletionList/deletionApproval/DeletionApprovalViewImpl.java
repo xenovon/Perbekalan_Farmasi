@@ -295,7 +295,11 @@ DeletionApprovalView, Button.ClickListener, ValueChangeListener{
 		 labelGoodsName.setValue(data.getGoods().getName());
 		 labelQuantity.setValue(data.getQuantity()+" "+data.getGoods().getUnit());
 		 labelAccepted.setValue(data.isAccepted()?"Disetujui":"Belum disetujui");
-		 labelAcceptedDate.setValue(date.dateToText(data.getApprovalDate(), true));
+		 if(data.getApprovalDate()!=null){
+			 labelAcceptedDate.setValue(date.dateToText(data.getApprovalDate(), true));			 
+		 }else{
+			 labelAcceptedDate.setValue("");			 		 
+		 }
 		 labelTimeStamp.setValue(data.getTimestamp().toString());
 		 labelInformation.setValue(data.getInformation());
 	}

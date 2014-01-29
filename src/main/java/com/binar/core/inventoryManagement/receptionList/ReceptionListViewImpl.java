@@ -310,7 +310,7 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 	private VerticalLayout layoutDetail;
 
 	@Override
-	public void showDetailWindow(List<GoodsReception> data, int quantity) {
+	public void showDetailWindow(List<GoodsReception> data, int quantity, boolean withEditReception) {
 		if(layoutDetail==null){ //jika layout null
 			//buat konten 
 			layoutDetail = new VerticalLayout();
@@ -356,7 +356,7 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 	        layoutDetail.addComponent(tableDetail);
 	        
 		}//menutup jika layoutdetail null
-	    setLabelData(data, quantity);
+	    setLabelData(data, quantity, withEditReception);
 	    if(windowDetail==null){
 			windowDetail=new Window("Detail Pengeluaran Harian"){
 				{
@@ -370,7 +370,7 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 		this.getUI().addWindow(windowDetail);	
 	}
 	
-	public void showDetailWindowByDate(List<GoodsReception> list, DateTime date) {
+	public void showDetailWindowByDate(List<GoodsReception> list, DateTime date, boolean withEditReception) {
 		this.currentDate=date;
 		if(layoutDetailByDate==null){ //jika layout null
 			layoutDetailByDate= new VerticalLayout(){
@@ -417,7 +417,7 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 	        tableDetailByDate.setContainerDataSource(containerDetailByDate); //set kontainer harian  
 	        layoutDetailByDate.addComponents(layoutDetailGrid, tableDetailByDate);
 		}//menutup jika layoutdetail null
-	    setLabelDataByDate(list);
+	    setLabelDataByDate(list, withEditReception);
 	    if(windowDetailByDate==null){
 			windowDetailByDate=new Window("Detail Pengeluaran Harian"){
 				{
@@ -431,7 +431,7 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 		this.getUI().addWindow(windowDetailByDate);		
 	}
 
-	public boolean setLabelDataByDate(List<GoodsReception> receptions) {
+	public boolean setLabelDataByDate(List<GoodsReception> receptions, final boolean withEditReception) {
 		if(receptions.size()==0){
 			return false;
 		}
@@ -466,7 +466,6 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 							listener.edit(receptionFinal.getIdGoodsReceipt());
 						}
 					});
-					this.addComponent(buttonEdit, 0, 0);
 
 					Button buttonDelete=new Button();
 					buttonDelete.setDescription("Hapus Data");
@@ -480,7 +479,10 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 						}
 					});
 					this.setSpacing(true);
-					this.addComponent(buttonDelete, 1, 0);						
+					if(withEditReception){
+						this.addComponent(buttonEdit, 0, 0);
+						this.addComponent(buttonDelete, 1, 0);												
+					}
 				}});		
 			}
 			
@@ -490,7 +492,7 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 		return false;
 	}
 
-	void setLabelData(final List<GoodsReception> data, int quantity) {
+	void setLabelData(final List<GoodsReception> data, int quantity, final boolean withEditReception) {
 		containerDetail.removeAllItems();
 		if(data.size()==0){
 			return;
@@ -523,7 +525,6 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 							listener.edit(receptionFinal.getIdGoodsReceipt());
 						}
 					});
-					this.addComponent(buttonEdit, 0, 0);
 
 					Button buttonDelete=new Button();
 					buttonDelete.setDescription("Hapus Data");
@@ -537,7 +538,10 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 						}
 					});
 					this.setSpacing(true);
-					this.addComponent(buttonDelete, 1, 0);						
+					if(withEditReception){
+						this.addComponent(buttonEdit, 0, 0);
+						this.addComponent(buttonDelete, 1, 0);												
+					}
 				}});		
 			}			
 		} catch (Exception e) {
@@ -631,4 +635,11 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 	public Window getWindow() {
 		return window;
 	}
+	
+	public void hideButtonNew(){
+		buttonInput.setVisible(false);
+	}
+	public void showButtonNew(){
+		buttonInput.setVisible(true);
+	}	
 }

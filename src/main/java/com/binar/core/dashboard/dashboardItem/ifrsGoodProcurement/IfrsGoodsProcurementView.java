@@ -15,5 +15,5 @@ public interface  IfrsGoodsProcurementView {
 	public void init();
 	public void construct();
 	public void setEmptyDataView();
-	public void generateChart(Map<Integer, String> data);
+	public void generateChart(Map<String, Integer> data);
 }

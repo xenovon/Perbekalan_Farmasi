@@ -189,7 +189,7 @@ public class ManufacturerManagementViewImpl extends VerticalLayout implements
 		 labelGoods.setValue(goods);
 
 	}
-	public boolean updateTableData(List<Manufacturer> data){
+	public boolean updateTableData(List<Manufacturer> data, final boolean withEditManufacturer){
 		tableContainer.removeAllItems();
 		System.out.println(data.size());
 		if(data.size()==0){
@@ -241,9 +241,13 @@ public class ManufacturerManagementViewImpl extends VerticalLayout implements
 					});
 					this.setSpacing(true);
 					this.setMargin(false);
+					if(withEditManufacturer){
+						this.addComponent(buttonDelete, 2, 0);	
+						this.addComponent(buttonEdit, 1, 0);					
+
+					}						
 					this.addComponent(buttonShow, 0, 0);
-					this.addComponent(buttonDelete, 2, 0);						
-					this.addComponent(buttonEdit, 1, 0);					
+
 				}
 			});
 			
@@ -288,7 +292,12 @@ public class ManufacturerManagementViewImpl extends VerticalLayout implements
 		this.getUI().addWindow(window);
 	}
 
-
+	public void hideButtonNew(){
+		buttonInput.setVisible(false);
+	}
+	public void showButtonNew(){
+		buttonInput.setVisible(true);
+	}	
 	
 	
 	

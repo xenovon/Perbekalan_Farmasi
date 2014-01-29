@@ -28,7 +28,7 @@ public interface ReceptionListView {
 	public boolean updateTableData(Map<Goods, Integer> data);
 	public boolean updateTableDataByDate(Map<DateTime, Integer> data);
 	public void setListener(ReceptionListListener listener);
-	public void showDetailWindow(List<GoodsReception> data, int quantity);
+	public void showDetailWindow(List<GoodsReception> data, int quantity, boolean withEditReception);
 	public String getSelectedPeriod();
 	public String getSelectedViewMode();
 	public void displayForm(Component content, String title);

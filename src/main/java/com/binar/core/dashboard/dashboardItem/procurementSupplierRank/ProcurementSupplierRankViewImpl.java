@@ -61,17 +61,17 @@ public class ProcurementSupplierRankViewImpl  extends Panel implements Procureme
 	public void construct() {
 		setCaption("PBF Dengan Jumlah Pembelian Terbanyak");
 		
-		setHeight("430px");
+		setHeight("470px");
 		setWidth("500px");
 		
-		final GridLayout layout=new GridLayout(2,1){
+		final GridLayout layout=new GridLayout(2,2){
 			{
 				LocalDate baseDate=new LocalDate();
 				LocalDate startDate=baseDate.withDayOfMonth(baseDate.dayOfMonth().getMinimumValue()).minusMonths(3);
 				LocalDate endDate=baseDate.withDayOfMonth(baseDate.dayOfMonth().getMaximumValue());
 
 				setSpacing(true);
-				addComponent(new Label("Periode : "+date.dateToText(startDate.toDate())+" - "+date.dateToText(endDate.toDate())), 0, 0, 0, 1);
+				addComponent(new Label("Periode : "+date.dateToText(startDate.toDate())+" - "+date.dateToText(endDate.toDate())), 0, 0, 1, 0);
 				addComponent(buttonGo, 0,1);
 				addComponent(buttonRefresh, 1, 1);
 			}

@@ -91,15 +91,19 @@ public class IfrsGoodsProcurementViewImpl  extends Panel implements IfrsGoodsPro
 		}
 	}
 	
-	public void generateChart(Map<Integer, String> data){
+	public void generateChart(Map<String, Integer> data){
 		
 		DataSeries dataSeries = new DataSeries()
 		.newSeries();
 		
 
 		//inisialisasi data
-		for(Map.Entry<Integer, String> entry:data.entrySet()){
-			dataSeries.add(entry.getValue(), entry.getKey());
+		System.out.println("Map size "+data.size());
+
+		for(Map.Entry<String, Integer> entry:data.entrySet()){
+			dataSeries.add(entry.getKey(), entry.getValue());
+			System.out.println("Map size "+entry.getValue()+" "+entry.getKey());
+
 		}		
 		SeriesDefaults seriesDefaults = new SeriesDefaults()
 		.setRenderer(SeriesRenderers.PIE)

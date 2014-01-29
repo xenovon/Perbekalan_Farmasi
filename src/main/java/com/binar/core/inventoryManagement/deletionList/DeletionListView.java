@@ -29,7 +29,7 @@ public interface DeletionListView {
 	public void init();
 	public void construct();
 	public void setListener(DeletionListListener listener);
-	public boolean updateTableData(List<DeletedGoods> data);
+	public boolean updateTableData(List<DeletedGoods> data, final boolean withEditDeletion);
 	public void showDetailWindow(DeletedGoods deletedGoods);
 	public Date getSelectedStartRange();
 	public Date getSelectedEndRange();

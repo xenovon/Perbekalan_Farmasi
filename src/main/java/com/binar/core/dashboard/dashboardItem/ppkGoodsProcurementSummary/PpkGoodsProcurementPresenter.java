@@ -25,6 +25,7 @@ public class PpkGoodsProcurementPresenter implements IfrsGoodsProcurementListene
 		this.view=view;
 		view.init();
 		view.setListener(this);
+		updateChart();
 		
 		
 	}
@@ -44,7 +45,7 @@ public class PpkGoodsProcurementPresenter implements IfrsGoodsProcurementListene
 //  put("/usersetting", UserSettingView.class);
 	@Override
 	public void updateChart() {
-		Map<Integer, String> data=model.getReceptionRequirementCount();
+		Map<String, Integer> data=model.getReceptionRequirementCount();
 		if(data==null){
 			view.setEmptyDataView();
 		}else{

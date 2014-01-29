@@ -220,7 +220,7 @@ public class GoodsManagementViewImpl extends VerticalLayout
 		 labelIsImportant.setValue(goods.isImportant()?"Ya":"Tidak");
 		 labelHet.setValue(text.doubleToRupiah(goods.getHet()));
 	}
-	public boolean updateTableData(List<Goods> data){
+	public boolean updateTableData(List<Goods> data, final boolean withEditGoods){
 		tableContainer.removeAllItems();
 		System.out.println(data.size());
 		if(data.size()==0){
@@ -282,9 +282,11 @@ public class GoodsManagementViewImpl extends VerticalLayout
 					});
 					this.setSpacing(true);
 					this.setMargin(false);
+					if(withEditGoods){
+						this.addComponent(buttonDelete, 2, 0);						
+						this.addComponent(buttonEdit, 1, 0);											
+					}
 					this.addComponent(buttonShow, 0, 0);
-					this.addComponent(buttonDelete, 2, 0);						
-					this.addComponent(buttonEdit, 1, 0);					
 				}
 			});
 			
@@ -329,7 +331,12 @@ public class GoodsManagementViewImpl extends VerticalLayout
 	}
 
 	
-	
+	public void hideButtonNew(){
+		buttonInput.setVisible(false);
+	}
+	public void showButtonNew(){
+		buttonInput.setVisible(true);
+	}	
 	
 	
 }

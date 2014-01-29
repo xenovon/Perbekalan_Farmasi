@@ -5,7 +5,10 @@ import com.binar.core.inventoryManagement.DeletionList;
 import com.binar.core.inventoryManagement.ReceptionList;
 import com.binar.core.inventoryManagement.StockList;
 import com.binar.core.inventoryManagement.deletionList.DeletionApproval;
+import com.binar.core.procurement.Invoice;
+import com.binar.core.procurement.PurchaseOrder;
 import com.binar.generalFunction.GeneralFunction;
+import com.binar.generalFunction.LoginManager;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -26,11 +29,91 @@ public class InventoryManagementView extends CustomComponent implements View, Se
 	DeletionList deletion;
 	StockList stock;
 	DeletionApproval deletionApproval;
+	LoginManager loginManager;
 	
 	@Override
 	public void enter(ViewChangeEvent event) {	
-		generalFunction =new GeneralFunction();
+		if(generalFunction==null){
+			generalFunction =new GeneralFunction();			
+		}
 		
+		this.loginManager=generalFunction.getLogin();
+		String userLoginRole=loginManager.getRoleId();
+		
+		/*
+		 * Manajemen Role untuk Level VIEW
+		 * 
+		 */
+		if(loginManager.getRoleId().equals(loginManager.FRM)){
+			generateFarmationView(event);
+		}else if(loginManager.getRoleId().equals(loginManager.IFRS)){
+			generateIFRSView(event);
+		}else if(loginManager.getRoleId().equals(loginManager.PNJ)){
+			generateSupportView(event);
+		}else if(loginManager.getRoleId().equals(loginManager.PPK)){
+			generatePPKView(event);
+		}else if(loginManager.getRoleId().equals(loginManager.TPN)){
+			generateProcurementView(event);
+		}else if(loginManager.getRoleId().equals(loginManager.ADM)){
+			generateAdminView(event);
+		}
+		
+	}
+
+	@Override
+	public void selectedTabChange(SelectedTabChangeEvent event) {
+		if(event.getTabSheet().getSelectedTab()==consumption){
+			consumption.getPresenter().updateTable(consumption.getView().getSelectedPeriod());
+		}
+		if(event.getTabSheet().getSelectedTab()==receipt){
+			receipt.getPresenter().updateTable(receipt.getView().getSelectedPeriod());
+		}
+		if(event.getTabSheet().getSelectedTab()==deletion){
+			deletion.getPresenter().updateTable();
+		}
+		if(event.getTabSheet().getSelectedTab()==stock){
+			stock.getPresenter().goodsChange();
+		}
+		if(event.getTabSheet().getSelectedTab()==deletionApproval){
+			deletionApproval.getPresenter().updateTable();
+		}
+	}
+
+	private void generateFarmationView(ViewChangeEvent event){
+		if(consumption==null){
+			consumption=new ConsumptionList(generalFunction);			
+		} if(deletion==null){
+			deletion=new DeletionList(generalFunction);			
+		} if(receipt==null){
+			receipt=new ReceptionList(generalFunction);			
+		} if(stock==null){
+			stock=new StockList(generalFunction);			
+		}
+		tabSheet=new TabSheet();
+		tabSheet.addTab(consumption).setCaption("Daftar Pengeluaran Harian");
+		tabSheet.addTab(receipt).setCaption("Daftar Penerimaan");
+		tabSheet.addTab(stock).setCaption("Stok Gudang Farmasi");
+		tabSheet.addTab(deletion).setCaption("Pengajuan Barang Kadaluarsa");
+		
+		tabSheet.addSelectedTabChangeListener(this);
+		tabSheet.setSizeFull();
+		
+		Navigator navigator=UI.getCurrent().getNavigator();
+		String parameter=event.getParameters();
+		if(parameter.equals(generalFunction.VIEW_INVENTORY_CONSUMPTION)){
+			tabSheet.setSelectedTab(consumption);
+		}else if(parameter.equals(generalFunction.VIEW_INVENTORY_DELETION)){
+			tabSheet.setSelectedTab(deletion);
+		}else if(parameter.equals(generalFunction.VIEW_INVENTORY_RECEPTION)){
+			tabSheet.setSelectedTab(receipt);
+		}else if(parameter.equals(generalFunction.VIEW_INVENTORY_STOCK)){
+			tabSheet.setSelectedTab(stock);
+		}
+		
+		this.setCompositionRoot(tabSheet);		
+		
+	}
+	private void generateIFRSView(ViewChangeEvent event){
 		if(consumption==null){
 			consumption=new ConsumptionList(generalFunction);			
 		} if(deletion==null){
@@ -70,23 +153,66 @@ public class InventoryManagementView extends CustomComponent implements View, Se
 		this.setCompositionRoot(tabSheet);		
 	}
 
-	@Override
-	public void selectedTabChange(SelectedTabChangeEvent event) {
-		if(event.getTabSheet().getSelectedTab()==consumption){
-			consumption.getPresenter().updateTable(consumption.getView().getSelectedPeriod());
+	private  void generateSupportView(ViewChangeEvent event){
+		 if(deletion==null){
+			deletion=new DeletionList(generalFunction);			
+		} if(deletionApproval==null){
+			deletionApproval=new DeletionApproval(generalFunction);			
 		}
-		if(event.getTabSheet().getSelectedTab()==receipt){
-			receipt.getPresenter().updateTable(receipt.getView().getSelectedPeriod());
+		
+		tabSheet=new TabSheet();
+		tabSheet.addTab(deletion).setCaption("Pengajuan Barang Kadaluarsa");
+		tabSheet.addTab(deletionApproval).setCaption("Persetujuan Barang Kadaluarsa");
+		
+		tabSheet.addSelectedTabChangeListener(this);
+		tabSheet.setSizeFull();
+		
+		Navigator navigator=UI.getCurrent().getNavigator();
+		String parameter=event.getParameters();
+		if(parameter.equals(generalFunction.VIEW_INVENTORY_DELETION)){
+			tabSheet.setSelectedTab(deletion);
+		}else if(parameter.equals(generalFunction.VIEW_INVENTORY_DELETION_APPROVAL)){
+			tabSheet.setSelectedTab(deletionApproval);
 		}
-		if(event.getTabSheet().getSelectedTab()==deletion){
-			deletion.getPresenter().updateTable();
-		}
-		if(event.getTabSheet().getSelectedTab()==stock){
-			stock.getPresenter().goodsChange();
-		}
-		if(event.getTabSheet().getSelectedTab()==deletionApproval){
-			deletionApproval.getPresenter().updateTable();
-		}
+		this.setCompositionRoot(tabSheet);		
+	
 	}
 
+	private  void generatePPKView(ViewChangeEvent event){
+		generateSupportView(event);
+	}
+
+	private void generateProcurementView(ViewChangeEvent event){
+		if(deletion==null){
+			deletion=new DeletionList(generalFunction);			
+		} if(receipt==null){
+			receipt=new ReceptionList(generalFunction);			
+		} if(stock==null){
+			stock=new StockList(generalFunction);			
+		}
+		
+		tabSheet=new TabSheet();
+		tabSheet.addTab(receipt).setCaption("Daftar Penerimaan");
+		tabSheet.addTab(stock).setCaption("Stok Gudang Farmasi");
+		tabSheet.addTab(deletion).setCaption("Pengajuan Barang Kadaluarsa");
+		
+		tabSheet.addSelectedTabChangeListener(this);
+		tabSheet.setSizeFull();
+		
+		Navigator navigator=UI.getCurrent().getNavigator();
+		String parameter=event.getParameters();
+		if(parameter.equals(generalFunction.VIEW_INVENTORY_DELETION)){
+			tabSheet.setSelectedTab(deletion);
+		}else if(parameter.equals(generalFunction.VIEW_INVENTORY_RECEPTION)){
+			tabSheet.setSelectedTab(receipt);
+		}else if(parameter.equals(generalFunction.VIEW_INVENTORY_STOCK)){
+			tabSheet.setSelectedTab(stock);
+		}
+		
+		this.setCompositionRoot(tabSheet);		
+	}
+
+	private void generateAdminView(ViewChangeEvent event){
+		this.setCompositionRoot(new Label("Error 404: Halaman tidak ditemukan"));
+	}
 }

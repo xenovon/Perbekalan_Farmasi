@@ -19,6 +19,7 @@ import com.binar.core.procurement.purchaseOrder.printPurchaseOrder.GeneralPrint;
 import com.binar.entity.PurchaseOrder;
 import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
+import com.binar.generalFunction.LoginManager;
 import com.vaadin.server.BrowserWindowOpener;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -34,6 +35,7 @@ public class PurchaseOrderPresenter implements PurchaseOrderListener {
 	PurchaseOrderViewImpl view;
 	GeneralFunction function;
 	DateManipulator date;
+	LoginManager loginManager;
 	
 	NewPurchaseOrderModel modelNew;
 	NewPurchaseOrderPresenter presenterNew;
@@ -48,11 +50,32 @@ public class PurchaseOrderPresenter implements PurchaseOrderListener {
 		this.date=function.getDate();
 		this.model=model;
 		this.view=view;
+		this.loginManager=function.getLogin();
 		
 		this.view.setListener(this);
 		this.view.init();
+		this.roleProcessor();
+		this.updateTable();
 		
 	}
+	
+	/*
+	 *  Manajemen ROLE level Fungsionalitas
+	 *   
+	 */
+	boolean withEditPurchaseOrder = false;
+	public void roleProcessor(){
+		String role=loginManager.getRoleId();
+		if(!role.equals(loginManager.TPN)){
+			view.hideButtonNew();
+			withEditPurchaseOrder=false;
+		}else{
+			view.showButtonNew();
+			withEditPurchaseOrder=true;
+		}
+		
+	}
+	
 	@Override
 	public void buttonClick(String buttonName) {
 		if(buttonName.equals("buttonNewPurchase")){
@@ -135,7 +158,7 @@ public class PurchaseOrderPresenter implements PurchaseOrderListener {
 		}
 		List<PurchaseOrder> data=model.getPurchaseOrderList(month, year);
 		if(data!=null){
-			view.updateTableData(data);			
+			view.updateTableData(data, withEditPurchaseOrder);			
 		}else{
 //			Notification.show("Terjadi kesalahan pengambilan data");
 		}

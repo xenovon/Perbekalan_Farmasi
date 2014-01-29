@@ -30,6 +30,7 @@ Pengajuan barang kadaluarsa tanggal <<Tanggal Pengajuan>>
 		this.view=view;
 		view.init();
 		view.setListener(this);
+		updateTable();
 	}
 	@Override
 	public void updateTable() {

@@ -198,7 +198,7 @@ public class SupplierManagementViewImpl extends VerticalLayout implements
 		 labelCity.setValue(supplier.getCity());
 
 	}
-	public boolean updateTableData(List<Supplier> data){
+	public boolean updateTableData(List<Supplier> data, final boolean withEditSupplier){
 		tableContainer.removeAllItems();
 		System.out.println(data.size());
 		if(data.size()==0){
@@ -251,9 +251,11 @@ public class SupplierManagementViewImpl extends VerticalLayout implements
 					});
 					this.setSpacing(true);
 					this.setMargin(false);
+					if(withEditSupplier){
+						this.addComponent(buttonDelete, 2, 0);						
+						this.addComponent(buttonEdit, 1, 0);					
+					}
 					this.addComponent(buttonShow, 0, 0);
-					this.addComponent(buttonDelete, 2, 0);						
-					this.addComponent(buttonEdit, 1, 0);					
 				}
 			});
 			
@@ -297,7 +299,12 @@ public class SupplierManagementViewImpl extends VerticalLayout implements
 		window.setContent(content);
 		this.getUI().addWindow(window);
 	}
-
+	public void hideButtonNew(){
+		buttonInput.setVisible(false);
+	}
+	public void showButtonNew(){
+		buttonInput.setVisible(true);
+	}	
 
 	
 	

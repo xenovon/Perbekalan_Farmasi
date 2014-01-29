@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.binar.generalFunction.GeneralFunction;
+import com.binar.generalFunction.LoginManager;
 import com.binar.view.DashboardView;
 import com.binar.view.DataManagementView;
 import com.binar.view.InventoryManagementView;
@@ -13,6 +14,7 @@ import com.binar.view.ReportView;
 import com.binar.view.RequirementPlanningView;
 import com.binar.view.SettingView;
 import com.binar.view.UserManagementView;
+import com.binar.view.UserSettingView;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.server.ThemeResource;
@@ -49,24 +51,49 @@ public class MainView extends HorizontalLayout {
 	private Button userSetting;	
 	private GeneralFunction generalFunction;
 	private MainUI ui;
+	private LoginManager loginManager;
+	    
+	/*
+	 * Manajemen Role untuk Level MENU
+	 * 
+	 */
+    //Method Untuk Memilih menu apa saja yang ditampilkan 
+    private Map<String, String> getButtonMap(){
+    	String role=loginManager.getRoleId();
+    	Map<String, String> buttonName;
+    	
+    	if(role.equals(loginManager.ADM)){
+    	   buttonName= new TreeMap<String, String>() {
+    	        {
+    	            put("Gusermanagement", "Manajemen Pengguna");
+    	            put("Hsetting", "Pengaturan Aplikasi");
+    	        }
+    	    };
+    	}else{
+            buttonName= new TreeMap<String, String>() {
+                {
+    	            put("Adashboard", "Dashboard");
+    	            put("Freport", "Laporan");
+    	            put("Edatamanagement", "Manajemen Data");
+    	            put("Dinventorymanagement", "Manajemen Inventory");
+    	            put("Cprocurement", "Pengadaan");
+    	            put("Brequirementplanning", "Rencana Kebutuhan");
+    	            put("Hsetting", "Pengaturan Aplikasi");
+              }
+            };     		
+    	}
+    	
+    	return buttonName;
+   	
+   	
+    }
+    
 
-	
-    private Map<String, String> buttonName = new TreeMap<String, String>() {
-        {
-            put("Adashboard", "Dashboard");
-            put("Freport", "Laporan");
-            put("Edatamanagement", "Manajemen Data");
-            put("Dinventorymanagement", "Manajemen Inventory");
-            put("Gusermanagement", "Manajemen Pengguna");
-            put("Cprocurement", "Pengadaan");
-            put("Brequirementplanning", "Rencana Kebutuhan");
-            put("Hsetting", "Pengaturan Aplikasi");
-        }
-    };
 	public MainView(Navigator nav, CssLayout content, MainUI ui, GeneralFunction function) {
 		this.nav=nav;
 		this.content=content;
 		this.generalFunction=function;
+		this.loginManager=function.getLogin();
 		this.ui=ui;
 	}	
 	public void init(){
@@ -105,6 +132,7 @@ public class MainView extends HorizontalLayout {
 	private void initiateMenu(){
 		menu=new CssLayout();
         menu.removeAllComponents();
+        Map<String, String> buttonName=getButtonMap();
         for (Map.Entry<String, String> entry : buttonName.entrySet()) {
             final String key = entry.getKey().substring(1);
             final Object value = entry.getValue();

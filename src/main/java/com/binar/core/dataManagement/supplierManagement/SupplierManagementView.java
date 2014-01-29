@@ -18,6 +18,6 @@ public interface SupplierManagementView {
 	public void init();
 	public void construct();
 	public void setListener(SupplierManagementListener listener);
-	public boolean updateTableData(List<Supplier> data);
+	public boolean updateTableData(List<Supplier> data, final boolean withEditSupplier);
 	public void showDetailWindow(Supplier supplier, String goods);
 }

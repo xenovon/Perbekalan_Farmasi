@@ -331,7 +331,7 @@ public class ConsumptionListViewImpl extends VerticalLayout implements Consumpti
 	private IndexedContainer containerDetail;
 
 	@Override
-	public void showDetailWindow(List<GoodsConsumption> data, int quantity) { //membuat tampilan untuk showDetail
+	public void showDetailWindow(List<GoodsConsumption> data, int quantity, boolean withEditConsumption) { //membuat tampilan untuk showDetail
 		if(layoutDetail==null){ //jika layout null
 			//buat konten 
 			layoutDetail = new VerticalLayout();
@@ -375,7 +375,7 @@ public class ConsumptionListViewImpl extends VerticalLayout implements Consumpti
 	        layoutDetail.addComponent(tableDetail);
 	        
 		}//menutup jika layoutdetail null
-	    setLabelData(data, quantity);
+	    setLabelData(data, quantity,withEditConsumption);
 	    if(windowDetail==null){
 			windowDetail=new Window("Detail Pengeluaran Harian"){
 				{
@@ -400,7 +400,7 @@ public class ConsumptionListViewImpl extends VerticalLayout implements Consumpti
 	public DateTime getCurrentDate() {
 		return currentDate;
 	}
-	public void showDetailWindowByDate(List<GoodsConsumption> list, DateTime date) {
+	public void showDetailWindowByDate(List<GoodsConsumption> list, DateTime date,  boolean withEditConsumption) {
 		this.currentDate=date;
 		if(layoutDetailByDate==null){ //jika layout null
 			//buat konten 
@@ -447,7 +447,7 @@ public class ConsumptionListViewImpl extends VerticalLayout implements Consumpti
 	        tableDetailByDate.setContainerDataSource(containerDetailByDate); //set kontainer harian  
 	        layoutDetailByDate.addComponents(layoutDetailGrid, tableDetailByDate);
 		}//menutup jika layoutdetail null
-	    setLabelDataByDate(list);
+	    setLabelDataByDate(list, withEditConsumption);
 	    if(windowDetailByDate==null){
 			windowDetailByDate=new Window("Detail Pengeluaran Harian"){
 				{
@@ -461,7 +461,7 @@ public class ConsumptionListViewImpl extends VerticalLayout implements Consumpti
 		this.getUI().addWindow(windowDetailByDate);		
 	}
 	
-	public boolean setLabelDataByDate(List<GoodsConsumption> consumptions) {
+	public boolean setLabelDataByDate(List<GoodsConsumption> consumptions, final boolean withEditConsumption ) {
 		if(consumptions.size()==0){
 			return false;
 		}
@@ -495,7 +495,6 @@ public class ConsumptionListViewImpl extends VerticalLayout implements Consumpti
 							listener.edit(consumptionFinal.getIdGoodsConsumption());
 						}
 					});
-					this.addComponent(buttonEdit, 0, 0);
 
 					Button buttonDelete=new Button();
 					buttonDelete.setDescription("Hapus Data");
@@ -509,7 +508,10 @@ public class ConsumptionListViewImpl extends VerticalLayout implements Consumpti
 						}
 					});
 					this.setSpacing(true);
-					this.addComponent(buttonDelete, 1, 0);						
+					if(withEditConsumption){
+						this.addComponent(buttonEdit, 0, 0);
+						this.addComponent(buttonDelete, 1, 0);												
+					}
 				}});		
 			}
 			
@@ -521,7 +523,7 @@ public class ConsumptionListViewImpl extends VerticalLayout implements Consumpti
 	public Window getWindowEdit() {
 		return windowEdit;
 	}
-	public void setLabelData(final List<GoodsConsumption> data, int quantity) { //mengeset label data untuk tabel header
+	public void setLabelData(final List<GoodsConsumption> data, int quantity, final boolean withEditConsumption) { //mengeset label data untuk tabel header
 		containerDetail.removeAllItems();
 		if(data.size()==0){
 			return;
@@ -552,7 +554,6 @@ public class ConsumptionListViewImpl extends VerticalLayout implements Consumpti
 							listener.edit(consumptionFinal.getIdGoodsConsumption());
 						}
 					});
-					this.addComponent(buttonEdit, 0, 0);
 
 					Button buttonDelete=new Button();
 					buttonDelete.setDescription("Hapus Data");
@@ -566,7 +567,10 @@ public class ConsumptionListViewImpl extends VerticalLayout implements Consumpti
 						}
 					});
 					this.setSpacing(true);
-					this.addComponent(buttonDelete, 1, 0);						
+					if(withEditConsumption){
+						this.addComponent(buttonEdit, 0, 0);
+						this.addComponent(buttonDelete, 1, 0);												
+					}
 				}});		
 			}
 			
@@ -627,4 +631,11 @@ public class ConsumptionListViewImpl extends VerticalLayout implements Consumpti
 	public String getSelectedViewMode() {
 		return (String) viewMode.getValue();
 	}
+	
+	public void hideButtonNew(){
+		buttonInput.setVisible(false);
+	}
+	public void showButtonNew(){
+		buttonInput.setVisible(true);
+	}	
 }

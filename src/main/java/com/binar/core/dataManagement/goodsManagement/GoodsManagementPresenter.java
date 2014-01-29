@@ -9,6 +9,7 @@ import com.binar.core.dataManagement.goodsManagement.inputEditGoods.InputGoodsPr
 import com.binar.core.dataManagement.goodsManagement.inputEditGoods.InputGoodsViewImpl;
 import com.binar.entity.Goods;
 import com.binar.generalFunction.GeneralFunction;
+import com.binar.generalFunction.LoginManager;
 import com.google.gwt.dom.client.ModElement;
 import com.google.gwt.user.client.Window.ClosingEvent;
 import com.google.gwt.user.client.WindowCloseListener;
@@ -34,16 +35,36 @@ public class GoodsManagementPresenter implements GoodsManagementListener {
 	InputGoodsViewImpl viewEdit;
 	InputGoodsPresenter presenterEdit;
 	
-	
+	LoginManager loginManager;
+
 	public GoodsManagementPresenter(GoodsManagementModel model, 
 									GoodsManagementViewImpl view, GeneralFunction function) {
 		this.model=model;
 		this.view=view;
 		this.function=function;
 		view.init();
+		this.loginManager=function.getLogin();
+
 		view.setListener(this);
+		roleProcessor();
 		updateTable();
 	
+	}
+	/*
+	 *  Manajemen ROLE level Fungsionalitas
+	 *   
+	 */
+	boolean withEditGoods = false;
+	public void roleProcessor(){
+		String role=loginManager.getRoleId();
+		if(!role.equals(loginManager.FRM)){
+			view.hideButtonNew();
+			withEditGoods=false;
+		}else{
+			view.showButtonNew();
+			withEditGoods=true;
+		}
+		
 	}
 
 	@Override
@@ -101,7 +122,7 @@ public class GoodsManagementPresenter implements GoodsManagementListener {
 	}
 	public void updateTable(){
 		List<Goods> goods=model.getGoods();
-		view.updateTableData(goods);
+		view.updateTableData(goods, withEditGoods);
 	}
 	public void addWIndowCloseListener(){
 		Collection<Window> windows=view.getUI().getWindows();

@@ -19,7 +19,7 @@ public interface InvoiceView {
 	public void init();
 	public void construct();
 	public void setListener(InvoiceListener listener);
-	public boolean updateTableData(List<Invoice> data);
+	public boolean updateTableData(List<Invoice> data, boolean withEditInvoice);
 	public void showDetailWindow(Invoice invoice);
 	public String getSelectedPeriod();
 

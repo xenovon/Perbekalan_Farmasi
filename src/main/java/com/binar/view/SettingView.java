@@ -8,6 +8,7 @@ import com.binar.core.setting.SettingGoods;
 import com.binar.core.setting.SettingPurchaseOrder;
 import com.binar.core.setting.UserSetting;
 import com.binar.generalFunction.GeneralFunction;
+import com.binar.generalFunction.LoginManager;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.CustomComponent;
@@ -25,10 +26,20 @@ public class SettingView extends CustomComponent  implements View {
 	SettingGoods goods;
 	UserSetting user;
 	GeneralFunction function;
-	
+	LoginManager loginManager;
 	@Override
 	public void enter(ViewChangeEvent event) {
 		function=new GeneralFunction();
+		loginManager=function.getLogin();
+		
+		if(loginManager.getRoleId().equals(loginManager.ADM)){
+			generateAdminView();
+		}else{
+			generateNonAdminView();
+		}
+	}
+	
+	public void generateAdminView(){
 		finance=new SettingFinance(function);
 		purchaseOrder =new SettingPurchaseOrder(function);
 		general = new SettingGeneral(function);
@@ -42,6 +53,16 @@ public class SettingView extends CustomComponent  implements View {
 		tabSheet.addTab(purchaseOrder).setCaption("Pengaturan Surat Pesanan");
 		tabSheet.setSizeFull();
 		this.setCompositionRoot(tabSheet);
+
+	}
+	
+	public void generateNonAdminView(){
+		user=new UserSetting(function);
+		
+		tabSheet.addTab(user).setCaption("Pengaturan Akun");
+		tabSheet.setSizeFull();
+		this.setCompositionRoot(tabSheet);
+
 	}
 
 }

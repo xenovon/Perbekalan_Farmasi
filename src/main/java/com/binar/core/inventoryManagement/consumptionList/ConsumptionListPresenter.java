@@ -16,6 +16,7 @@ import com.binar.entity.GoodsConsumption;
 import com.binar.entity.ReqPlanning;
 import com.binar.generalFunction.GeneralFunction;
 import com.binar.generalFunction.GetSetting;
+import com.binar.generalFunction.LoginManager;
 import com.binar.core.inventoryManagement.consumptionList.inputConsumption.InputConsumptionModel;
 import com.binar.core.inventoryManagement.consumptionList.inputConsumption.InputConsumptionPresenter;
 import com.binar.core.inventoryManagement.consumptionList.inputConsumption.InputConsumptionViewImpl;
@@ -38,16 +39,39 @@ public class ConsumptionListPresenter implements ConsumptionListListener{
 	String currentIdGoods;
 	int currentQuantity;
 	DateTime currentDate;
+	LoginManager loginManager;
+
 	
 	public ConsumptionListPresenter(GeneralFunction function, 
 			ConsumptionListModel model, ConsumptionListViewImpl view){
 		this.model=model;
 		this.view=view;
 		this.function=function;
+		this.loginManager=function.getLogin();
+
 		view.init();
 		view.setListener(this);
+		roleProcessor();
+
 		updateTable(view.getSelectedPeriod()); 
 		updateTableByDate(view.getSelectedPeriod());
+	}
+
+	/*
+	 *  Manajemen ROLE level Fungsionalitas
+	 *   
+	 */
+	boolean withEditConsumption= false;
+	public void roleProcessor(){
+		String role=loginManager.getRoleId();
+		if(!role.equals(loginManager.FRM)){
+			view.hideButtonNew();
+			withEditConsumption=false;
+		}else{
+			view.showButtonNew();
+			withEditConsumption=true;
+		}
+		
 	}
 
 	@Override
@@ -63,7 +87,7 @@ public class ConsumptionListPresenter implements ConsumptionListListener{
 					function.getDate().parseDateMonth(view.getSelectedPeriod()));
 			int quantity=model.getTableDataQuantity(function.getDate().
 					parseDateMonth(view.getSelectedPeriod()), currentIdGoods);
-			view.setLabelData(consumption, quantity);
+			view.setLabelData(consumption, quantity, withEditConsumption);
 		}
 	}
 
@@ -76,7 +100,7 @@ public class ConsumptionListPresenter implements ConsumptionListListener{
 		view.updateTableDataByDate(dataTableByDate);
 		try {
 			List<GoodsConsumption> data=model.getConsumptionsByDate(this.currentDate);
-			view.setLabelDataByDate(data);
+			view.setLabelDataByDate(data, withEditConsumption);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -87,12 +111,12 @@ public class ConsumptionListPresenter implements ConsumptionListListener{
 		List<GoodsConsumption> consumption=model.getConsumptions(idGoods, 
 				function.getDate().parseDateMonth(view.getSelectedPeriod()));
 		this.currentIdGoods=idGoods;
-		view.showDetailWindow(consumption, quantity);
+		view.showDetailWindow(consumption, quantity, withEditConsumption);
 	}
 	@Override
 	public void showDetailByDate(DateTime date) {
 		List<GoodsConsumption> data=model.getConsumptionsByDate(date);
-		view.showDetailWindowByDate(data, date);
+		view.showDetailWindowByDate(data, date, withEditConsumption);
 		this.currentDate = date;
 	}
 
@@ -114,7 +138,7 @@ public class ConsumptionListPresenter implements ConsumptionListListener{
 						updateTable(view.getSelectedPeriod());
 						updateTableByDate(view.getSelectedPeriod());
 						List<GoodsConsumption> data=model.getConsumptionsByDate(view.getCurrentDate());
-						view.setLabelDataByDate(data);						
+						view.setLabelDataByDate(data, withEditConsumption);						
 					}
 				}, 
 				view.getUI());

@@ -195,7 +195,7 @@ public class Dashboard extends VerticalLayout {
 			ifrsRequirementPlanningPresenter = new IfrsRequirementPlanningPresenter(
 					function, supportRequirementNonApprovedViewImpl, supportRequirementNonApprovedModel);
 		}
-		gridLayout.addComponent(farmationRequirementStatusViewImpl,1,0);
+		gridLayout.addComponent(supportRequirementNonApprovedViewImpl,1,0);
 
 		if(ifrsGoodsProcurementPresenter == null){
 			ifrsGoodsProcurementModel =new IfrsGoodsProcurementModel(function);
@@ -212,7 +212,7 @@ public class Dashboard extends VerticalLayout {
 			ifrsGoodsReceptionSummaryPresenter = new IfrsGoodsReceptionSummaryPresenter(
 					function, ifrsGoodsReceptionSummaryViewImpl, ifrsGoodsReceptionSummaryModel);
 		}
-		gridLayout.addComponent(ifrsGoodsProcurementViewImpl,1,1);
+		gridLayout.addComponent(ifrsGoodsReceptionSummaryViewImpl,1,1);
 	}
 	
 	PpkExpiredGoodsNonAcceptedModel ppkExpiredGoodsNonAcceptedModel;
@@ -239,14 +239,14 @@ public class Dashboard extends VerticalLayout {
 			ppkGoodsProcurementPresenter = new PpkGoodsProcurementPresenter(
 					function, ifrsGoodsProcurementViewImpl, ifrsGoodsProcurementModel);
 		}
-		gridLayout.addComponent(ifrsGoodsProcurementViewImpl,1,0);
+		gridLayout.addComponent(ifrsGoodsProcurementViewImpl,0,1);
 		if(ppkRequirementPlanningPresenter == null){
 			farmationRequirementStatusModel =new FarmationRequirementStatusModel(function);
 			farmationRequirementStatusViewImpl =new FarmationRequirementStatusViewImpl(function);
 			ppkRequirementPlanningPresenter = new PpkRequirementPlanningPresenter(
 					function, farmationRequirementStatusViewImpl, farmationRequirementStatusModel);
 		}
-		gridLayout.addComponent(farmationRequirementStatusViewImpl,0,1);
+		gridLayout.addComponent(farmationRequirementStatusViewImpl,1,0);
 
 	}
 	
@@ -268,6 +268,30 @@ public class Dashboard extends VerticalLayout {
 	
 	public void generateProcurementView(){
 		gridLayout.removeAllComponents();
+		if(procurementGoodsProcurementPresenter == null){
+			ifrsGoodsProcurementModel =new IfrsGoodsProcurementModel(function);
+			ifrsGoodsProcurementViewImpl =new IfrsGoodsProcurementViewImpl(function);
+			procurementGoodsProcurementPresenter = new ProcurementGoodsProcurementPresenter(
+					function, ifrsGoodsProcurementViewImpl, ifrsGoodsProcurementModel);
+		}
+		gridLayout.addComponent(ifrsGoodsProcurementViewImpl,0,0);
+
+		if(procurementReceiptPresenter == null){
+			ifrsGoodsReceptionSummaryViewImpl =new IfrsGoodsReceptionSummaryViewImpl(function);
+			ifrsGoodsReceptionSummaryModel =new IfrsGoodsReceptionSummaryModel(function);
+			procurementReceiptPresenter = new ProcurementReceiptPresenter(
+					function, ifrsGoodsReceptionSummaryViewImpl, ifrsGoodsReceptionSummaryModel);
+		}
+		gridLayout.addComponent(ifrsGoodsReceptionSummaryViewImpl,1,0);
+
+		if(procurementSupplierRankPresenter == null){
+			procurementSupplierRankModel =new ProcurementSupplierRankModel(function);
+			procurementSupplierRankViewImpl =new ProcurementSupplierRankViewImpl(function);
+			procurementSupplierRankPresenter = new ProcurementSupplierRankPresenter(
+					function, procurementSupplierRankViewImpl, procurementSupplierRankModel);
+		}
+		gridLayout.addComponent(procurementSupplierRankViewImpl,0,1);
+
 		
 		if(procurementDueDatePresenter == null){
 			procurementDueDateModel =new ProcurementDueDateModel(function);
@@ -275,23 +299,9 @@ public class Dashboard extends VerticalLayout {
 			procurementDueDatePresenter = new ProcurementDueDatePresenter(
 					function, procurementDueDateViewImpl, procurementDueDateModel);
 		}
-		gridLayout.addComponent(procurementDueDateViewImpl,0,0);
+		gridLayout.addComponent(procurementDueDateViewImpl,1,1);
 
-		if(procurementGoodsProcurementPresenter == null){
-			ifrsGoodsProcurementModel =new IfrsGoodsProcurementModel(function);
-			ifrsGoodsProcurementViewImpl =new IfrsGoodsProcurementViewImpl(function);
-			procurementGoodsProcurementPresenter = new ProcurementGoodsProcurementPresenter(
-					function, ifrsGoodsProcurementViewImpl, ifrsGoodsProcurementModel);
-		}
-		gridLayout.addComponent(ifrsGoodsProcurementViewImpl,0,1);
 
-		if(procurementReceiptPresenter == null){
-			ifrsGoodsReceptionSummaryViewImpl =new IfrsGoodsReceptionSummaryViewImpl(function);
-			ifrsGoodsReceptionSummaryModel =new IfrsGoodsReceptionSummaryModel(function);
-			procurementReceiptPresenter = new ProcurementReceiptPresenter(
-					function, ifrsGoodsReceptionSummaryViewImpl, ifrsGoodsReceptionSummaryModel);
-		}
-		gridLayout.addComponent(ifrsGoodsProcurementViewImpl,1,0);
 
 		if(procurementRequirementAcceptancePresenter == null){
 			procurementRequirementAcceptanceViewImpl =new ProcurementRequirementAcceptanceViewImpl(function);
@@ -299,25 +309,12 @@ public class Dashboard extends VerticalLayout {
 			procurementRequirementAcceptancePresenter = new ProcurementRequirementAcceptancePresenter(
 					function, procurementRequirementAcceptanceViewImpl, procurementRequirementAcceptanceModel);
 		}
-		gridLayout.addComponent(ifrsGoodsProcurementViewImpl,1,1);
+		gridLayout.addComponent(procurementRequirementAcceptanceViewImpl,0,2);
 
-		if(procurementReceiptPresenter == null){
-			ifrsGoodsReceptionSummaryViewImpl =new IfrsGoodsReceptionSummaryViewImpl(function);
-			ifrsGoodsReceptionSummaryModel =new IfrsGoodsReceptionSummaryModel(function);
-			procurementReceiptPresenter = new ProcurementReceiptPresenter(
-					function, ifrsGoodsReceptionSummaryViewImpl, ifrsGoodsReceptionSummaryModel);
-		}
-		gridLayout.addComponent(ifrsGoodsProcurementViewImpl,0,2);
 
 		
-		if(procurementSupplierRankPresenter == null){
-			ifrsGoodsReceptionSummaryViewImpl =new IfrsGoodsReceptionSummaryViewImpl(function);
-			procurementSupplierRankViewImpl =new ProcurementSupplierRankViewImpl(function);
-			procurementSupplierRankPresenter = new ProcurementSupplierRankPresenter(
-					function, procurementSupplierRankViewImpl, procurementSupplierRankModel);
-		}
-		gridLayout.addComponent(ifrsGoodsProcurementViewImpl,0,2);
 
+		
 	}
 	
 	SupportDeletedGoodsNonApprovedPresenter supportDeletedGoodsNonApprovedPresenter;

@@ -23,6 +23,7 @@ public class IfrsGoodsProcurementPresenter implements IfrsGoodsProcurementListen
 		this.view=view;
 		view.init();
 		view.setListener(this);
+		updateChart();
 	}
 	@Override
 	public void buttonGo() {
@@ -31,7 +32,7 @@ public class IfrsGoodsProcurementPresenter implements IfrsGoodsProcurementListen
 	}
 	@Override
 	public void updateChart() {
-		Map<Integer, String> data=model.getReceptionRequirementCount();
+		Map<String, Integer> data=model.getReceptionRequirementCount();
 		if(data==null){
 			view.setEmptyDataView();
 		}else{

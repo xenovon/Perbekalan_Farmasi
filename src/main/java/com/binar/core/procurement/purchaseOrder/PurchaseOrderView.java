@@ -19,7 +19,7 @@ interface PurchaseOrderView {
 	public void init();
 	public void construct();
 	public void setListener(PurchaseOrderListener listener);
-	public boolean updateTableData(List<PurchaseOrder> data);
+	public boolean updateTableData(List<PurchaseOrder> data, boolean withEditPurchaseOrder);
 	public void showDetailWindow(PurchaseOrder purchaseOrder);
 	public String getSelectedPeriod();
 
