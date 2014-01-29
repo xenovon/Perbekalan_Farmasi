@@ -2,6 +2,9 @@ package com.binar.core.requirementPlanning.forecast.forecastStep;
 
 import java.util.Collection;
 
+
+
+import com.binar.core.requirementPlanning.forecast.forecastProcessor.Forecaster;
 import com.binar.core.requirementPlanning.forecast.forecastStep.ForecastStepView.ForecastStepListener;
 import com.binar.core.requirementPlanning.forecast.forecastStep.ForecastStepView.ViewMode;
 import com.binar.generalFunction.GeneralFunction;
@@ -26,9 +29,13 @@ public class ForecastStepPresenter implements ForecastStepListener{
 		view.setViewMode(ViewMode.RESULT);
 		String selectedGoods = view.getSelectedGoods();
 		String selectedPeriod = view.getSelectedPeriod();
+		Forecaster forecaster=new Forecaster();
+		
 		if (selectedGoods!=null) {
 			view.setForecastTitle("Peramalan untuk barang " + selectedGoods
 					+ " dan " + selectedPeriod);
+			
+//			view.addChart(forecaster.forecast(selectedGoods, selectedPeriod));
 		}
 	}
 	@Override

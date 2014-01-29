@@ -1,14 +1,22 @@
 package com.binar.core.requirementPlanning.forecast.forecastStep;
 
+import java.util.Iterator;
 import java.util.Map;
 
+import org.dussan.vaadin.dcharts.DCharts;
+
+import com.binar.core.requirementPlanning.forecast.forecastProcessor.Forecaster;
 import com.binar.generalFunction.GeneralFunction;
+import com.binar.generalFunction.TextManipulator;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
@@ -23,10 +31,14 @@ public class ForecastStepViewImpl extends VerticalLayout implements ForecastStep
 	private Button buttonClose;
 	private Label labelForecastTitle;
 	private VerticalLayout layoutResultForecast;
+	private CssLayout layoutChart;
+	private HorizontalLayout layoutResult;
 	private ForecastStepListener listener;
+	
+	TextManipulator text;
 	public ForecastStepViewImpl(GeneralFunction function) {
 		this.function=function;
-		
+		this.text=function.getTextManipulator();
 	}
 	@Override
 	public void init() {
@@ -88,10 +100,18 @@ public class ForecastStepViewImpl extends VerticalLayout implements ForecastStep
 		};
 		labelForecastTitle.setValue("Peramalan Untuk Barang");
 		
+		layoutResult=new HorizontalLayout();
+		layoutResult.setSpacing(true);
+		layoutResult.setMargin(true);
+		
+		layoutChart =new CssLayout();
+		
 		layoutResultForecast =new VerticalLayout(){{
 			setMargin(true);
 			setSpacing(true);
 			addComponent(labelForecastTitle);
+			addComponent(layoutChart);
+			addComponent(layoutResult);
 		}};
 		this.setMargin(true);
 		this.setSpacing(true);
@@ -138,7 +158,6 @@ public class ForecastStepViewImpl extends VerticalLayout implements ForecastStep
         }
        	selectGoods.setValue(selectValue);
 	};
-	
 	public String getSelectedGoods(){
 		return (String)selectGoods.getValue();
 	}
@@ -148,5 +167,32 @@ public class ForecastStepViewImpl extends VerticalLayout implements ForecastStep
 	public void setForecastTitle(String forecastTitle){
 		labelForecastTitle.setValue("<h4>"+forecastTitle+"</h4>");
 		labelForecastTitle.setContentMode(ContentMode.HTML);
+	}
+	
+	private  void addChart(Component component){
+		layoutChart.removeAllComponents();
+		layoutChart.addComponent(component);
+	}
+	
+	@Override
+	public void generateForecastView(Component component, final Forecaster forecaster, boolean isTriple) {
+		addChart(component);
+		layoutResult.removeAllComponents();
+		
+		if(isTriple){
+			layoutResult.addComponent(new VerticalLayout(){{
+				addComponent(new Label("<h4>Triple Exponential Smoothing</h4>", ContentMode.HTML));
+				addComponent(new Label(forecaster.getProcessTripleES().getNextMonthValue()+"", ContentMode.HTML));
+				addComponent(new Label("MSE : "+text.doubleToAngka(forecaster.getProcessTripleES().getNextMonthMSE())));
+			}});
+		}else{
+			layoutResult.addComponent(new VerticalLayout(){{
+				addComponent(new Label("<h4>Triple Exponential Smoothing</h4>", ContentMode.HTML));
+				addComponent(new Label(forecaster.getProcessTripleES().getNextMonthValue()+"", ContentMode.HTML));
+				addComponent(new Label("MSE : "+text.doubleToAngka(forecaster.getProcessTripleES().getNextMonthMSE())));
+			}});
+			
+		}
+		
 	}
 }

@@ -21,6 +21,7 @@ public class IfrsGoodsReceptionSummaryViewImpl  extends Panel implements IfrsGoo
  * Stok barang 'fast moving' dengan stok hampir atau mendekati stok minimum. 
 > Nama barang, jumlah stok, satuan
 
+
  */
 	private Table table;
 	private IndexedContainer tableContainer;

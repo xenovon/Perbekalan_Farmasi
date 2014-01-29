@@ -6,9 +6,8 @@ import com.binar.entity.Goods;
 import com.vaadin.ui.Panel;
 
 interface  FarmationGoodsConsumptionView {
-	
 	public interface FarmationGoodsConsumptionListener{
-		public void updateTable();
+		public void updateConsumption();
 		public void buttonGo();
 	}
 	public void init();

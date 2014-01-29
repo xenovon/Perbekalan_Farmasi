@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 
 import javax.servlet.annotation.WebServlet;
 
+
 import com.avaje.ebean.EbeanServer;
 import com.avaje.ebean.EbeanServerFactory;
 import com.binar.database.GetEbeanServer;
@@ -27,6 +28,7 @@ import com.binar.view.UserSettingView;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
+import com.vaadin.annotations.Widgetset;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.server.VaadinRequest;
@@ -42,6 +44,7 @@ import com.vaadin.ui.VerticalLayout;
 @Theme("dashboard")
 @SuppressWarnings("serial")
 @Title("Perbekalan Farmasi RSUD Ajibarang")
+@Widgetset(value="com.binar.AppWidgetSet")
 public class MainUI extends UI
 {
 	CssLayout root =new CssLayout();

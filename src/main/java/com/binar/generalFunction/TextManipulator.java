@@ -25,5 +25,15 @@ public class TextManipulator {
             return decimalFormat.format((long)input);
 
     }
+    public String doubleToAngka(double input){
+    	decimalFormat.applyPattern("###.##");
+    	
+    	return decimalFormat.format(input);
+    }
 
+    public static void main(String[] args) {
+		TextManipulator text=new TextManipulator();
+		
+		System.out.println(text.doubleToAngka(2143242.310023423));
+	}
 }

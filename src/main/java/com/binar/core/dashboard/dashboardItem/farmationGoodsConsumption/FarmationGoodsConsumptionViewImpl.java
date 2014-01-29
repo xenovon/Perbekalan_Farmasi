@@ -105,7 +105,7 @@ public class FarmationGoodsConsumptionViewImpl  extends Panel implements Farmati
 		if(event.getButton()==buttonGo){
 			listener.buttonGo();
 		}else if(event.getButton()==buttonRefresh){
-			listener.updateTable();
+			listener.updateConsumption();
 		}
 	}
 }
