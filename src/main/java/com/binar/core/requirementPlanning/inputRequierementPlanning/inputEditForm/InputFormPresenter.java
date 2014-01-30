@@ -4,6 +4,9 @@ import java.util.Collection;
 import java.util.List;
 
 import com.binar.core.PresenterInterface;
+import com.binar.core.requirementPlanning.forecast.forecastStep.ForecastStepModel;
+import com.binar.core.requirementPlanning.forecast.forecastStep.ForecastStepPresenter;
+import com.binar.core.requirementPlanning.forecast.forecastStep.ForecastStepViewImpl;
 import com.binar.core.requirementPlanning.inputRequierementPlanning.inputEditForm.InputFormView.ErrorLabel;
 import com.binar.entity.Goods;
 import com.binar.entity.ReqPlanning;
@@ -24,6 +27,10 @@ public class InputFormPresenter implements PresenterInterface, InputFormView.Inp
 	InputFormViewImpl view;
 	InputFormModel model;
 	FormData data;
+	
+	ForecastStepModel forecastModel;
+	ForecastStepPresenter forecastPresenter;
+	ForecastStepViewImpl forecastView;
 	
 	//id reqPlanning untuk mode edit
 	int reqPlanning;
@@ -64,9 +71,24 @@ public class InputFormPresenter implements PresenterInterface, InputFormView.Inp
 	public void setEditMode(boolean editMode){
 		this.editMode=true;
 	}
+	private void forecastClick(){
+		//jika barang tidak dipilih
+		if((String)view.getInputGoodsSelect().getValue()==null){
+			Notification.show("Pilih barang terlebih dahulu", Type.TRAY_NOTIFICATION);
+		}else{
+			if(forecastPresenter==null){
+				forecastModel=new ForecastStepModel(generalFunction);
+				forecastView=new ForecastStepViewImpl(generalFunction);
+				forecastPresenter=new ForecastStepPresenter(forecastModel, forecastView, generalFunction, (String)view.getInputGoodsSelect().getValue());
+			}
+			Window window=view.displayForm(forecastView, "Peramalan");
+			forecastPresenter.setWindow(window);			
+		}
+		
+	}
 	public void buttonClick(String source) {
 		if(source.equals("forecast")){
-			Notification.show("Tombol forecast ditekan");
+			forecastClick();
 		}else if(source.equals("reset")){
 			view.resetForm();;
 		}else if(source.equals("submit")){

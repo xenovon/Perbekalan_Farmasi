@@ -19,6 +19,7 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.Select;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.Window;
 
 public class InputFormViewImpl extends FormLayout implements 
 									   InputFormView, Button.ClickListener,
@@ -288,6 +289,29 @@ public class InputFormViewImpl extends FormLayout implements
 		labelErrorQuantity.setVisible(false);
 		labelGeneralError.setVisible(false);
 	}
+	
+	Window window;
+
+	public Window displayForm(Component content, String title){
+		//menghapus semua window terlebih dahulu
+		if(window==null){
+			window=new Window(title){
+				{
+					center();
+					setClosable(false);
+					setWidth("70%");
+					setHeight("80%");
+				}
+			};
+
+		}
+		this.getUI().removeWindow(window);
+		window.setCaption(title);
+		window.setContent(content);
+		this.getUI().addWindow(window);
+		return window;
+	}
+
 	@Override
 	public void setUnit(String text) {
 		labelSatuan.setValue("Satuan : "+text);

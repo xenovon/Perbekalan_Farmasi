@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.TreeMap;
 
 import org.joda.time.DateTime;
@@ -39,8 +40,32 @@ public class ForecastStepModel {
 		}
 		return data;
 	}
-	public List<Integer> generateConsumptionData(String idGoods, int period){
-		
+	//untuk menghasilkan data dummy
+	public List<Integer> generateDummyConsumptionData(String periodS, boolean showZero){
+		int period;
+		try {
+			period=Integer.parseInt(periodS);
+		} catch (Exception e) {
+			period=12;
+		}
+		Random random=new Random();
+		List<Integer> integer=new ArrayList<Integer>();
+		for(int i=0;i<period;i++){
+			if(showZero && (period-i==i)){
+				integer.add(0);
+			}else{
+				integer.add(random.nextInt(800)+200);
+			}
+		}
+		return integer;
+	}
+	public List<Integer> generateConsumptionData(String idGoods, String periodS){
+		int period;
+		try {
+			period=Integer.parseInt(periodS);
+		} catch (Exception e) {
+			period=12;
+		}
 		List<Integer> returnValue =new ArrayList<Integer>();
 		LocalDate time=new LocalDate();
 		int i=0;

@@ -41,28 +41,26 @@ public class Forecaster {
 	private NaiveProcess processNaive;
 	private List<Integer> data;
 	private boolean tripleSupport=false;
-	public void forecast(List<Integer> data){
-		this.data=data;
-		execute();
-	}
 	
-	private void execute(){
+	public void execute(List<Integer> data){
+		this.data=data;
 		DataSet dataSet=generateDataSet(data,false);
-		if(processDoubleES!=null){
+
+		if(processDoubleES==null){
 			processDoubleES=new DoubleExponentialSmoothingProcess();
 		}
 		processDoubleES.init(dataSet);
 		
-		if(processMovingAverage!=null){
+		if(processMovingAverage==null){
 			processMovingAverage =new MovingAverageProcess();
 		}
 		processMovingAverage.init(dataSet);
 		
-		if(processSimpleES!=null){
+		if(processSimpleES==null){
 			processSimpleES=new SimpleExponentialSmoothingProcess();
 		}
 		processSimpleES.init(dataSet);
-		if(processNaive!=null){
+		if(processNaive==null){
 			processNaive=new NaiveProcess();
 		}
 		processNaive.init(dataSet);
@@ -70,7 +68,7 @@ public class Forecaster {
 		tripleSupport=false;
 		
 		if(data.size()>=24){
-			if(processTripleES!=null){
+			if(processTripleES==null){
 				processTripleES=new TripleExponentialSmoothingProcess();
 			}
 			tripleSupport=true;
@@ -132,5 +130,9 @@ public class Forecaster {
 	
 	public List<Integer> getData() {
 		return data;
+	}
+	
+	public List<Integer> getDataFilter() {
+		return filterData(data);
 	}
 }

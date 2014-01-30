@@ -2,6 +2,8 @@ package com.binar.core.dashboard.dashboardItem.farmationGoodsConsumption;
 
 import java.util.List;
 
+import org.dussan.vaadin.dcharts.DCharts;
+
 import com.binar.core.dashboard.dashboardItem.farmationGoodsConsumption.FarmationGoodsConsumptionView.FarmationGoodsConsumptionListener;
 import com.binar.entity.Goods;
 import com.binar.generalFunction.GeneralFunction;
@@ -28,6 +30,7 @@ public class FarmationGoodsConsumptionViewImpl  extends Panel implements Farmati
 	private Button buttonRefresh;
 	private Button buttonGo;
 	private GeneralFunction function;
+	private DCharts chart;
 	public FarmationGoodsConsumptionViewImpl(GeneralFunction function) {
 		this.function=function;
 	}
@@ -61,7 +64,7 @@ public class FarmationGoodsConsumptionViewImpl  extends Panel implements Farmati
 
 	@Override
 	public void construct() {
-		setCaption("Obat Fast-Moving dengan Stok Minimum");
+		setCaption("Konsumsi Obat Bulan Ini");
 		setHeight("350px");
 		setWidth("470px");
 		final GridLayout layout=new GridLayout(2,1){

@@ -15,9 +15,9 @@ public class MovingAverageProcess implements ForecastProcessInterface
 	private DataSet dataSet;
 	private Observation nextMonth;
 	public void init(DataSet dataSet) {
-		model=new MovingAverageModel();
-		model.init(dataSet);
 		this.dataSet=dataSet;
+		model=new MovingAverageModel(getDataSet());
+		model.init(dataSet);
 		nextMonth=new Observation(0);
 		nextMonth.setIndependentValue(Forecaster.INDEPENDENT_VARIABLE, (dataSet.size()+1));
 	}
@@ -37,5 +37,8 @@ public class MovingAverageProcess implements ForecastProcessInterface
 		}else{
 			return 0;
 		}
+	}
+	private int getDataSet(){
+		return dataSet.size()-1;
 	}
 }

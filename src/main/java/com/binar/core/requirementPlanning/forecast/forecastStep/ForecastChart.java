@@ -25,6 +25,7 @@ import com.binar.entity.Goods;
 import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.Label;
 
 public class ForecastChart extends CustomComponent {
 
@@ -42,48 +43,66 @@ public class ForecastChart extends CustomComponent {
 		this.goods = goods;
 	}
 	public void generateChart(){
-		DCharts chart=new DCharts().setOptions(generateOptions(true)).setDataSeries(generateDataSeries(true));
-		chart.setCaption("Peramalan "+goods.getName());
-		chart.show();
-		this.setCompositionRoot(chart);
+		if(forecaster!=null){
+			DCharts chart=new DCharts().setOptions(generateOptions(false)).setDataSeries(generateDataSeries(false));
+			chart.setCaption("Peramalan "+goods.getName());
+			chart.show();
+			this.setCompositionRoot(chart);			
+		}else{
+			this.setCompositionRoot(new Label("Kesalahan dalam menghasilkan chart >_< "));
+		}
 
 	}
 	public void generateTripleESChart(){
-		DCharts chart=new DCharts().setOptions(generateOptions(true)).setDataSeries(generateDataSeries(true));
-		chart.setCaption("Peramalan "+goods.getName());
-		chart.show();
-		this.setCompositionRoot(chart);
+		if(forecaster!=null){
+			DCharts chart=new DCharts().setOptions(generateOptions(true)).setDataSeries(generateDataSeries(true));
+			chart.setCaption("Peramalan "+goods.getName());
+			chart.show();
+			this.setCompositionRoot(chart);
+		}else{
+			this.setCompositionRoot(new Label("Kesalahan dalam menghasilkan chart >_< "));
+		}
 	}
 	
 	private DataSeries generateDataSeries(boolean triple){
 		DataSeries series=new DataSeries();
 		series.newSeries();
 		int i=1;
-		int dataSize=forecaster.getData().size();
-		for(Integer integer:forecaster.getData()){
-			series.add(i,integer);
-			i++;
-		}
+
 		if(triple){
+			int dataSize=forecaster.getData().size();
+
+			for(Integer integer:forecaster.getData()){
+				series.add(i,integer);
+				i++;
+			}
 			series.newSeries();
 			series.add(dataSize, forecaster.getData().get(dataSize-1));
 			series.add(dataSize+1, forecaster.getProcessTripleES().getNextMonthValue());
+
 		}else{
+			int dataSize=forecaster.getDataFilter().size();
+
+			for(Integer integer:forecaster.getDataFilter()){
+				series.add(i,integer);
+				i++;
+			}	
 			series.newSeries();
-			series.add(dataSize, forecaster.getData().get(dataSize-1));
+			series.add(dataSize, forecaster.getDataFilter().get(dataSize-1));
 			series.add(dataSize+1, forecaster.getProcessDoubleES().getNextMonthValue());
 
 			series.newSeries();
-			series.add(dataSize, forecaster.getData().get(dataSize-1));
+			series.add(dataSize, forecaster.getDataFilter().get(dataSize-1));
 			series.add(dataSize+1, forecaster.getProcessMovingAverage().getNextMonthValue());
 
 			series.newSeries();
-			series.add(dataSize, forecaster.getData().get(dataSize-1));
+			series.add(dataSize, forecaster.getDataFilter().get(dataSize-1));
 			series.add(dataSize+1, forecaster.getProcessNaive().getNextMonthValue());
 
 			series.newSeries();
-			series.add(dataSize, forecaster.getData().get(dataSize-1));
+			series.add(dataSize, forecaster.getDataFilter().get(dataSize-1));
 			series.add(dataSize+1, forecaster.getProcessSimpleES().getNextMonthValue());
+
 		}
 		return series;		
 	}
@@ -117,7 +136,7 @@ public class ForecastChart extends CustomComponent {
 				.setNumberRows(1));
 		legend.setPlacement(LegendPlacements.OUTSIDE_GRID);
 		
-		if(triple){
+		if(!triple){
 			legend.setLabels("Riwayat Data","Double Exponential Smoothing" ,"Moving Average","Naive", "Simple Exponential Smoothing");
 		
 		}else{

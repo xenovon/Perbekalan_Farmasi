@@ -2,6 +2,8 @@ package com.binar.core.requirementPlanning.forecast.forecastStep;
 
 import java.util.Map;
 
+import org.dussan.vaadin.dcharts.DCharts;
+
 import com.binar.core.requirementPlanning.forecast.forecastProcessor.Forecaster;
 import com.vaadin.ui.Component;
 
@@ -20,6 +22,6 @@ interface  ForecastStepView {
 	public void setViewMode(ViewMode mode);
 	public void setComboGoodsData(Map<String, String> data);
 	//chart dan data forecast
-	public void generateForecastView(Component component, Forecaster forecaster);
+	public void generateForecastView(Component chartAll, Component chartTriple, final Forecaster forecaster);
 
 }
