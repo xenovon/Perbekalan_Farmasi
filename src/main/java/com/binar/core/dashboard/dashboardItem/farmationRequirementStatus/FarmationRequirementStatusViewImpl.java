@@ -5,6 +5,7 @@ import java.util.List;
 import com.binar.entity.Goods;
 import com.binar.entity.ReqPlanning;
 import com.binar.generalFunction.GeneralFunction;
+import com.binar.generalFunction.TextManipulator;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;
@@ -28,8 +29,10 @@ public class FarmationRequirementStatusViewImpl  extends Panel implements Farmat
 	private Button buttonRefresh;
 	private Button buttonGo;
 	private GeneralFunction function;
+	private TextManipulator text;
 	public FarmationRequirementStatusViewImpl(GeneralFunction function) {
 		this.function=function;
+		this.text=function.getTextManipulator();
 	}
 	
 	@Override
@@ -37,7 +40,7 @@ public class FarmationRequirementStatusViewImpl  extends Panel implements Farmat
 		table=new Table();
 		table.setSizeFull();
 		table.setPageLength(6);
-		table.setWidth("340px");
+		table.setWidth(function.DASHBOARD_TABLE_WIDTH);
 		table.setSortEnabled(true);
 		table.setImmediate(true);
 		table.setRowHeaderMode(RowHeaderMode.INDEX);
@@ -68,8 +71,8 @@ public class FarmationRequirementStatusViewImpl  extends Panel implements Farmat
 
 	@Override
 	public void construct() {
-		setCaption("Obat Fast-Moving dengan Stok Minimum");
-		setHeight("350px");
+		setCaption("Status Rencana Kebutuhan");
+		setHeight(function.DASHBOARD_LAYOUT_HEIGHT);
 		setWidth(function.DASHBOARD_TABLE_LAYOUT_WIDTH);
 		final GridLayout layout=new GridLayout(2,1){
 			{
@@ -98,9 +101,9 @@ public class FarmationRequirementStatusViewImpl  extends Panel implements Farmat
 			Item item=tableContainer.addItem(datum.getIdReqPlanning());
 			item.getItemProperty("Nama Barang").setValue(datum.getSupplierGoods().getGoods().getName());
 			item.getItemProperty("Satuan").setValue(datum.getSupplierGoods().getGoods().getUnit());
-			item.getItemProperty("Jumlah Pengajuan").setValue(datum.getQuantity());
+			item.getItemProperty("Jumlah Pengajuan").setValue(text.intToAngka(datum.getQuantity()));
 			item.getItemProperty("Sudah disetujui?").setValue(datum.isAccepted()?"Disetujui":"Belum Disetujui");
-			item.getItemProperty("Jumlah disetujui").setValue(datum.getAcceptedQuantity());
+			item.getItemProperty("Jumlah disetujui").setValue(text.intToAngka(datum.getAcceptedQuantity()));
 			
 			
 		}

@@ -28,6 +28,7 @@ udah
 		this.view=view;
 		view.init();
 		view.setListener(this);
+		updateTable();
 		
 	}
 	@Override
@@ -37,7 +38,7 @@ udah
 	@Override
 	public void buttonGo() {
 		Navigator navigator=UI.getCurrent().getNavigator();
-		navigator.navigateTo("/inventorymanagement/"+function.VIEW_INVENTORY_RECEPTION);
+		navigator.navigateTo("/inventorymanagement/"+function.VIEW_INVENTORY_DELETION);
 	}
 //  put("/dashboard", DashboardView.class);
 //  put("/requirementplanning/", RequirementPlanningView.class);

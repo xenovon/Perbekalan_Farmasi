@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 import com.avaje.ebean.EbeanServer;
 import com.binar.entity.Goods;
@@ -23,8 +24,8 @@ public class FarmationRequirementStatusModel {
 	public List<ReqPlanning> getReqList(){
 		//
 		
-		DateTime startDate=DateTime.now().dayOfMonth().withMinimumValue();
-		DateTime endDate=DateTime.now().dayOfMonth().withMaximumValue();
+		LocalDate startDate=LocalDate.now().dayOfMonth().withMinimumValue();
+		LocalDate endDate=LocalDate.now().dayOfMonth().withMaximumValue();
 		
 		List<ReqPlanning> reqPlanning=server.find(ReqPlanning.class).where().between("period",startDate.toDate(), endDate.toDate()).findList();
 		

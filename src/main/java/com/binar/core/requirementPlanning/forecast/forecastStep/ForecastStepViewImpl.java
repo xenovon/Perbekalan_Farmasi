@@ -220,8 +220,8 @@ public class ForecastStepViewImpl extends VerticalLayout implements ForecastStep
 			
 			layoutTriple=new VerticalLayout(){{
 				addComponent(new Label("<h4>Triple Exponential Smoothing</h4>", ContentMode.HTML));
-				addComponent(new Label(finalForecaster.getProcessTripleES().getNextMonthValue()+"", ContentMode.HTML));
-				addComponent(new Label("MSE : "+text.doubleToAngka(finalForecaster.getProcessTripleES().getNextMonthMSE())));
+				addComponent(new Label(text.intToAngka(finalForecaster.getProcessTripleES().getNextMonthValue())+"", ContentMode.HTML));
+				addComponent(new Label("MSE : "+text.doubleToAngka2(finalForecaster.getProcessTripleES().getNextMonthMSE())));
 			}};
 			layoutTriple.setVisible(false);
 			layoutResult.addComponent(layoutTriple);
@@ -230,8 +230,8 @@ public class ForecastStepViewImpl extends VerticalLayout implements ForecastStep
 		
 		layoutSimple=new VerticalLayout(){{
 			addComponent(new Label("<h4>Simple Exponential Smoothing</h4>", ContentMode.HTML));
-			addComponent(new Label(finalForecaster.getProcessSimpleES().getNextMonthValue()+"", ContentMode.HTML));
-			addComponent(new Label("MSE : "+text.doubleToAngka(finalForecaster.getProcessSimpleES().getNextMonthMSE())));			
+			addComponent(new Label(text.intToAngka(finalForecaster.getProcessSimpleES().getNextMonthValue())+"", ContentMode.HTML));
+			addComponent(new Label("MSE : "+text.doubleToAngka2(finalForecaster.getProcessSimpleES().getNextMonthMSE())));			
 		}};
 		
 		layoutResult.addComponent(layoutSimple);
@@ -239,23 +239,23 @@ public class ForecastStepViewImpl extends VerticalLayout implements ForecastStep
 		
 		layoutDouble= new VerticalLayout(){{
 			addComponent(new Label("<h4>Double Exponential Smoothing</h4>", ContentMode.HTML));
-			addComponent(new Label(finalForecaster.getProcessDoubleES().getNextMonthValue()+"", ContentMode.HTML));
-			addComponent(new Label("MSE : "+text.doubleToAngka(finalForecaster.getProcessDoubleES().getNextMonthMSE())));
+			addComponent(new Label(text.intToAngka(finalForecaster.getProcessDoubleES().getNextMonthValue())+"", ContentMode.HTML));
+			addComponent(new Label("MSE : "+text.doubleToAngka2(finalForecaster.getProcessDoubleES().getNextMonthMSE())));
 			
 		}};
 		layoutResult.addComponent(layoutDouble);
 		
 		layoutMoving =new VerticalLayout(){{
 			addComponent(new Label("<h4>Moving Average</h4>", ContentMode.HTML));
-			addComponent(new Label(finalForecaster.getProcessMovingAverage().getNextMonthValue()+"", ContentMode.HTML));
-			addComponent(new Label("MSE : "+text.doubleToAngka(finalForecaster.getProcessMovingAverage().getNextMonthMSE())));			
+			addComponent(new Label(text.intToAngka(finalForecaster.getProcessMovingAverage().getNextMonthValue())+"", ContentMode.HTML));
+			addComponent(new Label("MSE : "+text.doubleToAngka2(finalForecaster.getProcessMovingAverage().getNextMonthMSE())));			
 		}};
 		layoutResult.addComponent(layoutMoving);
 		
 		layoutNaive =new VerticalLayout(){{
 			addComponent(new Label("<h4>Naive</h4>", ContentMode.HTML));
-			addComponent(new Label(finalForecaster.getProcessNaive().getNextMonthValue()+"", ContentMode.HTML));
-			addComponent(new Label("MSE : "+text.doubleToAngka(finalForecaster.getProcessNaive().getNextMonthMSE())));			
+			addComponent(new Label(text.intToAngka(finalForecaster.getProcessNaive().getNextMonthValue())+"", ContentMode.HTML));
+			addComponent(new Label("MSE : "+text.doubleToAngka2(finalForecaster.getProcessNaive().getNextMonthMSE())));			
 		}};
 		layoutResult.addComponent(layoutNaive);
 		

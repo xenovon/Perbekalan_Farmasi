@@ -24,7 +24,7 @@ UDah
 		this.view=view;
 		view.init();
 		view.setListener(this);
-		
+		updateTable();
 		
 	}
 	@Override

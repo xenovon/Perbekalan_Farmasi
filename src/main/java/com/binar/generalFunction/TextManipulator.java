@@ -30,7 +30,11 @@ public class TextManipulator {
     	
     	return decimalFormat.format(input);
     }
-
+    public String doubleToAngka2(double input){
+    	decimalFormat.applyPattern("###,###.##");
+    	
+    	return decimalFormat.format(input);
+    }
     public static void main(String[] args) {
 		TextManipulator text=new TextManipulator();
 		

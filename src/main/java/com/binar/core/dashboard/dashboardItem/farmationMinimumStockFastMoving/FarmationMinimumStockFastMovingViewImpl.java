@@ -64,8 +64,8 @@ public class FarmationMinimumStockFastMovingViewImpl  extends Panel implements F
 	@Override
 	public void construct() {
 		setCaption("Obat Fast-Moving dengan Stok Minimum");
-		setHeight("270px");
-		setWidth(function.DASHBOARD_TABLE_WIDTH);
+		setHeight(function.DASHBOARD_LAYOUT_HEIGHT);
+		setWidth(function.DASHBOARD_TABLE_LAYOUT_WIDTH);
 		final GridLayout layout=new GridLayout(2,1){
 			{
 				setSpacing(true);

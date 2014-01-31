@@ -35,11 +35,17 @@ public class FarmationExpiredGoodsModel {
 		
 	}
 	private boolean isCloseToExpiry(GoodsReception reception){
-		//dianggap dekat dengan expired date jika kurang dari 3 bulan
-		DateTime expiredLimit=DateTime.now().minusMonths(3);
+		//dianggap dekat dengan expired date jika kurang dari 3 bulan dan setelah kadaluarsa berlalu selama 4 bulan
+		DateTime expiredLimit=DateTime.now().plusMonths(3);
 		DateTime expiredDate=new DateTime(reception.getExpiredDate());
-		if(expiredDate.isAfter(expiredLimit)){
-			return true;
+		
+		//Jika expired date ada diantara 3 bulan kedepan dan 4 bulan kebelakang
+		if(expiredDate.isBefore(expiredLimit)){
+			if(expiredDate.isAfter(DateTime.now().minusMonths(4))){ 
+				return true;				
+			}else{
+				return false;
+			}
 		}else{
 			return false;
 		}

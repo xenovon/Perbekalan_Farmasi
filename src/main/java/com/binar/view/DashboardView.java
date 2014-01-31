@@ -22,6 +22,7 @@ public class DashboardView extends CustomComponent implements View{
 		if(dashboard==null){
 			dashboard=new Dashboard(function);
 		}
+		dashboard.generateFarmationView();
 		System.out.println("Set composition root");
 		setCompositionRoot(dashboard);
 		

@@ -5,6 +5,7 @@ import java.util.List;
 import com.binar.core.dashboard.dashboardItem.farmationMinimumStock.FarmationMinumumStockView.FarmationMinimumStockListener;
 import com.binar.entity.Goods;
 import com.binar.generalFunction.GeneralFunction;
+import com.binar.generalFunction.TextManipulator;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;
@@ -28,15 +29,17 @@ public class FarmationMinimumStockViewImpl  extends Panel implements FarmationMi
 	private Button buttonRefresh;
 	private Button buttonGo;
 	private GeneralFunction function;
+	private TextManipulator text;
 	public FarmationMinimumStockViewImpl(GeneralFunction function) {
 		this.function=function;
+		this.text=function.getTextManipulator();
 	}
 	
 	@Override
 	public void init() {
 		table=new Table();
 		table.setSizeFull();
-		table.setPageLength(8);
+		table.setPageLength(6);
 		table.setWidth(function.DASHBOARD_TABLE_WIDTH);
 		table.setSortEnabled(true);
 		table.setImmediate(true);
@@ -62,7 +65,8 @@ public class FarmationMinimumStockViewImpl  extends Panel implements FarmationMi
 	@Override
 	public void construct() {
 		setCaption("Obat dengan Stok Minimum");
-		setHeight("350px");
+		setHeight(function.DASHBOARD_LAYOUT_HEIGHT);
+		
 		setWidth(function.DASHBOARD_TABLE_LAYOUT_WIDTH);
 		final GridLayout layout=new GridLayout(2,1){
 			{
@@ -90,8 +94,8 @@ public class FarmationMinimumStockViewImpl  extends Panel implements FarmationMi
 		for(Goods datum:data){
 			Item item=tableContainer.addItem(datum.getIdGoods());
 			item.getItemProperty("Nama Barang").setValue(datum.getName());
-			item.getItemProperty("Jumlah Stok").setValue(datum.getCurrentStock());
-			item.getItemProperty("Stok Minimal").setValue(datum.getMinimumStock());
+			item.getItemProperty("Jumlah Stok").setValue(text.intToAngka(datum.getCurrentStock()));
+			item.getItemProperty("Stok Minimal").setValue(text.intToAngka(datum.getMinimumStock()));
 			item.getItemProperty("Satuan").setValue(datum.getUnit());
 		}
 	}

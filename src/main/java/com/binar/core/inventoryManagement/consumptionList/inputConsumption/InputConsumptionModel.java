@@ -59,17 +59,18 @@ public class InputConsumptionModel {
 			consumption.setWard(data.getWard());
 			consumption.setTimestamp(new Date());	
 			consumption.setInformation(data.getInformation());
-			consumption.setGoods(goods);
 
 			// untuk mengurangi stock obat ketika ada konsumsi baru
 			Goods goodsStock=server.find(Goods.class, data.getGoodsId());			
 			int currentStock=goodsStock.getCurrentStock();
 			currentStock=currentStock-Integer.parseInt(data.getQuantity());
 			goodsStock.setCurrentStock(currentStock);
-			
-			consumption.setStockQuantity(currentStock);
 			server.update(goodsStock);
-			server.update(consumption);
+
+			consumption.setStockQuantity(currentStock);
+			consumption.setGoods(goodsStock);
+
+			server.save(consumption);
 			function.getMinimumStock().update(goodsStock.getIdGoods());
 			
 			
@@ -127,6 +128,7 @@ public class InputConsumptionModel {
 			server.update(goodsStock);
 			
 			server.update(consumption);
+			
 			function.getMinimumStock().update(goodsStock.getIdGoods());
 
 			server.commitTransaction();

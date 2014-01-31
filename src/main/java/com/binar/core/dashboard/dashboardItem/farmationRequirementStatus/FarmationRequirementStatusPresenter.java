@@ -27,6 +27,7 @@ public class FarmationRequirementStatusPresenter implements FarmationRequirement
 		this.view=view;
 		view.init();
 		view.setListener(this);
+		updateTable();
 		
 		
 	}

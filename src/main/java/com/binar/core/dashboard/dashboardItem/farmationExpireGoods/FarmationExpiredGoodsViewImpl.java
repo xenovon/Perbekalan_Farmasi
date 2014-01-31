@@ -6,6 +6,7 @@ import com.binar.entity.Goods;
 import com.binar.entity.GoodsReception;
 import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
+import com.binar.generalFunction.TextManipulator;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;
@@ -30,9 +31,11 @@ public class FarmationExpiredGoodsViewImpl  extends Panel implements FarmationEx
 	private Button buttonGo;
 	private GeneralFunction function;
 	private DateManipulator date;
+	private TextManipulator text;
 	public FarmationExpiredGoodsViewImpl(GeneralFunction function) {
 		this.function=function;
 		this.date=function.getDate();
+		this.text=function.getTextManipulator();
 	}
 	
 	@Override
@@ -65,7 +68,7 @@ public class FarmationExpiredGoodsViewImpl  extends Panel implements FarmationEx
 	@Override
 	public void construct() {
 		setCaption("Obat Mendekati Kadaluarsa");
-		setHeight("350px");
+		setHeight(function.DASHBOARD_LAYOUT_HEIGHT);
 		setWidth(function.DASHBOARD_TABLE_LAYOUT_WIDTH);
 		final GridLayout layout=new GridLayout(2,1){
 			{
@@ -95,8 +98,8 @@ public class FarmationExpiredGoodsViewImpl  extends Panel implements FarmationEx
 
 			Item item=tableContainer.addItem(datum.getIdGoodsReceipt());
 			item.getItemProperty("Nama Barang").setValue(datum.getInvoiceItem().getPurchaseOrderItem().getSupplierGoods().getGoods().getName());
-			item.getItemProperty("Jumlah").setValue(datum.getQuantityReceived());
-			item.getItemProperty("Tanggal Masuk").setValue(date.dateToText(datum.getDate()));
+			item.getItemProperty("Jumlah Stok").setValue(text.intToAngka(datum.getQuantityReceived()));
+			item.getItemProperty("Tanggal Masuk").setValue(date.dateToText(datum.getDate(), true));
 			item.getItemProperty("Tanggal Kadaluarsa").setValue(date.dateToText(datum.getExpiredDate()));
 		}
 	}
