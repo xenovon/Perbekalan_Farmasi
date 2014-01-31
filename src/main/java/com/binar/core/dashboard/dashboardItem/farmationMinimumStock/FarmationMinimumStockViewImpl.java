@@ -36,8 +36,8 @@ public class FarmationMinimumStockViewImpl  extends Panel implements FarmationMi
 	public void init() {
 		table=new Table();
 		table.setSizeFull();
-		table.setPageLength(5);
-		table.setWidth("340px");
+		table.setPageLength(8);
+		table.setWidth(function.DASHBOARD_TABLE_WIDTH);
 		table.setSortEnabled(true);
 		table.setImmediate(true);
 		table.setRowHeaderMode(RowHeaderMode.INDEX);
@@ -63,7 +63,7 @@ public class FarmationMinimumStockViewImpl  extends Panel implements FarmationMi
 	public void construct() {
 		setCaption("Obat dengan Stok Minimum");
 		setHeight("350px");
-		setWidth("470px");
+		setWidth(function.DASHBOARD_TABLE_LAYOUT_WIDTH);
 		final GridLayout layout=new GridLayout(2,1){
 			{
 				setSpacing(true);

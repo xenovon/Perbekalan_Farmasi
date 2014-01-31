@@ -36,7 +36,7 @@ public class FarmationRequirementStatusViewImpl  extends Panel implements Farmat
 	public void init() {
 		table=new Table();
 		table.setSizeFull();
-		table.setPageLength(5);
+		table.setPageLength(6);
 		table.setWidth("340px");
 		table.setSortEnabled(true);
 		table.setImmediate(true);
@@ -70,7 +70,7 @@ public class FarmationRequirementStatusViewImpl  extends Panel implements Farmat
 	public void construct() {
 		setCaption("Obat Fast-Moving dengan Stok Minimum");
 		setHeight("350px");
-		setWidth("470px");
+		setWidth(function.DASHBOARD_TABLE_LAYOUT_WIDTH);
 		final GridLayout layout=new GridLayout(2,1){
 			{
 				setSpacing(true);

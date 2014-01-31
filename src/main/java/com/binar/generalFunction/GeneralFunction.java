@@ -45,6 +45,10 @@ public class GeneralFunction {
 	public final String VIEW_PROCUREMENT_INVOICE="invoice";
 	public final String VIEW_PROCUREMENT_PURCHASE="purchaseOrder";
 	
+	
+	public final String DASHBOARD_TABLE_WIDTH="450px";
+	public final String DASHBOARD_TABLE_LAYOUT_WIDTH="470px";
+	
 //    put("/dashboard", DashboardView.class);
 //    put("/requirementplanning/", RequirementPlanningView.class);
 //    put("/procurement", ProcurementView.class);

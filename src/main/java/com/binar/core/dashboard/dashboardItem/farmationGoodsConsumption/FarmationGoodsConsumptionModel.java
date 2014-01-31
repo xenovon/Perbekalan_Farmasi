@@ -50,21 +50,36 @@ public class FarmationGoodsConsumptionModel {
 		}
 		return returnValue; 
 	}
-	
-	public Map<Integer, Goods> getGoodsCosumption(){
+	/*
+	 * Sisanya ganti "lainnya....."
+	 */
+	public Map<Integer, String> getGoodsCosumption(){
 		Map<Goods, Integer> allGoods=getGoodsConsumptionByGoods();
-		SortedMap<Integer, Goods> returnValue=new TreeMap<Integer, Goods>();
-		SortedMap<Integer, Goods> buffer=new TreeMap<Integer, Goods>();
+		
+		SortedMap<Integer, String> returnValue=new TreeMap<Integer, String>();
+		SortedMap<Integer, String> buffer=new TreeMap<Integer, String>();
 		
 		for(Map.Entry<Goods, Integer> entry:allGoods.entrySet()){
-			buffer.put(entry.getValue(), entry.getKey());
+			buffer.put(entry.getValue(), entry.getKey().getName());
 		}
 		
-		//hanya mengambil 5 barang dengan konsumsi terbanyak
+		//hanya mengambil 10 barang dengan konsumsi terbanyak
+		//Sorted map sudah mengurutkan barang dari yang kuantitasnya paling kecil, hingga paling besar
 		int i=0;
-		for(Map.Entry<Integer, Goods> entry:buffer.entrySet()){
-			
+		int count=buffer.size()-10;
+		int otherCount=0; //untuk menghitung obat lainnya.
+		for(Map.Entry<Integer, String> entry:buffer.entrySet()){
+			if(i>=count){
+				returnValue.put(entry.getKey(), entry.getValue());
+			}else{
+				otherCount=otherCount+entry.getKey();
+			}
+			i++;
 		}
+		if(otherCount!=0){
+			returnValue.put(otherCount, "Lainnya");			
+		}
+		System.out.println(returnValue.size());
 		return returnValue;
 	}
 	
@@ -79,13 +94,35 @@ public class FarmationGoodsConsumptionModel {
 		map.put("32a", 72);
 		map.put("sz", 15);
 		map.put("234a", 82);
-		map.put("214a", 12);
+		map.put("224", 120);
+		map.put("324", 32);
+		map.put("32", 44);
+		map.put("24", 920);
+		map.put("234", 39);
+		map.put("324", 36);
+		map.put("2r3", 42);
+		map.put("233", 324);
+		map.put("253", 332);
+		map.put("23fds", 34323);
+		map.put("223", 3323);
+		map.put("2343", 352);
 		
 		SortedMap<Integer, String> map2=new TreeMap<Integer, String>();
-		
+		SortedMap<Integer, String> returnValue=new TreeMap<Integer, String>();
+
 		for(Map.Entry<String, Integer> entry:map.entrySet()){
 			map2.put(entry.getValue(), entry.getKey());
 		}
+		int i=0;
+		int count=map2.size()-10;
+		for(Map.Entry<Integer, String> entry:map2.entrySet()){
+			if(i>=count){
+				returnValue.put(entry.getKey(), entry.getValue());
+			}
+			i++;
+		}
+		System.out.println(map2);
+		System.out.println(returnValue);
 				
 	}
 }

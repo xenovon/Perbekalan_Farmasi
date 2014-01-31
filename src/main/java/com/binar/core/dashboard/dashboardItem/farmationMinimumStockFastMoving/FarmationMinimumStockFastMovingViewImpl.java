@@ -34,13 +34,12 @@ public class FarmationMinimumStockFastMovingViewImpl  extends Panel implements F
 		this.function=function;
 		this.text=function.getTextManipulator();
 	}
-	
 	@Override
 	public void init() {
 		table=new Table();
 		table.setSizeFull();
-		table.setPageLength(5);
-		table.setWidth("340px");
+		table.setPageLength(6);
+		table.setWidth(function.DASHBOARD_TABLE_WIDTH);
 		table.setSortEnabled(true);
 		table.setImmediate(true);
 		table.setRowHeaderMode(RowHeaderMode.INDEX);
@@ -65,8 +64,8 @@ public class FarmationMinimumStockFastMovingViewImpl  extends Panel implements F
 	@Override
 	public void construct() {
 		setCaption("Obat Fast-Moving dengan Stok Minimum");
-		setHeight("350px");
-		setWidth("470px");
+		setHeight("270px");
+		setWidth(function.DASHBOARD_TABLE_WIDTH);
 		final GridLayout layout=new GridLayout(2,1){
 			{
 				setSpacing(true);
@@ -82,9 +81,7 @@ public class FarmationMinimumStockFastMovingViewImpl  extends Panel implements F
 				addComponent(layout);
 			}
 		});
-		
 	}
-
 	@Override
 	public void updateTable(List<Goods> data) {
 		tableContainer.removeAllItems();

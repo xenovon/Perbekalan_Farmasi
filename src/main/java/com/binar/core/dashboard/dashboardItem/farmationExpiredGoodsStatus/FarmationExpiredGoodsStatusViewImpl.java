@@ -42,8 +42,8 @@ public class FarmationExpiredGoodsStatusViewImpl  extends Panel implements Farma
 	public void init() {
 		table=new Table();
 		table.setSizeFull();
-		table.setPageLength(5);
-		table.setWidth("340px");
+		table.setPageLength(6);
+		table.setWidth(function.DASHBOARD_TABLE_WIDTH);
 		table.setSortEnabled(true);
 		table.setImmediate(true);
 		table.setRowHeaderMode(RowHeaderMode.INDEX);
@@ -70,7 +70,7 @@ public class FarmationExpiredGoodsStatusViewImpl  extends Panel implements Farma
 	public void construct() {
 		setCaption("Status Pengajuan Penghapusan Barang");
 		setHeight("350px");
-		setWidth("470px");
+		setWidth(function.DASHBOARD_TABLE_LAYOUT_WIDTH);
 		final GridLayout layout=new GridLayout(2,1){
 			{
 				setSpacing(true);

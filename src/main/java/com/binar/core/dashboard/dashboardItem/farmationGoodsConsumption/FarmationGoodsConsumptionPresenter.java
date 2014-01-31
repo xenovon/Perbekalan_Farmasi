@@ -1,6 +1,9 @@
 package com.binar.core.dashboard.dashboardItem.farmationGoodsConsumption;
 
+import java.util.Map;
+
 import com.binar.core.dashboard.dashboardItem.farmationGoodsConsumption.FarmationGoodsConsumptionView.FarmationGoodsConsumptionListener;
+import com.binar.entity.Goods;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.UI;
@@ -32,37 +35,7 @@ DCharts chart = new DCharts()
 	
 	
 	/*
-	 * DataSeries dataSeries = new DataSeries()
-	.newSeries()
-	.add("none", 23)
-	.add("error", 0)
-	.add("click", 5)
-	.add("impression", 25);
-
-SeriesDefaults seriesDefaults = new SeriesDefaults()
-	.setRenderer(SeriesRenderers.PIE)
-	.setRendererOptions(
-		new PieRenderer()
-			.setShowDataLabels(true));
-
-Legend legend = new Legend()
-	.setShow(true);
-
-Highlighter highlighter = new Highlighter()
-	.setShow(true)
-	.setShowTooltip(true)
-	.setTooltipAlwaysVisible(true)
-	.setKeepTooltipInsideChart(true);
-
-Options options = new Options()
-	.setSeriesDefaults(seriesDefaults)
-	.setLegend(legend)
-	.setHighlighter(highlighter);
-
-DCharts chart = new DCharts()
-	.setDataSeries(dataSeries)
-	.setOptions(options)
-	.show();
+	 * 
 	 */
 	FarmationGoodsConsumptionModel model;
 	FarmationGoodsConsumptionViewImpl view;
@@ -74,13 +47,16 @@ DCharts chart = new DCharts()
 		this.view=view;
 		view.init();
 		view.setListener(this);
+		updateChart();
 	}
 	
+
 	@Override
-	public void updateConsumption() {
-			// TODO Auto-generated method stub
-			
+	public void updateChart() {
+		Map<Integer, String> data=model.getGoodsCosumption();
+		view.generateChart(data);
 	}
+	
 	@Override
 	public void buttonGo() {
 		Navigator navigator=UI.getCurrent().getNavigator();
