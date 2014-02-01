@@ -1,21 +1,25 @@
 package com.binar.core.dashboard.dashboardItem.ppkGoodsProcurementSummary;
 
-import com.binar.core.dashboard.dashboardItem.ppkGoodsProcurementSummary.PpkGoodsProcurementView.PpkGoodsProcurementListener;
+import java.util.Map;
+
+import com.binar.core.dashboard.dashboardItem.ifrsGoodProcurement.IfrsGoodsProcurementModel;
+import com.binar.core.dashboard.dashboardItem.ifrsGoodProcurement.IfrsGoodsProcurementView.IfrsGoodsProcurementListener;
+import com.binar.core.dashboard.dashboardItem.ifrsGoodProcurement.IfrsGoodsProcurementViewImpl;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.UI;
 
-public class PpkGoodsProcurementPresenter implements PpkGoodsProcurementListener {
+public class PpkGoodsProcurementPresenter implements IfrsGoodsProcurementListener {
  /*
   * Summary daftar pengadaan barang (Berapa % dari jumlah yg sudah disetujui yg udah dilakukan pengadaan barang?)
 > Pie chart
 
   */
-	PpkGoodsProcurementModel model;
-	PpkGoodsProcurementViewImpl view;
+	IfrsGoodsProcurementModel model;
+	IfrsGoodsProcurementViewImpl view;
 	GeneralFunction function;
 	public PpkGoodsProcurementPresenter(GeneralFunction function
-			, PpkGoodsProcurementViewImpl view, PpkGoodsProcurementModel model) {
+			, 	IfrsGoodsProcurementViewImpl view, IfrsGoodsProcurementModel model) {
 		this.model=model;
 		this.function=function;
 		this.view=view;
@@ -25,13 +29,9 @@ public class PpkGoodsProcurementPresenter implements PpkGoodsProcurementListener
 		
 	}
 	@Override
-	public void updateTable() {
-		view.updateTable(model.getGoodsList());
-	}
-	@Override
 	public void buttonGo() {
 		Navigator navigator=UI.getCurrent().getNavigator();
-		navigator.navigateTo("/datamanagement/"+function.VIEW_SUPPLIER_MANAGEMENT);
+		navigator.navigateTo("/procurement/"+function.VIEW_PROCUREMENT_PURCHASE);
 	}
 //  put("/dashboard", DashboardView.class);
 //  put("/requirementplanning/", RequirementPlanningView.class);
@@ -42,5 +42,15 @@ public class PpkGoodsProcurementPresenter implements PpkGoodsProcurementListener
 //  put("/usermanagement", UserManagementView.class);
 //  put("/setting", SettingView.class);
 //  put("/usersetting", UserSettingView.class);
+	@Override
+	public void updateChart() {
+		Map<Integer, String> data=model.getReceptionRequirementCount();
+		if(data==null){
+			view.setEmptyDataView();
+		}else{
+			view.generateChart(data);			
+		}
+		
+	}
 
 }

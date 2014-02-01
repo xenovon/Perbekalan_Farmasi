@@ -8,12 +8,12 @@ import com.vaadin.ui.UI;
 public class PpkExpiredGoodsNonAcceptedPresenter implements PpkExpiredGoodsNonAcceptedListener {
 /*
  * Daftar barang kadaluarsa yang belum disetujui
-
 Format :
 Pengajuan barang kadaluarsa tanggal <<Tanggal Pengajuan>>
 <<Nama barang>>
 <<Satuan>>
 <<Jumlah>>
+DONE
 
  */
 	PpkExpiredGoodsNonAcceptedModel model;
@@ -34,7 +34,7 @@ Pengajuan barang kadaluarsa tanggal <<Tanggal Pengajuan>>
 	@Override
 	public void buttonGo() {
 		Navigator navigator=UI.getCurrent().getNavigator();
-		navigator.navigateTo("/datamanagement/"+function.VIEW_INVENTORY_DELETION_APPROVAL);
+		navigator.navigateTo("/inventorymanagement/"+function.VIEW_INVENTORY_DELETION_APPROVAL);
 	}
 //  put("/dashboard", DashboardView.class);
 //  put("/requirementplanning/", RequirementPlanningView.class);

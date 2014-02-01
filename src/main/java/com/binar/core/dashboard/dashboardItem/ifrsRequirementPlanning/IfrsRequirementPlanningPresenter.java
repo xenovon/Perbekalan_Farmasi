@@ -7,7 +7,7 @@ import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.UI;
 
-public class IfrsRequirementPlanning implements FarmationRequirementStatusListener {
+public class IfrsRequirementPlanningPresenter implements FarmationRequirementStatusListener {
 /*
  * Pengajuan rencana kebutuhan yang belum disetujui 
 Format :
@@ -21,7 +21,7 @@ DONE
 	FarmationRequirementStatusModel model;
 	FarmationRequirementStatusViewImpl view;
 	GeneralFunction function;
-	public IfrsRequirementPlanning(GeneralFunction function
+	public IfrsRequirementPlanningPresenter(GeneralFunction function
 			, FarmationRequirementStatusViewImpl view, FarmationRequirementStatusModel model) {
 		this.model=model;
 		this.function=function;

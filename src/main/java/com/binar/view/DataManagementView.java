@@ -59,7 +59,6 @@ public class DataManagementView extends CustomComponent implements View, Selecte
 			tabSheet.setSelectedTab(goodsManagement);
 		}else if(parameter.equals(function.VIEW_SUPPLIER_MANAGEMENT)){
 			tabSheet.setSelectedTab(supplierManagement);
-			
 		}
 		
 	}

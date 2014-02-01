@@ -18,6 +18,21 @@ import com.binar.core.dashboard.dashboardItem.farmationMinimumStockFastMoving.Fa
 import com.binar.core.dashboard.dashboardItem.farmationRequirementStatus.FarmationRequirementStatusModel;
 import com.binar.core.dashboard.dashboardItem.farmationRequirementStatus.FarmationRequirementStatusPresenter;
 import com.binar.core.dashboard.dashboardItem.farmationRequirementStatus.FarmationRequirementStatusViewImpl;
+import com.binar.core.dashboard.dashboardItem.ifrsDeletionApproval.IfrsDeletionApprovalModel;
+import com.binar.core.dashboard.dashboardItem.ifrsDeletionApproval.IfrsDeletionApprovalPresenter;
+import com.binar.core.dashboard.dashboardItem.ifrsDeletionApproval.IfrsDeletionApprovalViewImpl;
+import com.binar.core.dashboard.dashboardItem.ifrsGoodProcurement.IfrsGoodsProcurementModel;
+import com.binar.core.dashboard.dashboardItem.ifrsGoodProcurement.IfrsGoodsProcurementPresenter;
+import com.binar.core.dashboard.dashboardItem.ifrsGoodProcurement.IfrsGoodsProcurementViewImpl;
+import com.binar.core.dashboard.dashboardItem.ifrsGoodReceptionSummary.IfrsGoodsReceptionSummaryModel;
+import com.binar.core.dashboard.dashboardItem.ifrsGoodReceptionSummary.IfrsGoodsReceptionSummaryPresenter;
+import com.binar.core.dashboard.dashboardItem.ifrsGoodReceptionSummary.IfrsGoodsReceptionSummaryViewImpl;
+import com.binar.core.dashboard.dashboardItem.ifrsRequirementPlanning.IfrsRequirementPlanningPresenter;
+import com.binar.core.dashboard.dashboardItem.ppkExpiredGoodsNonAccepted.PpkExpiredGoodsNonAcceptedModel;
+import com.binar.core.dashboard.dashboardItem.ppkExpiredGoodsNonAccepted.PpkExpiredGoodsNonAcceptedPresenter;
+import com.binar.core.dashboard.dashboardItem.ppkExpiredGoodsNonAccepted.PpkExpiredGoodsNonAcceptedViewImpl;
+import com.binar.core.dashboard.dashboardItem.ppkGoodsProcurementSummary.PpkGoodsProcurementPresenter;
+import com.binar.core.dashboard.dashboardItem.ppkRequirementPlanning.PpkRequirementPlanningPresenter;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.GridLayout;
@@ -132,5 +147,90 @@ public class Dashboard extends VerticalLayout {
 		}
 		gridLayout.addComponent(farmationRequirementStatusViewImpl, 0,2);		
 		
+	}
+	
+	IfrsDeletionApprovalModel ifrsDeletionApprovalModel;
+	IfrsDeletionApprovalPresenter ifrsDeletionApprovalPresenter;
+	IfrsDeletionApprovalViewImpl ifrsDeletionApprovalViewImpl;
+	
+	IfrsGoodsProcurementViewImpl ifrsGoodsProcurementViewImpl;
+	IfrsGoodsProcurementModel ifrsGoodsProcurementModel;
+	IfrsGoodsProcurementPresenter ifrsGoodsProcurementPresenter;
+	
+	IfrsGoodsReceptionSummaryViewImpl ifrsGoodsReceptionSummaryViewImpl;
+	IfrsGoodsReceptionSummaryPresenter ifrsGoodsReceptionSummaryPresenter;
+	IfrsGoodsReceptionSummaryModel ifrsGoodsReceptionSummaryModel;
+	
+	IfrsRequirementPlanningPresenter ifrsRequirementPlanningPresenter;
+	
+	public void generateIfrsView(){
+		gridLayout.removeAllComponents();
+		if(ifrsDeletionApprovalModel == null){
+			ifrsDeletionApprovalModel=new IfrsDeletionApprovalModel(function);
+			ifrsDeletionApprovalViewImpl=new IfrsDeletionApprovalViewImpl(function);
+			ifrsDeletionApprovalPresenter= new IfrsDeletionApprovalPresenter(
+					function ,ifrsDeletionApprovalViewImpl, ifrsDeletionApprovalModel);
+		}
+		gridLayout.addComponent(ifrsDeletionApprovalViewImpl,0,0);
+
+		if(ifrsRequirementPlanningPresenter == null){
+			farmationRequirementStatusModel =new FarmationRequirementStatusModel(function);
+			farmationRequirementStatusViewImpl =new FarmationRequirementStatusViewImpl(function);
+			ifrsRequirementPlanningPresenter = new IfrsRequirementPlanningPresenter(
+					function, farmationRequirementStatusViewImpl, farmationRequirementStatusModel);
+		}
+		gridLayout.addComponent(farmationRequirementStatusViewImpl,1,0);
+
+		if(ifrsGoodsProcurementPresenter == null){
+			ifrsGoodsProcurementModel =new IfrsGoodsProcurementModel(function);
+			ifrsGoodsProcurementViewImpl =new IfrsGoodsProcurementViewImpl(function);
+			ifrsGoodsProcurementPresenter = new IfrsGoodsProcurementPresenter(
+					function, ifrsGoodsProcurementViewImpl, ifrsGoodsProcurementModel);
+		}
+		gridLayout.addComponent(ifrsGoodsProcurementViewImpl,0,1);
+
+
+		if(ifrsGoodsReceptionSummaryPresenter == null){
+			ifrsGoodsReceptionSummaryViewImpl =new IfrsGoodsReceptionSummaryViewImpl(function);
+			ifrsGoodsReceptionSummaryModel =new IfrsGoodsReceptionSummaryModel(function);
+			ifrsGoodsReceptionSummaryPresenter = new IfrsGoodsReceptionSummaryPresenter(
+					function, ifrsGoodsReceptionSummaryViewImpl, ifrsGoodsReceptionSummaryModel);
+		}
+		gridLayout.addComponent(ifrsGoodsProcurementViewImpl,1,1);
+	}
+	
+	PpkExpiredGoodsNonAcceptedModel ppkExpiredGoodsNonAcceptedModel;
+	PpkExpiredGoodsNonAcceptedViewImpl ppkExpiredGoodsNonAcceptedViewImpl;
+	PpkExpiredGoodsNonAcceptedPresenter ppkExpiredGoodsNonAcceptedPresenter;
+	
+	PpkGoodsProcurementPresenter ppkGoodsProcurementPresenter;
+	
+	PpkRequirementPlanningPresenter ppkRequirementPlanningPresenter;
+	
+	public void generatePPKView(){
+		gridLayout.removeAllComponents();
+		if(ppkExpiredGoodsNonAcceptedPresenter == null){
+			ppkExpiredGoodsNonAcceptedModel =new PpkExpiredGoodsNonAcceptedModel(function);
+			ppkExpiredGoodsNonAcceptedViewImpl =new PpkExpiredGoodsNonAcceptedViewImpl(function);
+			ppkExpiredGoodsNonAcceptedPresenter = new PpkExpiredGoodsNonAcceptedPresenter(
+					function, ppkExpiredGoodsNonAcceptedViewImpl, ppkExpiredGoodsNonAcceptedModel);
+		}
+		gridLayout.addComponent(ppkExpiredGoodsNonAcceptedViewImpl,0,0);
+
+		if(ppkGoodsProcurementPresenter == null){
+			ifrsGoodsProcurementModel =new IfrsGoodsProcurementModel(function);
+			ifrsGoodsProcurementViewImpl =new IfrsGoodsProcurementViewImpl(function);
+			ppkGoodsProcurementPresenter = new PpkGoodsProcurementPresenter(
+					function, ifrsGoodsProcurementViewImpl, ifrsGoodsProcurementModel);
+		}
+		gridLayout.addComponent(ifrsGoodsProcurementViewImpl,1,0);
+		if(ppkRequirementPlanningPresenter == null){
+			farmationRequirementStatusModel =new FarmationRequirementStatusModel(function);
+			farmationRequirementStatusViewImpl =new FarmationRequirementStatusViewImpl(function);
+			ppkRequirementPlanningPresenter = new PpkRequirementPlanningPresenter(
+					function, farmationRequirementStatusViewImpl, farmationRequirementStatusModel);
+		}
+		gridLayout.addComponent(farmationRequirementStatusViewImpl,0,1);
+
 	}
 }

@@ -38,7 +38,7 @@ public class FarmationRequirementStatusPresenter implements FarmationRequirement
 	@Override
 	public void buttonGo() {
 		Navigator navigator=UI.getCurrent().getNavigator();
-		navigator.navigateTo("/requirementplanning/"+function.vIEW_REQ_PLANNING_INPUT);
+		navigator.navigateTo("/requirementplanning/"+function.VIEW_REQ_PLANNING_INPUT);
 	}
 //  put("/dashboard", DashboardView.class);
 //  put("/requirementplanning/", RequirementPlanningView.class);

@@ -25,15 +25,10 @@ public class PpkExpiredGoodsNonAcceptedModel {
 		
 		DateTime endDate=DateTime.now();
 		List<DeletedGoods> deletedGoods=server.find(DeletedGoods.class).
-				where().between("deletion_date", endDate.minusMonths(2).toDate(), endDate).eq("isAccepted",false).order().desc("deletion_date").findList();		
+				where().between("deletion_date", endDate.minusMonths(3).toDate(), endDate).eq("isAccepted",false).order().desc("deletion_date").findList();		
 		return deletedGoods;
 		
 		
 	}
 	
-	public void dummyGood(){
-		Goods goods= server.find(Goods.class, "BRG-5x");
-		goods.setStockStatus(EnumStockStatus.LESS);
-		
-	}
 }

@@ -30,7 +30,7 @@ public class GeneralFunction {
 	
 	//konstanta untuk ke tab
 	public final String VIEW_REQ_PLANNING_LIST="reqlist";
-	public final String vIEW_REQ_PLANNING_INPUT="reqinput";
+	public final String VIEW_REQ_PLANNING_INPUT="reqinput";
 	public final String VIEW_REQ_PLANNING_APPROVAL="reqAppr";
 	public final String VIEW_GOODS_MANAGEMENT="goods";
 	public final String VIEW_SUPPLIER_MANAGEMENT="supplier";

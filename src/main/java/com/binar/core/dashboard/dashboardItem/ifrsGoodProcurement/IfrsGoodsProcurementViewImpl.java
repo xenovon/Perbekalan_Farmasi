@@ -1,6 +1,15 @@
 package com.binar.core.dashboard.dashboardItem.ifrsGoodProcurement;
 
 import java.util.List;
+import java.util.Map;
+
+import org.dussan.vaadin.dcharts.DCharts;
+import org.dussan.vaadin.dcharts.data.DataSeries;
+import org.dussan.vaadin.dcharts.metadata.renderers.SeriesRenderers;
+import org.dussan.vaadin.dcharts.options.Highlighter;
+import org.dussan.vaadin.dcharts.options.Options;
+import org.dussan.vaadin.dcharts.options.SeriesDefaults;
+import org.dussan.vaadin.dcharts.renderers.series.PieRenderer;
 
 import com.binar.core.dashboard.dashboardItem.ifrsGoodProcurement.IfrsGoodsProcurementView.IfrsGoodsProcurementListener;
 import com.binar.entity.Goods;
@@ -11,7 +20,9 @@ import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.RowHeaderMode;
@@ -23,33 +34,16 @@ public class IfrsGoodsProcurementViewImpl  extends Panel implements IfrsGoodsPro
 > Nama barang, jumlah stok, satuan
 
  */
-	private Table table;
-	private IndexedContainer tableContainer;
 	private Button buttonRefresh;
 	private Button buttonGo;
 	private GeneralFunction function;
+	private CssLayout layoutChart;
 	public IfrsGoodsProcurementViewImpl(GeneralFunction function) {
 		this.function=function;
 	}
 	
 	@Override
 	public void init() {
-		table=new Table();
-		table.setSizeFull();
-		table.setPageLength(5);
-		table.setWidth("340px");
-		table.setSortEnabled(true);
-		table.setImmediate(true);
-		table.setRowHeaderMode(RowHeaderMode.INDEX);
-		tableContainer=new IndexedContainer(){
-			{
-				addContainerProperty("Nama Barang", String.class,null);
-				addContainerProperty("Jumlah Stok",String.class,null);
-				addContainerProperty("Stok Minimal", String.class,null);
-				addContainerProperty("Satuan",String.class,null);
-			}
-		};
-		table.setContainerDataSource(tableContainer);
 		buttonGo=new Button("Lebih Lanjut");
 		buttonGo.addClickListener(this);
 		
@@ -61,9 +55,10 @@ public class IfrsGoodsProcurementViewImpl  extends Panel implements IfrsGoodsPro
 
 	@Override
 	public void construct() {
-		setCaption("Obat Fast-Moving dengan Stok Minimum");
-		setHeight("350px");
-		setWidth("470px");
+		setCaption("Jumlah Rencana Kebutuhan dan Pengadaan Bulan Ini");
+		setHeight("430px");
+		setWidth("500px");
+		
 		final GridLayout layout=new GridLayout(2,1){
 			{
 				setSpacing(true);
@@ -71,41 +66,70 @@ public class IfrsGoodsProcurementViewImpl  extends Panel implements IfrsGoodsPro
 				addComponent(buttonRefresh, 1, 0);
 			}
 		};
+		layoutChart=new CssLayout();
 		setContent(new VerticalLayout(){
 			{
 				setSpacing(true);
 				setMargin(true);
-				addComponent(table);
+				addComponent(layoutChart);
 				addComponent(layout);
 			}
 		});
 		
 	}
 
-	@Override
-	public void updateTable(List<Goods> data) {
-		tableContainer.removeAllItems();
-		System.out.println(data.size());
-
-		for(Goods datum:data){
-			Item item=tableContainer.addItem(datum.getIdGoods());
-			item.getItemProperty("Nama Barang").setValue(datum.getName());
-			item.getItemProperty("Jumlah Stok").setValue(datum.getCurrentStock());
-			item.getItemProperty("Stok Minimal").setValue(datum.getMinimumStock());
-			item.getItemProperty("Satuan").setValue(datum.getUnit());
-		}
-	}
 	private IfrsGoodsProcurementListener listener;
 	public void setListener(IfrsGoodsProcurementListener listener) {
 		this.listener = listener;
 	}
-	
 	@Override
 	public void buttonClick(ClickEvent event) {
 		if(event.getButton()==buttonGo){
 			listener.buttonGo();
 		}else if(event.getButton()==buttonRefresh){
-			listener.updateTable();
+			listener.updateChart();
 		}
+	}
+	
+	public void generateChart(Map<Integer, String> data){
+		
+		DataSeries dataSeries = new DataSeries()
+		.newSeries();
+		
+
+		//inisialisasi data
+		for(Map.Entry<Integer, String> entry:data.entrySet()){
+			dataSeries.add(entry.getValue(), entry.getKey());
+		}		
+		SeriesDefaults seriesDefaults = new SeriesDefaults()
+		.setRenderer(SeriesRenderers.PIE)
+		.setRendererOptions(
+			new PieRenderer()
+				.setShowDataLabels(true));
+
+
+	Highlighter highlighter = new Highlighter()
+		.setShow(true)
+		.setShowTooltip(true)
+		.setTooltipAlwaysVisible(true)
+		.setKeepTooltipInsideChart(true);
+
+	Options options = new Options()
+		.setSeriesDefaults(seriesDefaults)
+		.setHighlighter(highlighter);
+
+	DCharts chart = new DCharts()
+		.setDataSeries(dataSeries)
+		.setOptions(options)
+		.show();
+	
+	layoutChart.removeAllComponents();
+	layoutChart.addComponent(chart);
+	}
+
+	@Override
+	public void setEmptyDataView() {
+		layoutChart.removeAllComponents();
+		layoutChart.addComponent(new Label("Data bulan ini belum tersedia"));
 	}
 }

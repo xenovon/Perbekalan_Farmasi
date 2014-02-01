@@ -6,6 +6,7 @@ import com.binar.entity.DeletedGoods;
 import com.binar.entity.Goods;
 import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
+import com.binar.generalFunction.TextManipulator;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;
@@ -35,9 +36,11 @@ public class PpkExpiredGoodsNonAcceptedViewImpl  extends Panel implements PpkExp
 	private Button buttonGo;
 	private GeneralFunction function;
 	private DateManipulator date;
+	private TextManipulator text;
 	public PpkExpiredGoodsNonAcceptedViewImpl(GeneralFunction function) {
 		this.function=function;
 		this.date=function.getDate();
+		this.text=function.getTextManipulator();
 	}
 	
 	@Override
@@ -45,7 +48,7 @@ public class PpkExpiredGoodsNonAcceptedViewImpl  extends Panel implements PpkExp
 		table=new Table();
 		table.setSizeFull();
 		table.setPageLength(5);
-		table.setWidth("340px");
+		table.setWidth(function.DASHBOARD_TABLE_WIDTH);
 		table.setSortEnabled(true);
 		table.setImmediate(true);
 		table.setRowHeaderMode(RowHeaderMode.INDEX);
@@ -53,9 +56,9 @@ public class PpkExpiredGoodsNonAcceptedViewImpl  extends Panel implements PpkExp
 			{
 				addContainerProperty("Tanggal Pengajuan", String.class,null);
 				addContainerProperty("Nama Barang", String.class,null);
-				addContainerProperty("Jumlah Stok",String.class,null);
-				addContainerProperty("Stok Minimal", String.class,null);
+				addContainerProperty("Jumlah",String.class,null);
 				addContainerProperty("Satuan",String.class,null);
+
 			}
 		};
 		table.setContainerDataSource(tableContainer);
@@ -71,8 +74,8 @@ public class PpkExpiredGoodsNonAcceptedViewImpl  extends Panel implements PpkExp
 	@Override
 	public void construct() {
 		setCaption("Barang Kadaluarsa Belum Disetujui");
-		setHeight("350px");
-		setWidth("470px");
+		setHeight(function.DASHBOARD_LAYOUT_HEIGHT);
+		setWidth(function.DASHBOARD_TABLE_LAYOUT_WIDTH);
 		final GridLayout layout=new GridLayout(2,1){
 			{
 				setSpacing(true);
@@ -88,9 +91,7 @@ public class PpkExpiredGoodsNonAcceptedViewImpl  extends Panel implements PpkExp
 				addComponent(layout);
 			}
 		});
-		
 	}
-
 	@Override
 	public void updateTable(List<DeletedGoods> data) {
 		tableContainer.removeAllItems();
@@ -101,7 +102,7 @@ public class PpkExpiredGoodsNonAcceptedViewImpl  extends Panel implements PpkExp
 			item.getItemProperty("Tanggal Pengajuan").setValue(date.dateToText(datum.getDeletionDate(),true));
 			item.getItemProperty("Nama Barang").setValue(datum.getGoods().getName());
 			item.getItemProperty("Satuan").setValue(datum.getGoods().getUnit());
-			item.getItemProperty("Jumlah").setValue(datum.getGoods().getUnit());
+			item.getItemProperty("Jumlah").setValue(text.intToAngka(datum.getQuantity()));
 		}
 	}
 	private PpkExpiredGoodsNonAcceptedListener listener;

@@ -1,5 +1,7 @@
 package com.binar.core.dashboard.dashboardItem.ifrsGoodReceptionSummary;
 
+import java.util.Map;
+
 import com.binar.core.dashboard.dashboardItem.ifrsGoodProcurement.IfrsGoodsProcurementViewImpl;
 import com.binar.core.dashboard.dashboardItem.ifrsGoodReceptionSummary.IfrsGoodsReceptionSummaryView.IfrsGoodsReceptionSummaryListener;
 import com.binar.generalFunction.GeneralFunction;
@@ -21,18 +23,13 @@ public class IfrsGoodsReceptionSummaryPresenter implements IfrsGoodsReceptionSum
 		this.function=function;
 		this.view=view;
 		view.init();
-		view.setListener(this);
 		
 		
-	}
-	@Override
-	public void updateTable() {
-		view.updateTable(model.getGoodsList());
 	}
 	@Override
 	public void buttonGo() {
 		Navigator navigator=UI.getCurrent().getNavigator();
-		navigator.navigateTo("/datamanagement/"+function.VIEW_SUPPLIER_MANAGEMENT);
+		navigator.navigateTo("/inventorymanagement/"+function.VIEW_INVENTORY_RECEPTION);
 	}
 //  put("/dashboard", DashboardView.class);
 //  put("/requirementplanning/", RequirementPlanningView.class);
@@ -43,5 +40,15 @@ public class IfrsGoodsReceptionSummaryPresenter implements IfrsGoodsReceptionSum
 //  put("/usermanagement", UserManagementView.class);
 //  put("/setting", SettingView.class);
 //  put("/usersetting", UserSettingView.class);
+	@Override
+	public void updateChart() {
+		Map<Integer, String> data=model.getReceptionProcurementCount();
+		if(data==null){
+			view.setEmptyDataView();
+		}else{
+			view.generateChart(data);			
+		}
+		
+	}
 
 }

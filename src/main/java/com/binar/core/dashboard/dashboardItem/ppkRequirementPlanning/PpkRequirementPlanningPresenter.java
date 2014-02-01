@@ -3,9 +3,6 @@ package com.binar.core.dashboard.dashboardItem.ppkRequirementPlanning;
 import com.binar.core.dashboard.dashboardItem.farmationRequirementStatus.FarmationRequirementStatusModel;
 import com.binar.core.dashboard.dashboardItem.farmationRequirementStatus.FarmationRequirementStatusViewImpl;
 import com.binar.core.dashboard.dashboardItem.farmationRequirementStatus.FarmationRequirementStatusView.FarmationRequirementStatusListener;
-import com.binar.core.dashboard.dashboardItem.ppkGoodsProcurementSummary.PpkGoodsProcurementModel;
-import com.binar.core.dashboard.dashboardItem.ppkGoodsProcurementSummary.PpkGoodsProcurementViewImpl;
-import com.binar.core.dashboard.dashboardItem.ppkRequirementPlanning.PpkRequirementPlanningView.PpkRequirementPlanningListener;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.UI;
@@ -17,7 +14,8 @@ Pengajuan Rencana Kebutuhan tanggal <<Tanggal Pengajuan>>
 <<Nama barang>>
 <<Satuan>>
 <<Jumlah>>
-  */
+
+*/
 	FarmationRequirementStatusModel model;
 	FarmationRequirementStatusViewImpl view;
 	GeneralFunction function;
@@ -40,6 +38,7 @@ Pengajuan Rencana Kebutuhan tanggal <<Tanggal Pengajuan>>
 		Navigator navigator=UI.getCurrent().getNavigator();
 		navigator.navigateTo("/requirementplanning/"+function.VIEW_REQ_PLANNING_APPROVAL);
 	}
+	
 //  put("/dashboard", DashboardView.class);
 //  put("/requirementplanning/", RequirementPlanningView.class);
 //  put("/procurement", ProcurementView.class);

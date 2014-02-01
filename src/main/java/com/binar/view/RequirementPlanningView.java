@@ -6,11 +6,13 @@ import com.binar.core.requirementPlanning.InputRequirementPlanning;
 import com.binar.core.requirementPlanning.ReqPlanningList;
 import com.binar.generalFunction.GeneralFunction;
 import com.binar.generalFunction.ListFactory;
+import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TabSheet;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
 import com.vaadin.ui.TabSheet.SelectedTabChangeListener;
 import com.vaadin.ui.VerticalLayout;
@@ -50,6 +52,16 @@ public class RequirementPlanningView extends CustomComponent implements View, Se
 
 		tabSheet.addSelectedTabChangeListener(this);
 		tabSheet.setSizeFull();
+		
+		Navigator navigator=UI.getCurrent().getNavigator();
+		String parameter=event.getParameters();
+		if(parameter.equals(generalFunction.VIEW_REQ_PLANNING_APPROVAL)){
+			tabSheet.setSelectedTab(approval);
+		}else if(parameter.equals(generalFunction.VIEW_REQ_PLANNING_LIST)){
+			tabSheet.setSelectedTab(reqPlanning);
+		}else if(parameter.equals(generalFunction.VIEW_REQ_PLANNING_INPUT)){
+			tabSheet.setSelectedTab(inputReqPl);
+		}
 		this.setCompositionRoot(tabSheet);
 	}
 

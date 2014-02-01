@@ -6,11 +6,13 @@ import com.binar.core.inventoryManagement.ReceptionList;
 import com.binar.core.inventoryManagement.StockList;
 import com.binar.core.inventoryManagement.deletionList.DeletionApproval;
 import com.binar.generalFunction.GeneralFunction;
+import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TabSheet;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
 import com.vaadin.ui.TabSheet.SelectedTabChangeListener;
 
@@ -50,6 +52,21 @@ public class InventoryManagementView extends CustomComponent implements View, Se
 		
 		tabSheet.addSelectedTabChangeListener(this);
 		tabSheet.setSizeFull();
+		
+		Navigator navigator=UI.getCurrent().getNavigator();
+		String parameter=event.getParameters();
+		if(parameter.equals(generalFunction.VIEW_INVENTORY_CONSUMPTION)){
+			tabSheet.setSelectedTab(consumption);
+		}else if(parameter.equals(generalFunction.VIEW_INVENTORY_DELETION)){
+			tabSheet.setSelectedTab(deletion);
+		}else if(parameter.equals(generalFunction.VIEW_INVENTORY_DELETION_APPROVAL)){
+			tabSheet.setSelectedTab(deletionApproval);
+		}else if(parameter.equals(generalFunction.VIEW_INVENTORY_RECEPTION)){
+			tabSheet.setSelectedTab(receipt);
+		}else if(parameter.equals(generalFunction.VIEW_INVENTORY_STOCK)){
+			tabSheet.setSelectedTab(stock);
+		}
+		
 		this.setCompositionRoot(tabSheet);		
 	}
 
