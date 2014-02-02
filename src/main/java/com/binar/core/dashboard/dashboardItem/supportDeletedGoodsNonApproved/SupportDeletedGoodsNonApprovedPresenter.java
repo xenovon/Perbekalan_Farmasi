@@ -1,11 +1,16 @@
 package com.binar.core.dashboard.dashboardItem.supportDeletedGoodsNonApproved;
 
-import com.binar.core.dashboard.dashboardItem.supportDeletedGoodsNonApproved.SupportDeletedGoodsNonApprovedView.SupportDeletedGoodsNonApprovedListener;
+import com.binar.core.dashboard.dashboardItem.farmationRequirementStatus.FarmationRequirementStatusModel;
+import com.binar.core.dashboard.dashboardItem.farmationRequirementStatus.FarmationRequirementStatusViewImpl;
+import com.binar.core.dashboard.dashboardItem.ifrsDeletionApproval.IfrsDeletionApprovalModel;
+import com.binar.core.dashboard.dashboardItem.ifrsDeletionApproval.IfrsDeletionApprovalView.IfrsDeletionApprovalListener;
+import com.binar.core.dashboard.dashboardItem.ifrsDeletionApproval.IfrsDeletionApprovalViewImpl;
+import com.binar.core.dashboard.dashboardItem.ifrsGoodProcurement.IfrsGoodsProcurementViewImpl;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.UI;
 
-public class SupportDeletedGoodsNonApprovedPresenter implements SupportDeletedGoodsNonApprovedListener {
+public class SupportDeletedGoodsNonApprovedPresenter implements IfrsDeletionApprovalListener {
 /*
  * Daftar barang kadaluarsa yang belum disetujui
 
@@ -15,27 +20,25 @@ Pengajuan barang kadaluarsa tanggal <<Tanggal Pengajuan>>
 <<Satuan>>
 <<Jumlah>>
  */
-	SupportDeletedGoodsNonApprovedModel model;
-	SupportDeletedGoodsNonApprovedViewImpl view;
+	IfrsDeletionApprovalModel model;
+	IfrsDeletionApprovalViewImpl view;
 	GeneralFunction function;
 	public SupportDeletedGoodsNonApprovedPresenter(GeneralFunction function
-			, SupportDeletedGoodsNonApprovedViewImpl view, SupportDeletedGoodsNonApprovedModel model) {
+			, IfrsDeletionApprovalViewImpl view, IfrsDeletionApprovalModel model) {
 		this.model=model;
 		this.function=function;
 		this.view=view;
 		view.init();
 		view.setListener(this);
-		
-		
 	}
 	@Override
 	public void updateTable() {
-		view.updateTable(model.getGoodsList());
+		view.updateTable(model.getDeletedGoodsList());
 	}
 	@Override
 	public void buttonGo() {
 		Navigator navigator=UI.getCurrent().getNavigator();
-		navigator.navigateTo("/datamanagement/"+function.VIEW_SUPPLIER_MANAGEMENT);
+		navigator.navigateTo("/inventorymanagement/"+function.VIEW_INVENTORY_DELETION_APPROVAL);
 	}
 //  put("/dashboard", DashboardView.class);
 //  put("/requirementplanning/", RequirementPlanningView.class);

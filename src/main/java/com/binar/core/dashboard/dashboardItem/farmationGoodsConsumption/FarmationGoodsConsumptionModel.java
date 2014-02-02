@@ -26,6 +26,7 @@ public class FarmationGoodsConsumptionModel {
 		this.function=function;
 		this.server=function.getServer();
 	}
+	
 	private  Map<Goods, Integer> getGoodsConsumptionByGoods(){
 		System.out.println("Mendapatkan periode");
 		LocalDate date=LocalDate.now();

@@ -33,6 +33,22 @@ import com.binar.core.dashboard.dashboardItem.ppkExpiredGoodsNonAccepted.PpkExpi
 import com.binar.core.dashboard.dashboardItem.ppkExpiredGoodsNonAccepted.PpkExpiredGoodsNonAcceptedViewImpl;
 import com.binar.core.dashboard.dashboardItem.ppkGoodsProcurementSummary.PpkGoodsProcurementPresenter;
 import com.binar.core.dashboard.dashboardItem.ppkRequirementPlanning.PpkRequirementPlanningPresenter;
+import com.binar.core.dashboard.dashboardItem.procurementDueDate.ProcurementDueDateModel;
+import com.binar.core.dashboard.dashboardItem.procurementDueDate.ProcurementDueDatePresenter;
+import com.binar.core.dashboard.dashboardItem.procurementDueDate.ProcurementDueDateViewImpl;
+import com.binar.core.dashboard.dashboardItem.procurementGoodsProcurement.ProcurementGoodsProcurementPresenter;
+import com.binar.core.dashboard.dashboardItem.procurementReceipt.ProcurementReceiptPresenter;
+import com.binar.core.dashboard.dashboardItem.procurementRequirementAcceptance.ProcurementRequirementAcceptanceModel;
+import com.binar.core.dashboard.dashboardItem.procurementRequirementAcceptance.ProcurementRequirementAcceptancePresenter;
+import com.binar.core.dashboard.dashboardItem.procurementRequirementAcceptance.ProcurementRequirementAcceptanceViewImpl;
+import com.binar.core.dashboard.dashboardItem.procurementSupplierRank.ProcurementSupplierRankModel;
+import com.binar.core.dashboard.dashboardItem.procurementSupplierRank.ProcurementSupplierRankPresenter;
+import com.binar.core.dashboard.dashboardItem.procurementSupplierRank.ProcurementSupplierRankViewImpl;
+import com.binar.core.dashboard.dashboardItem.supportDeletedGoodsNonApproved.SupportDeletedGoodsNonApprovedPresenter;
+import com.binar.core.dashboard.dashboardItem.supportGoodsProcurementSummary.SupportGoodsProcurementSummaryPresenter;
+import com.binar.core.dashboard.dashboardItem.supportRequirementNonApproved.SupportRequirementNonApprovedModel;
+import com.binar.core.dashboard.dashboardItem.supportRequirementNonApproved.SupportRequirementNonApprovedPresenter;
+import com.binar.core.dashboard.dashboardItem.supportRequirementNonApproved.SupportRequirementNonApprovedViewImpl;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.GridLayout;
@@ -174,10 +190,10 @@ public class Dashboard extends VerticalLayout {
 		gridLayout.addComponent(ifrsDeletionApprovalViewImpl,0,0);
 
 		if(ifrsRequirementPlanningPresenter == null){
-			farmationRequirementStatusModel =new FarmationRequirementStatusModel(function);
-			farmationRequirementStatusViewImpl =new FarmationRequirementStatusViewImpl(function);
+			supportRequirementNonApprovedModel =new SupportRequirementNonApprovedModel(function);
+			supportRequirementNonApprovedViewImpl =new SupportRequirementNonApprovedViewImpl(function);
 			ifrsRequirementPlanningPresenter = new IfrsRequirementPlanningPresenter(
-					function, farmationRequirementStatusViewImpl, farmationRequirementStatusModel);
+					function, supportRequirementNonApprovedViewImpl, supportRequirementNonApprovedModel);
 		}
 		gridLayout.addComponent(farmationRequirementStatusViewImpl,1,0);
 
@@ -233,4 +249,111 @@ public class Dashboard extends VerticalLayout {
 		gridLayout.addComponent(farmationRequirementStatusViewImpl,0,1);
 
 	}
+	
+	ProcurementDueDateModel procurementDueDateModel;
+	ProcurementDueDateViewImpl procurementDueDateViewImpl;
+	ProcurementDueDatePresenter procurementDueDatePresenter;
+	
+	ProcurementGoodsProcurementPresenter procurementGoodsProcurementPresenter;
+	
+	ProcurementReceiptPresenter procurementReceiptPresenter;
+	
+	ProcurementRequirementAcceptanceModel procurementRequirementAcceptanceModel;
+	ProcurementRequirementAcceptanceViewImpl procurementRequirementAcceptanceViewImpl;
+	ProcurementRequirementAcceptancePresenter procurementRequirementAcceptancePresenter;
+	
+	ProcurementSupplierRankModel procurementSupplierRankModel;
+	ProcurementSupplierRankViewImpl procurementSupplierRankViewImpl;
+	ProcurementSupplierRankPresenter procurementSupplierRankPresenter;
+	
+	public void generateProcurementView(){
+		gridLayout.removeAllComponents();
+		
+		if(procurementDueDatePresenter == null){
+			procurementDueDateModel =new ProcurementDueDateModel(function);
+			procurementDueDateViewImpl =new ProcurementDueDateViewImpl(function);
+			procurementDueDatePresenter = new ProcurementDueDatePresenter(
+					function, procurementDueDateViewImpl, procurementDueDateModel);
+		}
+		gridLayout.addComponent(procurementDueDateViewImpl,0,0);
+
+		if(procurementGoodsProcurementPresenter == null){
+			ifrsGoodsProcurementModel =new IfrsGoodsProcurementModel(function);
+			ifrsGoodsProcurementViewImpl =new IfrsGoodsProcurementViewImpl(function);
+			procurementGoodsProcurementPresenter = new ProcurementGoodsProcurementPresenter(
+					function, ifrsGoodsProcurementViewImpl, ifrsGoodsProcurementModel);
+		}
+		gridLayout.addComponent(ifrsGoodsProcurementViewImpl,0,1);
+
+		if(procurementReceiptPresenter == null){
+			ifrsGoodsReceptionSummaryViewImpl =new IfrsGoodsReceptionSummaryViewImpl(function);
+			ifrsGoodsReceptionSummaryModel =new IfrsGoodsReceptionSummaryModel(function);
+			procurementReceiptPresenter = new ProcurementReceiptPresenter(
+					function, ifrsGoodsReceptionSummaryViewImpl, ifrsGoodsReceptionSummaryModel);
+		}
+		gridLayout.addComponent(ifrsGoodsProcurementViewImpl,1,0);
+
+		if(procurementRequirementAcceptancePresenter == null){
+			procurementRequirementAcceptanceViewImpl =new ProcurementRequirementAcceptanceViewImpl(function);
+			procurementRequirementAcceptanceModel =new ProcurementRequirementAcceptanceModel(function);
+			procurementRequirementAcceptancePresenter = new ProcurementRequirementAcceptancePresenter(
+					function, procurementRequirementAcceptanceViewImpl, procurementRequirementAcceptanceModel);
+		}
+		gridLayout.addComponent(ifrsGoodsProcurementViewImpl,1,1);
+
+		if(procurementReceiptPresenter == null){
+			ifrsGoodsReceptionSummaryViewImpl =new IfrsGoodsReceptionSummaryViewImpl(function);
+			ifrsGoodsReceptionSummaryModel =new IfrsGoodsReceptionSummaryModel(function);
+			procurementReceiptPresenter = new ProcurementReceiptPresenter(
+					function, ifrsGoodsReceptionSummaryViewImpl, ifrsGoodsReceptionSummaryModel);
+		}
+		gridLayout.addComponent(ifrsGoodsProcurementViewImpl,0,2);
+
+		
+		if(procurementSupplierRankPresenter == null){
+			ifrsGoodsReceptionSummaryViewImpl =new IfrsGoodsReceptionSummaryViewImpl(function);
+			procurementSupplierRankViewImpl =new ProcurementSupplierRankViewImpl(function);
+			procurementSupplierRankPresenter = new ProcurementSupplierRankPresenter(
+					function, procurementSupplierRankViewImpl, procurementSupplierRankModel);
+		}
+		gridLayout.addComponent(ifrsGoodsProcurementViewImpl,0,2);
+
+	}
+	
+	SupportDeletedGoodsNonApprovedPresenter supportDeletedGoodsNonApprovedPresenter;
+
+	SupportGoodsProcurementSummaryPresenter supportGoodsProcurementSummaryPresenter;
+	
+	SupportRequirementNonApprovedModel supportRequirementNonApprovedModel;
+	SupportRequirementNonApprovedViewImpl supportRequirementNonApprovedViewImpl;
+	SupportRequirementNonApprovedPresenter supportRequirementNonApprovedPresenter;
+	
+	public void generateSupportView(){
+		gridLayout.removeAllComponents();
+		if(supportRequirementNonApprovedPresenter == null){
+			supportRequirementNonApprovedModel =new SupportRequirementNonApprovedModel(function);
+			supportRequirementNonApprovedViewImpl =new SupportRequirementNonApprovedViewImpl(function);
+			supportRequirementNonApprovedPresenter = new SupportRequirementNonApprovedPresenter(
+					function, supportRequirementNonApprovedViewImpl, supportRequirementNonApprovedModel);
+		}
+		gridLayout.addComponent(supportRequirementNonApprovedViewImpl,0,0);
+		
+		if(supportDeletedGoodsNonApprovedPresenter == null){
+			ifrsDeletionApprovalModel =new IfrsDeletionApprovalModel(function);
+			ifrsDeletionApprovalViewImpl =new IfrsDeletionApprovalViewImpl(function);
+			supportDeletedGoodsNonApprovedPresenter = new SupportDeletedGoodsNonApprovedPresenter(
+					function, ifrsDeletionApprovalViewImpl, ifrsDeletionApprovalModel);
+		}
+		gridLayout.addComponent(ifrsDeletionApprovalViewImpl,1,0);
+		
+		if(supportGoodsProcurementSummaryPresenter == null){
+			ifrsGoodsProcurementModel =new IfrsGoodsProcurementModel(function);
+			ifrsGoodsProcurementViewImpl =new IfrsGoodsProcurementViewImpl(function);
+			supportGoodsProcurementSummaryPresenter = new SupportGoodsProcurementSummaryPresenter(
+					function, ifrsGoodsProcurementViewImpl, ifrsGoodsProcurementModel);
+		}
+		gridLayout.addComponent(ifrsGoodsProcurementViewImpl,0,1);
+
+	}
+	
 }

@@ -1,21 +1,25 @@
-package com.binar.core.dashboard.dashboardItem.procurementSupplierLoan;
+package com.binar.core.dashboard.dashboardItem.procurementSupplierRank;
 
-import com.binar.core.dashboard.dashboardItem.procurementSupplierLoan.ProcurementSupplierLoanView.ProcurementSupplierLoanListener;
+import java.util.Map;
+
+import com.binar.core.dashboard.dashboardItem.procurementSupplierRank.ProcurementSupplierRankView.ProcurementManufacturRankListener;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.UI;
 
-public class ProcurementSupplierLoanPresenter implements ProcurementSupplierLoanListener {
+public class ProcurementSupplierRankPresenter implements ProcurementManufacturRankListener {
 /*
- * Supplier yang belum dibayarkan hutangnya beserta jumlah hutang 
-> nama produsen, nama supplier, jumlah hutang
+ * 
+5 Produsen dengan jumlah transaksi terbanyak selama...(blm tau berapa, misal 3 bulan) 
+> Grafik batang produsen dan nilai transaksinya
 
+DONE
  */
-	ProcurementSupplierLoanModel model;
-	ProcurementSupplierLoanViewImpl view;
+	ProcurementSupplierRankModel model;
+	ProcurementSupplierRankViewImpl view;
 	GeneralFunction function;
-	public ProcurementSupplierLoanPresenter(GeneralFunction function
-			, ProcurementSupplierLoanViewImpl view, ProcurementSupplierLoanModel model) {
+	public ProcurementSupplierRankPresenter(GeneralFunction function
+			, ProcurementSupplierRankViewImpl view, ProcurementSupplierRankModel model) {
 		this.model=model;
 		this.function=function;
 		this.view=view;
@@ -25,9 +29,14 @@ public class ProcurementSupplierLoanPresenter implements ProcurementSupplierLoan
 		
 	}
 	@Override
-	public void updateTable() {
-		view.updateTable(model.getGoodsList());
-	}
+	public void updateChart() {
+		Map<Integer, String> data=model.getSupplierTransaction();
+		if(data==null){
+			view.setEmptyDataView();
+		}else{
+			view.generateChart(data);			
+		}
+	}	
 	@Override
 	public void buttonGo() {
 		Navigator navigator=UI.getCurrent().getNavigator();

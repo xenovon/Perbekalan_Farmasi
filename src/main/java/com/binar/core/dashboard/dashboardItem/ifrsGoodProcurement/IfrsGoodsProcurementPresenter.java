@@ -27,7 +27,7 @@ public class IfrsGoodsProcurementPresenter implements IfrsGoodsProcurementListen
 	@Override
 	public void buttonGo() {
 		Navigator navigator=UI.getCurrent().getNavigator();
-		navigator.navigateTo("/inventorymanagement/"+function.VIEW_PROCUREMENT_PURCHASE);
+		navigator.navigateTo("/procurement/"+function.VIEW_PROCUREMENT_PURCHASE);
 	}
 	@Override
 	public void updateChart() {

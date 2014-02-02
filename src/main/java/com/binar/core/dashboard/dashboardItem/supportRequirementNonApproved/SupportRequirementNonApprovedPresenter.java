@@ -30,12 +30,12 @@ Pengajuan Rencana Kebutuhan tanggal <<Tanggal Pengajuan>>
 	}
 	@Override
 	public void updateTable() {
-		view.updateTable(model.getGoodsList());
+		view.updateTable(model.getReqList());
 	}
 	@Override
 	public void buttonGo() {
 		Navigator navigator=UI.getCurrent().getNavigator();
-		navigator.navigateTo("/datamanagement/"+function.VIEW_SUPPLIER_MANAGEMENT);
+		navigator.navigateTo("/requirementplanning/"+function.VIEW_REQ_PLANNING_APPROVAL);
 	}
 //  put("/dashboard", DashboardView.class);
 //  put("/requirementplanning/", RequirementPlanningView.class);

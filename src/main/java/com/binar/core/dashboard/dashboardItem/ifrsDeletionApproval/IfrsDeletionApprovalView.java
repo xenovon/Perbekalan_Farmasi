@@ -6,7 +6,7 @@ import com.binar.entity.DeletedGoods;
 import com.binar.entity.Goods;
 import com.vaadin.ui.Panel;
 
-interface  IfrsDeletionApprovalView {
+public interface  IfrsDeletionApprovalView {
 	
 	public interface IfrsDeletionApprovalListener{
 		public void updateTable();

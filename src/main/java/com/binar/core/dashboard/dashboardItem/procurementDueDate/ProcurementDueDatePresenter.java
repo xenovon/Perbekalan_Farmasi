@@ -8,8 +8,9 @@ import com.vaadin.ui.UI;
 public class ProcurementDueDatePresenter implements ProcurementDueDateListener {
 /*
  * Barang dengan jatuh tempo paling dekat 
-> nama produsen, nama supplier, tanggal jatuh tempo, jumlah hutang
+> nama supplier, tanggal jatuh tempo, jumlah hutang
 
+DONE
  */
 	ProcurementDueDateModel model;
 	ProcurementDueDateViewImpl view;
@@ -26,12 +27,12 @@ public class ProcurementDueDatePresenter implements ProcurementDueDateListener {
 	}
 	@Override
 	public void updateTable() {
-		view.updateTable(model.getGoodsList());
+		view.updateTable(model.getInvoiceData());
 	}
 	@Override
 	public void buttonGo() {
 		Navigator navigator=UI.getCurrent().getNavigator();
-		navigator.navigateTo("/datamanagement/"+function.VIEW_SUPPLIER_MANAGEMENT);
+		navigator.navigateTo("/procurement/"+function.VIEW_PROCUREMENT_INVOICE);
 	}
 //  put("/dashboard", DashboardView.class);
 //  put("/requirementplanning/", RequirementPlanningView.class);
@@ -42,5 +43,4 @@ public class ProcurementDueDatePresenter implements ProcurementDueDateListener {
 //  put("/usermanagement", UserManagementView.class);
 //  put("/setting", SettingView.class);
 //  put("/usersetting", UserSettingView.class);
-
 }

@@ -10,7 +10,7 @@ import com.vaadin.ui.UI;
 
 public class IfrsGoodsReceptionSummaryPresenter implements IfrsGoodsReceptionSummaryListener {
 /*
- * Summary daftar penerimaan barang (Berapa % dari rencana kebutuhan yg udah disetujui barangny sudah diterima di gudang farmasi?)
+ * Summary daftar penerimaan barang (Berapa % dari pengadaan yg udah disetujui barangny sudah diterima di gudang farmasi?)
 > Pie chart
 
  */

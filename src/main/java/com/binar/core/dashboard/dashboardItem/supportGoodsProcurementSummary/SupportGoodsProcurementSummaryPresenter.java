@@ -1,37 +1,44 @@
 package com.binar.core.dashboard.dashboardItem.supportGoodsProcurementSummary;
 
-import com.binar.core.dashboard.dashboardItem.supportGoodsProcurementSummary.SupportGoodsProcurementSummaryView.SupportGoodsProcurementSummaryListener;
+import java.util.Map;
+
+import com.binar.core.dashboard.dashboardItem.ifrsGoodProcurement.IfrsGoodsProcurementModel;
+import com.binar.core.dashboard.dashboardItem.ifrsGoodProcurement.IfrsGoodsProcurementView.IfrsGoodsProcurementListener;
+import com.binar.core.dashboard.dashboardItem.ifrsGoodProcurement.IfrsGoodsProcurementViewImpl;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.UI;
 
-public class SupportGoodsProcurementSummaryPresenter implements SupportGoodsProcurementSummaryListener {
+public class SupportGoodsProcurementSummaryPresenter implements IfrsGoodsProcurementListener {
 /*
  * Summary daftar pengadaan barang (Berapa % dari jumlah yg sudah disetujui yg udah dilakukan pengadaan barang?)
 > Pie chart
 
  */
-	SupportGoodsProcurementSummaryModel model;
-	SupportGoodsProcurementSummaryViewImpl view;
+	IfrsGoodsProcurementModel model;
+	IfrsGoodsProcurementViewImpl view;
 	GeneralFunction function;
 	public SupportGoodsProcurementSummaryPresenter(GeneralFunction function
-			, SupportGoodsProcurementSummaryViewImpl view, SupportGoodsProcurementSummaryModel model) {
+			, IfrsGoodsProcurementViewImpl view, IfrsGoodsProcurementModel model) {
 		this.model=model;
 		this.function=function;
 		this.view=view;
 		view.init();
 		view.setListener(this);
-		
-		
-	}
-	@Override
-	public void updateTable() {
-		view.updateTable(model.getGoodsList());
 	}
 	@Override
 	public void buttonGo() {
 		Navigator navigator=UI.getCurrent().getNavigator();
-		navigator.navigateTo("/datamanagement/"+function.VIEW_SUPPLIER_MANAGEMENT);
+		navigator.navigateTo("/procurement/"+function.VIEW_PROCUREMENT_PURCHASE);
+	}
+	@Override
+	public void updateChart() {
+		Map<Integer, String> data=model.getReceptionRequirementCount();
+		if(data==null){
+			view.setEmptyDataView();
+		}else{
+			view.generateChart(data);			
+		}
 	}
 //  put("/dashboard", DashboardView.class);
 //  put("/requirementplanning/", RequirementPlanningView.class);

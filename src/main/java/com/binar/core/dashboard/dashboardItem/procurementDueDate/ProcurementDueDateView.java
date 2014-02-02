@@ -3,6 +3,7 @@ package com.binar.core.dashboard.dashboardItem.procurementDueDate;
 import java.util.List;
 
 import com.binar.entity.Goods;
+import com.binar.entity.Invoice;
 import com.vaadin.ui.Panel;
 
 interface  ProcurementDueDateView {
@@ -13,5 +14,5 @@ interface  ProcurementDueDateView {
 	}
 	public void init();
 	public void construct();
-	public void updateTable(List<Goods> goods);
+	public void updateTable(List<Invoice> goods);
 }

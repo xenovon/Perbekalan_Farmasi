@@ -40,7 +40,7 @@ public class IfrsDeletionApprovalViewImpl  extends Panel implements IfrsDeletion
 	public void init() {
 		table=new Table();
 		table.setSizeFull();
-		table.setPageLength(6);
+		table.setPageLength(8);
 		table.setWidth(function.DASHBOARD_TABLE_WIDTH);
 		table.setSortEnabled(true);
 		table.setImmediate(true);

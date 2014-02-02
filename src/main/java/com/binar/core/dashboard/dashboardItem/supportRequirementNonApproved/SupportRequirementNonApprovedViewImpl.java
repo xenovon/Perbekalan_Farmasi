@@ -3,7 +3,10 @@ package com.binar.core.dashboard.dashboardItem.supportRequirementNonApproved;
 import java.util.List;
 
 import com.binar.entity.Goods;
+import com.binar.entity.ReqPlanning;
+import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
+import com.binar.generalFunction.TextManipulator;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;
@@ -27,25 +30,29 @@ public class SupportRequirementNonApprovedViewImpl  extends Panel implements Sup
 	private Button buttonRefresh;
 	private Button buttonGo;
 	private GeneralFunction function;
+	private TextManipulator text;
+	private DateManipulator date;
 	public SupportRequirementNonApprovedViewImpl(GeneralFunction function) {
 		this.function=function;
+		this.date=function.getDate();
+		this.text=function.getTextManipulator();
 	}
 	
 	@Override
 	public void init() {
 		table=new Table();
 		table.setSizeFull();
-		table.setPageLength(5);
-		table.setWidth("340px");
+		table.setPageLength(6);
+		table.setWidth(function.DASHBOARD_TABLE_WIDTH);
 		table.setSortEnabled(true);
 		table.setImmediate(true);
 		table.setRowHeaderMode(RowHeaderMode.INDEX);
 		tableContainer=new IndexedContainer(){
 			{
-				addContainerProperty("Nama Barang", String.class,null);
-				addContainerProperty("Jumlah Stok",String.class,null);
-				addContainerProperty("Stok Minimal", String.class,null);
-				addContainerProperty("Satuan",String.class,null);
+				addContainerProperty("Tanggal Pengajuan", String.class,null);
+				addContainerProperty("Nama Barang",String.class,null);
+				addContainerProperty("Satuan", String.class,null);
+				addContainerProperty("Jumlah",String.class,null);
 			}
 		};
 		table.setContainerDataSource(tableContainer);
@@ -60,9 +67,9 @@ public class SupportRequirementNonApprovedViewImpl  extends Panel implements Sup
 
 	@Override
 	public void construct() {
-		setCaption("Obat Fast-Moving dengan Stok Minimum");
-		setHeight("350px");
-		setWidth("470px");
+		setCaption("Rencana Kebutuhan Belum Disetujui");
+		setHeight(function.DASHBOARD_LAYOUT_HEIGHT);
+		setWidth(function.DASHBOARD_TABLE_LAYOUT_WIDTH);
 		final GridLayout layout=new GridLayout(2,1){
 			{
 				setSpacing(true);
@@ -82,16 +89,18 @@ public class SupportRequirementNonApprovedViewImpl  extends Panel implements Sup
 	}
 
 	@Override
-	public void updateTable(List<Goods> data) {
+	public void updateTable(List<ReqPlanning> data) {
 		tableContainer.removeAllItems();
 		System.out.println(data.size());
 
-		for(Goods datum:data){
-			Item item=tableContainer.addItem(datum.getIdGoods());
-			item.getItemProperty("Nama Barang").setValue(datum.getName());
-			item.getItemProperty("Jumlah Stok").setValue(datum.getCurrentStock());
-			item.getItemProperty("Stok Minimal").setValue(datum.getMinimumStock());
-			item.getItemProperty("Satuan").setValue(datum.getUnit());
+		for(ReqPlanning datum:data){
+
+
+			Item item=tableContainer.addItem(datum.getIdReqPlanning());
+			item.getItemProperty("Tanggal Pengajuan").setValue(date.dateToText(datum.getTimestamp(), true));
+			item.getItemProperty("Nama Barang").setValue(datum.getSupplierGoods().getGoods().getName());
+			item.getItemProperty("Satuan").setValue(datum.getSupplierGoods().getGoods().getUnit());
+			item.getItemProperty("Jumlah").setValue(text.intToAngka(datum.getQuantity()));
 		}
 	}
 	private SupportRequirementNonApprovedListener listener;

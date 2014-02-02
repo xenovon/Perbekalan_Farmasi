@@ -1,9 +1,12 @@
-package com.binar.core.dashboard.dashboardItem.supportGoodsProcurementSummary;
+package com.binar.core.dashboard.dashboardItem.procurementRequirementAcceptance;
 
 import java.util.List;
 
+import com.binar.core.dashboard.dashboardItem.farmationRequirementStatus.FarmationRequirementStatusView.FarmationRequirementStatusListener;
 import com.binar.entity.Goods;
+import com.binar.entity.ReqPlanning;
 import com.binar.generalFunction.GeneralFunction;
+import com.binar.generalFunction.TextManipulator;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;
@@ -16,10 +19,12 @@ import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.RowHeaderMode;
 import com.vaadin.ui.VerticalLayout;
 
-public class SupportGoodsProcurementSummaryViewImpl  extends Panel implements SupportGoodsProcurementSummaryView, ClickListener{
+public class ProcurementRequirementAcceptanceViewImpl  extends Panel implements ProcurementRequirementAcceptanceView, ClickListener{
 /*
  * Stok barang 'fast moving' dengan stok hampir atau mendekati stok minimum. 
 > Nama barang, jumlah stok, satuan
+
+DONE
 
  */
 	private Table table;
@@ -27,25 +32,33 @@ public class SupportGoodsProcurementSummaryViewImpl  extends Panel implements Su
 	private Button buttonRefresh;
 	private Button buttonGo;
 	private GeneralFunction function;
-	public SupportGoodsProcurementSummaryViewImpl(GeneralFunction function) {
+	private TextManipulator text;
+	public ProcurementRequirementAcceptanceViewImpl(GeneralFunction function) {
 		this.function=function;
+		this.text=function.getTextManipulator();
 	}
 	
 	@Override
 	public void init() {
 		table=new Table();
 		table.setSizeFull();
-		table.setPageLength(5);
-		table.setWidth("340px");
+		table.setPageLength(6);
+		table.setWidth(function.DASHBOARD_TABLE_WIDTH);
 		table.setSortEnabled(true);
 		table.setImmediate(true);
 		table.setRowHeaderMode(RowHeaderMode.INDEX);
 		tableContainer=new IndexedContainer(){
-			{
+			{ /*
+			<<Nama barang>>
+<<Satuan>>
+<<Jumlah pengajuan>>
+<<Jumlah disetujui>>
+<<Oleh*>>
+			*/
 				addContainerProperty("Nama Barang", String.class,null);
-				addContainerProperty("Jumlah Stok",String.class,null);
-				addContainerProperty("Stok Minimal", String.class,null);
 				addContainerProperty("Satuan",String.class,null);
+				addContainerProperty("Jumlah Pengajuan", String.class,null);
+				addContainerProperty("Jumlah disetujui",String.class,null);
 			}
 		};
 		table.setContainerDataSource(tableContainer);
@@ -60,9 +73,9 @@ public class SupportGoodsProcurementSummaryViewImpl  extends Panel implements Su
 
 	@Override
 	public void construct() {
-		setCaption("Obat Fast-Moving dengan Stok Minimum");
-		setHeight("350px");
-		setWidth("470px");
+		setCaption("Rencana Kebutuhan Yang Sudah Disetujui");
+		setHeight(function.DASHBOARD_LAYOUT_HEIGHT);
+		setWidth(function.DASHBOARD_TABLE_LAYOUT_WIDTH);
 		final GridLayout layout=new GridLayout(2,1){
 			{
 				setSpacing(true);
@@ -82,20 +95,22 @@ public class SupportGoodsProcurementSummaryViewImpl  extends Panel implements Su
 	}
 
 	@Override
-	public void updateTable(List<Goods> data) {
+	public void updateTable(List<ReqPlanning> data) {
 		tableContainer.removeAllItems();
 		System.out.println(data.size());
 
-		for(Goods datum:data){
-			Item item=tableContainer.addItem(datum.getIdGoods());
-			item.getItemProperty("Nama Barang").setValue(datum.getName());
-			item.getItemProperty("Jumlah Stok").setValue(datum.getCurrentStock());
-			item.getItemProperty("Stok Minimal").setValue(datum.getMinimumStock());
-			item.getItemProperty("Satuan").setValue(datum.getUnit());
+		for(ReqPlanning datum:data){
+			Item item=tableContainer.addItem(datum.getIdReqPlanning());
+			item.getItemProperty("Nama Barang").setValue(datum.getSupplierGoods().getGoods().getName());
+			item.getItemProperty("Satuan").setValue(datum.getSupplierGoods().getGoods().getUnit());
+			item.getItemProperty("Jumlah Pengajuan").setValue(text.intToAngka(datum.getQuantity()));
+			item.getItemProperty("Jumlah disetujui").setValue(text.intToAngka(datum.getAcceptedQuantity()));
+			
+			
 		}
 	}
-	private SupportGoodsProcurementSummaryListener listener;
-	public void setListener(SupportGoodsProcurementSummaryListener listener) {
+	private ProcurementRequirementAcceptanceListener listener;
+	public void setListener(ProcurementRequirementAcceptanceListener listener) {
 		this.listener = listener;
 	}
 	

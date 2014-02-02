@@ -3,7 +3,10 @@ package com.binar.core.dashboard.dashboardItem.procurementDueDate;
 import java.util.List;
 
 import com.binar.entity.Goods;
+import com.binar.entity.Invoice;
+import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
+import com.binar.generalFunction.TextManipulator;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;
@@ -19,7 +22,7 @@ import com.vaadin.ui.VerticalLayout;
 public class ProcurementDueDateViewImpl  extends Panel implements ProcurementDueDateView, ClickListener{
 /*
  * Stok barang 'fast moving' dengan stok hampir atau mendekati stok minimum. 
-> Nama barang, jumlah stok, satuan
+> nama supplier, tanggal jatuh tempo, jumlah hutang
 
  */
 	private Table table;
@@ -27,25 +30,31 @@ public class ProcurementDueDateViewImpl  extends Panel implements ProcurementDue
 	private Button buttonRefresh;
 	private Button buttonGo;
 	private GeneralFunction function;
+	private DateManipulator date;
+	private TextManipulator text;
 	public ProcurementDueDateViewImpl(GeneralFunction function) {
 		this.function=function;
+		this.text=function.getTextManipulator();
+		this.date=function.getDate();
 	}
 	
 	@Override
 	public void init() {
 		table=new Table();
 		table.setSizeFull();
-		table.setPageLength(5);
-		table.setWidth("340px");
+		table.setPageLength(6);
+		table.setWidth(function.DASHBOARD_TABLE_WIDTH);
 		table.setSortEnabled(true);
 		table.setImmediate(true);
 		table.setRowHeaderMode(RowHeaderMode.INDEX);
 		tableContainer=new IndexedContainer(){
 			{
-				addContainerProperty("Nama Barang", String.class,null);
-				addContainerProperty("Jumlah Stok",String.class,null);
-				addContainerProperty("Stok Minimal", String.class,null);
-				addContainerProperty("Satuan",String.class,null);
+				addContainerProperty("Nomor", String.class,null);
+				addContainerProperty("Nama Tagihan", String.class,null);
+				addContainerProperty("Jatuh Tempo",String.class,null);
+				addContainerProperty("Total Harga", String.class,null);
+				addContainerProperty("Harga Dibayar",String.class,null);
+				addContainerProperty("Hutang",String.class,null);
 			}
 		};
 		table.setContainerDataSource(tableContainer);
@@ -60,9 +69,9 @@ public class ProcurementDueDateViewImpl  extends Panel implements ProcurementDue
 
 	@Override
 	public void construct() {
-		setCaption("Obat Fast-Moving dengan Stok Minimum");
-		setHeight("350px");
-		setWidth("470px");
+		setCaption("Barang Belum Lunas");
+		setHeight(function.DASHBOARD_LAYOUT_HEIGHT);
+		setWidth(function.DASHBOARD_TABLE_LAYOUT_WIDTH);
 		final GridLayout layout=new GridLayout(2,1){
 			{
 				setSpacing(true);
@@ -82,16 +91,18 @@ public class ProcurementDueDateViewImpl  extends Panel implements ProcurementDue
 	}
 
 	@Override
-	public void updateTable(List<Goods> data) {
+	public void updateTable(List<Invoice> data) {
 		tableContainer.removeAllItems();
 		System.out.println(data.size());
 
-		for(Goods datum:data){
-			Item item=tableContainer.addItem(datum.getIdGoods());
-			item.getItemProperty("Nama Barang").setValue(datum.getName());
-			item.getItemProperty("Jumlah Stok").setValue(datum.getCurrentStock());
-			item.getItemProperty("Stok Minimal").setValue(datum.getMinimumStock());
-			item.getItemProperty("Satuan").setValue(datum.getUnit());
+		for(Invoice datum:data){
+			Item item=tableContainer.addItem(datum.getIdInvoice());
+			item.getItemProperty("Nomor").setValue(datum.getInvoiceNumber());
+			item.getItemProperty("Nama Tagihan").setValue(datum.getInvoiceName());
+			item.getItemProperty("Jatuh Tempo").setValue(date.dateToText(datum.getDueDate(), true));
+			item.getItemProperty("Total Harga").setValue(text.doubleToRupiah(datum.getTotalPrice()));
+			item.getItemProperty("Harga Dibayar").setValue(text.doubleToRupiah(datum.getAmountPaid()));
+			item.getItemProperty("Hutang").setValue(text.doubleToRupiah(datum.getTotalPrice()-datum.getAmountPaid()));
 		}
 	}
 	private ProcurementDueDateListener listener;

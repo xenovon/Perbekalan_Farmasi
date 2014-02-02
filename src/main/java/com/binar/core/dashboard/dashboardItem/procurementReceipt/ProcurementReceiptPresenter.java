@@ -1,37 +1,36 @@
 package com.binar.core.dashboard.dashboardItem.procurementReceipt;
 
-import com.binar.core.dashboard.dashboardItem.procurementReceipt.ProcurementReceiptView.ProcurementReceiptListener;
+import java.util.Map;
+
+import com.binar.core.dashboard.dashboardItem.ifrsGoodReceptionSummary.IfrsGoodsReceptionSummaryModel;
+import com.binar.core.dashboard.dashboardItem.ifrsGoodReceptionSummary.IfrsGoodsReceptionSummaryView.IfrsGoodsReceptionSummaryListener;
+import com.binar.core.dashboard.dashboardItem.ifrsGoodReceptionSummary.IfrsGoodsReceptionSummaryViewImpl;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.UI;
 
-public class ProcurementReceiptPresenter implements ProcurementReceiptListener {
+public class ProcurementReceiptPresenter implements IfrsGoodsReceptionSummaryListener {
 /*
  * Summary daftar penerimaan barang (Berapa % dari pengadaan yg udah dilakukan barangny sudah diterima di gudang farmasi?)
 > Pie chart
 
+DONE
+
  */
-	ProcurementReceiptModel model;
-	ProcurementReceiptViewImpl view;
+	IfrsGoodsReceptionSummaryModel model;
+	IfrsGoodsReceptionSummaryViewImpl view;
 	GeneralFunction function;
 	public ProcurementReceiptPresenter(GeneralFunction function
-			, ProcurementReceiptViewImpl view, ProcurementReceiptModel model) {
+			, IfrsGoodsReceptionSummaryViewImpl view, IfrsGoodsReceptionSummaryModel model) {
 		this.model=model;
 		this.function=function;
 		this.view=view;
 		view.init();
-		view.setListener(this);
-		
-		
-	}
-	@Override
-	public void updateTable() {
-		view.updateTable(model.getGoodsList());
 	}
 	@Override
 	public void buttonGo() {
 		Navigator navigator=UI.getCurrent().getNavigator();
-		navigator.navigateTo("/datamanagement/"+function.VIEW_SUPPLIER_MANAGEMENT);
+		navigator.navigateTo("/inventorymanagement/"+function.VIEW_INVENTORY_RECEPTION);
 	}
 //  put("/dashboard", DashboardView.class);
 //  put("/requirementplanning/", RequirementPlanningView.class);
@@ -42,5 +41,14 @@ public class ProcurementReceiptPresenter implements ProcurementReceiptListener {
 //  put("/usermanagement", UserManagementView.class);
 //  put("/setting", SettingView.class);
 //  put("/usersetting", UserSettingView.class);
-
+	@Override
+	public void updateChart() {
+		Map<Integer, String> data=model.getReceptionProcurementCount();
+		if(data==null){
+			view.setEmptyDataView();
+		}else{
+			view.generateChart(data);			
+		}
+		
+	}
 }

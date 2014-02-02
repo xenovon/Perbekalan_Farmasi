@@ -1,38 +1,36 @@
-package com.binar.core.dashboard.dashboardItem.procurementManufacturRank;
+package com.binar.core.dashboard.dashboardItem.procurementRequirementAcceptance;
 
-import com.binar.core.dashboard.dashboardItem.procurementManufacturRank.ProcurementManufacturRankView.ProcurementManufacturRankListener;
+import com.binar.core.dashboard.dashboardItem.procurementRequirementAcceptance.ProcurementRequirementAcceptanceView.ProcurementRequirementAcceptanceListener;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.UI;
 
-public class ProcurementManufacturRankPresenter implements ProcurementManufacturRankListener {
+public class ProcurementRequirementAcceptancePresenter implements ProcurementRequirementAcceptanceListener {
 /*
- * 
-5 Produsen dengan jumlah transaksi terbanyak selama...(blm tau berapa, misal 3 bulan) 
-> Grafik batang produsen dan nilai transaksinya
+ * Pengajuan rencana kebutuhan yang sudah disetujui (maksudnya daftar barang yang perlu dibeli)
 
+	DONE
  */
-	ProcurementManufacturRankModel model;
-	ProcurementManufacturRankViewImpl view;
+	ProcurementRequirementAcceptanceModel model;
+	ProcurementRequirementAcceptanceViewImpl view;
 	GeneralFunction function;
-	public ProcurementManufacturRankPresenter(GeneralFunction function
-			, ProcurementManufacturRankViewImpl view, ProcurementManufacturRankModel model) {
+	public ProcurementRequirementAcceptancePresenter(GeneralFunction function
+			, ProcurementRequirementAcceptanceViewImpl view, ProcurementRequirementAcceptanceModel model) {
 		this.model=model;
 		this.function=function;
 		this.view=view;
 		view.init();
 		view.setListener(this);
-		
-		
+	
 	}
 	@Override
 	public void updateTable() {
-		view.updateTable(model.getGoodsList());
+		view.updateTable(model.getReqAcceptedList());
 	}
 	@Override
 	public void buttonGo() {
 		Navigator navigator=UI.getCurrent().getNavigator();
-		navigator.navigateTo("/datamanagement/"+function.VIEW_SUPPLIER_MANAGEMENT);
+		navigator.navigateTo("/requirementplanning/"+function.VIEW_REQ_PLANNING_LIST);
 	}
 //  put("/dashboard", DashboardView.class);
 //  put("/requirementplanning/", RequirementPlanningView.class);
