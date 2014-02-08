@@ -98,7 +98,7 @@ public class InvoicePresenter implements InvoiceListener{
 			presenterEdit=new EditInvoicePresenter(function,modelEdit, viewEdit);
 		}
 		presenterEdit.generateInvoice(idInvoice);
-		view.displayForm(viewEdit, "Ubah Data Surat Pesanan", "65%");
+		view.displayForm(viewEdit, "Ubah Data Faktur", "65%");
 		addWIndowCloseListener();
 	}
 	@Override
@@ -157,7 +157,7 @@ public class InvoicePresenter implements InvoiceListener{
 		if(data!=null){
 			view.updateTableData(data, withEditInvoice);			
 		}else{
-//			Notification.show("Terjadi kesalahan pengambilan data");
+			Notification.show("Terjadi kesalahan pengambilan data");
 		}
 		
 	}

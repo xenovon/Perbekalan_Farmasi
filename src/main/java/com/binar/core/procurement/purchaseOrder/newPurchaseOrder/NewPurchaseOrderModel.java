@@ -145,7 +145,6 @@ public class NewPurchaseOrderModel {
 					
 					order.setUserResponsible(server.find(User.class, IdUser));
 					order.setRayon(setting.getSetting("rayon").getSettingValue());
-					order.setPurchaseOrderName(generateName(order));
 					//tanggal
 					//tipe
 					//order
@@ -162,7 +161,8 @@ public class NewPurchaseOrderModel {
 					itemList.add(item);
 					
 					order.setPurchaseOrderItem(itemList);
-					
+					order.setPurchaseOrderName(generateName(order));
+
 					list.add(order);
 				}else{
 					//jika bukan psikotoprika dan narkotika, maka dikelompokan berdasarkan supplier
@@ -190,7 +190,6 @@ public class NewPurchaseOrderModel {
 						order.setDate(purchaseDate);
 						order.setUserResponsible(server.find(User.class, IdUser));
 						order.setRayon(setting.getSetting("rayon").getSettingValue());
-						order.setPurchaseOrderName(generateName(order));
 
 
 						item.setPurchaseOrder(order);
@@ -199,6 +198,8 @@ public class NewPurchaseOrderModel {
 						itemList.add(item);
 						
 						order.setPurchaseOrderItem(itemList);
+						order.setPurchaseOrderName(generateName(order));
+
 						
 						poGeneral.put(mapKey,order);
 					}else{

@@ -244,7 +244,6 @@ public class ManufacturerManagementViewImpl extends VerticalLayout implements
 					if(withEditManufacturer){
 						this.addComponent(buttonDelete, 2, 0);	
 						this.addComponent(buttonEdit, 1, 0);					
-
 					}						
 					this.addComponent(buttonShow, 0, 0);
 

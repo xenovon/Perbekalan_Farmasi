@@ -368,7 +368,14 @@ public class InputGoodsViewImpl extends FormLayout implements
 			listener.realTimeValidator("inputMinimalStock");
 		}else if(event.getProperty()==inputInitialStock){
 			listener.realTimeValidator("inputInitialStock");
+		}else if(event.getProperty()==inputType){
+			listener.goodsTypeChange((EnumGoodsType)inputType.getValue());
 		}
+	}
+
+	
+	public ComboBox getInputCategory() {
+		return inputCategory;
 	}
 	@Override
 	public void textChange(TextChangeEvent event) {

@@ -152,11 +152,11 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 			buttonPrint.setIcon(new ThemeResource("icons/image/icon-print.png"));
 			buttonPrint.addStyleName("button-table");
 			buttonPrint.addClickListener(this);
-	 	 buttonSave=new Button("Simpan PDF");
-			buttonSave.setDescription("Simpan surat pesanan sebagai PDF");
-			buttonSave.setIcon(new ThemeResource("icons/image/icon-save.png"));
-			buttonSave.addStyleName("button-table");
-			buttonSave.addClickListener(this);
+//	 	 buttonSave=new Button("Simpan PDF");
+//			buttonSave.setDescription("Simpan surat pesanan sebagai PDF");
+//			buttonSave.setIcon(new ThemeResource("icons/image/icon-save.png"));
+//			buttonSave.addStyleName("button-table");
+//			buttonSave.addClickListener(this);
 
 		construct();
 	}
@@ -273,7 +273,7 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 	private Label labelRayon;
 	private Label labelSupplier;
 	private Button buttonPrint;
-	private Button buttonSave;
+//	private Button buttonSave;
 	
 	@Override
 	public void showDetailWindow(PurchaseOrder purchaseOrder) {
@@ -343,7 +343,7 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 				{
 					setStyleName("float-right");
 					addComponent(buttonPrint);
-					addComponent(buttonSave);
+//					addComponent(buttonSave);
 				}
 			});
 			layoutDetail.addComponent(layoutContent);
@@ -396,9 +396,10 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 		}
 		else if(event.getButton()==buttonPrint){
 			listener.buttonClick("buttonPrint");
-		}else if(event.getButton()==buttonSave){
-			listener.buttonClick("buttonSave");
 		}
+//		}else if(event.getButton()==buttonSave){
+//			listener.buttonClick("buttonSave");
+//		}
 	}
 	@Override
 	public String getSelectedPeriod() {

@@ -349,8 +349,8 @@ public class StockListViewImpl  extends VerticalLayout implements StockListView,
 			layoutDetailConsumption.addComponent(labelGoods, 1,0);
 			layoutDetailConsumption.addComponent(labelQuantity, 1,1);
 			layoutDetailConsumption.addComponent(labelConsumptionDate, 1,2);
-			layoutDetailConsumption.addComponent(labelInformation, 1,3);
-			layoutDetailConsumption.addComponent(labelWard, 1, 4);
+			layoutDetailConsumption.addComponent(labelWard, 1,3);
+			layoutDetailConsumption.addComponent(labelInformation, 1, 4);
 		}
 		setLabelData(consumption);
 		if(windowDetail==null){

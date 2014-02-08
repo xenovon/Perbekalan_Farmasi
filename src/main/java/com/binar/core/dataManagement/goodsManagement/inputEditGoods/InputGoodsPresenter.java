@@ -6,6 +6,8 @@ import java.util.List;
 import com.binar.core.dataManagement.goodsManagement.inputEditGoods.InputGoodsView.ErrorLabel;
 import com.binar.core.dataManagement.goodsManagement.inputEditGoods.InputGoodsView.InputGoodsListener;
 import com.binar.entity.Goods;
+import com.binar.entity.enumeration.EnumGoodsCategory;
+import com.binar.entity.enumeration.EnumGoodsType;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Window;
@@ -135,7 +137,6 @@ public class InputGoodsPresenter implements InputGoodsListener{
 			view.showError(ErrorLabel.GENERAL, error);
 		}
 	}
-	
 	private void buttonCancel(){
 		function.showDialog("Batalkan", 
 				editMode?"Anda yakin akan membatalkan perubahan data?":"Anda yakin Akan Membatalkan Memasukan Data?",
@@ -158,6 +159,20 @@ public class InputGoodsPresenter implements InputGoodsListener{
 	public void setFormData(String idGoods){
 		Goods goods=model.getSingleGoods(idGoods);
 		view.setFormData(goods);
+	}
+
+	@Override
+	public void goodsTypeChange(EnumGoodsType type) {
+		if(type==EnumGoodsType.ALAT_KESEHATAN ||
+		   type==EnumGoodsType.BMHP){
+			view.getInputCategory().setValue(EnumGoodsCategory.LAINNYA);
+			view.setEnabled(false);
+
+		}else{
+			view.getInputCategory().setValue(EnumGoodsCategory.PATEN);
+			view.setEnabled(true);
+			
+		}
 	}
 
 }

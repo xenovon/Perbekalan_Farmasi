@@ -7,5 +7,7 @@ public enum EnumGoodsCategory {
 	@EnumValue("GENERIK")
 	GENERIK,
 	@EnumValue("PATEN")	
-	PATEN
+	PATEN,
+	@EnumValue("LAINNYA")
+	LAINNYA
 }

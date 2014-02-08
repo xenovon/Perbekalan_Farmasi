@@ -23,6 +23,7 @@ public interface InputGoodsView {
 		//untuk menentukan apakah initial stock bisa diubah atau ngga
 		//implementasi lebih detail ada di model
 		public boolean isCanEditInitialStock();
+		public void goodsTypeChange(EnumGoodsType type);
 
 	}
 	public void init(); 
