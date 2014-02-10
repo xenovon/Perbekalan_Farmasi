@@ -156,6 +156,7 @@ public class InvoiceViewImpl extends VerticalLayout implements InvoiceView, Clic
 				addContainerProperty("Jatuh Tempo",String.class,null);
 				addContainerProperty("Total Tagihan", String.class,null);
 				addContainerProperty("Jumlah Dibayar", String.class,null);
+				addContainerProperty("Lunas?", String.class,null);
 				addContainerProperty("Jumlah Item", Integer.class, null);
 				addContainerProperty("Operasi", GridLayout.class,null);
 			}
@@ -218,6 +219,11 @@ public class InvoiceViewImpl extends VerticalLayout implements InvoiceView, Clic
 			item.getItemProperty("Jatuh Tempo").setValue(date.dateToText(datum.getDueDate(), true));
 			item.getItemProperty("Total Tagihan").setValue(text.doubleToRupiah(datum.getTotalPrice()));
 			item.getItemProperty("Jumlah Dibayar").setValue(text.doubleToRupiah(datum.getAmountPaid()));
+			if(datum.getTotalPrice()<=datum.getAmountPaid()){
+				item.getItemProperty("Lunas?").setValue("Lunas");
+			}else{
+				item.getItemProperty("Lunas?").setValue("Belum Lunas");
+			}
 			item.getItemProperty("Jumlah Item").setValue(datum.getInvoiceItem().size());
 			item.getItemProperty("Operasi").setValue(new GridLayout(3,1){
 			{

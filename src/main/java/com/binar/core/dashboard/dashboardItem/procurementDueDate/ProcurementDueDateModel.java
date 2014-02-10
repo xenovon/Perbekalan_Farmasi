@@ -10,18 +10,27 @@ import com.avaje.ebean.EbeanServer;
 import com.binar.entity.Invoice;
 import com.binar.entity.Goods;
 import com.binar.entity.enumeration.EnumStockStatus;
+import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
 
 public class ProcurementDueDateModel {
 
 	GeneralFunction function;
 	EbeanServer server;
+	DateManipulator date;
 	public ProcurementDueDateModel(GeneralFunction function) {
 		this.function=function;
 		this.server=function.getServer();
+		this.date=function.getDate();
 	}
+	public String getCurrentMonth(){
+		LocalDate now=new LocalDate();
+		LocalDate notNow=now.minusMonths(3);
+		return date.dateToText(notNow.toDate())+"-"+date.dateToText(now.toDate());
+	}
+
 	public List<Invoice> getInvoiceData(){
-		//
+		//barang belum lunas 3 bulan kebelakang
 		LocalDate baseDate=new LocalDate();
 		LocalDate endDate=baseDate.withDayOfMonth(baseDate.dayOfMonth().getMaximumValue());
 		LocalDate startDate=baseDate.withDayOfMonth(baseDate.dayOfMonth().getMinimumValue()).minusMonths(3);

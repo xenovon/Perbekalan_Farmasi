@@ -23,7 +23,7 @@ public class SupportGoodsProcurementSummaryPresenter implements IfrsGoodsProcure
 		this.model=model;
 		this.function=function;
 		this.view=view;
-		view.init();
+		view.init(model.getCurrentMonth());
 		view.setListener(this);
 		updateChart(); 
 		
@@ -39,7 +39,8 @@ public class SupportGoodsProcurementSummaryPresenter implements IfrsGoodsProcure
 		if(data==null){
 			view.setEmptyDataView();
 		}else{
-			view.generateChart(data);			
+			view.generateInformation(data);
+			view.generateChart(model.getChartData(data));			
 		}
 	}
 //  put("/dashboard", DashboardView.class);

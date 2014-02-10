@@ -12,8 +12,8 @@ public interface  IfrsGoodsProcurementView {
 		public void updateChart();
 		public void buttonGo();
 	}
-	public void init();
-	public void construct();
+	public void init(String month);
+	public void construct(String month);
 	public void setEmptyDataView();
 	public void generateChart(Map<String, Integer> data);
 }

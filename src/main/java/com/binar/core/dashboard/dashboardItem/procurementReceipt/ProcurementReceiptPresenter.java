@@ -25,7 +25,8 @@ DONE
 		this.model=model;
 		this.function=function;
 		this.view=view;
-		view.init();
+		view.init(model.getCurrentMonth());
+		view.setListener(this);
 		updateChart();
 	}
 	@Override
@@ -44,12 +45,14 @@ DONE
 //  put("/usersetting", UserSettingView.class);
 	@Override
 	public void updateChart() {
-		Map<Integer, String> data=model.getReceptionProcurementCount();
+		Map<String, Integer> data=model.getReceptionProcurementCount();
 		if(data==null){
 			view.setEmptyDataView();
 		}else{
-			view.generateChart(data);			
+			view.generateInformation(data);
+			view.generateChart(model.getChartData(data));			
 		}
+		
 		
 	}
 }

@@ -12,7 +12,7 @@ interface  ProcurementDueDateView {
 		public void updateTable();
 		public void buttonGo();
 	}
-	public void init();
+	public void init(String month);
 	public void construct();
 	public void updateTable(List<Invoice> goods);
 }

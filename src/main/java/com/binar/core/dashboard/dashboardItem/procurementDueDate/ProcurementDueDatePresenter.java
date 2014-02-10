@@ -20,7 +20,7 @@ DONE
 		this.model=model;
 		this.function=function;
 		this.view=view;
-		view.init();
+		view.init(model.getCurrentMonth());
 		view.setListener(this);
 		updateTable();
 		

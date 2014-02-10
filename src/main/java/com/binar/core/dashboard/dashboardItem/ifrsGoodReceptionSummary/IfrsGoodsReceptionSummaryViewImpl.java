@@ -5,14 +5,21 @@ import java.util.Map;
 
 import org.dussan.vaadin.dcharts.DCharts;
 import org.dussan.vaadin.dcharts.data.DataSeries;
+import org.dussan.vaadin.dcharts.metadata.LegendPlacements;
+import org.dussan.vaadin.dcharts.metadata.locations.LegendLocations;
+import org.dussan.vaadin.dcharts.metadata.renderers.LegendRenderers;
 import org.dussan.vaadin.dcharts.metadata.renderers.SeriesRenderers;
 import org.dussan.vaadin.dcharts.options.Highlighter;
+import org.dussan.vaadin.dcharts.options.Legend;
 import org.dussan.vaadin.dcharts.options.Options;
 import org.dussan.vaadin.dcharts.options.SeriesDefaults;
+import org.dussan.vaadin.dcharts.renderers.legend.EnhancedLegendRenderer;
 import org.dussan.vaadin.dcharts.renderers.series.PieRenderer;
 
 import com.binar.entity.Goods;
+import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
+import com.binar.generalFunction.TextManipulator;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;
@@ -38,27 +45,35 @@ public class IfrsGoodsReceptionSummaryViewImpl  extends Panel implements IfrsGoo
 	private Button buttonGo;
 	private GeneralFunction function;
 	private CssLayout layoutChart;
+	private GridLayout layoutData;
+	private TextManipulator text;
+	private DateManipulator date;
+	private String month;
 	public IfrsGoodsReceptionSummaryViewImpl(GeneralFunction function) {
 		this.function=function;
+		this.text=function.getTextManipulator();
+		this.date=function.getDate();
 	}
 	
 	@Override
-	public void init() {
-		buttonGo=new Button("Lebih Lanjut");
+	public void init(String month) {
+		this.month=month;
+		buttonGo=new Button("Ke Halaman Penerimaan");
 		buttonGo.addClickListener(this);
 		
 		buttonRefresh=new Button("Refresh");
 		buttonRefresh.addClickListener(this);
 
-		construct();
+		construct(month);
 	}
 
 	@Override
-	public void construct() {
-		setCaption("Pengadaan dan Penerimaan Barang Bulan Ini");
+	public void construct(String month) {
+		setCaption("Pengadaan dan Penerimaan Barang Bulan "+month);
 		setHeight("430px");
 		setWidth("500px");
-		
+		layoutData =new GridLayout(3,2);
+
 		final GridLayout layout=new GridLayout(2,1){
 			{
 				setSpacing(true);
@@ -71,7 +86,8 @@ public class IfrsGoodsReceptionSummaryViewImpl  extends Panel implements IfrsGoo
 			{
 				setSpacing(true);
 				setMargin(true);
-				addComponent(layoutChart);
+				addComponent(layoutChart);	
+				addComponent(layoutData);
 				addComponent(layout);
 			}
 		});
@@ -90,22 +106,47 @@ public class IfrsGoodsReceptionSummaryViewImpl  extends Panel implements IfrsGoo
 			listener.updateChart();
 		}
 	}
-	
-	public void generateChart(Map<Integer, String> data){
+	//untuk mengeset data di detail
+	public void generateInformation(Map<String, Integer> data){
+		int x=0;
+		layoutData.removeAllComponents();
+		for(Map.Entry<String, Integer> entry:data.entrySet()){
+			layoutData.addComponent(new Label(entry.getKey()), 0,x);
+			layoutData.addComponent(new Label(" : "), 1, x);
+			layoutData.addComponent(new Label(text.intToAngka(entry.getValue())+" barang"), 2, x);
+			x++;
+		}		
+	}	
+	public void generateChart(Map<String, Integer> data){
 		
 		DataSeries dataSeries = new DataSeries()
 		.newSeries();
-		
-
 		//inisialisasi data
-		for(Map.Entry<Integer, String> entry:data.entrySet()){
-			dataSeries.add(entry.getValue(), entry.getKey());
+		String[] labels=new String[data.size()];  //ngeset untuk data legend
+		int x=0;
+		for(Map.Entry<String, Integer> entry:data.entrySet()){
+			dataSeries.add(entry.getKey(), entry.getValue());
+			System.out.println("Map size "+entry.getValue()+" "+entry.getKey());
+			labels[x]=entry.getKey();
+			x++;
+
 		}		
 		SeriesDefaults seriesDefaults = new SeriesDefaults()
 		.setRenderer(SeriesRenderers.PIE)
 		.setRendererOptions(
 			new PieRenderer()
 				.setShowDataLabels(true));
+		
+		Legend legend = new Legend();
+		legend.setShow(true);
+		legend.setRenderer(LegendRenderers.ENHANCED);
+		legend.setRendererOptions(
+			new EnhancedLegendRenderer()
+				.setNumberRows(2));
+		legend.setPlacement(LegendPlacements.OUTSIDE_GRID);
+		legend.setLabels("Rencana Kebutuhan Belum Diadakan", "Pengadaan Bulan Ini");
+		
+		legend.setLocation(LegendLocations.SOUTH);
 
 
 	Highlighter highlighter = new Highlighter()
@@ -116,7 +157,8 @@ public class IfrsGoodsReceptionSummaryViewImpl  extends Panel implements IfrsGoo
 
 	Options options = new Options()
 		.setSeriesDefaults(seriesDefaults)
-		.setHighlighter(highlighter);
+		.setHighlighter(highlighter)
+		;
 
 	DCharts chart = new DCharts()
 		.setDataSeries(dataSeries)
@@ -129,7 +171,9 @@ public class IfrsGoodsReceptionSummaryViewImpl  extends Panel implements IfrsGoo
 	
 	@Override
 	public void setEmptyDataView() {
+		layoutData.removeAllComponents();
 		layoutChart.removeAllComponents();
-		layoutChart.addComponent(new Label("Data bulan ini belum tersedia"));
+		layoutChart.addComponent(new Label("Data bulan "+month+" belum tersedia"));
+
 	}
 }

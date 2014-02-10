@@ -48,7 +48,7 @@ public class ProcurementSupplierRankViewImpl  extends Panel implements Procureme
 	
 	@Override
 	public void init() {
-		buttonGo=new Button("Lebih Lanjut");
+		buttonGo=new Button("Ke Halaman Daftar Distributor");
 		buttonGo.addClickListener(this);
 		
 		buttonRefresh=new Button("Refresh");
@@ -59,7 +59,7 @@ public class ProcurementSupplierRankViewImpl  extends Panel implements Procureme
 
 	@Override
 	public void construct() {
-		setCaption("PBF Dengan Jumlah Pembelian Terbanyak");
+		setCaption("PBF Dengan Jumlah Pembelian Terbanyak selama 3 bulan");
 		
 		setHeight("470px");
 		setWidth("500px");

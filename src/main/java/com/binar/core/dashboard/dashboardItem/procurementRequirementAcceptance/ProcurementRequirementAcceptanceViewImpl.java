@@ -13,7 +13,9 @@ import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.RowHeaderMode;
@@ -33,19 +35,24 @@ DONE
 	private Button buttonGo;
 	private GeneralFunction function;
 	private TextManipulator text;
+	private String month;
+
+	private com.vaadin.ui.Label labelEmpty;
 	public ProcurementRequirementAcceptanceViewImpl(GeneralFunction function) {
 		this.function=function;
 		this.text=function.getTextManipulator();
 	}
 	
 	@Override
-	public void init() {
+	public void init(String month) {
+		this.month=month;
 		table=new Table();
 		table.setSizeFull();
 		table.setPageLength(6);
 		table.setWidth(function.DASHBOARD_TABLE_WIDTH);
 		table.setSortEnabled(true);
 		table.setImmediate(true);
+		
 		table.setRowHeaderMode(RowHeaderMode.INDEX);
 		tableContainer=new IndexedContainer(){
 			{ /*
@@ -67,13 +74,16 @@ DONE
 		
 		buttonRefresh=new Button("Refresh");
 		buttonRefresh.addClickListener(this);
-
+		
+		labelEmpty=new Label();
+		labelEmpty.setVisible(false);
+		
 		construct();
 	}
 
 	@Override
 	public void construct() {
-		setCaption("Rencana Kebutuhan Yang Sudah Disetujui");
+		setCaption("Rencana Kebutuhan Yang Sudah Disetujui bulan "+month);
 		setHeight(function.DASHBOARD_LAYOUT_HEIGHT);
 		setWidth(function.DASHBOARD_TABLE_LAYOUT_WIDTH);
 		final GridLayout layout=new GridLayout(2,1){
@@ -88,6 +98,7 @@ DONE
 				setSpacing(true);
 				setMargin(true);
 				addComponent(table);
+				addComponent(labelEmpty);
 				addComponent(layout);
 			}
 		});
@@ -96,17 +107,23 @@ DONE
 
 	@Override
 	public void updateTable(List<ReqPlanning> data) {
-		tableContainer.removeAllItems();
-		System.out.println(data.size());
+		if(data.size()==0){
+			labelEmpty.setVisible(true);
+			labelEmpty.setValue("Belum ada rencana kebutuhan yang sudah disetujui");
+			table.setVisible(false);
+		}else{
+			tableContainer.removeAllItems();
 
-		for(ReqPlanning datum:data){
-			Item item=tableContainer.addItem(datum.getIdReqPlanning());
-			item.getItemProperty("Nama Barang").setValue(datum.getSupplierGoods().getGoods().getName());
-			item.getItemProperty("Satuan").setValue(datum.getSupplierGoods().getGoods().getUnit());
-			item.getItemProperty("Jumlah Pengajuan").setValue(text.intToAngka(datum.getQuantity()));
-			item.getItemProperty("Jumlah disetujui").setValue(text.intToAngka(datum.getAcceptedQuantity()));
-			
-			
+			System.out.println(data.size());
+
+			for(ReqPlanning datum:data){
+				Item item=tableContainer.addItem(datum.getIdReqPlanning());
+				item.getItemProperty("Nama Barang").setValue(datum.getSupplierGoods().getGoods().getName());
+				item.getItemProperty("Satuan").setValue(datum.getSupplierGoods().getGoods().getUnit());
+				item.getItemProperty("Jumlah Pengajuan").setValue(text.intToAngka(datum.getQuantity()));
+				item.getItemProperty("Jumlah disetujui").setValue(text.intToAngka(datum.getAcceptedQuantity()));
+					
+			}			
 		}
 	}
 	private ProcurementRequirementAcceptanceListener listener;

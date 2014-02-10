@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.binar.entity.Goods;
 import com.binar.entity.Invoice;
+import com.binar.entity.ReqPlanning;
 import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
 import com.binar.generalFunction.TextManipulator;
@@ -14,6 +15,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.RowHeaderMode;
@@ -32,6 +34,8 @@ public class ProcurementDueDateViewImpl  extends Panel implements ProcurementDue
 	private GeneralFunction function;
 	private DateManipulator date;
 	private TextManipulator text;
+	private String month;
+	private Label labelEmpty;
 	public ProcurementDueDateViewImpl(GeneralFunction function) {
 		this.function=function;
 		this.text=function.getTextManipulator();
@@ -39,7 +43,8 @@ public class ProcurementDueDateViewImpl  extends Panel implements ProcurementDue
 	}
 	
 	@Override
-	public void init() {
+	public void init(String month) {
+		this.month=month;
 		table=new Table();
 		table.setSizeFull();
 		table.setPageLength(6);
@@ -58,9 +63,11 @@ public class ProcurementDueDateViewImpl  extends Panel implements ProcurementDue
 			}
 		};
 		table.setContainerDataSource(tableContainer);
-		buttonGo=new Button("Lebih Lanjut");
+		buttonGo=new Button("Ke Halaman Faktur");
 		buttonGo.addClickListener(this);
-		
+		labelEmpty=new Label();
+		labelEmpty.setVisible(false);
+
 		buttonRefresh=new Button("Refresh");
 		buttonRefresh.addClickListener(this);
 
@@ -69,7 +76,7 @@ public class ProcurementDueDateViewImpl  extends Panel implements ProcurementDue
 
 	@Override
 	public void construct() {
-		setCaption("Barang Belum Lunas");
+		setCaption("Barang Belum Lunas Bulan "+month);
 		setHeight(function.DASHBOARD_LAYOUT_HEIGHT);
 		setWidth(function.DASHBOARD_TABLE_LAYOUT_WIDTH);
 		final GridLayout layout=new GridLayout(2,1){
@@ -84,6 +91,7 @@ public class ProcurementDueDateViewImpl  extends Panel implements ProcurementDue
 				setSpacing(true);
 				setMargin(true);
 				addComponent(table);
+				addComponent(labelEmpty);
 				addComponent(layout);
 			}
 		});
@@ -92,18 +100,26 @@ public class ProcurementDueDateViewImpl  extends Panel implements ProcurementDue
 
 	@Override
 	public void updateTable(List<Invoice> data) {
-		tableContainer.removeAllItems();
-		System.out.println(data.size());
+		if(data.size()==0){
+			labelEmpty.setVisible(true);
+			labelEmpty.setValue("Belum ada rencana kebutuhan bulan "+month+" yang sudah disetujui");
+			table.setVisible(false);
+		}else{
+			tableContainer.removeAllItems();
+			System.out.println(data.size());
 
-		for(Invoice datum:data){
-			Item item=tableContainer.addItem(datum.getIdInvoice());
-			item.getItemProperty("Nomor").setValue(datum.getInvoiceNumber());
-			item.getItemProperty("Nama Tagihan").setValue(datum.getInvoiceName());
-			item.getItemProperty("Jatuh Tempo").setValue(date.dateToText(datum.getDueDate(), true));
-			item.getItemProperty("Total Harga").setValue(text.doubleToRupiah(datum.getTotalPrice()));
-			item.getItemProperty("Harga Dibayar").setValue(text.doubleToRupiah(datum.getAmountPaid()));
-			item.getItemProperty("Hutang").setValue(text.doubleToRupiah(datum.getTotalPrice()-datum.getAmountPaid()));
+			for(Invoice datum:data){
+				Item item=tableContainer.addItem(datum.getIdInvoice());
+				item.getItemProperty("Nomor").setValue(datum.getInvoiceNumber());
+				item.getItemProperty("Nama Tagihan").setValue(datum.getInvoiceName());
+				item.getItemProperty("Jatuh Tempo").setValue(date.dateToText(datum.getDueDate(), true));
+				item.getItemProperty("Total Harga").setValue(text.doubleToRupiah(datum.getTotalPrice()));
+				item.getItemProperty("Harga Dibayar").setValue(text.doubleToRupiah(datum.getAmountPaid()));
+				item.getItemProperty("Hutang").setValue(text.doubleToRupiah(datum.getTotalPrice()-datum.getAmountPaid()));
+			}			
 		}
+
+		
 	}
 	private ProcurementDueDateListener listener;
 	public void setListener(ProcurementDueDateListener listener) {
