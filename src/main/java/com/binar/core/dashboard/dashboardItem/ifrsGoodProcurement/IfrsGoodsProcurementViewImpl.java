@@ -56,7 +56,7 @@ public class IfrsGoodsProcurementViewImpl  extends Panel implements IfrsGoodsPro
 	@Override
 	public void init(String month) {
 		this.month=month;
-		buttonGo=new Button("Ke Halaman Daftar Pengadaan");
+		buttonGo=new Button("Ke Halaman Daftar Surat Pesanan");
 		buttonGo.addClickListener(this);
 		buttonRefresh=new Button("Refresh");
 		buttonRefresh.addClickListener(this);

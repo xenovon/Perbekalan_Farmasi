@@ -102,7 +102,7 @@ public class ProcurementDueDateViewImpl  extends Panel implements ProcurementDue
 	public void updateTable(List<Invoice> data) {
 		if(data.size()==0){
 			labelEmpty.setVisible(true);
-			labelEmpty.setValue("Belum ada rencana kebutuhan bulan "+month+" yang sudah disetujui");
+			labelEmpty.setValue("Tidak ada data dalam tabel");
 			table.setVisible(false);
 		}else{
 			tableContainer.removeAllItems();

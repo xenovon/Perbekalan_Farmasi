@@ -58,7 +58,7 @@ public class IfrsDeletionApprovalViewImpl  extends Panel implements IfrsDeletion
 			}
 		};
 		table.setContainerDataSource(tableContainer);
-		buttonGo=new Button("Lebih Lanjut");
+		buttonGo=new Button("Ke Halaman Persetujuan Penghapusan");
 		buttonGo.addClickListener(this);
 		
 		buttonRefresh=new Button("Refresh");

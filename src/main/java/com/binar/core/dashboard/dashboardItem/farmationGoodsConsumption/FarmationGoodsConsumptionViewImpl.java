@@ -45,7 +45,7 @@ public class FarmationGoodsConsumptionViewImpl  extends Panel implements Farmati
 	
 	@Override
 	public void init() {
-		buttonGo=new Button("Lebih Lanjut");
+		buttonGo=new Button("Ke Halaman Pengeluaran Harian");
 		buttonGo.addClickListener(this);
 		
 		buttonRefresh=new Button("Refresh");

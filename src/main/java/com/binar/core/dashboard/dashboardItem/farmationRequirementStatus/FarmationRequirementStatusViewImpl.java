@@ -60,7 +60,7 @@ public class FarmationRequirementStatusViewImpl  extends Panel implements Farmat
 			}
 		};
 		table.setContainerDataSource(tableContainer);
-		buttonGo=new Button("Lebih Lanjut");
+		buttonGo=new Button("Ke Halaman Rencana Kebutuhan");
 		buttonGo.addClickListener(this);
 		
 		buttonRefresh=new Button("Refresh");

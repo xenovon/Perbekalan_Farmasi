@@ -48,7 +48,7 @@ public class ProcurementSupplierRankViewImpl  extends Panel implements Procureme
 	
 	@Override
 	public void init() {
-		buttonGo=new Button("Ke Halaman Daftar Distributor");
+		buttonGo=new Button("Ke Halaman Daftar PBF");
 		buttonGo.addClickListener(this);
 		
 		buttonRefresh=new Button("Refresh");

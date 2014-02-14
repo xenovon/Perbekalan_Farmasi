@@ -99,7 +99,8 @@ public class ReportRequirementModel extends Label{
 			returnValue=returnValue+"<tr>";
 				returnValue=returnValue+"<td>"+i+"</td>";
 				returnValue=returnValue+"<td>"+datum.getSupplierGoods().getGoods().getName()+"</td>";
-				returnValue=returnValue+"<td>"+text.doubleToRupiah(datum.getPriceEstimationPPN())+"</td>";
+				returnValue=returnValue+"<td>"+datum.getSupplierGoods().getGoods().getUnit()+"</td>";
+				returnValue=returnValue+"<td>"+text.doubleToRupiah(datum.getPriceEstimation())+"</td>";   //ERROR
 				returnValue=returnValue+"<td>"+text.intToAngka(datum.getQuantity())+"</td>";
 				returnValue=returnValue+"<td>"+text.doubleToRupiah(datum.getPriceEstimationPPN()*datum.getQuantity())+"</td>";
 				returnValue=returnValue+"<td>"+datum.getSupplierGoods().getManufacturer().getManufacturerName()+"</td>";
@@ -132,7 +133,7 @@ public class ReportRequirementModel extends Label{
 			goodsTypeList.add(EnumGoodsType.BMHP.toString());
 		}
 		
-		List<ReqPlanning> reqPlannings=server.find(ReqPlanning.class).where().eq("isAccepted",false).
+		List<ReqPlanning> reqPlannings=server.find(ReqPlanning.class).where().eq("isAccepted",true).
 				between("period", start.toDate(), end.toDate()).in("supplierGoods.goods.type", goodsTypeList).order().desc("timestamp").findList();
 		System.out.println("Start Date : "+start);
 		System.out.println("End Date : "+end);

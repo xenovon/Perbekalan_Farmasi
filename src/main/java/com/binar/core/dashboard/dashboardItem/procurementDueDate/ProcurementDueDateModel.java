@@ -25,15 +25,15 @@ public class ProcurementDueDateModel {
 	}
 	public String getCurrentMonth(){
 		LocalDate now=new LocalDate();
-		LocalDate notNow=now.minusMonths(3);
+		LocalDate notNow=now.minusMonths(6);
 		return date.dateToText(notNow.toDate())+"-"+date.dateToText(now.toDate());
 	}
 
 	public List<Invoice> getInvoiceData(){
-		//barang belum lunas 3 bulan kebelakang
+		//barang belum lunas 6 bulan kebelakang
 		LocalDate baseDate=new LocalDate();
 		LocalDate endDate=baseDate.withDayOfMonth(baseDate.dayOfMonth().getMaximumValue());
-		LocalDate startDate=baseDate.withDayOfMonth(baseDate.dayOfMonth().getMinimumValue()).minusMonths(3);
+		LocalDate startDate=baseDate.withDayOfMonth(baseDate.dayOfMonth().getMinimumValue()).minusMonths(6);
 
 		
 		List<Invoice> invoices=server.find(Invoice.class).where().

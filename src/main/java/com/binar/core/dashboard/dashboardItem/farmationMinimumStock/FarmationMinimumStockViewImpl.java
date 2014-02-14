@@ -53,7 +53,7 @@ public class FarmationMinimumStockViewImpl  extends Panel implements FarmationMi
 			}
 		};
 		table.setContainerDataSource(tableContainer);
-		buttonGo=new Button("Lebih Lanjut");
+		buttonGo=new Button("Ke Halaman Manajemen Barang");
 		buttonGo.addClickListener(this);
 		
 		buttonRefresh=new Button("Refresh");

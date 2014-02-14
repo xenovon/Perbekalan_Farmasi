@@ -62,7 +62,7 @@ public class PpkExpiredGoodsNonAcceptedViewImpl  extends Panel implements PpkExp
 			}
 		};
 		table.setContainerDataSource(tableContainer);
-		buttonGo=new Button("Lebih Lanjut");
+		buttonGo=new Button("Ke Halaman Persetujuan Penghapusan Barang");
 		buttonGo.addClickListener(this);
 		
 		buttonRefresh=new Button("Refresh");

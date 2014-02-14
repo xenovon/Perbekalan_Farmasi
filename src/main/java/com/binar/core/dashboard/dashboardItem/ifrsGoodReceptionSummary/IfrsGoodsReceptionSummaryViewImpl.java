@@ -58,7 +58,7 @@ public class IfrsGoodsReceptionSummaryViewImpl  extends Panel implements IfrsGoo
 	@Override
 	public void init(String month) {
 		this.month=month;
-		buttonGo=new Button("Ke Halaman Penerimaan");
+		buttonGo=new Button("Ke Halaman Penerimaan Barang");
 		buttonGo.addClickListener(this);
 		
 		buttonRefresh=new Button("Refresh");

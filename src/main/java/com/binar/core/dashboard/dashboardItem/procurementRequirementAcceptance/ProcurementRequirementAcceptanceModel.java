@@ -30,14 +30,12 @@ public class ProcurementRequirementAcceptanceModel {
 
 	public List<ReqPlanning> getReqAcceptedList(){
 		//
-		
 		try {
 			LocalDate startDate=LocalDate.now().dayOfMonth().withMinimumValue();
 			LocalDate endDate=LocalDate.now().dayOfMonth().withMaximumValue();
 			
 			List<ReqPlanning> reqPlanning=server.find(ReqPlanning.class).where().eq("isAccepted",true).
 					between("period",startDate.toDate(), endDate.toDate()).findList();
-			
 			return reqPlanning;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

@@ -52,7 +52,7 @@ public class FarmationMinimumStockFastMovingViewImpl  extends Panel implements F
 			}
 		};
 		table.setContainerDataSource(tableContainer);
-		buttonGo=new Button("Lebih Lanjut");
+		buttonGo=new Button("Ke Halaman Manajemen Barang");
 		buttonGo.addClickListener(this);
 		
 		buttonRefresh=new Button("Refresh");
