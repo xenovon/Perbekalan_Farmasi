@@ -63,13 +63,13 @@ public class InventoryManagementView extends CustomComponent implements View, Se
 	@Override
 	public void selectedTabChange(SelectedTabChangeEvent event) {
 		if(event.getTabSheet().getSelectedTab()==consumption){
-			consumption.getPresenter().updateTable(consumption.getView().getSelectedPeriod());
+			consumption.getPresenter().updateTable(consumption.getView().getSelectedPeriod(), true);
 		}
 		if(event.getTabSheet().getSelectedTab()==receipt){
-			receipt.getPresenter().updateTable(receipt.getView().getSelectedPeriod());
+			receipt.getPresenter().updateTable(receipt.getView().getSelectedPeriod(), true);
 		}
 		if(event.getTabSheet().getSelectedTab()==deletion){
-			deletion.getPresenter().updateTable();
+			deletion.getPresenter().updateTable(true);
 		}
 		if(event.getTabSheet().getSelectedTab()==stock){
 			stock.getPresenter().goodsChange();

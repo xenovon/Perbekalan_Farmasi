@@ -300,8 +300,8 @@ public class DeletionListViewImpl extends VerticalLayout implements DeletionList
 					addComponent(new Label("Jumlah : "), 0, 2);
 					addComponent(new Label("Harga : "), 0, 3);
 					addComponent(new Label("Total Harga : "), 0, 4);
-					addComponent(new Label("Diterima? : "), 0, 5);
-					addComponent(new Label("Tanggal Diterima : "), 0, 6);
+					addComponent(new Label("Disetujui? : "), 0, 5);
+					addComponent(new Label("Tanggal Disetujui : "), 0, 6);
 					addComponent(new Label("Waktu input : "), 0, 7);
 					addComponent(new Label("Keterangan : "), 0, 8);
 				}	

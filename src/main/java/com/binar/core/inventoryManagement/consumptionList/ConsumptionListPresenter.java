@@ -53,8 +53,8 @@ public class ConsumptionListPresenter implements ConsumptionListListener{
 		view.setListener(this);
 		roleProcessor();
 
-		updateTable(view.getSelectedPeriod()); 
-		updateTableByDate(view.getSelectedPeriod());
+		updateTable(view.getSelectedPeriod(), true); 
+		updateTableByDate(view.getSelectedPeriod(), true);
 	}
 
 	/*
@@ -75,12 +75,17 @@ public class ConsumptionListPresenter implements ConsumptionListListener{
 	}
 
 	@Override
-	public void updateTable(String input) {
+	public void updateTable(String input, boolean isConstructor) {
 		System.out.println("input "+input);
 		System.out.println("Bulan ini" + Calendar.getInstance().get(Calendar.MONTH));
 		DateTime date=function.getDate().parseDateMonth(input);
 		Map<Goods, Integer> dataTable=model.getTableData(date);
 		Map<DateTime, Integer> dataTable2=model.getTableDataByDate(date);
+		if(dataTable2.size()==0){
+			if(!isConstructor){
+				Notification.show("Data pengeluaran kosong", Type.TRAY_NOTIFICATION);				
+			}
+		}
 		view.updateTableData(dataTable);
 		if(currentIdGoods!=null){
 			List<GoodsConsumption> consumption=model.getConsumptions(currentIdGoods, 
@@ -92,11 +97,16 @@ public class ConsumptionListPresenter implements ConsumptionListListener{
 	}
 
 	@Override
-	public void updateTableByDate(String input) {
+	public void updateTableByDate(String input, boolean isConstructor) {
 		System.out.println("Update table by date -===============input "+input);
 		System.out.println("Bulan ini" + Calendar.getInstance().get(Calendar.MONTH));
 		DateTime date=function.getDate().parseDateMonth(input);
 		Map<DateTime, Integer> dataTableByDate=model.getTableDataByDate(date);
+		if(dataTableByDate.size()==0){
+			if(!isConstructor){
+				Notification.show("Data pengeluaran kosong", Type.TRAY_NOTIFICATION);				
+			}
+		}
 		view.updateTableDataByDate(dataTableByDate);
 		try {
 			List<GoodsConsumption> data=model.getConsumptionsByDate(this.currentDate);
@@ -135,8 +145,8 @@ public class ConsumptionListPresenter implements ConsumptionListListener{
 							Notification.show("Data gagal dihapus", Type.ERROR_MESSAGE);
 						}
 						//update tampilan tabel
-						updateTable(view.getSelectedPeriod());
-						updateTableByDate(view.getSelectedPeriod());
+						updateTable(view.getSelectedPeriod(), false);
+						updateTableByDate(view.getSelectedPeriod(), false);
 						List<GoodsConsumption> data=model.getConsumptionsByDate(view.getCurrentDate());
 						view.setLabelDataByDate(data, withEditConsumption);						
 					}
@@ -162,8 +172,8 @@ public class ConsumptionListPresenter implements ConsumptionListListener{
 		for(Window window:windows){
 			window.addCloseListener(new CloseListener() {
 				public void windowClose(CloseEvent e) {
-					updateTable(view.getSelectedPeriod());
-					updateTableByDate(view.getSelectedPeriod());
+					updateTable(view.getSelectedPeriod(), false);
+					updateTableByDate(view.getSelectedPeriod(), false);
 				}
 			});
 		}
@@ -191,8 +201,8 @@ public class ConsumptionListPresenter implements ConsumptionListListener{
 			for(Window window:windows){
 				window.addCloseListener(new CloseListener() {
 					public void windowClose(CloseEvent e) {
-						updateTable(view.getSelectedPeriod());
-						updateTableByDate(view.getSelectedPeriod());
+						updateTable(view.getSelectedPeriod(), false);
+						updateTableByDate(view.getSelectedPeriod(), false);
 					}
 				});
 			}			
@@ -213,11 +223,11 @@ public class ConsumptionListPresenter implements ConsumptionListListener{
 	public void getViewMode(String selectedViewMode) {
 		if (selectedViewMode=="barang"){
 			view.setViewMode("barang");
-			updateTable(view.getSelectedPeriod());
+			updateTable(view.getSelectedPeriod(), false);
 		}
 		if (selectedViewMode=="tanggal_pengeluaran"){
 			view.setViewMode("tanggal_pengeluaran");
-			updateTableByDate(view.getSelectedPeriod());
+			updateTableByDate(view.getSelectedPeriod(), false);
 		}
 		else{
 			System.err.println("View mode = "+selectedViewMode);				

@@ -217,7 +217,7 @@ public class ConsumptionListViewImpl extends VerticalLayout implements Consumpti
 	public void valueChange(ValueChangeEvent event) {
 		if(event.getProperty()==selectMonth ||
 				event.getProperty()==selectYear){
-			listener.updateTable(getSelectedPeriod());
+			listener.updateTable(getSelectedPeriod(), false);
 		}
 		if (event.getProperty()==viewMode){
 			listener.getViewMode(getSelectedViewMode());
@@ -240,10 +240,7 @@ public class ConsumptionListViewImpl extends VerticalLayout implements Consumpti
 		//mengupdate tabel dengan key Goods dan value jumlah pengeluaran
 		container.removeAllItems();
 		System.out.println(dataTable.size());
-		if(dataTable.size()==0){
-			Notification.show("Data pengeluaran kosong", Type.TRAY_NOTIFICATION);
-			return false;
-		}
+
 		System.out.println("Jumlah data updateTableData ="+dataTable.size());
         for (Map.Entry<Goods, Integer> entry : dataTable.entrySet()) { //untuk setiap data goods dan quantity
         	final Goods goods=entry.getKey(); //dapatkan key
@@ -282,10 +279,6 @@ public class ConsumptionListViewImpl extends VerticalLayout implements Consumpti
 		//mengupdate tabel dengan key Goods dan value jumlah pengeluaran
 				containerByDate.removeAllItems();
 				System.out.println(dataByDate.size());
-				if(dataByDate.size()==0){
-					Notification.show("Data pengeluaran kosong", Type.TRAY_NOTIFICATION);
-					return false;
-				}
 				
 		        for (Map.Entry<DateTime, Integer> entry : dataByDate.entrySet()) { //untuk setiap data goods dan quantity
 		        	final DateTime date=entry.getKey(); //dapatkan key

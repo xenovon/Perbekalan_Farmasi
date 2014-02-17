@@ -72,17 +72,22 @@ public class ReceptionListPresenter implements ReceptionListListener {
 		view.init();
 		roleProcessor();
 
-		updateTable(view.getSelectedPeriod()); 
-		updateTableByDate(view.getSelectedPeriod());
+		updateTable(view.getSelectedPeriod(), true); 
+		updateTableByDate(view.getSelectedPeriod(), true);
 	}
 	
 	@Override
-	public void updateTable(String input) {
+	public void updateTable(String input, boolean isConstructor) {
 		System.out.println("input "+input);
 		System.out.println("Bulan ini" + Calendar.getInstance().get(Calendar.MONTH));
 		DateTime date=function.getDate().parseDateMonth(input);
 		Map<Goods, Integer> dataTable=model.getTableData(date);
 		Map<DateTime, Integer> dataTable2=model.getTableDataByDate(date);
+		if(dataTable.size()==0){
+			if(!isConstructor){
+				Notification.show("Data penerimaan kosong", Type.TRAY_NOTIFICATION);				
+			}
+		}
 		view.updateTableData(dataTable);
 		if(currentIdGoods!=null){
 			List<GoodsReception> reception=model.getReceptions(currentIdGoods, 
@@ -94,11 +99,16 @@ public class ReceptionListPresenter implements ReceptionListListener {
 	}
 
 	@Override
-	public void updateTableByDate(String input) {
+	public void updateTableByDate(String input, boolean isConstructor) {
 		System.out.println("Update table by date -===============input "+input);
 		System.out.println("Bulan ini" + Calendar.getInstance().get(Calendar.MONTH));
 		DateTime date=function.getDate().parseDateMonth(input);
 		Map<DateTime, Integer> dataTableByDate=model.getTableDataByDate(date);
+		if(dataTableByDate.size()==0){
+			if(!isConstructor){
+				Notification.show("Data penerimaan kosong", Type.TRAY_NOTIFICATION);				
+			}
+		}
 		view.updateTableDataByDate(dataTableByDate);
 		try {
 			List<GoodsReception> data=model.getReceptionsByDate(this.currentDate);
@@ -131,8 +141,8 @@ public class ReceptionListPresenter implements ReceptionListListener {
 							Notification.show("Data gagal dihapus", Type.ERROR_MESSAGE);
 						}
 						//update tampilan tabel
-						updateTable(view.getSelectedPeriod());
-						updateTableByDate(view.getSelectedPeriod());
+						updateTable(view.getSelectedPeriod(), false);
+						updateTableByDate(view.getSelectedPeriod(), false);
 						List<GoodsReception> data=model.getReceptionsByDate(view.getCurrentDate());
 						view.setLabelDataByDate(data, withEditReceipt);						
 					}
@@ -159,8 +169,8 @@ public class ReceptionListPresenter implements ReceptionListListener {
 		for(Window window:windows){
 			window.addCloseListener(new CloseListener() {
 				public void windowClose(CloseEvent e) {
-					updateTable(view.getSelectedPeriod());
-					updateTableByDate(view.getSelectedPeriod());
+					updateTable(view.getSelectedPeriod(), false);
+					updateTableByDate(view.getSelectedPeriod(), false);
 				}
 			});
 		}
@@ -181,14 +191,14 @@ public class ReceptionListPresenter implements ReceptionListListener {
 				formRecPresenter.setEditMode(false);
 			}
 			//form yang ditampilkan, dan judul jendelanya
-			view.displayForm(formRecView,"Masukan Pengeluaran Harian");			
+			view.displayForm(formRecView,"Masukan Penerimaan Harian");			
 			//menambahkan listener, agar ketika window diclose, tampilan table akan diupdate
 			Collection<Window> windows=view.getUI().getWindows();
 			for(Window window:windows){
 				window.addCloseListener(new CloseListener() {
 					public void windowClose(CloseEvent e) {
-						updateTable(view.getSelectedPeriod());
-						updateTableByDate(view.getSelectedPeriod());
+						updateTable(view.getSelectedPeriod(), false);
+						updateTableByDate(view.getSelectedPeriod(), false);
 					}
 				});
 			}			
@@ -211,11 +221,11 @@ public class ReceptionListPresenter implements ReceptionListListener {
 	public void getViewMode(String selectedViewMode) {
 		if (selectedViewMode=="barang"){
 			view.setViewMode("barang");
-			updateTable(view.getSelectedPeriod());
+			updateTable(view.getSelectedPeriod(), false);
 		}
 		if (selectedViewMode=="tanggal_penerimaan"){
 			view.setViewMode("tanggal_penerimaan");
-			updateTableByDate(view.getSelectedPeriod());
+			updateTableByDate(view.getSelectedPeriod(), false);
 		}
 		else{
 			System.err.println("View mode = "+selectedViewMode);				

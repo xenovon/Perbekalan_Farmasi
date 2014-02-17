@@ -13,8 +13,8 @@ import com.vaadin.ui.Window;
 public interface ReceptionListView {
 	
 	interface ReceptionListListener{
-		public void updateTable(String input);
-		public void updateTableByDate(String input);
+		public void updateTable(String input, boolean isConstructor);
+		public void updateTableByDate(String input, boolean isConstructor);
 		public void showDetail(String idGoods, int quantity);
 		void delete(int recId);
 		void edit(int recId);

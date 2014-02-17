@@ -13,8 +13,8 @@ import com.vaadin.ui.Window;
 public interface ConsumptionListView {
 	
 	interface ConsumptionListListener{
-		public void updateTable(String input);
-		public void updateTableByDate(String input);
+		public void updateTable(String input, boolean isConstructor);
+		public void updateTableByDate(String input, boolean isConstructor);
 		public void showDetail(String idGoods, int quantity);
 		void delete(int consId);
 		void edit(int consId);

@@ -240,7 +240,7 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 	public void valueChange(ValueChangeEvent event) {
 		if(event.getProperty()==selectMonth ||
 				event.getProperty()==selectYear){
-			listener.updateTable(getSelectedPeriod());
+			listener.updateTable(getSelectedPeriod(), false);
 		}
 		if (event.getProperty()==viewMode){
 			listener.getViewMode(getSelectedViewMode());
@@ -358,7 +358,7 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 		}//menutup jika layoutdetail null
 	    setLabelData(data, quantity, withEditReception);
 	    if(windowDetail==null){
-			windowDetail=new Window("Detail Pengeluaran Harian"){
+			windowDetail=new Window("Detail Penerimaan Harian"){
 				{
 					center();
 					setWidth("800px");					
@@ -384,7 +384,7 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 					{
 					setSpacing(true);
 					setMargin(true);
-					addComponent(new Label("Tanggal Pengeluaran"), 0,0);
+					addComponent(new Label("Tanggal Penerimaan"), 0,0);
 					addComponent(new Label("Total Item"), 0, 1);
 				}	
 			};
@@ -419,7 +419,7 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 		}//menutup jika layoutdetail null
 	    setLabelDataByDate(list, withEditReception);
 	    if(windowDetailByDate==null){
-			windowDetailByDate=new Window("Detail Pengeluaran Harian"){
+			windowDetailByDate=new Window("Detail Penerimaan Harian"){
 				{
 					center();
 					setWidth("800px");					
@@ -573,7 +573,7 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 		containerByDate.removeAllItems();
 		System.out.println(dataByDate.size());
 		if(dataByDate.size()==0){
-			Notification.show("Data pengeluaran kosong", Type.TRAY_NOTIFICATION);
+			Notification.show("Data Penerimaan kosong", Type.TRAY_NOTIFICATION);
 			return false;
 		}
 		

@@ -26,6 +26,7 @@ public class ReportInterfacePresenter implements ReportInterfaceListener{
 
 		this.parameter=new ReportParameter(function);
 		reportPresenter=new ReportContentPresenter(function, parameter);
+		roleProcessor();
 	}
 
 	public void roleProcessor(){
@@ -67,7 +68,7 @@ public class ReportInterfacePresenter implements ReportInterfaceListener{
 
 		}else if(loginManager.getRoleId().equals(loginManager.TPN)){
 			view.getButtonConsumption().setVisible(false);
-			view.getButtonDailyConsumption().setVisible(true);
+			view.getButtonDailyConsumption().setVisible(false);
 			view.getButtonExpiredGoods().setVisible(false);
 			view.getButtonProcurement().setVisible(true);
 			view.getButtonReceipt().setVisible(true);
