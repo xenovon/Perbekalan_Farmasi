@@ -201,6 +201,7 @@ public class StockListViewImpl  extends VerticalLayout implements StockListView,
 	}
 
 	public boolean updateTableData(Goods goods){
+		tableContainer.removeAllItems();
 		if(goods!=null){
 			labelGoodsName.setValue(goods.getName());
 			labelUnit.setValue(goods.getUnit());;

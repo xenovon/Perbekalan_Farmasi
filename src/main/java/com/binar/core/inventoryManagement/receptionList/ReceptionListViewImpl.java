@@ -241,6 +241,8 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 		if(event.getProperty()==selectMonth ||
 				event.getProperty()==selectYear){
 			listener.updateTable(getSelectedPeriod(), false);
+			listener.updateTableByDate(getSelectedPeriod(), false);
+			System.err.println("Data bulan dan tahun berubah");
 		}
 		if (event.getProperty()==viewMode){
 			listener.getViewMode(getSelectedViewMode());
@@ -261,10 +263,7 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 	public boolean updateTableData(Map<Goods, Integer> dataTable) {
 		container.removeAllItems();
 		System.out.println(dataTable.size());
-		if(dataTable.size()==0){
-			Notification.show("Data penerimaan kosong", Type.TRAY_NOTIFICATION);
-			return false;
-		}
+
 		
 		for (Map.Entry<Goods, Integer> entry : dataTable.entrySet()) { //untuk setiap data goods dan quantity
         	final Goods goods=entry.getKey(); //dapatkan key

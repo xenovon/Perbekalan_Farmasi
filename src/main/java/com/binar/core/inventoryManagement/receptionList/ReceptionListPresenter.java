@@ -67,10 +67,10 @@ public class ReceptionListPresenter implements ReceptionListListener {
 		this.function=function;
 		this.loginManager=function.getLogin();
 
-		view.setListener(this);
 		
 		view.init();
 		roleProcessor();
+		view.setListener(this);
 
 		updateTable(view.getSelectedPeriod(), true); 
 		updateTableByDate(view.getSelectedPeriod(), true);
@@ -141,8 +141,8 @@ public class ReceptionListPresenter implements ReceptionListListener {
 							Notification.show("Data gagal dihapus", Type.ERROR_MESSAGE);
 						}
 						//update tampilan tabel
-						updateTable(view.getSelectedPeriod(), false);
-						updateTableByDate(view.getSelectedPeriod(), false);
+						updateTable(view.getSelectedPeriod(), true);
+						updateTableByDate(view.getSelectedPeriod(), true);
 						List<GoodsReception> data=model.getReceptionsByDate(view.getCurrentDate());
 						view.setLabelDataByDate(data, withEditReceipt);						
 					}
@@ -169,8 +169,8 @@ public class ReceptionListPresenter implements ReceptionListListener {
 		for(Window window:windows){
 			window.addCloseListener(new CloseListener() {
 				public void windowClose(CloseEvent e) {
-					updateTable(view.getSelectedPeriod(), false);
-					updateTableByDate(view.getSelectedPeriod(), false);
+					updateTable(view.getSelectedPeriod(), true);
+					updateTableByDate(view.getSelectedPeriod(), true);
 				}
 			});
 		}
@@ -197,8 +197,8 @@ public class ReceptionListPresenter implements ReceptionListListener {
 			for(Window window:windows){
 				window.addCloseListener(new CloseListener() {
 					public void windowClose(CloseEvent e) {
-						updateTable(view.getSelectedPeriod(), false);
-						updateTableByDate(view.getSelectedPeriod(), false);
+						updateTable(view.getSelectedPeriod(), true);
+						updateTableByDate(view.getSelectedPeriod(), true);
 					}
 				});
 			}			
@@ -221,11 +221,11 @@ public class ReceptionListPresenter implements ReceptionListListener {
 	public void getViewMode(String selectedViewMode) {
 		if (selectedViewMode=="barang"){
 			view.setViewMode("barang");
-			updateTable(view.getSelectedPeriod(), false);
+			updateTable(view.getSelectedPeriod(), true);
 		}
 		if (selectedViewMode=="tanggal_penerimaan"){
 			view.setViewMode("tanggal_penerimaan");
-			updateTableByDate(view.getSelectedPeriod(), false);
+			updateTableByDate(view.getSelectedPeriod(), true);
 		}
 		else{
 			System.err.println("View mode = "+selectedViewMode);				

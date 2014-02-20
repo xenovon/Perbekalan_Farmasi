@@ -64,7 +64,7 @@ public class FarmationMinimumStockViewImpl  extends Panel implements FarmationMi
 
 	@Override
 	public void construct() {
-		setCaption("Obat dengan Stok Minimum");
+		setCaption("Obat dengan Stok Mendekati Minimum");
 		setHeight(function.DASHBOARD_LAYOUT_HEIGHT);
 		
 		setWidth(function.DASHBOARD_TABLE_LAYOUT_WIDTH);

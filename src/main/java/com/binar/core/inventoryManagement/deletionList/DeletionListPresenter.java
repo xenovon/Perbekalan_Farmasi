@@ -83,7 +83,7 @@ public class DeletionListPresenter implements DeletionListListener{
 		List<DeletedGoods> data=model.getDeletedTable(rangeStart, rangeEnd, approval);
 		if(data.size()==0){
 			if(!isConstructor){
-				Notification.show("Data pengeluaran kosong", Type.TRAY_NOTIFICATION);				
+				Notification.show("Data penghapusan kosong", Type.TRAY_NOTIFICATION);				
 			}
 		}
 		System.out.println("ukuran deleted goods "+data.size());
@@ -106,7 +106,7 @@ public class DeletionListPresenter implements DeletionListListener{
 		for(Window window:windows){
 			window.addCloseListener(new CloseListener() {
 				public void windowClose(CloseEvent e) {
-					updateTable(false);
+					updateTable(true);
 				}
 			});
 		}			
@@ -130,7 +130,7 @@ public class DeletionListPresenter implements DeletionListListener{
 		for(Window window:windows){
 			window.addCloseListener(new CloseListener() {
 				public void windowClose(CloseEvent e) {
-					updateTable(false);
+					updateTable(true);
 				}
 			});
 		}
@@ -151,7 +151,7 @@ public class DeletionListPresenter implements DeletionListListener{
 							Notification.show("Data gagal dihapus", Type.ERROR_MESSAGE);
 						}
 						//update tampilan tabel
-						updateTable(false);
+						updateTable(true);
 					}
 				}, 
 				view.getUI());

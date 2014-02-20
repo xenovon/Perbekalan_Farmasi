@@ -39,7 +39,7 @@ public class FarmationExpiredGoodsStatusViewImpl  extends Panel implements Farma
 	}
 	
 	@Override
-	public void init() {
+	public void init(String month) {
 		table=new Table();
 		table.setSizeFull();
 		table.setPageLength(6);
@@ -63,12 +63,12 @@ public class FarmationExpiredGoodsStatusViewImpl  extends Panel implements Farma
 		buttonRefresh=new Button("Refresh");
 		buttonRefresh.addClickListener(this);
 
-		construct();
+		construct(month);
 	}
 
 	@Override
-	public void construct() {
-		setCaption("Status Pengajuan Penghapusan Barang");
+	public void construct(String month) {
+		setCaption("Status Pengajuan Penghapusan Barang "+month);
 		setHeight(function.DASHBOARD_LAYOUT_HEIGHT);
 		setWidth(function.DASHBOARD_TABLE_LAYOUT_WIDTH);
 		final GridLayout layout=new GridLayout(2,1){

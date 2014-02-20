@@ -95,7 +95,7 @@ public class PurchaseOrderPresenter implements PurchaseOrderListener {
 	public void deleteClick(int idPurchaseOrder) {
 		final int finalIdPurchase=idPurchaseOrder;
 		PurchaseOrder order=model.getPurchaseOrder(idPurchaseOrder);
-		function.showDialog("Hapus Data", "Yakin akan menghapus surat pesanan "+order.getPurchaseOrderName(),
+		function.showDialog("Hapus Data", "Yakin akan menghapus "+order.getPurchaseOrderName(),
 				new ClickListener() {
 					
 					@Override

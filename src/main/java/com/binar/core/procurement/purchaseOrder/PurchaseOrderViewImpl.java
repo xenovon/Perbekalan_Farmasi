@@ -127,11 +127,13 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 		table=new Table();
 		table.setSizeFull();
 		table.setWidth("100%");
-		table.setHeight("450px");
-		table.setPageLength(10);
+		table.setHeight("422px");
+//		table.setPageLength(10);
 		table.setSortEnabled(true);
 		table.setImmediate(true);
 		table.setRowHeaderMode(RowHeaderMode.INDEX);
+		
+
 		
 		tableContainer=new IndexedContainer(){
 			{

@@ -4,6 +4,7 @@ import com.avaje.ebean.EbeanServer;
 import com.binar.entity.Role;
 import com.binar.entity.User;
 import com.vaadin.server.VaadinSession;
+import com.vaadin.ui.UI;
 
 public class LoginManager{
 	
@@ -49,6 +50,10 @@ public class LoginManager{
 	}
 	public boolean logout(){
 		session.setAttribute("login", null);
+       UI.getCurrent().getPage().setLocation(
+	                "");
+	        
+		UI.getCurrent().close();
 		return true;
 	}
 	public User getUserLogin(){

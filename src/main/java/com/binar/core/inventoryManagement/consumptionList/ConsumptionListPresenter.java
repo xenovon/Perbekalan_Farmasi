@@ -104,8 +104,10 @@ public class ConsumptionListPresenter implements ConsumptionListListener{
 		Map<DateTime, Integer> dataTableByDate=model.getTableDataByDate(date);
 		if(dataTableByDate.size()==0){
 			if(!isConstructor){
-				Notification.show("Data pengeluaran kosong", Type.TRAY_NOTIFICATION);				
+				Notification.show("Data pengeluaran kosong", Type.TRAY_NOTIFICATION);
 			}
+			System.out.println("Data pengeluaran kosong "+isConstructor);
+
 		}
 		view.updateTableDataByDate(dataTableByDate);
 		try {
@@ -145,8 +147,8 @@ public class ConsumptionListPresenter implements ConsumptionListListener{
 							Notification.show("Data gagal dihapus", Type.ERROR_MESSAGE);
 						}
 						//update tampilan tabel
-						updateTable(view.getSelectedPeriod(), false);
-						updateTableByDate(view.getSelectedPeriod(), false);
+						updateTable(view.getSelectedPeriod(), true);
+						updateTableByDate(view.getSelectedPeriod(), true);
 						List<GoodsConsumption> data=model.getConsumptionsByDate(view.getCurrentDate());
 						view.setLabelDataByDate(data, withEditConsumption);						
 					}
@@ -223,11 +225,11 @@ public class ConsumptionListPresenter implements ConsumptionListListener{
 	public void getViewMode(String selectedViewMode) {
 		if (selectedViewMode=="barang"){
 			view.setViewMode("barang");
-			updateTable(view.getSelectedPeriod(), false);
+			updateTable(view.getSelectedPeriod(), true);
 		}
 		if (selectedViewMode=="tanggal_pengeluaran"){
 			view.setViewMode("tanggal_pengeluaran");
-			updateTableByDate(view.getSelectedPeriod(), false);
+			updateTableByDate(view.getSelectedPeriod(), true);
 		}
 		else{
 			System.err.println("View mode = "+selectedViewMode);				

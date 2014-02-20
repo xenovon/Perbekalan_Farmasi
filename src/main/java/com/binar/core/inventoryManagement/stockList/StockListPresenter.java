@@ -49,7 +49,6 @@ public class StockListPresenter implements StockListListener{
 			view.updateTableData(data);					
 		}else{
 			view.updateTableData(model.getGoods(idGoods));
-			Notification.show("Data kosong",Type.TRAY_NOTIFICATION);
 		}
 	}
 
@@ -64,7 +63,6 @@ public class StockListPresenter implements StockListListener{
 			view.updateTableData(data);					
 		}else{
 			view.updateTableData(model.getGoods(idGoods));
-			Notification.show("Data kosong",Type.TRAY_NOTIFICATION);
 		}
 	}
 

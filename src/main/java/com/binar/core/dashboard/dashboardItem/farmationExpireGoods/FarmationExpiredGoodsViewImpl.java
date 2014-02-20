@@ -50,7 +50,7 @@ public class FarmationExpiredGoodsViewImpl  extends Panel implements FarmationEx
 		tableContainer=new IndexedContainer(){
 			{
 				addContainerProperty("Nama Barang", String.class,null);
-				addContainerProperty("Jumlah Stok",String.class,null);
+				addContainerProperty("Jumlah Barang",String.class,null);
 				addContainerProperty("Tanggal Masuk", String.class,null);
 				addContainerProperty("Tanggal Kadaluarsa",String.class,null);
 			}
@@ -98,9 +98,9 @@ public class FarmationExpiredGoodsViewImpl  extends Panel implements FarmationEx
 
 			Item item=tableContainer.addItem(datum.getIdGoodsReceipt());
 			item.getItemProperty("Nama Barang").setValue(datum.getInvoiceItem().getPurchaseOrderItem().getSupplierGoods().getGoods().getName());
-			item.getItemProperty("Jumlah Stok").setValue(text.intToAngka(datum.getQuantityReceived()));
+			item.getItemProperty("Jumlah Barang").setValue(text.intToAngka(datum.getQuantityReceived()));
 			item.getItemProperty("Tanggal Masuk").setValue(date.dateToText(datum.getDate(), true));
-			item.getItemProperty("Tanggal Kadaluarsa").setValue(date.dateToText(datum.getExpiredDate()));
+			item.getItemProperty("Tanggal Kadaluarsa").setValue(date.dateToText(datum.getExpiredDate(), true));
 		}
 	}
 	private FarmationExpiredGoodsListener listener;

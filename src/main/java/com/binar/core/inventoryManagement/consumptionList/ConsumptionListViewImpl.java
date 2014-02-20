@@ -218,6 +218,7 @@ public class ConsumptionListViewImpl extends VerticalLayout implements Consumpti
 		if(event.getProperty()==selectMonth ||
 				event.getProperty()==selectYear){
 			listener.updateTable(getSelectedPeriod(), false);
+			listener.updateTableByDate(getSelectedPeriod(), false);
 		}
 		if (event.getProperty()==viewMode){
 			listener.getViewMode(getSelectedViewMode());

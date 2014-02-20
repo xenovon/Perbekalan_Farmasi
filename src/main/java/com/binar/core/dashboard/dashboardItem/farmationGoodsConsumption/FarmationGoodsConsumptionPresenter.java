@@ -45,7 +45,7 @@ DCharts chart = new DCharts()
 		this.model=model;
 		this.function=function;
 		this.view=view;
-		view.init();
+		view.init(model.getCurrentMonth());
 		view.setListener(this);
 		updateChart();
 	}
@@ -54,7 +54,11 @@ DCharts chart = new DCharts()
 	@Override
 	public void updateChart() {
 		Map<Integer, String> data=model.getGoodsCosumption();
-		view.generateChart(data);
+		if(data==null){
+			view.setEmptyDataView();
+		}else{
+			view.generateChart(data);			
+		}
 	}
 	
 	@Override

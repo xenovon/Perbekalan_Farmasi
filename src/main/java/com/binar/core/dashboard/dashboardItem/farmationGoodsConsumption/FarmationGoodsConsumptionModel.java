@@ -16,14 +16,17 @@ import com.avaje.ebean.EbeanServer;
 import com.binar.entity.Goods;
 import com.binar.entity.GoodsConsumption;
 import com.binar.entity.enumeration.EnumStockStatus;
+import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
 
 public class FarmationGoodsConsumptionModel {
 
 	GeneralFunction function;
 	EbeanServer server;
+	DateManipulator date;
 	public FarmationGoodsConsumptionModel(GeneralFunction function) {
 		this.function=function;
+		this.date=function.getDate();
 		this.server=function.getServer();
 	}
 	
@@ -37,7 +40,10 @@ public class FarmationGoodsConsumptionModel {
 		System.out.println("Start Date : "+startDate);
 		System.out.println("End Date : "+endDate);
 		
-		Map<Goods, Integer> returnValue=new HashMap<Goods, Integer>();		
+		Map<Goods, Integer> returnValue=new HashMap<Goods, Integer>();	
+		if(consumptionOfMonth.size()==0){
+			return null;
+		}
 		for (GoodsConsumption consumption : consumptionOfMonth){
 			if(returnValue.containsKey(consumption.getGoods())){
 				int quantity=returnValue.get(consumption.getGoods());
@@ -126,4 +132,10 @@ public class FarmationGoodsConsumptionModel {
 		System.out.println(returnValue);
 				
 	}
+	
+	public String getCurrentMonth(){
+		LocalDate now=new LocalDate();
+		return date.dateToText(now.toDate());
+	}
+
 }
