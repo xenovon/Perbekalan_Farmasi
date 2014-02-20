@@ -184,7 +184,7 @@ public class InventoryManagementView extends CustomComponent implements View, Se
 
 	private void generateProcurementView(ViewChangeEvent event){
 		if(deletion==null){
-			deletion=new DeletionList(generalFunction);			
+//			deletion=new DeletionList(generalFunction);			
 		} if(receipt==null){
 			receipt=new ReceptionList(generalFunction);			
 		} if(stock==null){
@@ -194,7 +194,7 @@ public class InventoryManagementView extends CustomComponent implements View, Se
 		tabSheet=new TabSheet();
 		tabSheet.addTab(receipt).setCaption("Daftar Penerimaan");
 		tabSheet.addTab(stock).setCaption("Stok Gudang Farmasi");
-		tabSheet.addTab(deletion).setCaption("Pengajuan Barang Kadaluarsa");
+//		tabSheet.addTab(deletion).setCaption("Pengajuan Barang Kadaluarsa");
 		
 		tabSheet.addSelectedTabChangeListener(this);
 		tabSheet.setSizeFull();

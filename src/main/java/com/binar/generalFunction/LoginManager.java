@@ -72,7 +72,7 @@ public class LoginManager{
 		return getUserLogin().getRole().getIdRole();
 	}
 	private boolean authenticate(String username, String password){
-		User user=server.find(User.class).where().eq("username", username).findUnique();
+		User user=server.find(User.class).where().eq("username", username).eq("active", true).findUnique();
 		if(user!=null){
 			return user.isPasswordMatch(password)?true:false;			
 		}else{

@@ -46,6 +46,7 @@ public class SettingGoodsViewImpl extends VerticalLayout implements SettingGoods
 			inputSatuan.setImmediate(true);
 			inputSatuan.addValueChangeListener(this);
 			inputSatuan.setWidth(function.FORM_WIDTH);
+			inputSatuan.setDescription(" satuan barang di gudang farmasi");
 		inputPackage =new TextArea();
 			inputPackage.setImmediate(true);
 			inputPackage.addValueChangeListener(this);
@@ -76,7 +77,15 @@ public class SettingGoodsViewImpl extends VerticalLayout implements SettingGoods
 				setMargin(true);
 				setSpacing(true);
 				addComponent(inputSatuan);
+				addComponent(new Label("<div style='max-width:518px'>Isi dengan format : singkatan satuan barang=nama satuan (tanpa spasi). "
+						+ "Pisahkan satu satuan dengan satuan lain dengan tanda koma (,). "
+						+ "<br/>Contoh :<i>btl=botol, tab=tablet, pair=pair</i></div>",
+						
+						ContentMode.HTML));
 				addComponent(inputPackage);
+				addComponent(new Label("<div style='max-width:518px'>Isi dengan format : singkatan kemasan barang=nama satuan (tanpa spasi)."
+						+ " Pisahkan satu satuan dengan satuan lain dengan tanda koma (,). "
+						+ "<br/>Contoh : <i>btl=botol,dus=dus</i></div>", ContentMode.HTML));
 				addComponent(labelError);
 				addComponent(new GridLayout(3, 1){
 					{

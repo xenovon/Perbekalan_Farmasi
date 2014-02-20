@@ -61,33 +61,38 @@ public class FarmationGoodsConsumptionModel {
 	 * Sisanya ganti "lainnya....."
 	 */
 	public Map<Integer, String> getGoodsCosumption(){
-		Map<Goods, Integer> allGoods=getGoodsConsumptionByGoods();
-		
-		SortedMap<Integer, String> returnValue=new TreeMap<Integer, String>();
-		SortedMap<Integer, String> buffer=new TreeMap<Integer, String>();
-		
-		for(Map.Entry<Goods, Integer> entry:allGoods.entrySet()){
-			buffer.put(entry.getValue(), entry.getKey().getName());
-		}
-		
-		//hanya mengambil 10 barang dengan konsumsi terbanyak
-		//Sorted map sudah mengurutkan barang dari yang kuantitasnya paling kecil, hingga paling besar
-		int i=0;
-		int count=buffer.size()-10;
-		int otherCount=0; //untuk menghitung obat lainnya.
-		for(Map.Entry<Integer, String> entry:buffer.entrySet()){
-			if(i>=count){
-				returnValue.put(entry.getKey(), entry.getValue());
-			}else{
-				otherCount=otherCount+entry.getKey();
+		try {
+			Map<Goods, Integer> allGoods=getGoodsConsumptionByGoods();
+			
+			SortedMap<Integer, String> returnValue=new TreeMap<Integer, String>();
+			SortedMap<Integer, String> buffer=new TreeMap<Integer, String>();
+			
+			for(Map.Entry<Goods, Integer> entry:allGoods.entrySet()){
+				buffer.put(entry.getValue(), entry.getKey().getName());
 			}
-			i++;
+			
+			//hanya mengambil 10 barang dengan konsumsi terbanyak
+			//Sorted map sudah mengurutkan barang dari yang kuantitasnya paling kecil, hingga paling besar
+			int i=0;
+			int count=buffer.size()-10;
+			int otherCount=0; //untuk menghitung obat lainnya.
+			for(Map.Entry<Integer, String> entry:buffer.entrySet()){
+				if(i>=count){
+					returnValue.put(entry.getKey(), entry.getValue());
+				}else{
+					otherCount=otherCount+entry.getKey();
+				}
+				i++;
+			}
+			if(otherCount!=0){
+				returnValue.put(otherCount, "Lainnya");			
+			}
+			System.out.println(returnValue.size());
+			return returnValue;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
 		}
-		if(otherCount!=0){
-			returnValue.put(otherCount, "Lainnya");			
-		}
-		System.out.println(returnValue.size());
-		return returnValue;
 	}
 	
 	public static void main(String[] args) {

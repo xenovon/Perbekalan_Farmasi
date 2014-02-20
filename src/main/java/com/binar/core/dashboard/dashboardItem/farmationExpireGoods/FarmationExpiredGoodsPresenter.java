@@ -25,8 +25,6 @@ public class FarmationExpiredGoodsPresenter implements FarmationExpiredGoodsList
 		view.init();
 		view.setListener(this);
 		updateTable();
-		
-		
 	}
 	@Override
 	public void updateTable() {

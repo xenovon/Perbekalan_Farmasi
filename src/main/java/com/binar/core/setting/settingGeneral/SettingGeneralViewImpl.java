@@ -63,11 +63,12 @@ public class SettingGeneralViewImpl extends VerticalLayout implements SettingGen
 			inputInstalasi.setImmediate(true);
 			inputInstalasi.addValueChangeListener(this);
 			inputInstalasi.setWidth(function.FORM_WIDTH);
-
+			inputInstalasi.setDescription(" Instalasi rumah sakit yang menggunakan perbekalan farmasi");
 		inputApotek =new TextField();
 			inputApotek.setImmediate(true);
 			inputApotek.addValueChangeListener(this);
 			inputApotek.setWidth(function.FORM_WIDTH);
+			
 			  
 		buttonSave =new Button("Simpan");
 			buttonSave.addClickListener(this);
@@ -98,6 +99,11 @@ public class SettingGeneralViewImpl extends VerticalLayout implements SettingGen
 				addComponent(inputApotek);
 				addComponent(inputCity);
 				addComponent(inputInstalasi);
+				addComponent(new Label("<div style='max-width:518px'>Isi dengan format : singkatan instalasi=nama instalasi (tanpa spasi). "
+						+ "Pisahkan satu instalasi dengan instalasi lain dengan tanda koma (,). "
+						+ "<br>Contoh : <i>kepodang=rawat inap kepodang, ibs=instalasi bedah sentral, farmasi=instalasi farmasi</i></div>",
+
+						ContentMode.HTML));
 				addComponent(labelError);
 				addComponent(new GridLayout(3, 1){
 					{

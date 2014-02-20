@@ -77,6 +77,7 @@ public class SettingPurchaseOrderViewImpl extends VerticalLayout implements Sett
 	@Override
 	public void construct() {
 		this.addComponent(title);
+		this.addComponent(new Label("Teks yang disimpan pada pengaturan surat pesanan akan menjadi prefiks pada nomor surat pesanan."));
 		this.addComponent(new FormLayout(){
 			{
 				setMargin(true);
