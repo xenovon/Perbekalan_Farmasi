@@ -11,15 +11,18 @@ import com.avaje.ebean.EbeanServer;
 import com.binar.entity.Goods;
 import com.binar.entity.ReqPlanning;
 import com.binar.entity.enumeration.EnumStockStatus;
+import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
 
 public class FarmationRequirementStatusModel {
 
 	GeneralFunction function;
 	EbeanServer server;
+	DateManipulator date;
 	public FarmationRequirementStatusModel(GeneralFunction function) {
 		this.function=function;
 		this.server=function.getServer();
+		this.date=function.getDate();
 	}
 	public List<ReqPlanning> getReqList(){
 		//
@@ -32,5 +35,9 @@ public class FarmationRequirementStatusModel {
 		return reqPlanning;
 		
 	}
-	
+	public String getCurrentMonth(){
+		LocalDate now=new LocalDate();
+		return date.dateToText(now.toDate());
+	}
+
 }

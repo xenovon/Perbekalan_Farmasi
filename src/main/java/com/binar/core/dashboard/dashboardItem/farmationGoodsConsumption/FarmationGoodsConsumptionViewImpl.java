@@ -45,7 +45,7 @@ public class FarmationGoodsConsumptionViewImpl  extends Panel implements Farmati
 	
 	@Override
 	public void init(String month) {
-		buttonGo=new Button("Ke Halaman Pengeluaran Harian Bulan "+month);
+		buttonGo=new Button("Ke Halaman Pengeluaran Harian");
 		buttonGo.addClickListener(this);
 		
 		buttonRefresh=new Button("Refresh");
@@ -56,7 +56,7 @@ public class FarmationGoodsConsumptionViewImpl  extends Panel implements Farmati
 
 	@Override
 	public void construct(String month) {
-		setCaption("Konsumsi Barang Bulan Ini");
+		setCaption("Konsumsi Barang Bulan "+month);
 		setHeight("430px");
 		setWidth("500px");
 		

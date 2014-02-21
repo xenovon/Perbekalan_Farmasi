@@ -14,14 +14,17 @@ import org.joda.time.LocalDate;
 import com.avaje.ebean.EbeanServer;
 import com.binar.entity.Goods;
 import com.binar.entity.GoodsConsumption;
+import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
 
 public class ForecastStepModel {
 	
 	GeneralFunction function;
 	EbeanServer server;
+	DateManipulator date;
 	public ForecastStepModel(GeneralFunction function) {
 		this.function=function;
+		this.date=function.getDate();
 		this.server=function.getServer();
 	}
 	public Goods getGoods(String idGoods){
@@ -103,6 +106,16 @@ public class ForecastStepModel {
 		return returnValue;
 	}
 
-
+	public String getMonthSpan(String selectedPeriod){
+		int select;
+		try {
+			select=Integer.parseInt(selectedPeriod);
+		} catch (Exception e) {
+			select=12;
+		}
+		LocalDate dateNow=new LocalDate();
+		LocalDate dateLater=dateNow.minusMonths(select);
+		return date.dateToText(dateNow.toDate())+"-"+date.dateToText(dateLater.toDate());
+	}
 
 }

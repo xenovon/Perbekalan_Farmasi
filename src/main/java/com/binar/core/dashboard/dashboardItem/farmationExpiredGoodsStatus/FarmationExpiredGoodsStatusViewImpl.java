@@ -14,6 +14,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.RowHeaderMode;
@@ -32,6 +33,7 @@ public class FarmationExpiredGoodsStatusViewImpl  extends Panel implements Farma
 	private GeneralFunction function;
 	private DateManipulator date;
 	private TextManipulator text;
+	private Label labelEmpty;
 	public FarmationExpiredGoodsStatusViewImpl(GeneralFunction function) {
 		this.function=function;
 		this.text=function.getTextManipulator();
@@ -57,8 +59,11 @@ public class FarmationExpiredGoodsStatusViewImpl  extends Panel implements Farma
 			}
 		};
 		table.setContainerDataSource(tableContainer);
-		buttonGo=new Button("Ke Halaman Penghapusan Barang");
+		buttonGo=new Button("Ke Halaman Pengajuan Penghapusan");
 		buttonGo.addClickListener(this);
+		
+		labelEmpty=new Label("Belum ada pengajuan penghapusan barang");
+		labelEmpty.setVisible(false);
 		
 		buttonRefresh=new Button("Refresh");
 		buttonRefresh.addClickListener(this);
@@ -68,7 +73,7 @@ public class FarmationExpiredGoodsStatusViewImpl  extends Panel implements Farma
 
 	@Override
 	public void construct(String month) {
-		setCaption("Status Pengajuan Penghapusan Barang "+month);
+		setCaption("Status Pengajuan Penghapusan Barang Periode "+month);
 		setHeight(function.DASHBOARD_LAYOUT_HEIGHT);
 		setWidth(function.DASHBOARD_TABLE_LAYOUT_WIDTH);
 		final GridLayout layout=new GridLayout(2,1){
@@ -82,15 +87,24 @@ public class FarmationExpiredGoodsStatusViewImpl  extends Panel implements Farma
 			{
 				setSpacing(true);
 				setMargin(true);
+				addComponent(labelEmpty);
 				addComponent(table);
 				addComponent(layout);
 			}
 		});
 		
 	}
+	public void setEmptyDataView() {
+		tableContainer.removeAllItems();
+		labelEmpty.setVisible(true);
+		table.setVisible(false);
+	}
 
 	@Override
 	public void updateTable(List<DeletedGoods> data) {
+		labelEmpty.setVisible(false);
+		table.setVisible(true);
+
 		tableContainer.removeAllItems();
 		System.out.println(data.size());
 

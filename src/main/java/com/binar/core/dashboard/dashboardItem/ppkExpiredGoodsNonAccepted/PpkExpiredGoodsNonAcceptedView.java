@@ -12,7 +12,7 @@ interface  PpkExpiredGoodsNonAcceptedView {
 		public void updateTable();
 		public void buttonGo();
 	}
-	public void init();
-	public void construct();
+	public void init(String month);
+	public void construct(String month);
 	public void updateTable(List<DeletedGoods> goods);
 }

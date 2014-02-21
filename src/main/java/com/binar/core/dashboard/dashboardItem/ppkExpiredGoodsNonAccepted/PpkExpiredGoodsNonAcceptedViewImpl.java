@@ -44,7 +44,7 @@ public class PpkExpiredGoodsNonAcceptedViewImpl  extends Panel implements PpkExp
 	}
 	
 	@Override
-	public void init() {
+	public void init(String month) {
 		table=new Table();
 		table.setSizeFull();
 		table.setPageLength(5);
@@ -68,12 +68,12 @@ public class PpkExpiredGoodsNonAcceptedViewImpl  extends Panel implements PpkExp
 		buttonRefresh=new Button("Refresh");
 		buttonRefresh.addClickListener(this);
 
-		construct();
+		construct(month);
 	}
 
 	@Override
-	public void construct() {
-		setCaption("Barang Kadaluarsa Belum Disetujui");
+	public void construct(String month) {
+		setCaption("Barang Kadaluarsa Belum Disetujui Periode "+month);
 		setHeight(function.DASHBOARD_LAYOUT_HEIGHT);
 		setWidth(function.DASHBOARD_TABLE_LAYOUT_WIDTH);
 		final GridLayout layout=new GridLayout(2,1){

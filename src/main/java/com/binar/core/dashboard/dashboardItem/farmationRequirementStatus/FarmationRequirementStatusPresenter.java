@@ -1,6 +1,9 @@
 package com.binar.core.dashboard.dashboardItem.farmationRequirementStatus;
 
+import java.util.List;
+
 import com.binar.core.dashboard.dashboardItem.farmationRequirementStatus.FarmationRequirementStatusView.FarmationRequirementStatusListener;
+import com.binar.entity.ReqPlanning;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.UI;
@@ -25,7 +28,7 @@ public class FarmationRequirementStatusPresenter implements FarmationRequirement
 		this.model=model;
 		this.function=function;
 		this.view=view;
-		view.init();
+		view.init(model.getCurrentMonth());
 		view.setListener(this);
 		updateTable();
 		
@@ -33,7 +36,12 @@ public class FarmationRequirementStatusPresenter implements FarmationRequirement
 	}
 	@Override
 	public void updateTable() {
-		view.updateTable(model.getReqList());
+		List<ReqPlanning> data=model.getReqList();
+		if(data.size()==0){
+			view.setEmptyDataView();
+		}else{
+			view.updateTable(model.getReqList());			
+		}
 	}
 	@Override
 	public void buttonGo() {

@@ -133,7 +133,8 @@ public class LoginView extends VerticalLayout{
             loginPanel.addComponent(fill);
             username.focus();
 		}else{
-			if(generalFunction.getLogin().login(sUsername, sPassword)){
+			String errorText=generalFunction.getLogin().login(sUsername, sPassword);
+			if(errorText==null){
 	            signin.removeShortcutListener(enter);
 	            ui.constructAfterLogin();
 	            help.closeAll();				
@@ -142,7 +143,7 @@ public class LoginView extends VerticalLayout{
 	                loginPanel.removeComponent(loginPanel.getComponent(2));
 	            }
 	            Label error = new Label(
-	                    "Username atau password salah",
+	                    errorText,
 	                    ContentMode.HTML);
 	            error.addStyleName("error");
 	            error.setSizeUndefined();

@@ -61,7 +61,7 @@ D	Laporan barang kadaluarsa (udah disetujui)
 		buttonConsumption.addClickListener(this);
 		buttonConsumption.setWidth(BUTTON_WIDTH);
 		
-		buttonDailyConsumption=new Button("Pemakaian Barang Harian");
+		buttonDailyConsumption=new Button("Daftar Pengeluaran Harian");
 		buttonDailyConsumption.addClickListener(this);
 		buttonDailyConsumption.setWidth(BUTTON_WIDTH);
 		

@@ -25,12 +25,16 @@ public class LoginManager{
 		this.server=server;
 	}
 	
-	public boolean login(String username, String password){
+	public String login(String username, String password){
 		if(authenticate(username, password)){
-			session.setAttribute("login", username);
-			return true;
+			if(isActive(username, password)){
+				session.setAttribute("login", username);
+				return null;				
+			}else{
+				return "Akun ini tidak aktif";
+			}
 		}
-		return false;
+		return "Username atau password salah";
 //		session.setAttribute("login", "binar");
 //		return true;
 	}
@@ -71,8 +75,12 @@ public class LoginManager{
 	public String getRoleId(){
 		return getUserLogin().getRole().getIdRole();
 	}
+	private boolean isActive(String username, String password){
+		User user=server.find(User.class).where().eq("username", username).findUnique();
+		return user.isActive()?true:false;
+	}
 	private boolean authenticate(String username, String password){
-		User user=server.find(User.class).where().eq("username", username).eq("active", true).findUnique();
+		User user=server.find(User.class).where().eq("username", username).findUnique();
 		if(user!=null){
 			return user.isPasswordMatch(password)?true:false;			
 		}else{

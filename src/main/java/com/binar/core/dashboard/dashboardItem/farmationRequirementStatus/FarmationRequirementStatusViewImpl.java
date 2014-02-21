@@ -13,6 +13,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.RowHeaderMode;
@@ -29,6 +30,7 @@ public class FarmationRequirementStatusViewImpl  extends Panel implements Farmat
 	private Button buttonRefresh;
 	private Button buttonGo;
 	private GeneralFunction function;
+	private Label labelEmpty;
 	private TextManipulator text;
 	public FarmationRequirementStatusViewImpl(GeneralFunction function) {
 		this.function=function;
@@ -36,7 +38,7 @@ public class FarmationRequirementStatusViewImpl  extends Panel implements Farmat
 	}
 	
 	@Override
-	public void init() {
+	public void init(String month) {
 		table=new Table();
 		table.setSizeFull();
 		table.setPageLength(6);
@@ -62,16 +64,18 @@ public class FarmationRequirementStatusViewImpl  extends Panel implements Farmat
 		table.setContainerDataSource(tableContainer);
 		buttonGo=new Button("Ke Halaman Rencana Kebutuhan");
 		buttonGo.addClickListener(this);
+		labelEmpty=new Label("Belum ada rencana kebutuhan untuk bulan ini");
+		labelEmpty.setVisible(false);
 		
 		buttonRefresh=new Button("Refresh");
 		buttonRefresh.addClickListener(this);
 
-		construct();
+		construct(month);
 	}
 
 	@Override
-	public void construct() {
-		setCaption("Status Rencana Kebutuhan");
+	public void construct(String month) {
+		setCaption("Status Rencana Kebutuhan Bulan "+month);
 		setHeight(function.DASHBOARD_LAYOUT_HEIGHT);
 		setWidth(function.DASHBOARD_TABLE_LAYOUT_WIDTH);
 		final GridLayout layout=new GridLayout(2,1){
@@ -86,14 +90,24 @@ public class FarmationRequirementStatusViewImpl  extends Panel implements Farmat
 				setSpacing(true);
 				setMargin(true);
 				addComponent(table);
+				addComponent(labelEmpty);
 				addComponent(layout);
 			}
 		});
 		
 	}
+	public void setEmptyDataView() {
+		tableContainer.removeAllItems();
+		labelEmpty.setVisible(true);
+		table.setVisible(false);
+	}
+
 
 	@Override
 	public void updateTable(List<ReqPlanning> data) {
+		labelEmpty.setVisible(false);
+		table.setVisible(true);
+		
 		tableContainer.removeAllItems();
 		System.out.println(data.size());
 

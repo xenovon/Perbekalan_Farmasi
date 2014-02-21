@@ -56,7 +56,7 @@ public class FarmationExpiredGoodsViewImpl  extends Panel implements FarmationEx
 			}
 		};
 		table.setContainerDataSource(tableContainer);
-		buttonGo=new Button("Ke Halaman Penghapusan Barang");
+		buttonGo=new Button("Ke Halaman Pengajuan Penghapusan");
 		buttonGo.addClickListener(this);
 		
 		buttonRefresh=new Button("Refresh");

@@ -1,6 +1,9 @@
 package com.binar.core.dashboard.dashboardItem.farmationExpiredGoodsStatus;
 
+import java.util.List;
+
 import com.binar.core.dashboard.dashboardItem.farmationExpiredGoodsStatus.FarmationExpiredGoodsStatusView.FarmationExpiredGoodsStatusListener;
+import com.binar.entity.DeletedGoods;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.UI;
@@ -33,7 +36,12 @@ udah
 	}
 	@Override
 	public void updateTable() {
-		view.updateTable(model.getDeletedGoodsList());
+		List<DeletedGoods> deleted=model.getDeletedGoodsList();
+		if(deleted.size()==0){
+			view.setEmptyDataView();
+		}else{
+			view.updateTable(model.getDeletedGoodsList());
+		}
 	}
 	@Override
 	public void buttonGo() {

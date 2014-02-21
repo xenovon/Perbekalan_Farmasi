@@ -1,8 +1,11 @@
 package com.binar.core.dashboard.dashboardItem.ppkRequirementPlanning;
 
+import java.util.List;
+
 import com.binar.core.dashboard.dashboardItem.farmationRequirementStatus.FarmationRequirementStatusModel;
 import com.binar.core.dashboard.dashboardItem.farmationRequirementStatus.FarmationRequirementStatusViewImpl;
 import com.binar.core.dashboard.dashboardItem.farmationRequirementStatus.FarmationRequirementStatusView.FarmationRequirementStatusListener;
+import com.binar.entity.ReqPlanning;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.UI;
@@ -24,14 +27,19 @@ Pengajuan Rencana Kebutuhan tanggal <<Tanggal Pengajuan>>
 		this.model=model;
 		this.function=function;
 		this.view=view;
-		view.init();
+		view.init(model.getCurrentMonth());
 		view.setListener(this);
 		updateTable();
 		
 	}
 	@Override
 	public void updateTable() {
-		view.updateTable(model.getReqList());
+		List<ReqPlanning> data=model.getReqList();
+		if(data.size()==0){
+			view.setEmptyDataView();
+		}else{
+			view.updateTable(model.getReqList());			
+		}
 	}
 	@Override
 	public void buttonGo() {

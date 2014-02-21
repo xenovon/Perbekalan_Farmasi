@@ -45,7 +45,7 @@ public class ForecastStepPresenter implements ForecastStepListener{
 		}
 		if (selectedGoods!=null) {
 			Goods goods=model.getGoods(selectedGoods);
-			view.setForecastTitle("Peramalan untuk barang " + goods.getName());
+			view.setForecastTitle("Peramalan untuk barang " + goods.getName()+" Periode" +model.getMonthSpan(selectedPeriod));
 //			List<Integer> data=model.generateConsumptionData(selectedGoods, selectedPeriod);
 			List<Integer> data=model.generateDummyConsumptionData(selectedPeriod, true);
 			System.err.println("Data : "+ data.toString());
@@ -86,7 +86,6 @@ public class ForecastStepPresenter implements ForecastStepListener{
 				view.setViewMode(ViewMode.INPUT_DATA);
 			}			
 		}
-		
 	}
 	public void setWindow(Window window) {
 		this.window = window;

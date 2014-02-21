@@ -6,25 +6,29 @@ import java.util.Date;
 import java.util.List;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 import com.avaje.ebean.EbeanServer;
 import com.binar.entity.DeletedGoods;
 import com.binar.entity.Goods;
 import com.binar.entity.enumeration.EnumStockStatus;
+import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
 
 public class IfrsDeletionApprovalModel {
 
 	GeneralFunction function;
 	EbeanServer server;
+	DateManipulator date;
 	public IfrsDeletionApprovalModel(GeneralFunction function) {
 		this.function=function;
+		this.date=function.getDate();
 		this.server=function.getServer();
 	}
 	public List<DeletedGoods> getDeletedGoodsList(){
 		//
 		
-		Date startDate=DateTime.now().minusMonths(1).dayOfMonth().withMinimumValue().hourOfDay().withMinimumValue().toDate();
+		Date startDate=DateTime.now().minusMonths(6).dayOfMonth().withMinimumValue().hourOfDay().withMinimumValue().toDate();
 		Date endDate=DateTime.now().dayOfMonth().withMaximumValue().toDate();
 		List<DeletedGoods> deletedGoods=server.find(DeletedGoods.class).
 				where().between("deletion_date", startDate, endDate).eq("isAccepted",false).findList();
@@ -38,4 +42,10 @@ public class IfrsDeletionApprovalModel {
 		goods.setStockStatus(EnumStockStatus.LESS);
 		
 	}
+	public String getCurrentMonth(){
+		LocalDate now=new LocalDate();
+		LocalDate notNow=now.minusMonths(6);
+		return date.dateToText(notNow.toDate())+"-"+date.dateToText(now.toDate());
+	}
+
 }

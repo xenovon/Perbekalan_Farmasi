@@ -140,7 +140,7 @@ public class DeletionListViewImpl extends VerticalLayout implements DeletionList
 		selectFilter.setValue("Semua");
 		selectFilter.setImmediate(true);
 		selectFilter.addValueChangeListener(this);
-		buttonNew=new Button("Penghapusan Baru");
+		buttonNew=new Button("Ajukan Penghapusan Barang");
 		buttonNew.addClickListener(this);
 		construct();
 		

@@ -41,7 +41,7 @@ public class IfrsDeletionApprovalViewImpl  extends Panel implements IfrsDeletion
 	}
 	
 	@Override
-	public void init() {
+	public void init(String month) {
 		table=new Table();
 		table.setSizeFull();
 		table.setPageLength(6);
@@ -64,12 +64,12 @@ public class IfrsDeletionApprovalViewImpl  extends Panel implements IfrsDeletion
 		buttonRefresh=new Button("Refresh");
 		buttonRefresh.addClickListener(this);
 
-		construct();
+		construct(month);
 	}
 
 	@Override
-	public void construct() {
-		setCaption("Daftar Penghapusan Obat");
+	public void construct(String month) {
+		setCaption("Daftar Penghapusan Obat Periode "+month);
 		setHeight(function.DASHBOARD_LAYOUT_HEIGHT);
 		setWidth(function.DASHBOARD_TABLE_LAYOUT_WIDTH);
 		final GridLayout layout=new GridLayout(2,1){
