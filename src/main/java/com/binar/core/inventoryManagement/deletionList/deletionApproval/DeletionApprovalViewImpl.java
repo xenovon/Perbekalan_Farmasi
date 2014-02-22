@@ -11,6 +11,7 @@ import com.binar.core.inventoryManagement.deletionList.DeletionListView.Deletion
 import com.binar.core.requirementPlanning.approval.ApprovalView;
 import com.binar.entity.DeletedGoods;
 import com.binar.entity.ReqPlanning;
+import com.binar.generalFunction.AcceptancePyramid;
 import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
 import com.binar.generalFunction.TableFilter;
@@ -57,6 +58,7 @@ DeletionApprovalView, Button.ClickListener, ValueChangeListener{
 	private TextField inputFilter;
 	private DateManipulator date;
 	
+	AcceptancePyramid accept;
 	public DeletionApprovalViewImpl(GeneralFunction function) {
 		this.function=function;
 		text=function.getTextManipulator();
@@ -205,7 +207,7 @@ DeletionApprovalView, Button.ClickListener, ValueChangeListener{
 			item.getItemProperty("Nama Barang").setValue(datum.getGoods().getName());
 			item.getItemProperty("Jumlah").setValue(text.intToAngka(datum.getQuantity()));
 			item.getItemProperty("Satuan").setValue(datum.getGoods().getUnit());
-			item.getItemProperty("Disetujui?").setValue(new CheckBox("Disetujui",datum.isAccepted()));
+			item.getItemProperty("Disetujui?").setValue(new CheckBox("Disetujui",accept.isAcceptedBy(datum.getAcceptance())));
 			item.getItemProperty("Operasi").setValue(new GridLayout(1,1){
 			{
 					Button buttonShow=new Button();
@@ -294,7 +296,7 @@ DeletionApprovalView, Button.ClickListener, ValueChangeListener{
 		 labelDeletionDate.setValue(date.dateToText(data.getDeletionDate(), true));
 		 labelGoodsName.setValue(data.getGoods().getName());
 		 labelQuantity.setValue(data.getQuantity()+" "+data.getGoods().getUnit());
-		 labelAccepted.setValue(data.isAccepted()?"Disetujui":"Belum disetujui");
+		 labelAccepted.setValue(accept.acceptedBy(data.getAcceptance()));
 		 if(data.getApprovalDate()!=null){
 			 labelAcceptedDate.setValue(date.dateToText(data.getApprovalDate(), true));			 
 		 }else{

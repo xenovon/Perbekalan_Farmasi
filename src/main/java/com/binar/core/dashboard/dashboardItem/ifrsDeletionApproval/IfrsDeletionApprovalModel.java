@@ -12,6 +12,7 @@ import com.avaje.ebean.EbeanServer;
 import com.binar.entity.DeletedGoods;
 import com.binar.entity.Goods;
 import com.binar.entity.enumeration.EnumStockStatus;
+import com.binar.generalFunction.AcceptancePyramid;
 import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
 
@@ -20,8 +21,10 @@ public class IfrsDeletionApprovalModel {
 	GeneralFunction function;
 	EbeanServer server;
 	DateManipulator date;
+	AcceptancePyramid accept;
 	public IfrsDeletionApprovalModel(GeneralFunction function) {
 		this.function=function;
+		this.accept=function.getAcceptancePyramid();
 		this.date=function.getDate();
 		this.server=function.getServer();
 	}
@@ -31,7 +34,7 @@ public class IfrsDeletionApprovalModel {
 		Date startDate=DateTime.now().minusMonths(6).dayOfMonth().withMinimumValue().hourOfDay().withMinimumValue().toDate();
 		Date endDate=DateTime.now().dayOfMonth().withMaximumValue().toDate();
 		List<DeletedGoods> deletedGoods=server.find(DeletedGoods.class).
-				where().between("deletion_date", startDate, endDate).eq("isAccepted",false).findList();
+				where().between("deletion_date", startDate, endDate).le("acceptance",accept.getUnacceptCriteria()).findList();
 
 		return deletedGoods;
 		

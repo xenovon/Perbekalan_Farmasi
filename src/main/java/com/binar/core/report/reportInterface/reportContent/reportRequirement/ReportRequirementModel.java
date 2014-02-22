@@ -14,6 +14,7 @@ import com.binar.entity.ReqPlanning;
 import com.binar.entity.Role;
 import com.binar.entity.User;
 import com.binar.entity.enumeration.EnumGoodsType;
+import com.binar.generalFunction.AcceptancePyramid;
 import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
 import com.binar.generalFunction.GetSetting;
@@ -39,6 +40,7 @@ public class ReportRequirementModel extends Label{
 	private DateManipulator date;
 	private TextManipulator text;
 	
+	private AcceptancePyramid accept;
 	//Variabel untuk ditampilkan di surat pesanan
 		
 	private String html="<html> <head> <title> Daftar Kebutuhan {{GoodsType}} </title> <style type='text/css'>body{width:750px;font-family:arial}h1.title{display:block;margin:0 auto;font-size:24px;text-align:center}h2.address{display:block;margin:0 auto;font-size:16px;font-weight:normal;text-align:center}.center{padding-bottom:20px;margin-bottom:30px}.kepada{width:400px;margin-top:30px;line-height:1.5em}.PONumber{float:right;top:40px}table{width:100%;border:1px solid black;border-collapse:collapse}table tr td,table tr th{border:1px solid black;padding:2px;margin:0}.footer{float:right;margin-top:60px}.tapak-asma{text-align:center}.kepala{margin-bottom:100px}</style> </head> <body> <div class='center'> <h1 class='title'>Daftar Kebutuhan {{GoodsType}}</h1> <h2 class='address'> {{Periode}} </h2> </div> <table> <tr> <th>No</th> <th>Nama</th> <th>Satuan</th> <th>HNA + PPN %</th> <th>Kebutuhan</th> <th>Perkiraan Jumlah Harga</th> <th>Produsen</th> <th>Distributor</th> <th>Keterangan</th> </tr> {{TableCode}} </table> <div class='footer'> {{City}} , {{ReportDate}} </br> <div class='tapak-asma'> <div class='kepala'>Disusun Oleh, </br>Petugas Gudang Farmasi </br>RSUD Ajibarang</div> <div>{{UserName}}</div> <div>NIP: {{UserNum}}</div> </div> </div> </body> </html>";
@@ -47,6 +49,7 @@ public class ReportRequirementModel extends Label{
 		this.function=function;
 		this.setContentMode(ContentMode.HTML);
 		this.data=data;
+		this.accept=function.getAcceptancePyramid();
 		this.server=function.getServer();
 		this.date=function.getDate();
 		this.setting=function.getSetting();
@@ -133,7 +136,7 @@ public class ReportRequirementModel extends Label{
 			goodsTypeList.add(EnumGoodsType.BMHP.toString());
 		}
 		
-		List<ReqPlanning> reqPlannings=server.find(ReqPlanning.class).where().eq("isAccepted",true).
+		List<ReqPlanning> reqPlannings=server.find(ReqPlanning.class).where().eq("acceptance",accept.getAcceptedByAllCriteria()).
 				between("period", start.toDate(), end.toDate()).in("supplierGoods.goods.type", goodsTypeList).order().desc("timestamp").findList();
 		System.out.println("Start Date : "+start);
 		System.out.println("End Date : "+end);

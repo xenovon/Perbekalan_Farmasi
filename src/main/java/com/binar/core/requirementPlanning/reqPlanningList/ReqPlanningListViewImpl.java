@@ -6,6 +6,7 @@ import java.util.List;
 import com.binar.core.requirementPlanning.inputRequierementPlanning.TableData;
 import com.binar.entity.Goods;
 import com.binar.entity.ReqPlanning;
+import com.binar.generalFunction.AcceptancePyramid;
 import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
 import com.binar.generalFunction.TableFilter;
@@ -60,10 +61,13 @@ public class ReqPlanningListViewImpl extends VerticalLayout
 	TextManipulator text;
 	DateManipulator date;
 	
+	AcceptancePyramid accept;
+	
 	ReqPlanningListListener listener;
 	public ReqPlanningListViewImpl(GeneralFunction function) {
 		this.generalFunction=function;
 		text=generalFunction.getTextManipulator();
+		this.accept=generalFunction.getAcceptancePyramid();
 		this.date=generalFunction.getDate();
 	}
 	TableFilter filter;
@@ -105,7 +109,7 @@ public class ReqPlanningListViewImpl extends VerticalLayout
         		addContainerProperty("Total Harga", String.class, null);
         		addContainerProperty("Produsen", String.class, null);
         		addContainerProperty("Distributor", String.class, null);
-        		addContainerProperty("Disetujui?", CheckBox.class, new CheckBox("Disetujui"){{setValue(false);}});
+        		addContainerProperty("Disetujui?",String.class, null);
         		addContainerProperty("Kebutuhan Disetujui", String.class, null);
         		addContainerProperty("Operasi", Button.class, null);
         		
@@ -207,10 +211,7 @@ public class ReqPlanningListViewImpl extends VerticalLayout
 			item.getItemProperty("Total Harga").setValue(totalPrice);
 			item.getItemProperty("Produsen").setValue(datum.getSupplierGoods().getManufacturer().getManufacturerName());
 			item.getItemProperty("Distributor").setValue(datum.getSupplierGoods().getSupplier().getSupplierName());
-			item.getItemProperty("Disetujui?").setValue(new CheckBox("Disetujui"){{
-				setValue(datumFinal.isAccepted());
-				setReadOnly(true);
-			}});
+			item.getItemProperty("Disetujui?").setValue(accept.acceptedBy(datum.getAcceptance()));
 			item.getItemProperty("Kebutuhan Disetujui").setValue(text.intToAngka(datum.getAcceptedQuantity()));
 			
 			
@@ -272,7 +273,7 @@ public class ReqPlanningListViewImpl extends VerticalLayout
 					addComponent(new Label("Produsen"), 0, 4);
 					addComponent(new Label("Periode"), 0,5);
 					addComponent(new Label("Kuantitas"), 0,6);
-					addComponent(new Label("Diterima?"), 0, 7);
+					addComponent(new Label("Disetujui?"), 0, 7);
 					addComponent(new Label("Tanggal Penerimaan"), 0,8);
 					addComponent(new Label("Kuantitas Diterima"), 0,9);
 					addComponent(new Label("Keterangan"), 0, 10);
@@ -329,7 +330,7 @@ public class ReqPlanningListViewImpl extends VerticalLayout
 			labelManufacturer.setValue(data.getSupplierGoods().getManufacturer().getManufacturerName());
 			labelPeriode.setValue(data.getPeriodString());
 			labelQuantity.setValue(String.valueOf(data.getQuantity()));
-			labelIsAccepted.setValue(data.isAccepted()?"Ya":"Belum");
+			labelIsAccepted.setValue(accept.acceptedBy(data.getAcceptance()));
 			labelAcceptedQuantity.setValue(String.valueOf(data.getAcceptedQuantity()));
 			labelInformation.setValue(data.getInformation());
 			labelTimestamp.setValue(data.getTimestamp().toString());

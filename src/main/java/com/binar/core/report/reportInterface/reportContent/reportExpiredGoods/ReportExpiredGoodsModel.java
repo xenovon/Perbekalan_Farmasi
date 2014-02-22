@@ -17,6 +17,7 @@ import com.binar.entity.GoodsConsumption;
 import com.binar.entity.Role;
 import com.binar.entity.User;
 import com.binar.entity.enumeration.EnumGoodsType;
+import com.binar.generalFunction.AcceptancePyramid;
 import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
 import com.binar.generalFunction.GetSetting;
@@ -44,6 +45,7 @@ public class ReportExpiredGoodsModel extends Label{
 	private GetSetting setting;
 	private DateManipulator date;
 	
+	AcceptancePyramid accept;
 	//Variabel untuk ditampilkan di surat pesanan
 		
 	private String html="<html> <head> <title> Daftar Obat dan BMHP Kadaluarsa {{Accepted}} </title> <style type='text/css'>body{width:750px;font-family:arial}h1.title{display:block;margin:0 auto;font-size:24px;text-align:center}h2.address{display:block;margin:0 auto;font-size:16px;font-weight:normal;text-align:center}.center{padding-bottom:20px;margin-bottom:30px}.kepada{width:400px;margin-top:30px;line-height:1.5em}.PONumber{float:right;top:40px}table{width:100%;border:1px solid black;border-collapse:collapse}table tr td,table tr th{border:1px solid black;padding:2px;margin:0}.footer{float:right;margin-top:60px}.tapak-asma{text-align:center}.kepala{margin-bottom:100px}</style> </head> <body> <div class='center'> <h1 class='title'>Daftar Obat dan BMHP Kadaluarsa {{Accepted}}</h1> <h1 class='title'>Di Instalasi Farmasi RSUD Ajibarang</h1> <h2 class='address'> {{Periode}} </h2> </div> <table> <tr> <th>No</th> <th>Nama</th> <th>Satuan</th> <th>Jumlah</th> <th>Harga</th> <th>Total Harga</th> <th>Keterangan</th> </tr> {{TableCode}} </table> <div style='float:right;margin-top:30px'>Jumlah {{Quantity}}</div> <div class='footer'> {{City}} , {{ReportDate}} </br> <div class='tapak-asma'> <div class='kepala'>KA IFRS</br> RSUD Ajibarang </div> <div>{{UserName}}</div> <div>No. SIK  {{UserNum}}</div> </div> </div> </body> </html>";
@@ -52,6 +54,7 @@ public class ReportExpiredGoodsModel extends Label{
 		this.function=function;
 		this.setContentMode(ContentMode.HTML);
 		this.data=data;
+		this.accept=function.getAcceptancePyramid();
 		this.server=function.getServer();
 		this.date=function.getDate();
 		this.setting=function.getSetting();
@@ -148,9 +151,16 @@ public class ReportExpiredGoodsModel extends Label{
 		DateTime start=startDate.withHourOfDay(startDate.hourOfDay().getMinimumValue());
 		DateTime end=endDate.withHourOfDay(startDate.hourOfDay().getMaximumValue());
 
+		List<DeletedGoods> deletedList;
+		if(isAccepted){
+			deletedList=server.find(DeletedGoods.class).where().eq("acceptance",accept.getAcceptedByAllCriteria()).
+					between("deletionDate", start.toDate(), end.toDate()).findList();			
+		}else{
+			deletedList=server.find(DeletedGoods.class).where().lt("acceptance",accept.getAcceptedByAllCriteria()).
+					between("deletionDate", start.toDate(), end.toDate()).findList();
+
+		}
 		
-		List<DeletedGoods> deletedList=server.find(DeletedGoods.class).where().eq("isAccepted",isAccepted).
-				between("deletionDate", start.toDate(), end.toDate()).findList();
 		System.out.println("Start Date : "+startDate);
 		System.out.println("End Date : "+endDate);
 		

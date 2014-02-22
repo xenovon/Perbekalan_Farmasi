@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.binar.entity.Goods;
 import com.binar.entity.ReqPlanning;
+import com.binar.generalFunction.AcceptancePyramid;
 import com.binar.generalFunction.GeneralFunction;
 import com.binar.generalFunction.TextManipulator;
 import com.vaadin.data.Container;
@@ -32,8 +33,10 @@ public class FarmationRequirementStatusViewImpl  extends Panel implements Farmat
 	private GeneralFunction function;
 	private Label labelEmpty;
 	private TextManipulator text;
+	private AcceptancePyramid accept;
 	public FarmationRequirementStatusViewImpl(GeneralFunction function) {
 		this.function=function;
+		this.accept=function.getAcceptancePyramid();
 		this.text=function.getTextManipulator();
 	}
 	
@@ -116,7 +119,7 @@ public class FarmationRequirementStatusViewImpl  extends Panel implements Farmat
 			item.getItemProperty("Nama Barang").setValue(datum.getSupplierGoods().getGoods().getName());
 			item.getItemProperty("Satuan").setValue(datum.getSupplierGoods().getGoods().getUnit());
 			item.getItemProperty("Jumlah Pengajuan").setValue(text.intToAngka(datum.getQuantity()));
-			item.getItemProperty("Sudah disetujui?").setValue(datum.isAccepted()?"Disetujui":"Belum Disetujui");
+			item.getItemProperty("Sudah disetujui?").setValue(accept.acceptedBy(datum.getAcceptance()));
 			item.getItemProperty("Jumlah disetujui").setValue(text.intToAngka(datum.getAcceptedQuantity()));
 			
 			

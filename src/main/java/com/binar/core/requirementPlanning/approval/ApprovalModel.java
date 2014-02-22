@@ -9,6 +9,7 @@ import org.joda.time.DateTime;
 
 import com.avaje.ebean.EbeanServer;
 import com.binar.entity.ReqPlanning;
+import com.binar.generalFunction.AcceptancePyramid;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
@@ -20,9 +21,11 @@ public class ApprovalModel {
 	GeneralFunction function;
 	EbeanServer server;
 	
+	AcceptancePyramid accept;
+	
 	public class AcceptData{
 		private int idReq;
-		private boolean accepted;
+		private int accepted;
 		private int quantityAccepted;
 		protected int getIdReq() {
 			return idReq;
@@ -30,10 +33,10 @@ public class ApprovalModel {
 		protected void setIdReq(int idReq) {
 			this.idReq = idReq;
 		}
-		protected boolean isAccepted() {
+		protected int getAccepted() {
 			return accepted;
 		}
-		protected void setAccepted(boolean accepted) {
+		protected void setAccepted(int accepted) {
 			this.accepted = accepted;
 		}
 		protected int getQuantityAccepted() {
@@ -47,6 +50,7 @@ public class ApprovalModel {
 	
 	public ApprovalModel(GeneralFunction function){
 		this.function=function;
+		this.accept=function.getAcceptancePyramid();
 		this.server=function.getServer();
 	}
 	//mendapatkan tabel req planning sesuai bulan yang dipilih
@@ -55,8 +59,17 @@ public class ApprovalModel {
 		Date endDate=periode.withDayOfMonth(periode.dayOfMonth().getMaximumValue()).toDate();
 		List<ReqPlanning> returnValue=server.find(ReqPlanning.class).where().
 				between("period", startDate, endDate).findList();
-
-		return returnValue;
+		return filterReqPlanning(returnValue);
+	}
+	//memfilter requirement planning sesuai dengan role (PPK, IFRS, PNJ)
+	private List<ReqPlanning> filterReqPlanning(List<ReqPlanning> list){
+		List<ReqPlanning> returnValue=new ArrayList<ReqPlanning>();
+		for(ReqPlanning req:list){
+			if(accept.isShow(req.getAcceptance())){
+				returnValue.add(req);
+			}
+		}
+		return  returnValue;
 	}
 	//mendapatkan data tabel yang mau disimpan
 	private List<AcceptData> getTableData(Container container) {
@@ -77,7 +90,7 @@ public class ApprovalModel {
 				//maka nantinya nampilin pesan error
 				return null;
 			}
-			acceptData.setAccepted(checkboxResult.getValue());
+			acceptData.setAccepted(accept.acceptOrNot(checkboxResult.getValue()));
 			acceptData.setIdReq((Integer)itemId);
 			acceptData.setQuantityAccepted(quantityAccepted);
 			
@@ -99,7 +112,7 @@ public class ApprovalModel {
 			for(AcceptData data:acceptData){
 				ReqPlanning planning=server.find(ReqPlanning.class, data.getIdReq());
 				planning.setAcceptedQuantity(data.getQuantityAccepted());
-				planning.setAccepted(data.isAccepted());
+				planning.setAcceptance(data.getAccepted());
 				planning.setDateAccepted(new Date());
 				server.update(planning);
 			}

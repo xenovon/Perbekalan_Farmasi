@@ -26,7 +26,7 @@ public class DeletionList extends CssLayout {
 		view = new DeletionListViewImpl(generalFunction);
 		presenter = new DeletionListPresenter(generalFunction, model, view);
 		
-		this.setCaption("Daftar Pengeluaran Harian");
+		this.setCaption("Daftar Barang Kadaluarsa");
 		this.addStyleName("tab-content");
 		this.addComponent(view);
 	}

@@ -14,6 +14,7 @@ import javax.persistence.TemporalType;
 import com.binar.entity.Goods;
 import com.binar.entity.ReqPlanning;
 import com.binar.entity.SupplierGoods;
+import com.binar.generalFunction.AcceptancePyramid;
 import com.binar.generalFunction.GeneralFunction;
 import com.binar.generalFunction.TableFilter;
 import com.vaadin.data.Container;
@@ -64,9 +65,10 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 	private GridLayout layoutDetail;
 	
 	private InputRequirementListener listener;
-	
+	private AcceptancePyramid accept;
 	public InputRequirementPlanningViewImpl(GeneralFunction function){
 		this.generalFunction=function;
+		this.accept=function.getAcceptancePyramid();
 	}
 	//Table Filter
 	TableFilter filter;
@@ -188,7 +190,7 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 			item.getItemProperty("Operasi").setValue(new GridLayout(3,1){
 				{
 					//jika sudah diaccept, maka button ubah  tidak ditampilkan
-					if(!datumFinal.isAccepted()){
+					if(!accept.isAccepted(datumFinal.getAcceptance())){
 						Button buttonEdit=new Button();
 						buttonEdit.setDescription("Ubah data ini");
 						buttonEdit.setIcon(new ThemeResource("icons/image/icon-edit.png"));
@@ -230,7 +232,8 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 					this.setSpacing(true);
 					this.setMargin(false);
 					this.addComponent(buttonShow, 0, 0);
-					if(datumFinal.isAccepted()){
+					
+					if(!accept.isAccepted(datumFinal.getAcceptance())){
 						this.addComponent(buttonDelete, 1, 0);						
 					}else{
 						this.addComponent(buttonDelete, 2, 0);
@@ -333,7 +336,7 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 			labelManufacturer.setValue(data.getSupplierGoods().getManufacturer().getManufacturerName());
 			labelPeriode.setValue(data.getPeriodString());
 			labelQuantity.setValue(String.valueOf(data.getQuantity()));
-			labelIsAccepted.setValue(data.isAccepted()?"Ya":"Belum");
+			labelIsAccepted.setValue(accept.acceptedBy(data.getAcceptance()));
 			labelAcceptedQuantity.setValue(String.valueOf(data.getAcceptedQuantity()));
 			labelInformation.setValue(data.getInformation());
 			labelTimestamp.setValue(data.getTimestamp().toString());

@@ -13,6 +13,7 @@ import com.binar.core.requirementPlanning.approval.ApprovalModel.AcceptData;
 import com.binar.entity.DeletedGoods;
 import com.binar.entity.Goods;
 import com.binar.entity.ReqPlanning;
+import com.binar.generalFunction.AcceptancePyramid;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
@@ -24,19 +25,20 @@ public class DeletionApprovalModel {
 	GeneralFunction function;
 	EbeanServer server;
 	
+	AcceptancePyramid accept;
 	public class AcceptData{
 		private int idDel;
-		private boolean accepted;
+		private int accepted;
 		protected int getIdDel() {
 			return idDel;
 		}
 		protected void setIdDel(int idDel) {
 			this.idDel = idDel;
 		}
-		protected boolean isAccepted() {
+		protected int getAccepted() {
 			return accepted;
 		}
-		protected void setAccepted(boolean accepted) {
+		protected void setAccepted(int accepted) {
 			this.accepted = accepted;
 		}
 		
@@ -45,6 +47,7 @@ public class DeletionApprovalModel {
 	public DeletionApprovalModel(GeneralFunction function){
 		this.function=function;
 		this.server=function.getServer();
+		this.accept=function.getAcceptancePyramid();
 	}
 	
 	public List<DeletedGoods> getDeletedTable(Date startDate, Date endDate, ApprovalFilter filter ){
@@ -59,9 +62,9 @@ public class DeletionApprovalModel {
 				end=buffer;
 			}
 			switch (filter) {
-				case ACCEPTED: return server.find(DeletedGoods.class).where().between("deletionDate", start.toDate(), end.toDate()).eq("isAccepted", true).findList(); 
-				case ALL: return server.find(DeletedGoods.class).where().between("deletionDate", start.toDate(), end.toDate()).findList();
-				case NON_ACCEPTED: return server.find(DeletedGoods.class).where().between("deletionDate", start.toDate(), end.toDate()).eq("isAccepted", false).findList();
+				case ACCEPTED: return filterDeletion(server.find(DeletedGoods.class).where().between("deletionDate", start.toDate(), end.toDate()).ge("acceptance", accept.getAcceptCriteria()).findList()); 
+				case ALL: return filterDeletion(server.find(DeletedGoods.class).where().between("deletionDate", start.toDate(), end.toDate()).findList());
+				case NON_ACCEPTED: return filterDeletion(server.find(DeletedGoods.class).where().between("deletionDate", start.toDate(), end.toDate()).le("acceptance", accept.getUnacceptCriteria()).findList());
 				default: return null;
 			}
 		} catch (Exception e) {
@@ -70,7 +73,16 @@ public class DeletionApprovalModel {
 		}
 		
 	}
-	
+	private List<DeletedGoods> filterDeletion(List<DeletedGoods> list){
+		List<DeletedGoods> returnValue=new ArrayList<DeletedGoods>();
+		for(DeletedGoods req:list){
+			if(accept.isShow(req.getAcceptance())){
+				returnValue.add(req);
+			}
+		}
+		return  returnValue;
+	}
+
 	private List<AcceptData> getTableData(Container container) {
 		List<AcceptData> returnValue=new ArrayList<AcceptData>();
 		Collection<?> tableItemId=container.getItemIds();
@@ -80,7 +92,7 @@ public class DeletionApprovalModel {
 			AcceptData acceptData=new AcceptData();
 			CheckBox checkboxResult=(CheckBox)item.getItemProperty("Disetujui?").getValue();
 			int quantityAccepted;
-			acceptData.setAccepted(checkboxResult.getValue());
+			acceptData.setAccepted(accept.acceptOrNot(checkboxResult.getValue()));
 			acceptData.setIdDel((Integer)itemId);
 			
 			returnValue.add(acceptData);
@@ -100,13 +112,13 @@ public class DeletionApprovalModel {
 		try {
 			for(AcceptData data:acceptData){
 				DeletedGoods delGoods=server.find(DeletedGoods.class, data.getIdDel());
-				delGoods.setAccepted(data.isAccepted());
+				delGoods.setAcceptance(data.getAccepted());
 			
 
 				Goods goods=delGoods.getGoods();
 				int stock=goods.getCurrentStock();
 
-				if(data.isAccepted()){
+				if(accept.isAcceptedByAll(data.getAccepted())){
 					delGoods.setApprovalDate(new Date());
 					stock=stock-delGoods.getQuantity();
 				}else{

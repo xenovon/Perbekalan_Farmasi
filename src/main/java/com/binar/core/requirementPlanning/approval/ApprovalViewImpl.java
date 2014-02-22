@@ -7,6 +7,7 @@ import java.util.List;
 import com.binar.core.requirementPlanning.approval.ApprovalModel.AcceptData;
 import com.binar.entity.Goods;
 import com.binar.entity.ReqPlanning;
+import com.binar.generalFunction.AcceptancePyramid;
 import com.binar.generalFunction.GeneralFunction;
 import com.binar.generalFunction.TableFilter;
 import com.binar.generalFunction.TextManipulator;
@@ -49,9 +50,11 @@ public class ApprovalViewImpl extends VerticalLayout implements
 	IndexedContainer container;
 	TextField inputFilter;
 
+	AcceptancePyramid accept;
 	public ApprovalViewImpl(GeneralFunction function){
 		generalFunction=function;
 		text=generalFunction.getTextManipulator();
+		this.accept=function.getAcceptancePyramid();
 	}
 	TableFilter filter;
 	public void init(){
@@ -202,7 +205,7 @@ public class ApprovalViewImpl extends VerticalLayout implements
 				}
 			});
 			item.getItemProperty("Disetujui?").setValue(new CheckBox("Disetujui"){{
-				setValue(datumFinal.isAccepted());
+				setValue(accept.isAcceptedBy(datumFinal.getAcceptance()));
 			}});
 			
 			//Set kebutuhan disetujui
@@ -308,7 +311,7 @@ public class ApprovalViewImpl extends VerticalLayout implements
 			labelManufacturer.setValue(data.getSupplierGoods().getManufacturer().getManufacturerName());
 			labelPeriode.setValue(data.getPeriodString());
 			labelQuantity.setValue(String.valueOf(data.getQuantity()));
-			labelIsAccepted.setValue(data.isAccepted()?"Ya":"Belum");
+			labelIsAccepted.setValue(accept.acceptedBy(data.getAcceptance()));
 			labelAcceptedQuantity.setValue(String.valueOf(data.getAcceptedQuantity()));
 			labelInformation.setValue(data.getInformation());
 			labelTimestamp.setValue(data.getTimestamp().toString());

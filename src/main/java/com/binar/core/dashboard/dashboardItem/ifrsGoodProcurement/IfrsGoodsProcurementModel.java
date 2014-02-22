@@ -17,6 +17,7 @@ import com.binar.entity.PurchaseOrder;
 import com.binar.entity.PurchaseOrderItem;
 import com.binar.entity.ReqPlanning;
 import com.binar.entity.enumeration.EnumStockStatus;
+import com.binar.generalFunction.AcceptancePyramid;
 import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
 
@@ -27,8 +28,10 @@ public class IfrsGoodsProcurementModel {
 	final String PROCUREMENT_TEXT="Jumlah Pengadaan Bulan Ini";
 	final String REQUIREMENT_TEXT="Rencana Kebutuhan Bulan Ini";
 	DateManipulator date;
+	AcceptancePyramid accept;
 	public IfrsGoodsProcurementModel(GeneralFunction function) {
 		this.function=function;
+		this.accept=function.getAcceptancePyramid();
 		this.server=function.getServer();
 		this.date=function.getDate();
 	}
@@ -72,7 +75,7 @@ public class IfrsGoodsProcurementModel {
 		
 	}
 	private Integer getReqPlanningCount(Date startDate, Date endDate){
-		List<ReqPlanning> reqList=server.find(ReqPlanning.class).where().eq("isAccepted", true)
+		List<ReqPlanning> reqList=server.find(ReqPlanning.class).where().eq("acceptance", accept.getAcceptedByAllCriteria())
 				.between("period", startDate, endDate).findList();
 		System.out.println("Req Planning size "+reqList.size());
 		int returnValue=0;

@@ -17,6 +17,7 @@ import org.joda.time.DateTime;
 import com.binar.entity.DeletedGoods;
 import com.binar.entity.Goods;
 import com.binar.entity.Invoice;
+import com.binar.generalFunction.AcceptancePyramid;
 import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
 import com.binar.generalFunction.TableFilter;
@@ -63,11 +64,13 @@ public class DeletionListViewImpl extends VerticalLayout implements DeletionList
 	private DeletionListListener listener;
 	private Button buttonNew;
 	
+	AcceptancePyramid accept;
+	
 	public DeletionListViewImpl(GeneralFunction function) {
 		this.function=function;
 		text=function.getTextManipulator();
 		date=function.getDate();
-
+		this.accept=function.getAcceptancePyramid();
 	}
 	TableFilter filter;
 
@@ -210,13 +213,13 @@ public class DeletionListViewImpl extends VerticalLayout implements DeletionList
 			item.getItemProperty("Satuan").setValue(datum.getGoods().getUnit());
 			item.getItemProperty("Harga").setValue(text.doubleToRupiah(datum.getPrice()));
 			item.getItemProperty("Total Harga").setValue(text.doubleToRupiah(datum.getPrice()*datum.getQuantity()));
-			item.getItemProperty("Disetujui?").setValue(datum.isAccepted()?"Disetujui":"Belum Disetujui");
+			item.getItemProperty("Disetujui?").setValue(accept.acceptedBy(datum.getAcceptance()));
 			if(datum.getApprovalDate()!=null){
 				item.getItemProperty("Tanggal Disetujui").setValue(date.dateToText(datum.getApprovalDate(), true));				
 			}
 			item.getItemProperty("Operasi").setValue(new GridLayout(3,1){
 			{
-					if(!datumFinal.isAccepted()){
+					if(!accept.isAccepted(datumFinal.getAcceptance())){
 						Button buttonEdit=new Button();
 						buttonEdit.setDescription("Ubah data ini");
 						buttonEdit.setIcon(new ThemeResource("icons/image/icon-edit.png"));
@@ -350,7 +353,7 @@ public class DeletionListViewImpl extends VerticalLayout implements DeletionList
 		 labelPrice.setValue(text.doubleToRupiah(data.getPrice()));
 		 labelTotalPrice.setValue(text.doubleToRupiah(data.getPrice()*data.getQuantity()));
 		 labelQuantity.setValue(data.getQuantity()+" "+data.getGoods().getUnit());
-		 labelAccepted.setValue(data.isAccepted()?"Disetujui":"Belum disetujui");
+		 labelAccepted.setValue(accept.acceptedBy(data.getAcceptance()));
 		 if(data.getApprovalDate()!=null){
 			 labelAcceptedDate.setValue(date.dateToText(data.getApprovalDate(), true));
 		 }

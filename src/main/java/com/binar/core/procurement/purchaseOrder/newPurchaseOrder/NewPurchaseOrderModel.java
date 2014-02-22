@@ -21,6 +21,7 @@ import com.binar.entity.Role;
 import com.binar.entity.User;
 import com.binar.entity.enumeration.EnumGoodsType;
 import com.binar.entity.enumeration.EnumPurchaseOrderType;
+import com.binar.generalFunction.AcceptancePyramid;
 import com.binar.generalFunction.GeneralFunction;
 import com.binar.generalFunction.GetSetting;
 
@@ -29,9 +30,10 @@ public class NewPurchaseOrderModel {
 	GeneralFunction function;
 	EbeanServer server;
 	GetSetting setting;
-	
+	AcceptancePyramid accept;
 	public NewPurchaseOrderModel(GeneralFunction function) {
 		this.function=function;
+		this.accept=function.getAcceptancePyramid();
 		server=function.getServer();
 		setting=function.getSetting();
 	}
@@ -53,7 +55,7 @@ public class NewPurchaseOrderModel {
 			Date startDate=periode.toDate();
 			Date endDate=periode.withDayOfMonth(periode.dayOfMonth().getMaximumValue()).toDate();
 			List<ReqPlanning> returnValue=server.find(ReqPlanning.class).where().
-					between("period", startDate, endDate).eq("isAccepted", true).findList();
+					between("period", startDate, endDate).eq("acceptance", accept.getAcceptedByAllCriteria()).findList();
 			return returnValue;
 		} catch (Exception e) {
 			e.printStackTrace();

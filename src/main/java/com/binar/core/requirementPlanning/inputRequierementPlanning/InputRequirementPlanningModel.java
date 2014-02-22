@@ -24,7 +24,6 @@ public class InputRequirementPlanningModel {
 	public InputRequirementPlanningModel(GeneralFunction function) {
 		this.generalFunction=function;
 		this.server=generalFunction.getServer();
-		// TODO Auto-generated constructor stub
 	}
 
 	public List<TableData> getTableData(DateTime periode){
@@ -45,7 +44,7 @@ public class InputRequirementPlanningModel {
 			tableData.setManufacturer(req.getSupplierGoods().getManufacturer().getManufacturerName());
 			tableData.setReq(req.getQuantity());
 			tableData.setSupp(req.getSupplierGoods().getSupplier().getSupplierName());
-			tableData.setAccepted(req.isAccepted());
+			tableData.setAcceptance(req.getAcceptance());
 			returnValue.add(tableData);
 		}
 		System.out.println(returnValue.size() + returnValue.toString());

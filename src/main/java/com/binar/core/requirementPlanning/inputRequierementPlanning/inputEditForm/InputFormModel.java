@@ -109,7 +109,7 @@ public class InputFormModel {
 			}
 			//mulai insert requirement planning
 			ReqPlanning reqPlanning=new ReqPlanning();
-			reqPlanning.setAccepted(false);
+			reqPlanning.setAcceptance(0);;
 			reqPlanning.setAcceptedQuantity(0);
 			reqPlanning.setInformation(data.getInformation());
 			reqPlanning.setPeriod(function.getDate().parseDateMonth(data.getPeriode()).toDate());
@@ -207,7 +207,7 @@ public class InputFormModel {
 			}
 			//mulai insert requirement planning
 			ReqPlanning reqPlanning=server.find(ReqPlanning.class, idReq);
-			reqPlanning.setAccepted(false);
+			reqPlanning.setAcceptance(0);
 			reqPlanning.setAcceptedQuantity(0);
 			reqPlanning.setInformation(data.getInformation());
 			reqPlanning.setPeriod(function.getDate().parseDateMonth(data.getPeriode()).toDate());

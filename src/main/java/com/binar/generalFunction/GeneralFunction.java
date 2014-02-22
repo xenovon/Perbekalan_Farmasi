@@ -143,4 +143,12 @@ public class GeneralFunction {
 		}
 		return format.format(input);
 	}
+	AcceptancePyramid acceptancePyramid;
+	public AcceptancePyramid getAcceptancePyramid(){
+		if(acceptancePyramid==null){
+			acceptancePyramid= new AcceptancePyramid(getLogin());
+		}
+			return acceptancePyramid;
+	}
+	
 }

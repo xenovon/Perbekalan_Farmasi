@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.binar.entity.DeletedGoods;
 import com.binar.entity.Goods;
+import com.binar.generalFunction.AcceptancePyramid;
 import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
 import com.binar.generalFunction.TextManipulator;
@@ -34,8 +35,10 @@ public class FarmationExpiredGoodsStatusViewImpl  extends Panel implements Farma
 	private DateManipulator date;
 	private TextManipulator text;
 	private Label labelEmpty;
+	private AcceptancePyramid accept;
 	public FarmationExpiredGoodsStatusViewImpl(GeneralFunction function) {
 		this.function=function;
+		this.accept=function.getAcceptancePyramid();
 		this.text=function.getTextManipulator();
 		this.date=function.getDate();
 	}
@@ -113,7 +116,7 @@ public class FarmationExpiredGoodsStatusViewImpl  extends Panel implements Farma
 			item.getItemProperty("Tanggal Pengajuan").setValue(date.dateToText(datum.getDeletionDate(),true));
 			item.getItemProperty("Nama Barang").setValue(datum.getGoods().getName());
 			item.getItemProperty("Satuan").setValue(datum.getGoods().getUnit());
-			item.getItemProperty("Status Pengajuan").setValue(datum.isAccepted()?"Diterima":"Belum Diterima");
+			item.getItemProperty("Status Pengajuan").setValue(accept.acceptedBy(datum.getAcceptance()));
 			item.getItemProperty("Jumlah").setValue(text.intToAngka(datum.getQuantity()));
 		}
 	}

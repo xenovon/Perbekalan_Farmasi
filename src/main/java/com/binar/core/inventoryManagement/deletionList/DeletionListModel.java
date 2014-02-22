@@ -14,15 +14,18 @@ import com.binar.core.inventoryManagement.deletionList.DeletionListView.Approval
 import com.binar.entity.DeletedGoods;
 import com.binar.entity.Goods;
 import com.binar.entity.GoodsConsumption;
+import com.binar.generalFunction.AcceptancePyramid;
 import com.binar.generalFunction.GeneralFunction;
 
 public class DeletionListModel {
 	
 	GeneralFunction generalFunction;
 	EbeanServer server;
+	AcceptancePyramid accept;
 	
 	public DeletionListModel (GeneralFunction function) {
 		this.generalFunction=function;
+		this.accept=function.getAcceptancePyramid();
 		server=generalFunction.getServer();
 	}
 	
@@ -39,9 +42,9 @@ public class DeletionListModel {
 			}
 			System.out.println("Start "+start.toString()+" end "+end.toString() );
 			switch (filter) {
-				case ACCEPTED: return server.find(DeletedGoods.class).where().between("deletionDate", start.toDate(), end.toDate()).eq("isAccepted", true).findList(); 
-				case ALL: return server.find(DeletedGoods.class).where().between("deletionDate", start.toDate(), end.toDate()).findList();
-				case NON_ACCEPTED: return server.find(DeletedGoods.class).where().between("deletionDate", start.toDate(), end.toDate()).eq("isAccepted", false).findList();
+			case ACCEPTED: return server.find(DeletedGoods.class).where().between("deletionDate", start.toDate(), end.toDate()).ge("acceptance", accept.getAcceptCriteria()).findList(); 
+			case ALL: return server.find(DeletedGoods.class).where().between("deletionDate", start.toDate(), end.toDate()).findList();
+			case NON_ACCEPTED: return server.find(DeletedGoods.class).where().between("deletionDate", start.toDate(), end.toDate()).le("acceptance", accept.getUnacceptCriteria()).findList();
 				default: return null;
 			}
 		} catch (Exception e) {

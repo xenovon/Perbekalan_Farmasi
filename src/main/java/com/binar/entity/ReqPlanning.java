@@ -32,8 +32,7 @@ public class ReqPlanning {
 	@Column(name="accepted_quantity")
 	private int acceptedQuantity;
 	
-	@Column(name="is_accepted")
-	private boolean isAccepted;
+	private int acceptance;
 	
 	@Column(columnDefinition="TEXT")
 	private String information;
@@ -125,13 +124,12 @@ public class ReqPlanning {
 	public void setAcceptedQuantity(int acceptedQuantity) {
 		this.acceptedQuantity = acceptedQuantity;
 	}
-
-	public boolean isAccepted() {
-		return isAccepted;
+	public int getAcceptance() {
+		return acceptance;
 	}
 
-	public void setAccepted(boolean isAccepted) {
-		this.isAccepted = isAccepted;
+	public void setAcceptance(int acceptance) {
+		this.acceptance = acceptance;
 	}
 
 	public String getInformation() {
