@@ -90,7 +90,7 @@ public class ApprovalModel {
 				//maka nantinya nampilin pesan error
 				return null;
 			}
-			acceptData.setAccepted(accept.acceptOrNot(checkboxResult.getValue()));
+			acceptData.setAccepted(accept.acceptedOrNot(checkboxResult.getValue()));
 			acceptData.setIdReq((Integer)itemId);
 			acceptData.setQuantityAccepted(quantityAccepted);
 			

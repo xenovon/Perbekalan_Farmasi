@@ -92,7 +92,7 @@ public class DeletionApprovalModel {
 			AcceptData acceptData=new AcceptData();
 			CheckBox checkboxResult=(CheckBox)item.getItemProperty("Disetujui?").getValue();
 			int quantityAccepted;
-			acceptData.setAccepted(accept.acceptOrNot(checkboxResult.getValue()));
+			acceptData.setAccepted(accept.acceptedOrNot(checkboxResult.getValue()));
 			acceptData.setIdDel((Integer)itemId);
 			
 			returnValue.add(acceptData);
