@@ -80,8 +80,8 @@ public class IfrsGoodsProcurementModel {
 		System.out.println("Req Planning size "+reqList.size());
 		int returnValue=0;
 		for(ReqPlanning planning:reqList){
-//			returnValue=returnValue+planning.getAcceptedQuantity();
-			returnValue=returnValue+1;
+			returnValue=returnValue+planning.getAcceptedQuantity();
+//			returnValue=returnValue+1;
 		}
 		System.out.println(returnValue);
 		return returnValue;
@@ -95,8 +95,8 @@ public class IfrsGoodsProcurementModel {
 		System.out.println("Procurement Count"+invoiceList.size());
 		for(Invoice invoice:invoiceList){
 			for(InvoiceItem item:invoice.getInvoiceItem()){
-				returnValue=returnValue+1;
-//				returnValue=returnValue+item.getQuantity();
+//				returnValue=returnValue+1;
+				returnValue=returnValue+item.getQuantity();
 				System.out.println("Quantity "+item.getPurchaseOrderItem().getSupplierGoods().getGoods().getName()+" "+item.getQuantity());
 			}
 		}

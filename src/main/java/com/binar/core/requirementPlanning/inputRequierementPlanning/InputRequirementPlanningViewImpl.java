@@ -233,7 +233,7 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 					this.setMargin(false);
 					this.addComponent(buttonShow, 0, 0);
 					
-					if(!accept.isAccepted(datumFinal.getAcceptance())){
+					if(accept.isAccepted(datumFinal.getAcceptance())){
 						this.addComponent(buttonDelete, 1, 0);						
 					}else{
 						this.addComponent(buttonDelete, 2, 0);

@@ -112,7 +112,17 @@ public class ApprovalModel {
 			for(AcceptData data:acceptData){
 				ReqPlanning planning=server.find(ReqPlanning.class, data.getIdReq());
 				planning.setAcceptedQuantity(data.getQuantityAccepted());
-				planning.setAcceptance(data.getAccepted());
+				
+				//Perbaikan bugs, jika sudah disetujui oleh yang lebih tinggi, persetujuan tidak akan turun pangkat, 
+				//jika yang lebih rendah menyimpan data baru. Kecuali jika checknya dihapus.
+				int currentValue=planning.getAcceptance();
+				
+				if(currentValue>=data.getAccepted() && data.getAccepted()!=accept.getUnacceptCriteria()){
+					planning.setAcceptance(currentValue);
+				}else{
+					planning.setAcceptance(data.getAccepted());					
+				}
+				
 				planning.setDateAccepted(new Date());
 				server.update(planning);
 			}

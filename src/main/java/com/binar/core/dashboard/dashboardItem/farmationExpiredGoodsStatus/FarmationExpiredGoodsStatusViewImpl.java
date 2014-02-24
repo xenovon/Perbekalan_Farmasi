@@ -76,7 +76,7 @@ public class FarmationExpiredGoodsStatusViewImpl  extends Panel implements Farma
 
 	@Override
 	public void construct(String month) {
-		setCaption("Status Pengajuan Penghapusan Barang Periode "+month);
+		setCaption("Status Pengajuan Penghapusan Barang Periode <br/>"+month);
 		setHeight(function.DASHBOARD_LAYOUT_HEIGHT);
 		setWidth(function.DASHBOARD_TABLE_LAYOUT_WIDTH);
 		final GridLayout layout=new GridLayout(2,1){

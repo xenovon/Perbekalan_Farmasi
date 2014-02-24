@@ -63,33 +63,39 @@ public class ProcurementSupplierRankModel {
 	 * Sisanya ganti "lainnya....."
 	 */
 	public Map<Integer, String> getSupplierTransaction(){
-		Map<Supplier, Integer> allGoods=getSupplierList();
-		
-		SortedMap<Integer, String> returnValue=new TreeMap<Integer, String>();
-		SortedMap<Integer, String> buffer=new TreeMap<Integer, String>();
-		
-		for(Map.Entry<Supplier, Integer> entry:allGoods.entrySet()){
-			buffer.put(entry.getValue(), entry.getKey().getSupplierName());
-		}
-		
-		//hanya mengambil 5 supplier dengan konsumsi terbanyak
-		//Sorted map sudah mengurutkan supplier dari yang transaksinya paling kecil, hingga paling besar
-		int i=0;
-		int count=buffer.size()-5;
-		int otherCount=0; //untuk menghitung supplier lainnya.
-		for(Map.Entry<Integer, String> entry:buffer.entrySet()){
-			if(i>=count){
-				returnValue.put(entry.getKey(), entry.getValue());
-			}else{
-				otherCount=otherCount+entry.getKey();
+		try {
+			Map<Supplier, Integer> allGoods=getSupplierList();
+			
+			SortedMap<Integer, String> returnValue=new TreeMap<Integer, String>();
+			SortedMap<Integer, String> buffer=new TreeMap<Integer, String>();
+			
+			for(Map.Entry<Supplier, Integer> entry:allGoods.entrySet()){
+				buffer.put(entry.getValue(), entry.getKey().getSupplierName());
 			}
-			i++;
+			
+			//hanya mengambil 5 supplier dengan konsumsi terbanyak
+			//Sorted map sudah mengurutkan supplier dari yang transaksinya paling kecil, hingga paling besar
+			int i=0;
+			int count=buffer.size()-5;
+			int otherCount=0; //untuk menghitung supplier lainnya.
+			for(Map.Entry<Integer, String> entry:buffer.entrySet()){
+				if(i>=count){
+					returnValue.put(entry.getKey(), entry.getValue());
+				}else{
+					otherCount=otherCount+entry.getKey();
+				}
+				i++;
+			}
+			if(otherCount!=0){
+				returnValue.put(otherCount, "Lainnya");			
+			}
+			System.out.println(returnValue.size());
+			return returnValue;
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+			return null;
 		}
-		if(otherCount!=0){
-			returnValue.put(otherCount, "Lainnya");			
-		}
-		System.out.println(returnValue.size());
-		return returnValue;
 	}
 
 	

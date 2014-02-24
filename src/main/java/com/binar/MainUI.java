@@ -133,7 +133,7 @@ public class MainUI extends UI
     	//Add view untuk ""
     	nav.addView("", DashboardView.class);
     	nav.addView("/", DashboardView.class);
-    	
+    
     	HashMap<String, Class<? extends View>> routes=getRoutes();
     	
     	for(String route: routes.keySet()){
@@ -147,6 +147,11 @@ public class MainUI extends UI
     	Header header=new Header();
     	root.addComponent(header);
     	root.addComponent(mainView);
+    	//menambahkan dasboard ke konten
+    	
+    	DashboardView dashboard=new DashboardView();
+    	dashboard.init(null);
+    	content.addComponent(dashboard);
     }
 
 }

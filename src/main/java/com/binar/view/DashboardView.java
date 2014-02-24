@@ -22,6 +22,10 @@ public class DashboardView extends CustomComponent implements View{
 
 	@Override
 	public void enter(ViewChangeEvent event) {
+		init(event);
+	}
+	
+	public void init(ViewChangeEvent event){
 		GeneralFunction function=new GeneralFunction();
 		loginManager=function.getLogin();
 		
@@ -32,22 +36,21 @@ public class DashboardView extends CustomComponent implements View{
 		System.out.println("Set composition root");
 		setCompositionRoot(dashboard);
 		
-		String parameter=event.getParameters();
-		
-		//Untuk Cheat mengakses dashboard, hapus ketika aplikasi sudah selesai
-		if(parameter.equals("a")){
-			dashboard.generateFarmationView();
-		}else if(parameter.equals("b")){
-			dashboard.generateIfrsView();
-		}else if(parameter.equals("c")){
-			dashboard.generatePPKView();
-		}else if(parameter.equals("d")){
-			dashboard.generateProcurementView();
-		}else if(parameter.equals("e")){
-			dashboard.generateSupportView();
-		} 
-		
-		
+		if (event!=null) {
+			String parameter = event.getParameters();
+			//Untuk Cheat mengakses dashboard, hapus ketika aplikasi sudah selesai
+			if (parameter.equals("a")) {
+				dashboard.generateFarmationView();
+			} else if (parameter.equals("b")) {
+				dashboard.generateIfrsView();
+			} else if (parameter.equals("c")) {
+				dashboard.generatePPKView();
+			} else if (parameter.equals("d")) {
+				dashboard.generateProcurementView();
+			} else if (parameter.equals("e")) {
+				dashboard.generateSupportView();
+			}
+		}
 		/*
 		 * Manajemen Role untuk Level VIEW
 		 * 
@@ -63,7 +66,6 @@ public class DashboardView extends CustomComponent implements View{
 		}else if(loginManager.getRoleId().equals(loginManager.TPN)){
 			dashboard.generateProcurementView();
 		}
-		
 	}
 
 }

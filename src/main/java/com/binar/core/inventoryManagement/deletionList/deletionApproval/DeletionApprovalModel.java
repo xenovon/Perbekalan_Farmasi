@@ -112,8 +112,17 @@ public class DeletionApprovalModel {
 		try {
 			for(AcceptData data:acceptData){
 				DeletedGoods delGoods=server.find(DeletedGoods.class, data.getIdDel());
+				
+				//Perbaikan bugs, jika sudah disetujui oleh yang lebih tinggi, persetujuan tidak akan turun pangkat, 
+				//jika yang lebih rendah menyimpan data baru. Kecuali jika checknya dihapus.
+				int currentValue=delGoods.getAcceptance();
+				
+				if(currentValue>=data.getAccepted() && data.getAccepted()!=accept.getUnacceptCriteria()){
+					delGoods.setAcceptance(currentValue);
+				}else{
+					delGoods.setAcceptance(data.getAccepted());					
+				}
 				delGoods.setAcceptance(data.getAccepted());
-			
 
 				Goods goods=delGoods.getGoods();
 				int stock=goods.getCurrentStock();

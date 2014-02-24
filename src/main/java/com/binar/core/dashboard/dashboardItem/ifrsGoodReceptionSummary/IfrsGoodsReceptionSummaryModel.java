@@ -82,8 +82,8 @@ public class IfrsGoodsReceptionSummaryModel {
 		System.out.println("Procurement Count"+invoiceList.size());
 		for(Invoice invoice:invoiceList){
 			for(InvoiceItem item:invoice.getInvoiceItem()){
-				returnValue=returnValue+1;
-//				returnValue=returnValue+item.getQuantity();
+//				returnValue=returnValue+1;
+				returnValue=returnValue+item.getQuantity();
 				System.out.println("Quantity "+item.getPurchaseOrderItem().getSupplierGoods().getGoods().getName()+" "+item.getQuantity());
 			}
 		}
@@ -95,8 +95,8 @@ public class IfrsGoodsReceptionSummaryModel {
 				where().between("date", startDate, endDate).findList();
 		int returnValue=0;
 		for(GoodsReception reception:receptionList){
-			returnValue=returnValue+1;
-//			returnValue=returnValue+reception.getQuantityReceived();
+//			returnValue=returnValue+1;
+			returnValue=returnValue+reception.getQuantityReceived();
 		}
 		
 		return returnValue;

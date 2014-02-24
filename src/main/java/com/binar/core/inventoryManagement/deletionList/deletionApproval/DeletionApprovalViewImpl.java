@@ -63,6 +63,7 @@ DeletionApprovalView, Button.ClickListener, ValueChangeListener{
 		this.function=function;
 		text=function.getTextManipulator();
 		date=function.getDate();
+		this.accept=function.getAcceptancePyramid();
 	}	
 
 	TableFilter filter;

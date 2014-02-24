@@ -45,15 +45,15 @@ public class AcceptancePyramid {
 			return RoleEnum.IFRS;
 		}
 	}
-	public int acceptOrNot(boolean accept){
+	public int acceptedOrNot(boolean accept){
 		if(accept){
-			return accept();
+			return accepted();
 		}else{
-			return unAccept();
+			return unAccepted();
 		}
 	}
 	//menerima penghapusan atau persetujuan
-	private int accept(){
+	private int accepted(){
 		if(getRole()==RoleEnum.IFRS){
 			return 1;
 		}else if(getRole()==RoleEnum.PNJ){
@@ -64,7 +64,7 @@ public class AcceptancePyramid {
 	}
 	
 	//tidak lagi menyetujui penghapusan atau persetujuan
-	private int unAccept(){
+	private int unAccepted(){
 		if(getRole()==RoleEnum.IFRS){
 			return 0;
 		}else if(getRole()==RoleEnum.PNJ){
