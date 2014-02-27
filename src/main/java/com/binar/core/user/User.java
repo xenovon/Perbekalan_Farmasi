@@ -19,7 +19,7 @@ public class User extends CssLayout{
 		model=new UserListModel(function);
 		view=new UserListViewImpl(function);
 		presenter=new UserListPresenter(model, view, function);
-		this.setCaption("Surat Pesanan");
+		this.setCaption("Manajemen Pengguna");
 		this.addComponent(view);
 		this.addStyleName("tab-content");
 	

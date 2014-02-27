@@ -21,12 +21,10 @@ public class MinimumStockUpdater {
 			Goods goods=server.find(Goods.class, idGoods);
 			int currentStock=goods.getCurrentStock();
 			int minimalStock=goods.getMinimumStock();
-			
 			int minimalStockSafe=minimalStock+ (minimalStock * MINIMUM_STOCK_CRITERIA / 100);
-			
 			if(currentStock>minimalStockSafe){
 				goods.setStockStatus(EnumStockStatus.SAFE);
-			}else if(currentStock>=minimalStock){
+			}else if(currentStock<=minimalStock){
 				goods.setStockStatus(EnumStockStatus.LESS);
 			}else{
 				goods.setStockStatus(EnumStockStatus.WARNING);

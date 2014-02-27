@@ -29,7 +29,6 @@ public class FarmationRequirementStatusModel {
 		
 		LocalDate startDate=LocalDate.now().dayOfMonth().withMinimumValue();
 		LocalDate endDate=LocalDate.now().dayOfMonth().withMaximumValue();
-		
 		List<ReqPlanning> reqPlanning=server.find(ReqPlanning.class).where().between("period",startDate.toDate(), endDate.toDate()).findList();
 		
 		return reqPlanning;

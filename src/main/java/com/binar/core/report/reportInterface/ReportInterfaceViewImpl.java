@@ -109,9 +109,6 @@ D	Laporan barang kadaluarsa (udah disetujui)
 		if(event.getButton()==buttonConsumption){
 			listener.buttonConsumptionClick();
 		}
-		if(event.getButton()==buttonDailyConsumption){
-			listener.buttonDailyConsumptionClick();
-		}
 		if(event.getButton()==buttonExpiredGoods){
 			listener.buttonExpiredGoodsClick();
 		}
@@ -121,12 +118,8 @@ D	Laporan barang kadaluarsa (udah disetujui)
 		if(event.getButton()==buttonReceipt){
 			listener.buttonReceiptClick();
 		}
-		
 		if(event.getButton()==buttonRequirement){
 			listener.buttonRequirementClick();
-		}
-		if(event.getButton()==buttonStock){
-			listener.buttonStockClick();
 		}
 	}
 
@@ -179,4 +172,267 @@ D	Laporan barang kadaluarsa (udah disetujui)
 	
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+/*	
+	public void buttonClick(ClickEvent event) {
+		if(event.getButton()==buttonConsumption){
+			listener.buttonConsumptionClick();
+		}
+		if(event.getButton()==buttonDailyConsumption){
+			listener.buttonDailyConsumptionClick();
+		}
+		if(event.getButton()==buttonExpiredGoods){
+			listener.buttonExpiredGoodsClick();
+		}
+		if(event.getButton()==buttonProcurement){
+			listener.buttonProcurementClick();
+		}
+		if(event.getButton()==buttonReceipt){
+			listener.buttonReceiptClick();
+		}
+		
+		if(event.getButton()==buttonRequirement){
+			listener.buttonRequirementClick();
+		}
+		if(event.getButton()==buttonStock){
+			listener.buttonStockClick();
+		}
+	}
+*/
 }

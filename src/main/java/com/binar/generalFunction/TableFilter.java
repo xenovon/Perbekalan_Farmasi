@@ -25,7 +25,6 @@ public class TableFilter implements Container.Filter {
         Collection<String> properties = (Collection<String>) item.getItemPropertyIds();
         System.out.println(properties.size());
         for(String idProp:properties){
-
         	// cek validitas, jika tidak valid, maka lanjut ke looping selanjutnya
         	Property<?> p=item.getItemProperty(idProp);
             if (p == null || !p.getType().equals(String.class))
@@ -36,7 +35,6 @@ public class TableFilter implements Container.Filter {
 			} catch (Exception e1) {
 				continue;
 			}
-
             // Pass all if regex not given
             if (regex.isEmpty()) {
                 return true;
@@ -48,15 +46,12 @@ public class TableFilter implements Container.Filter {
             	if(result==true){
             		return true;
             	}
-                
             } catch (PatternSyntaxException e) {
             	return true;
             }        	
         }
     	System.out.println("Nothing happened, return false");
-
         return result;
-        
     }
 
     @Override
