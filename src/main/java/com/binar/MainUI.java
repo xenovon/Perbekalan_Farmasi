@@ -24,7 +24,6 @@ import com.binar.view.ReportView;
 import com.binar.view.RequirementPlanningView;
 import com.binar.view.SettingView;
 import com.binar.view.UserManagementView;
-import com.binar.view.UserSettingView;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
@@ -67,7 +66,6 @@ public class MainUI extends UI
                 {
                     put("/usermanagement", UserManagementView.class);
                     put("/setting", SettingView.class);
-                    put("/usersetting", UserSettingView.class);
                 }
             };     		
     	}else{
@@ -151,7 +149,13 @@ public class MainUI extends UI
     	
     	DashboardView dashboard=new DashboardView();
     	dashboard.init(null);
-    	content.addComponent(dashboard);
+    	if(loginManager.getRoleId().equals(loginManager.ADM)){
+        	UserManagementView user=new UserManagementView();
+        	user.enter(null);
+    		content.addComponent(user);    		
+    	}else{
+        	content.addComponent(dashboard);
+    	}
     }
 
 }

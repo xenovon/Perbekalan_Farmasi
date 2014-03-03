@@ -117,6 +117,7 @@ public class RequirementPlanningView extends CustomComponent implements View, Se
 		tabSheet.setSizeFull();
 		
 		Navigator navigator=UI.getCurrent().getNavigator();
+		
 		String parameter=event.getParameters();
 		if(parameter.equals(generalFunction.VIEW_REQ_PLANNING_APPROVAL)){
 			tabSheet.setSelectedTab(approval);

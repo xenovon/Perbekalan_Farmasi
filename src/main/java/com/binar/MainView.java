@@ -14,7 +14,6 @@ import com.binar.view.ReportView;
 import com.binar.view.RequirementPlanningView;
 import com.binar.view.SettingView;
 import com.binar.view.UserManagementView;
-import com.binar.view.UserSettingView;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.server.ThemeResource;

@@ -5,6 +5,7 @@ import com.binar.core.procurement.PurchaseOrder;
 import com.binar.core.setting.SettingFinance;
 import com.binar.core.setting.SettingGeneral;
 import com.binar.core.setting.SettingGoods;
+import com.binar.core.setting.SettingInsurance;
 import com.binar.core.setting.SettingPurchaseOrder;
 import com.binar.core.setting.UserSetting;
 import com.binar.generalFunction.GeneralFunction;
@@ -27,6 +28,7 @@ public class SettingView extends CustomComponent  implements View {
 	UserSetting user;
 	GeneralFunction function;
 	LoginManager loginManager;
+	SettingInsurance settingInsurance;
 	@Override
 	public void enter(ViewChangeEvent event) {
 		function=new GeneralFunction();
@@ -61,6 +63,10 @@ public class SettingView extends CustomComponent  implements View {
 		
 		tabSheet.addTab(user).setCaption("Pengaturan Akun");
 		tabSheet.setSizeFull();
+		if(loginManager.getRoleId().equals(loginManager.FRM)){
+			settingInsurance=new SettingInsurance(function);
+			tabSheet.addTab(settingInsurance).setCaption("Pengaturan Data Asuransi");
+		}
 		this.setCompositionRoot(tabSheet);
 
 	}
