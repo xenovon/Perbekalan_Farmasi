@@ -104,24 +104,24 @@ D	Laporan barang kadaluarsa (udah disetujui)
 	public void setListener(ReportInterfaceListener listener) {
 		this.listener=listener;
 	}
-	@Override
-	public void buttonClick(ClickEvent event) {
-		if(event.getButton()==buttonConsumption){
-			listener.buttonConsumptionClick();
-		}
-		if(event.getButton()==buttonExpiredGoods){
-			listener.buttonExpiredGoodsClick();
-		}
-		if(event.getButton()==buttonProcurement){
-			listener.buttonProcurementClick();
-		}
-		if(event.getButton()==buttonReceipt){
-			listener.buttonReceiptClick();
-		}
-		if(event.getButton()==buttonRequirement){
-			listener.buttonRequirementClick();
-		}
-	}
+//	@Override
+//	public void buttonClick(ClickEvent event) {
+//		if(event.getButton()==buttonConsumption){
+//			listener.buttonConsumptionClick();
+//		}
+//		if(event.getButton()==buttonExpiredGoods){
+//			listener.buttonExpiredGoodsClick();
+//		}
+//		if(event.getButton()==buttonProcurement){
+//			listener.buttonProcurementClick();
+//		}
+//		if(event.getButton()==buttonReceipt){
+//			listener.buttonReceiptClick();
+//		}
+//		if(event.getButton()==buttonRequirement){
+//			listener.buttonRequirementClick();
+//		}
+//	}
 
 	Window window;
 	
@@ -409,7 +409,7 @@ D	Laporan barang kadaluarsa (udah disetujui)
 	
 	
 	
-/*	
+
 	public void buttonClick(ClickEvent event) {
 		if(event.getButton()==buttonConsumption){
 			listener.buttonConsumptionClick();
@@ -434,5 +434,5 @@ D	Laporan barang kadaluarsa (udah disetujui)
 			listener.buttonStockClick();
 		}
 	}
-*/
+
 }

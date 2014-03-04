@@ -166,11 +166,11 @@ public class InputGoodsPresenter implements InputGoodsListener{
 		if(type==EnumGoodsType.ALAT_KESEHATAN ||
 		   type==EnumGoodsType.BMHP){
 			view.getInputCategory().setValue(EnumGoodsCategory.LAINNYA);
-			view.setEnabled(false);
+			view.getInputCategory().setEnabled(false);
 
 		}else{
 			view.getInputCategory().setValue(EnumGoodsCategory.PATEN);
-			view.setEnabled(true);
+			view.getInputCategory().setEnabled(true);
 			
 		}
 	}

@@ -122,7 +122,9 @@ public class InsuranceManagementPresenter implements InsuranceManagementListener
 	@Override
 	public void editClick(int idInsurance) {
 		if(presenterEdit==null){
-			modelInput =new InputInsuranceModel(function);
+			if(modelInput==null){				
+				modelInput =new InputInsuranceModel(function);
+			}
 			viewEdit = new InputInsuranceViewImpl(function);
 			presenterEdit=new InputInsurancePresenter(modelInput, viewEdit, function, true);
 		}

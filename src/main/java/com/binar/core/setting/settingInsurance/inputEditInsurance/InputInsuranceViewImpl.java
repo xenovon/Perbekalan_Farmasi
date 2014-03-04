@@ -110,6 +110,7 @@ public class InputInsuranceViewImpl extends FormLayout implements
 		this.setSpacing(true);
 		this.addComponent(inputName);
 		this.addComponent(inputDescription);
+		this.addComponent(inputShow);
 		this.addComponent(labelGeneralError);
 		this.addComponent(new GridLayout(4,1){
 			{
@@ -143,17 +144,19 @@ public class InputInsuranceViewImpl extends FormLayout implements
 
 	@Override
 	public void setFormData(Insurance data) {
+		id=data.getIdInsurance();
 		inputName.setValue(data.getName());;
 		inputDescription.setValue(data.getDescription());;
 		
 	}
-
+	int id=0;
 	@Override
 	public FormData getFormData() {
 		FormData returnValue=new FormData(function);
 		returnValue.setDescription(inputDescription.getValue());
 		returnValue.setName(inputName.getValue());
 		returnValue.setShow(inputShow.getValue());
+		returnValue.setId(id);
 		return returnValue;
 	}
 	

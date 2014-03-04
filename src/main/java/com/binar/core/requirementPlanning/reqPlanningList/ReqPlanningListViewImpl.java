@@ -274,8 +274,8 @@ public class ReqPlanningListViewImpl extends VerticalLayout
 					addComponent(new Label("Periode"), 0,5);
 					addComponent(new Label("Kuantitas"), 0,6);
 					addComponent(new Label("Disetujui?"), 0, 7);
-					addComponent(new Label("Tanggal Penerimaan"), 0,8);
-					addComponent(new Label("Kuantitas Diterima"), 0,9);
+					addComponent(new Label("Tanggal Disetujui"), 0,8);
+					addComponent(new Label("Kuantitas Disetujui"), 0,9);
 					addComponent(new Label("Keterangan"), 0, 10);
 					addComponent(new Label("Waktu Input"), 0,11);
 					addComponent(new Label("Estimasi Harga"), 0, 12);

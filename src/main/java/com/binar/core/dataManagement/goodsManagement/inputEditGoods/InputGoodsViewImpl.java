@@ -104,15 +104,19 @@ public class InputGoodsViewImpl extends FormLayout implements
 		inputType = new ComboBox("Tipe Barang");
 					inputType.setWidth(function.FORM_WIDTH);
 					inputType.setImmediate(true);
+					inputType.addValueChangeListener(this);
 		inputUnit = new ComboBox("Satuan Barang");
 					inputUnit.setWidth(function.FORM_WIDTH);
 					inputUnit.setImmediate(true);
+					inputUnit.addValueChangeListener(this);
 		inputPackage= new ComboBox("Kemasan Barang");
 					inputPackage.setWidth(function.FORM_WIDTH);
-					inputUnit.setImmediate(true);
+					inputPackage.setImmediate(true);
+					inputPackage.addValueChangeListener(this);
 		inputCategory = new ComboBox("Kategori Barang");
 						inputCategory.setWidth(function.FORM_WIDTH);
 						inputCategory.setImmediate(true);
+						inputCategory.addValueChangeListener(this);
 		inputMinimalStock =new TextField("Stok Minimal");
 						   inputMinimalStock.setDescription("Minimal stok untuk barang ini");
 						   inputMinimalStock.addValueChangeListener(this);
@@ -183,6 +187,7 @@ public class InputGoodsViewImpl extends FormLayout implements
 		};
 		construct();
 	}
+
 	@Override
 	public void construct() {
 		setMargin(true);
@@ -431,6 +436,7 @@ public class InputGoodsViewImpl extends FormLayout implements
 	public void setListener(InputGoodsListener listener) {
 		this.listener=listener;
 	}
+	
 	
 
 

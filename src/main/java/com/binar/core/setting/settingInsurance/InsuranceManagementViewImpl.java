@@ -124,7 +124,7 @@ public class InsuranceManagementViewImpl extends VerticalLayout
 			
 			item.getItemProperty("Nama").setValue(datum.getName());
 			item.getItemProperty("Deskripsi").setValue(datum.getDescription());
-			item.getItemProperty("Tampil?").setValue(new CheckBox("",datum.isShowInDropdown()));
+			item.getItemProperty("Tampil?").setValue(new CheckBox("",datum.isShowInDropdown()){{setEnabled(false);}});
 			
 			item.getItemProperty("Operasi").setValue(new GridLayout(2,1){
 			{
