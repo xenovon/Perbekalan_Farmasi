@@ -34,6 +34,7 @@ public class NewEditUserViewImpl extends FormLayout implements NewEditUserView, 
 	private TextField inputTitle;
 	private ComboBox selectRole;
 	private TextField inputEmployeeNum;
+	private TextField inputSika;
 	private TextField inputName;
 	private TextField inputPhoneNumber;
 	private TextArea inputAddress;
@@ -106,6 +107,11 @@ public class NewEditUserViewImpl extends FormLayout implements NewEditUserView, 
 			inputPassword2.addValueChangeListener(this);
 			inputPassword2.setImmediate(true);
 			inputPassword2.setWidth(function.FORM_WIDTH);
+		inputSika =new TextField("SIKA");
+			inputSika.setDescription("Masukan nomor SIKA");
+			inputSika.addValueChangeListener(this);
+			inputSika.setImmediate(true);
+			inputSika.setWidth(function.FORM_WIDTH);
 		
 		labelError = new Label(){
 				{
@@ -147,6 +153,7 @@ public class NewEditUserViewImpl extends FormLayout implements NewEditUserView, 
 		this.addComponent(inputTitle);
 		this.addComponent(inputAddress);
 		this.addComponent(inputEmployeeNum);
+		this.addComponent(inputSika);
 		this.addComponent(selectRole);
 		this.addComponent(inputPhoneNumber);
 		this.addComponent(inputPassword1);
@@ -176,6 +183,7 @@ public class NewEditUserViewImpl extends FormLayout implements NewEditUserView, 
 		inputTitle.setValue(data.getTitle());
 		inputAddress.setValue(data.getAddress());
 		inputEmployeeNum.setValue(data.getEmployeeNum());
+		inputSika.setValue(data.getSika());
 		selectRole.setValue(data.getRole().getIdRole());
 		System.out.println(data.getRole().getRoleName());
 		inputPhoneNumber.setValue(data.getPhoneNumber());
@@ -199,6 +207,7 @@ public class NewEditUserViewImpl extends FormLayout implements NewEditUserView, 
 		data.setPassword2(inputPassword2.getValue());
 		data.setPhoneNumber(inputPhoneNumber.getValue());
 		data.setRole((String)selectRole.getValue());
+		data.setSika(inputSika.getValue());
 		data.setTitle(inputTitle.getValue());
 		data.setUserName(inputUserName.getValue());
 		data.setEditMode(editMode);
@@ -239,6 +248,7 @@ public class NewEditUserViewImpl extends FormLayout implements NewEditUserView, 
 		inputPhoneNumber.setValue("");
 		inputPassword1.setValue("");
 		inputPassword2.setValue("");
+		inputSika.setValue("");
 	}
 	@Override
 	public void showError(String content) {

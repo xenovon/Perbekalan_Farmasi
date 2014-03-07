@@ -56,9 +56,9 @@ public class InputManufacturerModel {
 		return null;
 	}
 	//menyimpan hasil perubahan barang
-	public String saveEditData(FormData data, int IdManufacturer){
+	public String saveEditData(FormData data, int idManufacturer){
 		try {
-			Manufacturer manufacturer=server.find(Manufacturer.class, IdManufacturer);
+			Manufacturer manufacturer=server.find(Manufacturer.class, idManufacturer);
 			manufacturer.setDescription(data.getDescription());
 			manufacturer.setEmail(data.getEmail());
 			manufacturer.setFax(data.getFax());

@@ -19,7 +19,7 @@ public class InputManufacturerPresenter implements InputManufacturerListener{
 	private InputManufacturerModel model;
 	private InputManufacturerViewImpl view;
 	private GeneralFunction function;
-	private int idSupplier; //untuk mode edit, dibutuhkan informasi id suplier yang sedang dirubah
+	private int idManufacturer; //untuk mode edit, dibutuhkan informasi id manufacturer yang sedang dirubah
 	private boolean editMode;
 	
 	public InputManufacturerPresenter(InputManufacturerModel model,
@@ -90,7 +90,7 @@ public class InputManufacturerPresenter implements InputManufacturerListener{
 		FormData data=view.getFormData();
 		List<String> validate=data.validate();
 		if(validate==null){
-			String result=model.saveEditData(data, idSupplier);
+			String result=model.saveEditData(data, idManufacturer);
 			if(result==null){
 				closeWindow();
 				Notification.show("Penyimpanan produsen berhasil");
@@ -127,7 +127,7 @@ public class InputManufacturerPresenter implements InputManufacturerListener{
 	}
 	//set data untuk edit
 	public void setFormData(int idManufacturer){
-		this.idSupplier=idSupplier;
+		this.idManufacturer=idManufacturer;
 		Manufacturer manufacturer=model.getSingleManufacturer(idManufacturer);
 		view.setFormData(manufacturer);
 	}

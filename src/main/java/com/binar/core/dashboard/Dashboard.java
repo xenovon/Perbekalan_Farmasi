@@ -83,9 +83,9 @@ public class Dashboard extends VerticalLayout {
 		this.addComponent(panel);
 	}
 	
-	FarmationMinimumStockFastMovingModel farmationMinimumStockFastMovingModel;
-	FarmationMinimumStockFastMovingPresenter farmationMinimumStockFastMovingPresenter;
-	FarmationMinimumStockFastMovingViewImpl farmationMinimumStockFastMovingViewImpl;
+//	FarmationMinimumStockFastMovingModel farmationMinimumStockFastMovingModel;
+//	FarmationMinimumStockFastMovingPresenter farmationMinimumStockFastMovingPresenter;
+//	FarmationMinimumStockFastMovingViewImpl farmationMinimumStockFastMovingViewImpl;
 	
 	FarmationGoodsConsumptionModel farmationGoodsConsumptionModel;
 	FarmationGoodsConsumptionViewImpl farmationGoodsConsumptionViewImpl;
@@ -112,13 +112,13 @@ public class Dashboard extends VerticalLayout {
 		
 		//Farmation Minimum Stock
 		gridLayout.removeAllComponents();
-		if(farmationMinimumStockFastMovingModel == null){
-			farmationMinimumStockFastMovingModel=new FarmationMinimumStockFastMovingModel(function);
-			farmationMinimumStockFastMovingViewImpl=new FarmationMinimumStockFastMovingViewImpl(function);
-			farmationMinimumStockFastMovingPresenter= new FarmationMinimumStockFastMovingPresenter(
-					function ,farmationMinimumStockFastMovingViewImpl, farmationMinimumStockFastMovingModel);
-		}
-		gridLayout.addComponent(farmationMinimumStockFastMovingViewImpl,0,0);
+//		if(farmationMinimumStockFastMovingModel == null){
+//			farmationMinimumStockFastMovingModel=new FarmationMinimumStockFastMovingModel(function);
+//			farmationMinimumStockFastMovingViewImpl=new FarmationMinimumStockFastMovingViewImpl(function);
+//			farmationMinimumStockFastMovingPresenter= new FarmationMinimumStockFastMovingPresenter(
+//					function ,farmationMinimumStockFastMovingViewImpl, farmationMinimumStockFastMovingModel);
+//		}
+//		gridLayout.addComponent(farmationMinimumStockFastMovingViewImpl,0,0);
 
 		if(farmationMinimumStockModel==null){
 			farmationMinimumStockModel = new FarmationMinimumStockModel(function);
@@ -127,7 +127,7 @@ public class Dashboard extends VerticalLayout {
 					function, farmationMinimumStockViewImpl, farmationMinimumStockModel);
 		}
 
-		gridLayout.addComponent(farmationMinimumStockViewImpl, 0, 1);
+		gridLayout.addComponent(farmationMinimumStockViewImpl, 0, 0);
 		
 		if(farmationGoodsConsumptionModel == null){
 			farmationGoodsConsumptionModel =new FarmationGoodsConsumptionModel(function);
@@ -136,7 +136,7 @@ public class Dashboard extends VerticalLayout {
 					function, farmationGoodsConsumptionViewImpl, farmationGoodsConsumptionModel);
 		}
 		
-		gridLayout.addComponent(farmationGoodsConsumptionViewImpl, 1,0);
+		gridLayout.addComponent(farmationGoodsConsumptionViewImpl, 0,1);
 
 		if(farmationExpiredGoodsModel == null){
 			farmationExpiredGoodsModel =new FarmationExpiredGoodsModel(function);
@@ -145,7 +145,7 @@ public class Dashboard extends VerticalLayout {
 					function, farmationExpiredGoodsViewImpl, farmationExpiredGoodsModel);
 		}
 		
-		gridLayout.addComponent(farmationExpiredGoodsViewImpl, 1,1);
+		gridLayout.addComponent(farmationExpiredGoodsViewImpl, 1,0);
 		
 		if(farmationExpiredGoodsStatusModel==null){
 			farmationExpiredGoodsStatusModel=new FarmationExpiredGoodsStatusModel(function);
@@ -153,7 +153,7 @@ public class Dashboard extends VerticalLayout {
 			farmationExpiredGoodsStatusPresenter=new FarmationExpiredGoodsStatusPresenter(
 					function, farmationExpiredGoodsStatusViewImpl, farmationExpiredGoodsStatusModel);
 		}
-		gridLayout.addComponent(farmationExpiredGoodsStatusViewImpl, 1,2);
+		gridLayout.addComponent(farmationExpiredGoodsStatusViewImpl, 1,1);
 		
 		if(farmationRequirementStatusModel == null){
 			farmationRequirementStatusModel =new FarmationRequirementStatusModel(function);
@@ -161,7 +161,7 @@ public class Dashboard extends VerticalLayout {
 			farmationRequirementStatusPresenter = new FarmationRequirementStatusPresenter(
 					function, farmationRequirementStatusViewImpl, farmationRequirementStatusModel);
 		}
-		gridLayout.addComponent(farmationRequirementStatusViewImpl, 0,2);		
+		gridLayout.addComponent(farmationRequirementStatusViewImpl, 1,2);		
 		
 	}
 	

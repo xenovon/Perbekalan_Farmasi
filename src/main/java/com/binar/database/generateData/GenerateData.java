@@ -208,6 +208,7 @@ public class GenerateData {
 				userFRM.setUsername("binar");
 				userFRM.setRole(roleFRM);
 				userFRM.setActive(true);
+				userFRM.setSika("8939439");
 			
 		server.save(userFRM);  
 		
@@ -219,6 +220,7 @@ public class GenerateData {
 			userIFRS.setPhoneNumber("32412321");
 			userIFRS.setUsername("nana");
 			userIFRS.setRole(roleIFRS);
+			userIFRS.setSika("8939439");
 			userIFRS.setActive(true);	
 			userIFRS.setTitle("Kepala IFRS");
 		server.save(userIFRS);  		
@@ -231,6 +233,7 @@ public class GenerateData {
 			userPPK.setPasswordHash("password");
 			userPPK.setPhoneNumber("091092444");
 			userPPK.setUsername("michael");
+			userPPK.setSika("8939439");
 			userPPK.setRole(rolePPK);
 			userPPK.setActive(true);	
 	
@@ -244,6 +247,7 @@ public class GenerateData {
 			userPNJ.setPhoneNumber("080420912");
 			userPNJ.setUsername("suha");
 			userPNJ.setRole(rolePNJ);
+			userPNJ.setSika("8939439");
 			userPNJ.setActive(true);	
 
 		server.save(userPNJ);		
@@ -256,6 +260,7 @@ public class GenerateData {
 			userTPN.setUsername("nantia");
 			userTPN.setRole(roleTPN);
 			userTPN.setActive(true);	
+			userTPN.setSika("8939439");
 			userTPN.setTitle("Penanggung Jawab");
 
 		server.save(userTPN);			
@@ -269,6 +274,7 @@ public class GenerateData {
 			userADM.setUsername("admin");
 			userADM.setRole(roleADM);
 			userADM.setActive(true);	
+			userADM.setSika("8939439");
 
 		server.save(userADM);	
 	}

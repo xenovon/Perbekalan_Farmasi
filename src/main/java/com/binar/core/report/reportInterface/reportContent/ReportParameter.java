@@ -38,6 +38,9 @@ public class ReportParameter {
 	 * nama parameter : accepted
 	 * value : 	diterima, belumditerima	
 	 * 
+	 * withPPN
+	 * nama param : withppn
+	 * value, true/false
 	 */
 
 	//daftar parameter
@@ -48,6 +51,7 @@ public class ReportParameter {
 	public final  String DATE="date";
 	public final  String MONTH_PERIODE="yearmonth";
 	public final  String ACCEPTANCE="acceptance";
+	public final String WITHPPN="withppn";
 	
 	public Map<String, String> generateParameter(ReportType reportType, ReportData reportData){
 		Map<String, String> parameter;
@@ -207,6 +211,7 @@ public class ReportParameter {
 		parameter.put(REPORT_TYPE, reportType.toString());
 		parameter.put(GOODS_TYPE, reportData.getSelectedGoods());
 		parameter.put(DATE, format.format(reportData.getSelectedDay()));
+		parameter.put(WITHPPN, String.valueOf(reportData.isWithPPN()));
 		return parameter;
 	}
 	private ReportData processStock(VaadinRequest request){
@@ -215,6 +220,13 @@ public class ReportParameter {
 			data.setType(ReportType.valueOf(request.getParameter(REPORT_TYPE)));
 			data.setSelectedGoods(request.getParameter(GOODS_TYPE));
 			data.setDate(request.getParameter(DATE));
+			data.setWithPPN(Boolean.getBoolean(request.getParameter(WITHPPN)));
+			System.out.println("Get Param : "+ request.getParameter(WITHPPN));
+			if(request.getParameter(WITHPPN).equals("true")){
+				data.setWithPPN(true);
+			}else{
+				data.setWithPPN(false);
+			}
 			return data;
 		} catch (Exception e) {
 			e.printStackTrace();

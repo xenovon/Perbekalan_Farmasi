@@ -44,7 +44,8 @@ public class ReportStockModel extends Label {
 	
 	//Variabel untuk ditampilkan di surat pesanan
 		
-	private String html="<html><head><title>Laporan Stok Opname {{GoodsType}} </title> <style type='text/css'>body{width:750px;font-family:arial}h1.title{display:block;margin:0 auto;font-size:24px;text-align:center}h2.address{display:block;margin:0 auto;font-size:16px;font-weight:normal;text-align:center}.center{padding-bottom:20px;margin-bottom:30px}.kepada{width:400px;margin-top:30px;line-height:1.5em}.PONumber{float:right;top:40px}table{width:100%;border:1px solid black;border-collapse:collapse}table tr td,table tr th{border:1px solid black;padding:2px;margin:0}.footer{float:right;margin-top:60px}.tapak-asma{text-align:center}.kepala{margin-bottom:100px}</style> </head> <body> <div class='center'> <h1 class='title'>Laporan Stok Opname {{GoodsType}}</h1> <h2 class='address'> {{Periode}} </h2> </div> <table> <tr> <th>No</th> <th>Nama</th> <th>Satuan</th> <th>Stok</th> <th>Jumlah</th> </tr> {{TableCode}} </table> <div class='footer'> {{City}} , {{ReportDate}} <div class='tapak-asma'> <div class='kepala'>Petugas Gudang Farmasi </br>RSUD Ajibarang</div> <div>{{UserName}}</div> <div>NIP: {{UserNum}}</div> </div> </div> </body> </html>";
+	private String html="<html><head><title>Laporan Stok Opname {{GoodsType}} </title> <style type='text/css'>body{width:750px;font-family:arial}h1.title{display:block;margin:0 auto;font-size:24px;text-align:center}h2.address{display:block;margin:0 auto;font-size:16px;font-weight:normal;text-align:center}.center{padding-bottom:20px;margin-bottom:30px}.kepada{width:400px;margin-top:30px;line-height:1.5em}.PONumber{float:right;top:40px}table{width:100%;border:1px solid black;border-collapse:collapse}table tr td,table tr th{border:1px solid black;padding:2px;margin:0}.footer{float:right;margin-top:60px}.tapak-asma{text-align:center}.kepala{margin-bottom:100px}.total{float:right}.container{width:100%;margin-top:10px;}</style> </head> <body> <div class='center'> <h1 class='title'>Laporan Stok Opname {{GoodsType}}</h1> <h2 class='address'> {{Periode}} </h2> </div> <table> <tr> <th>No</th> <th>Nama</th> <th>Satuan</th> <th>Stok</th> <th>Jumlah</th> </tr> {{TableCode}} </table> <div class='container'><div class='total'>Jumlah : {{StockTotal}} &nbsp;&nbsp;&nbsp;{{TotalPrice}}</div></div> </br> <div class='footer'> {{City}} , {{ReportDate}} <div class='tapak-asma'> <div class='kepala'>Petugas Gudang Farmasi </br>RSUD Ajibarang</div> <div>{{UserName}}</div> <div>NIP: {{UserNum}}</div> </div> </div> </body> </html>";
+	
 	public ReportStockModel(GeneralFunction function, ReportData data) {
 		this.function=function;
 		this.setContentMode(ContentMode.HTML);
@@ -56,7 +57,7 @@ public class ReportStockModel extends Label {
 		setContent();
 		replaceText();
 	}
-	
+	Map<Goods, Double[]> goodsData=null;
 	//untuk mengeset konten-konten yang ada di laporan
 	private void setContent(){
 		
@@ -68,10 +69,12 @@ public class ReportStockModel extends Label {
 		city=setting.getSetting("rs_city").getSettingValue();
 		if(data.getSelectedGoods().equals(ReportData.SELECT_GOODS_OBAT.toString())){
 			goodsType="Obat";
-			tableCode=generateTableCode(getGoods(data.getDate(), true));
+			goodsData=getGoods(data.getDate(), true);
+			tableCode=generateTableCode(goodsData);
 			
 		}else if(data.getSelectedGoods().equals(ReportData.SELECT_GOODS_ALKES.toString())){
-			tableCode=generateTableCode(getGoods(data.getDate(), false));
+			goodsData=getGoods(data.getDate(), false);
+			tableCode=generateTableCode(goodsData);
 			goodsType="Alkes & BMHP";
 		}
 		this.user=function.getLogin().getUserLogin();	
@@ -86,7 +89,10 @@ public class ReportStockModel extends Label {
 		html=html.replace("{{ReportDate}}", reportDate);
 		html=html.replace("{{UserName}}", userName);
 		html=html.replace("{{UserNum}}", userNum);		
-		html=html.replace("{{GoodsType}}", goodsType);		
+		html=html.replace("{{GoodsType}}", goodsType);	
+		html=html.replace("{{StockTotal}}", text.intToAngka(getTotalQuantity(goodsData)));
+		html=html.replace("{{TotalPrice}}", text.doubleToRupiah(getTotalPrice(goodsData)));
+		
 		this.setValue(html);
 	}
 	private String generateTableCode(Map<Goods, Double[]> data){
@@ -109,6 +115,25 @@ public class ReportStockModel extends Label {
 		}
 		return returnValue;
 	}
+	//mendapatkan jumlah total quantity
+	public int getTotalQuantity(Map<Goods, Double[]> data){
+		int returnValue=0;
+		for(Map.Entry<Goods, Double[]> entry:data.entrySet()){
+			returnValue=returnValue+entry.getValue()[0].intValue();
+		}
+		return returnValue;
+	}
+	
+	//mendapatkan jumlah harga
+	
+	public Double getTotalPrice(Map<Goods, Double[]> data){
+		double returnValue = 0;
+		for(Map.Entry<Goods, Double[]> entry:data.entrySet()){
+			returnValue=returnValue+entry.getValue()[1];
+		}
+		return returnValue;
+		
+	}
 	//untuk mendapatkan data barang yang dihapus
 	//menggunakan kelas Map, Goods untuk menampung barang, dan array Integer untuk menampung jumlah stok dan jumlah harga
 	//Array 1 untuk stok, array 2 untuk harga
@@ -128,7 +153,6 @@ public class ReportStockModel extends Label {
 			goodsTypeList.add(EnumGoodsType.ALAT_KESEHATAN.toString());
 			goodsTypeList.add(EnumGoodsType.BMHP.toString());
 		}
-		
 		//mendapatkan data reception dan deletion
 		
 		List<GoodsConsumption> goodsConsumption=server.find(GoodsConsumption.class).where().in("goods.type", goodsTypeList).
@@ -231,7 +255,16 @@ public class ReportStockModel extends Label {
 	private double getTotalPrice(Goods goods, int stock){
 		try {
 			SupplierGoods supplierGoods=server.find(SupplierGoods.class).where().eq("goods", goods).order().desc("lastUpdate").findList().get(0);
-			return supplierGoods.getLastPrice()*stock;
+			//get last price sudah termasuk PPN, jika mau non PPN, maka dikurangi 10%
+			System.out.println(supplierGoods.getLastPrice()*stock);
+			System.out.println((supplierGoods.getLastPrice()*100)/(100+setting.getPPN())*stock);
+			System.out.println("Dengan PPN? "+data.isWithPPN());
+			if(data.isWithPPN()){
+				return supplierGoods.getLastPrice()*stock;
+			}else{
+				//dikurangi PPN
+				return (supplierGoods.getLastPrice()*100)/(100+setting.getPPN())*stock;
+			}
 		} catch (Exception e) {
 			return 0;
 		}

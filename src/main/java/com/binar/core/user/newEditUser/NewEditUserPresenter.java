@@ -56,7 +56,6 @@ public class NewEditUserPresenter implements NewEditUserListener {
 			
 		}
 	}
-
 	@Override
 	public void activationClick() {
 		String error=model.activateUser(user.getIdUser());

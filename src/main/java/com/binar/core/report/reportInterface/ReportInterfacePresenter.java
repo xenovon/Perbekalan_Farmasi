@@ -72,7 +72,7 @@ public class ReportInterfacePresenter implements ReportInterfaceListener{
 			view.getButtonExpiredGoods().setVisible(false);
 			view.getButtonProcurement().setVisible(true);
 			view.getButtonReceipt().setVisible(true);
-			view.getButtonRequirement().setVisible(false);
+			view.getButtonRequirement().setVisible(true);
 			view.getButtonStock().setVisible(false);
 		}else if(loginManager.getRoleId().equals(loginManager.ADM)){
 			view.getButtonConsumption().setVisible(false);

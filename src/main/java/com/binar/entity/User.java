@@ -28,7 +28,7 @@ public class User {
 	private Role role;
 	
 	@Column(name="employee_num")
-	private String employeeNum;
+	private String employeeNum;  //nip
 	
 	private String title; //jabatan
 	
@@ -36,6 +36,8 @@ public class User {
 	
 	@Column(name="phone_number")
 	private String phoneNumber;
+	
+	private String sika; //sika
 	
 	private String address;
 	
@@ -70,7 +72,7 @@ public class User {
 	public void setPasswordHash(String password){
 		this.password=getMD5(password);
 	}
-	private String getMD5(String input){
+	public String getMD5(String input){
 		final String KEYVAR="PURWOKERTO";
 		String result=DigestUtils.md5Hex(KEYVAR + input+input.toUpperCase());
 		return result;	
@@ -126,7 +128,13 @@ public class User {
 		this.address = address;
 	}
 	
+	public String getSika() {
+		return sika;
+	}
 	
+	public void setSika(String sika) {
+		this.sika = sika;
+	}
 	
 	
 }

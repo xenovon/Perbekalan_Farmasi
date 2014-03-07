@@ -34,6 +34,7 @@ public interface NewEditUserView {
 	public void setComboBoxData(ComboDataList list);
 
 	class FormData{
+		private String sika;
 		private boolean editMode;
 		private String userName;
 		private String password1;
@@ -133,6 +134,12 @@ public interface NewEditUserView {
 		}
 		public void setAddress(String address) {
 			this.address = address;
+		}
+		public String getSika() {
+			return sika;
+		}
+		public void setSika(String sika) {
+			this.sika = sika;
 		}
 	}
 	

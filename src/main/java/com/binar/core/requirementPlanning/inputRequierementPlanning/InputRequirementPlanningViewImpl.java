@@ -203,7 +203,19 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 							}
 						});
 						this.addComponent(buttonEdit, 1, 0);
+						Button buttonDelete=new Button();
+						buttonDelete.setDescription("Hapus Data");
+						buttonDelete.setIcon(new ThemeResource("icons/image/icon-delete.png"));
+						buttonDelete.addStyleName("button-table");
+						buttonDelete.addClickListener(new ClickListener() {
+							
+							@Override
+							public void buttonClick(ClickEvent event) {
+								listener.delete(datumFinal.getIdReq());
+							}
+						});
 
+						this.addComponent(buttonDelete, 2,0);
 					}
 					
 					Button buttonShow=new Button();
@@ -217,27 +229,10 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 							listener.showDetail(datumFinal.getIdReq());
 						}
 					});
-					
-					Button buttonDelete=new Button();
-					buttonDelete.setDescription("Hapus Data");
-					buttonDelete.setIcon(new ThemeResource("icons/image/icon-delete.png"));
-					buttonDelete.addStyleName("button-table");
-					buttonDelete.addClickListener(new ClickListener() {
-						
-						@Override
-						public void buttonClick(ClickEvent event) {
-							listener.delete(datumFinal.getIdReq());
-						}
-					});
 					this.setSpacing(true);
 					this.setMargin(false);
 					this.addComponent(buttonShow, 0, 0);
 					
-					if(accept.isAccepted(datumFinal.getAcceptance())){
-						this.addComponent(buttonDelete, 1, 0);						
-					}else{
-						this.addComponent(buttonDelete, 2, 0);
-					}
 					
 				}
 			});

@@ -86,7 +86,8 @@ public class UserListViewImpl extends VerticalLayout implements UserListView, Cl
 				addContainerProperty("Nama", String.class, null);
 				addContainerProperty("Nama Lengkap", String.class,null);
 				addContainerProperty("Role", String.class, null);
-				addContainerProperty("Nomor Pegawai", String.class, null);
+				addContainerProperty("NIP", String.class, null);
+				addContainerProperty("SIKA", String.class, null);
 				addContainerProperty("Nomor Telepon", String.class, null);
 				addContainerProperty("Aktif?", String.class, null);
 				addContainerProperty("Operasi", GridLayout.class,null);
@@ -124,7 +125,8 @@ public class UserListViewImpl extends VerticalLayout implements UserListView, Cl
 			item.getItemProperty("Nama").setValue(datum.getUsername());
 			item.getItemProperty("Nama Lengkap").setValue(datum.getName());
 			item.getItemProperty("Role").setValue(datum.getRole().getRoleName());
-			item.getItemProperty("Nomor Pegawai").setValue(datum.getEmployeeNum());
+			item.getItemProperty("NIP").setValue(datum.getEmployeeNum());
+			item.getItemProperty("SIKA").setValue(datum.getSika());
 			item.getItemProperty("Nomor Telepon").setValue(datum.getPhoneNumber());
 			item.getItemProperty("Aktif?").setValue(datum.isActive()?"Aktif":"Tidak Aktif");
 			
@@ -186,7 +188,7 @@ public class UserListViewImpl extends VerticalLayout implements UserListView, Cl
 	Label labelPhoneNumber;
 	Label labelAddress;
 	Label labelActive;
-	
+	Label labelSika;
 	GridLayout layoutDetail;
 	Window windowDetail;
 	/*
@@ -205,7 +207,7 @@ public class UserListViewImpl extends VerticalLayout implements UserListView, Cl
 		if(layoutDetail==null){
 			//buat konten 
 
-			layoutDetail= new GridLayout(2,9){
+			layoutDetail= new GridLayout(2,10){
 				{
 
 					setSpacing(true);
@@ -214,11 +216,12 @@ public class UserListViewImpl extends VerticalLayout implements UserListView, Cl
 					addComponent(new Label("Nama Pengguna"), 0, 1);
 					addComponent(new Label("Nama Lengkap"), 0,2);
 					addComponent(new Label("Role"), 0, 3);
-					addComponent(new Label("Nomor Pegawai"), 0, 4);
-					addComponent(new Label("Jabatan"), 0,5);
-					addComponent(new Label("Nomor Telepon"), 0,6);
-					addComponent(new Label("Alamat"), 0, 7);
-					addComponent(new Label("Aktif?"), 0,8);
+					addComponent(new Label("NIP"), 0, 4);
+					addComponent(new Label("SIKA"), 0, 5);
+					addComponent(new Label("Jabatan"), 0,6);
+					addComponent(new Label("Nomor Telepon"), 0,7);
+					addComponent(new Label("Alamat"), 0, 8);
+					addComponent(new Label("Aktif?"), 0,9);
 				}	
 			};
 			//instantiasi label
@@ -230,16 +233,18 @@ public class UserListViewImpl extends VerticalLayout implements UserListView, Cl
 			 labelPhoneNumber=new Label();
 			 labelAddress=new Label();
 			 labelActive=new Label();
+			 labelSika=new Label();
 			//add Component konten ke layout
 
 			 layoutDetail.addComponent(labelUserName,1,1);
 			 layoutDetail.addComponent(labelName,1,2);
 			 layoutDetail.addComponent(labelRole,1,3);
 			 layoutDetail.addComponent(labelEmployeeNum,1,4);
-			 layoutDetail.addComponent(labelTitle,1,5);
-			 layoutDetail.addComponent(labelPhoneNumber,1,6);
-			 layoutDetail.addComponent(labelAddress,1,7);
-			 layoutDetail.addComponent(labelActive,1,8);
+			 layoutDetail.addComponent(labelSika,1,5);
+			 layoutDetail.addComponent(labelTitle,1,6);
+			 layoutDetail.addComponent(labelPhoneNumber,1,7);
+			 layoutDetail.addComponent(labelAddress,1,8);
+			 layoutDetail.addComponent(labelActive,1,9);
 		}
 		
 		setLabelData(user);

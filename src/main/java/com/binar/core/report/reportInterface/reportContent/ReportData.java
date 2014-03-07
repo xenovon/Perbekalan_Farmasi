@@ -20,6 +20,7 @@ public class ReportData {
 	public enum PeriodeType{
 		BY_MONTH, BY_DAY, BY_RANGE
 	}
+	private boolean withPPN;
 	public static final String SELECT_GOODS_OBAT="obat";
 	public static final String SELECT_GOODS_ALKES="alkesbmhp";
 	
@@ -196,6 +197,12 @@ public class ReportData {
 	}
 	public String getAccepted() {
 		return accepted;
+	}
+	public void setWithPPN(boolean withPPN) {
+		this.withPPN = withPPN;
+	}
+	public boolean isWithPPN() {
+		return withPPN;
 	}
 	
 	

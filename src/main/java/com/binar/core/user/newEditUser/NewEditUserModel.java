@@ -38,6 +38,7 @@ public class NewEditUserModel {
 				user.setRole(data.getRole());
 				user.setTitle(data.getTitle());
 				user.setUsername(data.getUserName());
+				user.setSika(data.getSika());
 				
 				server.save(user);
 				return null;
@@ -61,11 +62,12 @@ public class NewEditUserModel {
 				user.setAddress(data.getAddress());
 				user.setEmployeeNum(data.getEmployeeNum());
 				user.setName(data.getName());
-				user.setPasswordHash(user.getPassword());
+				user.setPassword(user.getMD5(data.getPassword1()));
 				user.setPhoneNumber(data.getPhoneNumber());
 				user.setRole(data.getRole());
 				user.setTitle(data.getTitle());
 				user.setUsername(data.getUserName());
+				user.setSika(data.getSika());
 				server.update(user);
 				return null;
 			} catch (Exception e) {
@@ -85,8 +87,14 @@ public class NewEditUserModel {
 		User user=getUser(idUser);
 		try {
 			String password=getRandomPassword();
-			user.setPasswordHash(password);
+			System.out.println(password);
+			System.out.println("password sekarang "+user.getPassword());
+			user.setPassword(user.getMD5(password));
+			System.out.println("password baru "+user.getPassword());
+			
 			server.update(user);
+			System.out.println("password save "+user.getPassword());
+
 			return password;
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -13,7 +13,8 @@ interface  InsuranceManagementView {
 		public void buttonClick(String buttonName);
 		public void editClick(int idInsurance);
 		public void deleteClick(int idInsurance);
-	
+		public void showClick(int idInsurance);
+
 	}
 	public void init();
 	public void construct();

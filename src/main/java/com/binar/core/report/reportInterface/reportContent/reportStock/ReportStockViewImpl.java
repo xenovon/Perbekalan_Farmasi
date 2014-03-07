@@ -40,6 +40,7 @@ public class ReportStockViewImpl extends VerticalLayout implements ClickListener
 	
 	private OptionGroup selectGoodsType;
 	private DateField selectDate;
+	private OptionGroup selectWithPPN;
 	
 	private GeneralFunction function;
 	
@@ -76,9 +77,20 @@ public class ReportStockViewImpl extends VerticalLayout implements ClickListener
 		
 		selectGoodsType.setItemCaption("obat", "Laporan Stok Opname Obat");
 		selectGoodsType.setItemCaption("alkesbmhp", "Laporan Stok Opname Alkes & BMHP");
+
+		selectWithPPN=new OptionGroup("Harga Termasuk PPN?");
+		Item itemPPN1=selectWithPPN.addItem("ya");
+		Item itemPPN2=selectWithPPN.addItem("tidak");
+		selectWithPPN.setImmediate(true);
+		selectWithPPN.setValue("ya");
+		
+		selectWithPPN.setItemCaption("ya", "Ya");
+		selectWithPPN.setItemCaption("tidak", "Tidak");
+
 		
 		selectDate.addValueChangeListener(this);
 		selectGoodsType.addValueChangeListener(this);
+		selectWithPPN.addValueChangeListener(this);
 		updateWindowOpener();
 		construct();
 
@@ -100,7 +112,7 @@ public class ReportStockViewImpl extends VerticalLayout implements ClickListener
 				setMargin(true);
 			}
 		};
-		this.addComponents(selectGoodsType, selectDate, layout);
+		this.addComponents(selectGoodsType, selectDate, selectWithPPN, layout);
 	}
 	@Override
 	public void setListener(ReportContentListener listener) {
@@ -139,6 +151,13 @@ public class ReportStockViewImpl extends VerticalLayout implements ClickListener
 		data.setSelectedDay(selectDate.getValue());
 		data.setSelectedGoods((String)selectGoodsType.getValue());
 		data.setType(ReportType.STOCK);
+		String selectPPN=(String)selectWithPPN.getValue();
+		if(selectPPN.equals("ya")){
+			data.setWithPPN(true);
+		}else{
+			data.setWithPPN(false);
+		}
+		System.out.println("value "+data.isWithPPN());
 		return data;
 	}
 

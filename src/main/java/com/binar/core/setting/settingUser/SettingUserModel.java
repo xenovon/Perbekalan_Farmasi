@@ -26,7 +26,7 @@ public class SettingUserModel {
 			error=new ArrayList<String>();
 			try {
 				if(passwordMode){
-					user.setPasswordHash(data.getPassword1());
+					user.setPassword(user.getMD5(data.getPassword1()));
 				}else{
 					user.setActive(true);
 					user.setAddress(data.getAddress());

@@ -135,4 +135,8 @@ public class InsuranceManagementPresenter implements InsuranceManagementListener
 		
 	}
 
+	public void showClick(int idInsurance) {
+		view.showDetailWindow(model.getSingleInsurance(idInsurance));
+	}
+
 }
