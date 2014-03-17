@@ -70,7 +70,7 @@ public class ForecastStepModel {
 			period=12;
 		}
 		List<Integer> returnValue =new ArrayList<Integer>();
-		LocalDate time=new LocalDate();
+		LocalDate time=new LocalDate().minusMonths(period);
 		int i=0;
 		Goods goods;
 		try {
@@ -82,7 +82,8 @@ public class ForecastStepModel {
 		while(i!=period){
 			int consumptionCount=getConsumptionPerMonth(time, goods);
 			returnValue.add(consumptionCount);
-			time=time.minusMonths(1);
+			time=time.plusMonths(1);
+			System.out.println("Current Month "+time.toString());
 			i++;
 		}
 		return returnValue;
@@ -102,7 +103,7 @@ public class ForecastStepModel {
 		for (GoodsConsumption consumption : consumptionOfMonth){
 			returnValue=returnValue+consumption.getQuantity();
 		}
-
+		System.out.println("Consumption Count "+returnValue +" In "+endDate.toString());
 		return returnValue;
 	}
 
@@ -115,7 +116,7 @@ public class ForecastStepModel {
 		}
 		LocalDate dateNow=new LocalDate();
 		LocalDate dateLater=dateNow.minusMonths(select);
-		return date.dateToText(dateNow.toDate())+"-"+date.dateToText(dateLater.toDate());
+		return date.dateToText(dateLater.toDate())+"-"+date.dateToText(dateNow.toDate());
 	}
 
 }

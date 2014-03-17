@@ -40,6 +40,7 @@ public class ForecastStepPresenter implements ForecastStepListener{
 		view.setViewMode(ViewMode.RESULT);
 		String selectedGoods = view.getSelectedGoods();
 		String selectedPeriod = view.getSelectedPeriod();
+		System.out.println("Selected Period "+selectedPeriod);
 		if(forecaster==null){
 			forecaster=new Forecaster();
 		}
@@ -47,7 +48,7 @@ public class ForecastStepPresenter implements ForecastStepListener{
 			Goods goods=model.getGoods(selectedGoods);
 			view.setForecastTitle("Peramalan untuk barang " + goods.getName()+" Periode " +model.getMonthSpan(selectedPeriod));
 //			List<Integer> data=model.generateConsumptionData(selectedGoods, selectedPeriod);
-			List<Integer> data=model.generateDummyConsumptionData(selectedPeriod, true);
+			List<Integer> data=model.generateConsumptionData(goods.getIdGoods(),selectedPeriod);
 			System.err.println("Data : "+ data.toString());
 			if(data!=null){ //jika datanya ada
 				forecaster.execute(data); //menghitung forecast			

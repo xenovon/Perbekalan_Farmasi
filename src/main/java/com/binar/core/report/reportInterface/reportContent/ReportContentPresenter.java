@@ -58,7 +58,6 @@ public class ReportContentPresenter  implements ReportContentListener{
 		return reportDailyConsumption;
 
 	}
-	
 	public Component getExpiredGoods(){
 		if(reportExpiredGoods==null){
 			reportExpiredGoods=new ReportExpiredGoodsViewImpl(function);

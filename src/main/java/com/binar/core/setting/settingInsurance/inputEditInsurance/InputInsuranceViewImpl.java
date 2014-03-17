@@ -147,7 +147,8 @@ public class InputInsuranceViewImpl extends FormLayout implements
 		id=data.getIdInsurance();
 		inputName.setValue(data.getName());;
 		inputDescription.setValue(data.getDescription());;
-		
+		inputShow.setValue(data.isShowInDropdown());
+	
 	}
 	int id=0;
 	@Override
