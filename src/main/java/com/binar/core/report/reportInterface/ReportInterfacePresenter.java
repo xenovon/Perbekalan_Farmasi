@@ -51,12 +51,12 @@ public class ReportInterfacePresenter implements ReportInterfaceListener{
 
 		}else if(loginManager.getRoleId().equals(loginManager.PNJ)){
 			view.getButtonConsumption().setVisible(false);
-			view.getButtonDailyConsumption().setVisible(false);
+			view.getButtonDailyConsumption().setVisible(true);
 			view.getButtonExpiredGoods().setVisible(true);
 			view.getButtonProcurement().setVisible(true);
-			view.getButtonReceipt().setVisible(false);
+			view.getButtonReceipt().setVisible(true);
 			view.getButtonRequirement().setVisible(true);
-			view.getButtonStock().setVisible(false);
+			view.getButtonStock().setVisible(true);
 		}else if(loginManager.getRoleId().equals(loginManager.PPK)){
 			view.getButtonConsumption().setVisible(false);
 			view.getButtonDailyConsumption().setVisible(false);

@@ -29,7 +29,6 @@ public class TripleExponentialSmoothingProcess implements ForecastProcessInterfa
 			return 0;
 		}
 	}
-
 	@Override
 	public double getNextMonthMSE() {
 		if(model!=null){

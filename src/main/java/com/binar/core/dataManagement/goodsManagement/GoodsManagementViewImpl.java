@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.binar.entity.Goods;
 import com.binar.entity.ReqPlanning;
+import com.binar.entity.enumeration.EnumStockStatus;
 import com.binar.generalFunction.GeneralFunction;
 import com.binar.generalFunction.TableFilter;
 import com.binar.generalFunction.TextManipulator;
@@ -84,17 +85,17 @@ public class GoodsManagementViewImpl extends VerticalLayout
 		
 		tableContainer=new IndexedContainer(){
 			{
-				addContainerProperty("Kode Barang", String.class, null);
-				addContainerProperty("Nama Barang", String.class,null);
-				addContainerProperty("Tipe Barang", String.class, null);
-				addContainerProperty("Asuransi", String.class, null);
-				addContainerProperty("Satuan", String.class, null);
-				addContainerProperty("Stok Saat Ini", Integer.class, null);
-				addContainerProperty("Stok Minimum", Integer.class, null);
-				addContainerProperty("Kemasan", String.class,null);
-				addContainerProperty("Kategori", String.class, null);
-				addContainerProperty("HET", String.class, null);
-				addContainerProperty("Fast Moving?", String.class, null);
+				addContainerProperty("Kode Barang", Label.class, null);
+				addContainerProperty("Nama Barang", Label.class,null);
+				addContainerProperty("Tipe Barang", Label.class, null);
+				addContainerProperty("Asuransi", Label.class, null);
+				addContainerProperty("Satuan", Label.class, null);
+				addContainerProperty("Stok Saat Ini", Label.class, null);
+				addContainerProperty("Stok Minimum",Label.class, null);
+				addContainerProperty("Kemasan", Label.class,null);
+				addContainerProperty("Kategori", Label.class, null);
+				addContainerProperty("HET", Label.class, null);
+				addContainerProperty("Fast Moving?", Label.class, null);
 				addContainerProperty("Operasi", GridLayout.class,null);
 				
 			}
@@ -230,18 +231,28 @@ public class GoodsManagementViewImpl extends VerticalLayout
 		for(Goods datum:data){
 			final Goods datumFinal=datum;
 			Item item = tableContainer.addItem(datum.getIdGoods());
-			
-			item.getItemProperty("Kode Barang").setValue(datum.getIdGoods());
-			item.getItemProperty("Nama Barang").setValue(datum.getName());
-			item.getItemProperty("Tipe Barang").setValue(datum.getType().toString());
-			item.getItemProperty("Asuransi").setValue(datum.getInsurance().getName());
-			item.getItemProperty("Satuan").setValue(datum.getUnit());
-			item.getItemProperty("Stok Saat Ini").setValue(datum.getCurrentStock());
-			item.getItemProperty("Stok Minimum").setValue(datum.getMinimumStock());
-			item.getItemProperty("Kemasan").setValue(datum.getGoodsPackage());
-			item.getItemProperty("Kategori").setValue(datum.getCategory().toString());
-			item.getItemProperty("HET").setValue(text.doubleToRupiah(datum.getHet()));
-			item.getItemProperty("Fast Moving?").setValue(datum.isImportant()?"Ya":"Tidak");			
+			EnumStockStatus stockStatus=datum.getStockStatus();
+			String color="";
+			if(stockStatus==EnumStockStatus.WARNING){
+				color="rgb(226, 152, 20)";
+			}else if(stockStatus==EnumStockStatus.LESS){
+				color="red";
+			}else{
+				color="black";
+			}
+			item.getItemProperty("Kode Barang").setValue(new Label("<div style='color:"+color+";'>"+datum.getIdGoods()+"</div>", ContentMode.HTML));
+			item.getItemProperty("Nama Barang").setValue(new Label("<div style='color:"+color+";'>"+datum.getName()+"</div>", ContentMode.HTML));
+			item.getItemProperty("Tipe Barang").setValue(new Label("<div style='color:"+color+";'>"+datum.getType().toString()+"</div>", ContentMode.HTML));
+			item.getItemProperty("Asuransi").setValue(new Label("<div style='color:"+color+";'>"+datum.getInsurance().getName()+"</div>", ContentMode.HTML));
+			item.getItemProperty("Satuan").setValue(new Label("<div style='color:"+color+";'>"+datum.getUnit()+"</div>", ContentMode.HTML));
+			item.getItemProperty("Stok Saat Ini").setValue(new Label("<div style='color:"+color+";'>"+datum.getCurrentStock()+"</div>", ContentMode.HTML));
+			item.getItemProperty("Stok Minimum").setValue(new Label("<div style='color:"+color+";'>"+datum.getMinimumStock()+"</div>", ContentMode.HTML));
+			item.getItemProperty("Kemasan").setValue(new Label("<div style='color:"+color+";'>"+datum.getGoodsPackage()+"</div>", ContentMode.HTML));
+			item.getItemProperty("Kategori").setValue(new Label("<div style='color:"+color+";'>"+datum.getCategory().toString()+"</div>", ContentMode.HTML));
+			item.getItemProperty("HET").setValue(new Label("<div style='color:"+color+";'>"+text.doubleToRupiah(datum.getHet())+"</div>", ContentMode.HTML));
+			String important=datum.isImportant()?"Ya":"Tidak";
+			item.getItemProperty("Fast Moving?").setValue(new Label("<div style='color:"+color+";'>"+important+"</div>", ContentMode.HTML));			
+
 			
 			item.getItemProperty("Operasi").setValue(new GridLayout(3,1){
 			{
@@ -338,5 +349,18 @@ public class GoodsManagementViewImpl extends VerticalLayout
 		buttonInput.setVisible(true);
 	}	
 	
+	/*
+	 * 			item.getItemProperty("Nama Barang").setValue(datum.getName());
+			item.getItemProperty("Tipe Barang").setValue(datum.getType().toString());
+			item.getItemProperty("Asuransi").setValue(datum.getInsurance().getName());
+			item.getItemProperty("Satuan").setValue(datum.getUnit());
+			item.getItemProperty("Stok Saat Ini").setValue(datum.getCurrentStock());
+			item.getItemProperty("Stok Minimum").setValue(datum.getMinimumStock());
+			item.getItemProperty("Kemasan").setValue(datum.getGoodsPackage());
+			item.getItemProperty("Kategori").setValue(datum.getCategory().toString());
+			item.getItemProperty("HET").setValue(text.doubleToRupiah(datum.getHet()));
+			item.getItemProperty("Fast Moving?").setValue(datum.isImportant()?"Ya":"Tidak");			
+
+	 */
 	
 }

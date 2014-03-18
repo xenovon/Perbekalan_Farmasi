@@ -14,6 +14,10 @@ public class DoubleExponentialSmoothingProcess implements ForecastProcessInterfa
 	private DataSet dataSet;
 	private Observation nextMonth;
 	public void init(DataSet dataSet) {
+		if(dataSet.size()<3){
+			dataSet.add(new Observation(0));
+			dataSet.add(new Observation(0));
+		}
 		model=DoubleExponentialSmoothingModel.getBestFitModel(dataSet);
 		this.dataSet=dataSet;
 		nextMonth=new Observation(0);
