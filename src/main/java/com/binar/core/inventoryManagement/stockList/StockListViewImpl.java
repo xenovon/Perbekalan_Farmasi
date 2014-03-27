@@ -169,13 +169,13 @@ public class StockListViewImpl  extends VerticalLayout implements StockListView,
 				setMargin(true);
 				setSpacing(true);
 				addComponent(new Label("Nama Barang"), 0,1);
-				addComponent(new Label("Stok Saat Ini"), 0,2);
-				addComponent(new Label("Kemasan"), 0,3);
-				addComponent(new Label("Pabrik"), 0,4);
+//				addComponent(new Label("Stok Saat Ini"), 0,2);
+				addComponent(new Label("Kemasan"), 0,2);
+//				addComponent(new Label("Pabrik"), 0,4);
 				addComponent(labelGoodsName, 1,1);
-				addComponent(labelUnit, 1,2);
-				addComponent(labelPackage, 1,3);
-				addComponent(labelManufacturer, 1,4);
+//				addComponent(labelUnit, 1,2);
+				addComponent(labelPackage, 1,2);
+//				addComponent(labelManufacturer, 1,4);
 			}
 		});
 		this.addComponent(table);
