@@ -122,7 +122,6 @@ public class DeletionApprovalModel {
 				}else{
 					delGoods.setAcceptance(data.getAccepted());					
 				}
-				delGoods.setAcceptance(data.getAccepted());
 
 				Goods goods=delGoods.getGoods();
 				int stock=goods.getCurrentStock();

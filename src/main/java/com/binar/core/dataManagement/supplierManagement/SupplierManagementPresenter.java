@@ -91,7 +91,7 @@ public class SupplierManagementPresenter implements SupplierManagementListener{
 			presenterInput=new InputSupplierPresenter(modelInput, viewInput, function, false);
 		}
 		viewInput.resetForm();		
-		view.displayForm(viewInput, "Masukan Data Distributor Baru");
+		view.displayForm(viewInput, "Masukan Data Produsen Baru");
 		addWIndowCloseListener();
 
 	}
