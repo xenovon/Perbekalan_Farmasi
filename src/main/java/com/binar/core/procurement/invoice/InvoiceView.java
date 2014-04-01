@@ -13,6 +13,8 @@ public interface InvoiceView {
 		public void showClick(int idInvoice);
 		public void valueChange(String value);
 		public void updateTable();
+		public double getPercentage(Invoice invoice);
+
 		
 	}
 	

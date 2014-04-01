@@ -161,6 +161,9 @@ public class InvoicePresenter implements InvoiceListener{
 		}
 		
 	}
+	public double getPercentage(Invoice invoice){
+		return model.getPercentage(invoice);
+	}
 	public void addWIndowCloseListener(){
 		Collection<Window> windows=view.getUI().getWindows();
 		for(Window window:windows){
@@ -171,5 +174,6 @@ public class InvoicePresenter implements InvoiceListener{
 			});
 		}
 	}
+	
 
 }

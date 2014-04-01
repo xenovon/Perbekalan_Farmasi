@@ -28,6 +28,7 @@ public class FormData {
 	private String price="";
 	private String information="";
 	private String periode="";
+	private boolean isPpn=false;
 	
 	private GeneralFunction function;
 	private EbeanServer server;
@@ -184,5 +185,11 @@ public class FormData {
 				 + ""+manufacturId+" + "+price+" + "+information+" + "+periode;
 	}
 	
-		
+	public void setPpn(boolean isPpn) {
+		this.isPpn = isPpn;
+	}
+	
+	public boolean isPpn() {
+		return isPpn;
+	}
 }

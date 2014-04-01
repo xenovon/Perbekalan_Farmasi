@@ -62,5 +62,18 @@ public class InvoiceModel {
 		}
 
 	}
+	public double getPercentage(Invoice invoice){
+		double countInvoice=0;
+		double countPurchaseOrder=0;
+		for(InvoiceItem item:invoice.getInvoiceItem()){
+			countInvoice=countInvoice+item.getQuantity();
+			countPurchaseOrder=countPurchaseOrder+item.getPurchaseOrderItem().getQuantity();
+		}
+		System.out.println("JUmlah Invoice "+countInvoice);
+		System.out.println("JUmlah PO "+countPurchaseOrder);
+		
+		double returnValue=countInvoice/countPurchaseOrder*100;
+		return returnValue;
+	}
 
 }

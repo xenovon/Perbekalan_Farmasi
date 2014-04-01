@@ -305,6 +305,7 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 	private Label labelName;
 	private Label labelUnit;
 	private Label labelQuantity;
+	
 	private Window windowDetail;
 	private VerticalLayout layoutDetail;
 
@@ -320,6 +321,7 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 					addComponent(new Label("Nama Barang : "), 0,0);
 					addComponent(new Label("Satuan : "), 0, 1);
 					addComponent(new Label("Total Penerimaan : "), 0, 2);
+
 				}	
 			};
 			//instantiasi label
@@ -347,6 +349,7 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 		        	addContainerProperty("Jumlah", String.class, null);
 		        	addContainerProperty("Satuan", String.class, null);
 		        	addContainerProperty("Keterangan", String.class, null);
+		        	addContainerProperty("Persentase Penerimaan", String.class, null);
 		        	addContainerProperty("Operasi", GridLayout.class, null);
 	        	}
 	        };        
@@ -512,7 +515,9 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 				itemDetail.getItemProperty("Satuan").setValue(reception.getInvoiceItem().getPurchaseOrderItem().getSupplierGoods().getGoods().getUnit());
 				itemDetail.getItemProperty("Jumlah").setValue(text.intToAngka(reception.getQuantityReceived()));
         		itemDetail.getItemProperty("Keterangan").setValue(reception.getInformation());;
-				itemDetail.getItemProperty("Operasi").setValue(new GridLayout(2,1){{
+        		itemDetail.getItemProperty("Persentase Penerimaan").setValue(text.doubleToAngka(listener.getPercentage(reception))+" %");;
+        		
+        		itemDetail.getItemProperty("Operasi").setValue(new GridLayout(2,1){{
 					Button buttonEdit=new Button();
 					buttonEdit.setDescription("Ubah data ini");
 					buttonEdit.setIcon(new ThemeResource("icons/image/icon-edit.png"));

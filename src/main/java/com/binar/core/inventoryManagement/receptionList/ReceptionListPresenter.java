@@ -236,5 +236,10 @@ public class ReceptionListPresenter implements ReceptionListListener {
 	public List<GoodsReception> getRecByDate(DateTime date) {
 		return model.getReceptionsByDate(date);
 	}
+	
+	@Override
+	public double getPercentage(GoodsReception reception) {
+		return model.getPercentage(reception);
+	}
 
 }

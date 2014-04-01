@@ -310,7 +310,7 @@ public class InvoiceViewImpl extends VerticalLayout implements InvoiceView, Clic
 	private Label labelAmountPaid;
 	private Label labelItemCount;
 	private Label labelInvoiceDate;
-	
+	private Label labelPercentage;
 	private Table tableDetail;
 	private Window detailWindow;
 	private IndexedContainer containerDetail;
@@ -335,8 +335,9 @@ public class InvoiceViewImpl extends VerticalLayout implements InvoiceView, Clic
 			 labelAmountPaid=new Label();
 			 labelItemCount=new Label();
 			 labelInvoiceDate=new Label();
+			 labelPercentage=new Label();
 			
-			layoutContent=new GridLayout(2,8){
+			layoutContent=new GridLayout(2,9){
 				{
 					setSpacing(true);
 					setMargin(true);
@@ -348,6 +349,7 @@ public class InvoiceViewImpl extends VerticalLayout implements InvoiceView, Clic
 					addComponent(new Label("Jumlah dibayar"), 0,5 );
 					addComponent(new Label("Jumlah Barang"), 0,6 );
 					addComponent(new Label("Waktu input"), 0,7 );
+					addComponent(new Label("Persentase Faktur"), 0,8);
 					
 					addComponent(labelInvoiceNumber, 1,0 );
 					addComponent(labelInvoiceName, 1,1 );
@@ -357,6 +359,7 @@ public class InvoiceViewImpl extends VerticalLayout implements InvoiceView, Clic
 					addComponent(labelAmountPaid, 1,5 );
 					addComponent(labelItemCount, 1,6);
 					addComponent(labelTimestamp, 1,7);
+					addComponent(labelPercentage, 1, 8);
 					
 				}
 			};
@@ -412,6 +415,7 @@ public class InvoiceViewImpl extends VerticalLayout implements InvoiceView, Clic
 		 labelAmountPaid.setValue(text.doubleToRupiah(invoice.getAmountPaid()));
 		 labelItemCount.setValue(invoice.getInvoiceItem().size()+"");
 		 labelInvoiceDate.setValue(date.dateToText(invoice.getInvoiceDate(), true));
+		 labelPercentage.setValue(text.doubleToAngka(listener.getPercentage(invoice))+" % dari kuantitas surat pesanan");
 		 containerDetail.removeAllItems();
 		 for(InvoiceItem datum:invoice.getInvoiceItem()){
 				Item item=containerDetail.addItem(datum.getIdInvoiceItem());			

@@ -17,6 +17,7 @@ import com.binar.entity.SupplierGoods;
 import com.binar.generalFunction.AcceptancePyramid;
 import com.binar.generalFunction.GeneralFunction;
 import com.binar.generalFunction.TableFilter;
+import com.binar.generalFunction.TextManipulator;
 import com.vaadin.data.Container;
 import com.vaadin.data.Container.Filter;
 import com.vaadin.data.Container.ItemSetChangeEvent;
@@ -55,6 +56,7 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 
 	private GeneralFunction generalFunction;
 
+	private TextManipulator text;
 	private Label labelSelectMonth;
 	private Label labelTitle;
 	private Table table;
@@ -68,6 +70,7 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 	private AcceptancePyramid accept;
 	public InputRequirementPlanningViewImpl(GeneralFunction function){
 		this.generalFunction=function;
+		this.text=function.getTextManipulator();
 		this.accept=function.getAcceptancePyramid();
 	}
 	//Table Filter
@@ -253,12 +256,14 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 	Label labelInformation;
 	Label labelTimestamp;
 	Label labelPriceEstimation;	
+	Label labelPriceEstimationPPN;	
+	
 	Window windowDetail;
 	//menampilkan jendela untuk detail
 	public void showDetailWindow(ReqPlanning data){
 		if(layoutDetail==null){
 			//buat konten 
-			layoutDetail= new GridLayout(2,12){
+			layoutDetail= new GridLayout(2,13){
 				{
 					setSpacing(true);
 					setMargin(true);
@@ -273,6 +278,7 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 					addComponent(new Label("Keterangan"), 0, 9);
 					addComponent(new Label("Waktu Input"), 0,10);
 					addComponent(new Label("Estimasi Harga"), 0, 11);
+					addComponent(new Label("Estimasi Harga + PPN"), 0, 12);
 				}	
 			};
 			//instantiasi label
@@ -287,6 +293,7 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 			labelInformation =new Label();
 			labelTimestamp =new Label();
 			labelPriceEstimation =new Label();	
+			labelPriceEstimationPPN=new Label();
 			
 			//add Component konten ke layout
 			layoutDetail.addComponent(labelId, 1,1);
@@ -300,6 +307,7 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 			layoutDetail.addComponent(labelInformation, 1,9);
 			layoutDetail.addComponent(labelTimestamp, 1,10);
 			layoutDetail.addComponent(labelPriceEstimation, 1,11);
+			layoutDetail.addComponent(labelPriceEstimationPPN, 1,12);
 		}
 		
 		setLabelData(data);
@@ -335,7 +343,8 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 			labelAcceptedQuantity.setValue(String.valueOf(data.getAcceptedQuantity()));
 			labelInformation.setValue(data.getInformation());
 			labelTimestamp.setValue(data.getTimestamp().toString());
-			labelPriceEstimation.setValue("Rp "+data.getPriceEstimation());
+			labelPriceEstimation.setValue(text.doubleToRupiah(data.getPriceEstimation()));
+			labelPriceEstimationPPN.setValue(text.doubleToRupiah(data.getPriceEstimationPPN()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		

@@ -10,6 +10,7 @@ import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
@@ -44,6 +45,7 @@ public class InputFormViewImpl extends FormLayout implements
 	private ComboBox inputSupplier;
 	private TextField inputPrice;
 	private TextArea inputInformation;
+	private CheckBox isPPN;
 	//untuk label unit di samping jumlah kebutuhan, isi sesuai jenis barang
 	private Label labelSatuan;
 	private Button buttonReset;
@@ -139,6 +141,11 @@ public class InputFormViewImpl extends FormLayout implements
 
 		labelSatuan =new Label("Satuan");
 		
+		isPPN=new CheckBox("Harga Termasuk PPN");
+		isPPN.setValue(true);
+		isPPN.addValueChangeListener(this);		
+		isPPN.setImmediate(true);
+
 		buttonReset=new Button("Reset");
 		buttonReset.addClickListener(this);
 		
@@ -149,14 +156,23 @@ public class InputFormViewImpl extends FormLayout implements
 		buttonCancel.addClickListener(this);
 		construct();
 	}
+	boolean isEditMode=false;
+	int idReqPlanning=0;
 	//set data yang mesti diedit
 	public void setDataEdit(ReqPlanning data){
 		
+		//untuk kebutuuhan edit
+		isEditMode=true;
+		idReqPlanning=data.getIdReqPlanning();
+
 		inputGoodsQuantity.setValue(String.valueOf(data.getQuantity()));
 		inputGoodsSelect.setValue(data.getSupplierGoods().getGoods().getIdGoods());
 		inputManufacturer.setValue(String.valueOf(data.getSupplierGoods().getManufacturer().getIdManufacturer()));
 		inputSupplier.setValue(String.valueOf(data.getSupplierGoods().getSupplier().getIdSupplier()));
-		inputPrice.setValue(String.valueOf(data.getPriceEstimation()));
+		
+		inputPrice.setValue(String.valueOf(data.getPriceEstimationPPN()));
+		isPPN.setValue(true);
+		
 		inputInformation.setValue(data.getInformation());
 		buttonSubmit.setCaption("Simpan Perubahan");
 	}
@@ -184,6 +200,7 @@ public class InputFormViewImpl extends FormLayout implements
 		this.addComponent(inputSupplier);
 		this.addComponent(inputManufacturer);
 		this.addComponent(inputPrice);
+		this.addComponent(isPPN);
 		this.addComponent(labelErrorPrice);
 		this.addComponent(inputInformation);
 		this.addComponent(labelGeneralError);
@@ -257,6 +274,10 @@ public class InputFormViewImpl extends FormLayout implements
 			listener.realTimeValidator("inputManufacturer");						
 		}else if(event.getProperty()==inputSupplier){
 			listener.realTimeValidator("inputSupplier");			
+		}else if(event.getProperty()==isPPN){
+			if(isEditMode){
+				listener.changePrice(isPPN.getValue(), idReqPlanning);
+			}
 		}
 	}
 	
@@ -364,7 +385,9 @@ public class InputFormViewImpl extends FormLayout implements
 		this.inputInformation = inputInformation;
 	}
 	
-	
+	public CheckBox getIsPPN() {
+		return isPPN;
+	}
 	
 	
 	

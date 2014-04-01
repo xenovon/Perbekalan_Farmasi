@@ -10,6 +10,7 @@ public interface InputFormView {
 		void buttonClick(String source);
 		void realTimeValidator(String inputField);
 		public void setPeriode(String periode);
+		public void changePrice(boolean isPPN, int idReqPlanning);
 	}
 	public enum ErrorLabel{
 		QUANTITY,SUPPLIER,GENERAL

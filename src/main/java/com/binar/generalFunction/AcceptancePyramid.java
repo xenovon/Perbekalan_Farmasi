@@ -13,10 +13,17 @@ public class AcceptancePyramid {
 		PNJ = 3
 		IFRS = 1
 		Tiap disetujui, maka nilai acceptance akan ditambahkan sesuai dengan value dari role
+		Jika tidak disetujui, maka nilai acceptance dikurangi 1
 		Maka : 
 		Jika sudah disetujui sama ifrs , value = 1;
 		jika sudah disetujui ama ifrs dan pnj = 4;
 		jika sudah disetujui ama ifrs dan pnj dan ppk = 9;
+		
+		Jika tidak disetujui sama ifrs , value = -1;
+		jika tidak disetujui ama  pnj = 3;
+		jika tidak disetujui ama ppk = 8;
+		
+		
 		
 		Jika value == 9, maka rencana kebutuhan dianggap sudah disetujui
 		

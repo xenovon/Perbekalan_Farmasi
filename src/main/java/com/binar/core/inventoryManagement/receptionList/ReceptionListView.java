@@ -23,6 +23,7 @@ public interface ReceptionListView {
 		public List <GoodsReception> getRecByDate (DateTime date);
 		public int getNumberOfReceptionsByDate(DateTime periode);
 		public void getViewMode(String selectedViewMode);
+		public double getPercentage(GoodsReception reception);
 	}
 	
 	public boolean updateTableData(Map<Goods, Integer> data);

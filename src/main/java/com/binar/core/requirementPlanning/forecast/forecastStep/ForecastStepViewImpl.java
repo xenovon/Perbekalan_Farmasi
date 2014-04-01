@@ -1,7 +1,12 @@
 package com.binar.core.requirementPlanning.forecast.forecastStep;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.SortedSet;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.dussan.vaadin.dcharts.DCharts;
 
@@ -105,7 +110,7 @@ public class ForecastStepViewImpl extends VerticalLayout implements ForecastStep
 		layoutResult.setMargin(true);
 		
 		layoutChart =new CssLayout();
-		labelHelp=new Label("<i>Makin kecil nilai MSE, peramalan makin akurat</i>", ContentMode.HTML);
+		labelHelp=new Label("<i>Pilih hasil peramalan dengan angka MSE paling kecil</i>", ContentMode.HTML);
 		
 		layoutButtonSwitch=new CssLayout();
 		
@@ -193,6 +198,7 @@ public class ForecastStepViewImpl extends VerticalLayout implements ForecastStep
 		final Component finalChartTriple=chartTriple;
 		final Component finalChartAll=chartAll;
 		
+		
 		System.out.println("Generate Forecast VIew");
 		
 		boolean isTripleMode;
@@ -201,6 +207,8 @@ public class ForecastStepViewImpl extends VerticalLayout implements ForecastStep
 		}else{
 			isTripleMode=false;
 		}
+		
+		ForecastType minimumMSE=getSmallestMSE(finalForecaster);
 		
 		
 		//langkah 1, tambahkan chart;
@@ -227,36 +235,75 @@ public class ForecastStepViewImpl extends VerticalLayout implements ForecastStep
 			layoutResult.addComponent(layoutTriple);
 		}
 		
-		
-		layoutSimple=new VerticalLayout(){{
-			addComponent(new Label("<h4>Simple Exponential Smoothing</h4>", ContentMode.HTML));
-			addComponent(new Label(text.intToAngka(finalForecaster.getProcessSimpleES().getNextMonthValue())+"", ContentMode.HTML));
-			addComponent(new Label("MSE : "+text.doubleToAngka2(finalForecaster.getProcessSimpleES().getNextMonthMSE())));			
-		}};
+		if(minimumMSE==ForecastType.SIMPLE){
+			layoutSimple=new VerticalLayout(){{
+				addComponent(new Label("<h4 style='color:#00d607'>Simple Exponential Smoothing</h4>", ContentMode.HTML));
+				addComponent(new Label("<span style='color:#00d607'>"+text.intToAngka(finalForecaster.getProcessSimpleES().getNextMonthValue())+"</span>", ContentMode.HTML));
+				addComponent(new Label("<span style='color:#00d607'> MSE : "+text.doubleToAngka2(finalForecaster.getProcessSimpleES().getNextMonthMSE())+"</span>", ContentMode.HTML));			
+			}};			
+		}else{
+			layoutSimple=new VerticalLayout(){{
+				addComponent(new Label("<h4>Simple Exponential Smoothing</h4>", ContentMode.HTML));
+				addComponent(new Label(text.intToAngka(finalForecaster.getProcessSimpleES().getNextMonthValue())+"", ContentMode.HTML));
+				addComponent(new Label("MSE : "+text.doubleToAngka2(finalForecaster.getProcessSimpleES().getNextMonthMSE())));			
+			}};
+
+		}
 		
 		layoutResult.addComponent(layoutSimple);
 		
-		
-		layoutDouble= new VerticalLayout(){{
-			addComponent(new Label("<h4>Double Exponential Smoothing</h4>", ContentMode.HTML));
-			addComponent(new Label(text.intToAngka(finalForecaster.getProcessDoubleES().getNextMonthValue())+"", ContentMode.HTML));
-			addComponent(new Label("MSE : "+text.doubleToAngka2(finalForecaster.getProcessDoubleES().getNextMonthMSE())));
+		if(minimumMSE==ForecastType.DOUBLE){
+			layoutDouble= new VerticalLayout(){{
+				addComponent(new Label("<h4 style='color:#00d607'>Double Exponential Smoothing</h4>", ContentMode.HTML));
+				addComponent(new Label("<span style='color:#00d607'>"+text.intToAngka(finalForecaster.getProcessDoubleES().getNextMonthValue())+"</span>", ContentMode.HTML));
+				addComponent(new Label("<span style='color:#00d607'>MSE : "+text.doubleToAngka2(finalForecaster.getProcessDoubleES().getNextMonthMSE())+"</span>", ContentMode.HTML));
+				
+			}};			
+		}else{
+			layoutDouble= new VerticalLayout(){{
+				addComponent(new Label("<h4>Double Exponential Smoothing</h4>", ContentMode.HTML));
+				addComponent(new Label(text.intToAngka(finalForecaster.getProcessDoubleES().getNextMonthValue())+"", ContentMode.HTML));
+				addComponent(new Label("MSE : "+text.doubleToAngka2(finalForecaster.getProcessDoubleES().getNextMonthMSE())));
+				
+			}};
 			
-		}};
+		}
 		layoutResult.addComponent(layoutDouble);
 		
-		layoutMoving =new VerticalLayout(){{
-			addComponent(new Label("<h4>Moving Average</h4>", ContentMode.HTML));
-			addComponent(new Label(text.intToAngka(finalForecaster.getProcessMovingAverage().getNextMonthValue())+"", ContentMode.HTML));
-			addComponent(new Label("MSE : "+text.doubleToAngka2(finalForecaster.getProcessMovingAverage().getNextMonthMSE())));			
-		}};
+		if(minimumMSE==ForecastType.MOVING){
+			layoutMoving =new VerticalLayout(){{
+				addComponent(new Label("<h4 style='color:#00d607'>Moving Average</h4>", ContentMode.HTML));
+				addComponent(new Label("<span style='color:#00d607'>"+text.intToAngka(finalForecaster.getProcessMovingAverage().getNextMonthValue())+"</span>", ContentMode.HTML));
+				addComponent(new Label("<span style='color:#00d607'>MSE : "+text.doubleToAngka2(finalForecaster.getProcessMovingAverage().getNextMonthMSE())+"</span>", ContentMode.HTML));			
+			}};
+			
+		}else{
+			layoutMoving =new VerticalLayout(){{
+				addComponent(new Label("<h4>Moving Average</h4>", ContentMode.HTML));
+				addComponent(new Label(text.intToAngka(finalForecaster.getProcessMovingAverage().getNextMonthValue())+"", ContentMode.HTML));
+				addComponent(new Label("MSE : "+text.doubleToAngka2(finalForecaster.getProcessMovingAverage().getNextMonthMSE())));			
+			}};
+
+		}
+
+			
 		layoutResult.addComponent(layoutMoving);
 		
-		layoutNaive =new VerticalLayout(){{
-			addComponent(new Label("<h4>Naive</h4>", ContentMode.HTML));
-			addComponent(new Label(text.intToAngka(finalForecaster.getProcessNaive().getNextMonthValue())+"", ContentMode.HTML));
-			addComponent(new Label("MSE : "+text.doubleToAngka2(finalForecaster.getProcessNaive().getNextMonthMSE())));			
-		}};
+		if(minimumMSE==ForecastType.NAIVE){
+			layoutNaive =new VerticalLayout(){{
+				addComponent(new Label("<h4 style='color:#00d607'>Naive</h4>", ContentMode.HTML));
+				addComponent(new Label("<span style='color:#00d607'>"+text.intToAngka(finalForecaster.getProcessNaive().getNextMonthValue())+"</span>", ContentMode.HTML));
+				addComponent(new Label("<span style='color:#00d607'>MSE : "+text.doubleToAngka2(finalForecaster.getProcessNaive().getNextMonthMSE())+"</span>", ContentMode.HTML));			
+			}};			
+		}else{
+			
+			layoutNaive =new VerticalLayout(){{
+				addComponent(new Label("<h4>Naive</h4>", ContentMode.HTML));
+				addComponent(new Label(text.intToAngka(finalForecaster.getProcessNaive().getNextMonthValue())+"", ContentMode.HTML));
+				addComponent(new Label("MSE : "+text.doubleToAngka2(finalForecaster.getProcessNaive().getNextMonthMSE())));			
+			}};
+
+		}
 		layoutResult.addComponent(layoutNaive);
 		
 		//Langkah 3, jika ada triple, tambahkan tombol
@@ -298,6 +345,35 @@ public class ForecastStepViewImpl extends VerticalLayout implements ForecastStep
 			
 			layoutButtonSwitch.addComponent(button);
 		}
-		
 	}
+	
+	enum ForecastType{
+		NAIVE, SIMPLE, DOUBLE, MOVING, 
+	}
+	
+	private ForecastType getSmallestMSE(Forecaster forecast){
+		SortedMap<Double, ForecastType> sort=new TreeMap<Double, ForecastType>();
+			
+		sort.put(forecast.getProcessDoubleES().getNextMonthMSE(), ForecastType.DOUBLE );
+		sort.put( forecast.getProcessSimpleES().getNextMonthMSE(), ForecastType.SIMPLE);
+		sort.put( forecast.getProcessNaive().getNextMonthMSE(), ForecastType.NAIVE);
+		sort.put(forecast.getProcessMovingAverage().getNextMonthMSE(), ForecastType.MOVING);
+		
+		return sort.get(sort.firstKey());
+	}
+	
+	
+	/*testing */
+	public static void main(String[] args) {
+		SortedMap<Double, ForecastType> sort=new TreeMap<Double, ForecastType>();
+		
+		sort.put(12.0, ForecastType.DOUBLE);
+		sort.put(1.1,ForecastType.SIMPLE);
+		sort.put(10.0, ForecastType.NAIVE);
+		sort.put(0.01, ForecastType.MOVING);
+		
+		System.out.println(sort.get(sort.firstKey()));
+	}
+
+	
 }

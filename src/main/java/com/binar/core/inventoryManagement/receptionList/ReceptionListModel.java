@@ -27,10 +27,13 @@ import org.joda.time.DateTime;
 
 
 
+
 import com.avaje.ebean.EbeanServer;
 import com.binar.entity.Goods;
 import com.binar.entity.GoodsConsumption;
 import com.binar.entity.GoodsReception;
+import com.binar.entity.Invoice;
+import com.binar.entity.InvoiceItem;
 import com.binar.generalFunction.GeneralFunction;
 
 public class ReceptionListModel {
@@ -193,4 +196,12 @@ public class ReceptionListModel {
 		return true;
 	}
 	
+	public double getPercentage(GoodsReception reception){
+		double countReception=reception.getQuantityReceived();
+		double countInvoice=reception.getInvoiceItem().getQuantity();
+		
+		double returnValue=countReception/countInvoice*100;
+		return returnValue;
+	}
+
 }

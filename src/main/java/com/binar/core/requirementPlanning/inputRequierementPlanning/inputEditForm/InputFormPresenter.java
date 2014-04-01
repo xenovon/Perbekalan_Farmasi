@@ -142,6 +142,7 @@ public class InputFormPresenter implements PresenterInterface, InputFormView.Inp
 		data.setPrice(view.getInputPrice().getValue());
 		data.setQuantity(view.getInputGoodsQuantity().getValue());
 		data.setSupplierId((String)view.getInputSupplier().getValue());
+		data.setPpn(view.getIsPPN().getValue());
 	}
 	
 	//Dijalankan ketika goods quantity berubah
@@ -260,6 +261,17 @@ public class InputFormPresenter implements PresenterInterface, InputFormView.Inp
 		this.data.setPeriode(periode);
 	}
 	
-	
+	//untuk form edit, ketika check box is ppn diklik
+	public void changePrice(boolean isPPN, int idReqPlanning){
+		ReqPlanning req=model.getSingleReqPlanning(idReqPlanning);
+		if(req!=null){
+			if(isPPN){
+				view.getInputPrice().setValue(String.valueOf(req.getPriceEstimationPPN()));
+			}else{
+				view.getInputPrice().setValue(String.valueOf(req.getPriceEstimation()));
+				
+			}			
+		}
+	}
 	
 }

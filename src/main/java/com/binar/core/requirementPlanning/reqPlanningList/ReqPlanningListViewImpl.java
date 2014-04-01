@@ -206,9 +206,9 @@ public class ReqPlanningListViewImpl extends VerticalLayout
 			}
 			item.getItemProperty("Nama Barang").setValue(labelGoods);
 			item.getItemProperty("Satuan").setValue(datum.getSupplierGoods().getGoods().getUnit());
-			item.getItemProperty("HNA + PPN 10%").setValue(hnaPPN);
+			item.getItemProperty("HNA + PPN 10%").setValue(text.doubleToRupiah(datum.getPriceEstimationPPN()));
 			item.getItemProperty("Kebutuhan").setValue(text.intToAngka(datum.getQuantity()));
-			item.getItemProperty("Total Harga").setValue(totalPrice);
+			item.getItemProperty("Total Harga").setValue(text.doubleToRupiah(datum.getPriceEstimationPPN()*datum.getQuantity()));
 			item.getItemProperty("Produsen").setValue(datum.getSupplierGoods().getManufacturer().getManufacturerName());
 			item.getItemProperty("Distributor").setValue(datum.getSupplierGoods().getSupplier().getSupplierName());
 			item.getItemProperty("Disetujui?").setValue(accept.acceptedBy(datum.getAcceptance()));
@@ -256,6 +256,7 @@ public class ReqPlanningListViewImpl extends VerticalLayout
 	Label labelTimestamp;
 	Label labelPriceEstimation;	
 	Label labelDateAccepted;
+	Label labelPriceEstimationPPN;
 	Window windowDetail;
 	GridLayout layoutDetail;
 	
@@ -263,7 +264,7 @@ public class ReqPlanningListViewImpl extends VerticalLayout
 	public void showDetailWindow(ReqPlanning data){
 		if(layoutDetail==null){
 			//buat konten 
-			layoutDetail= new GridLayout(2,13){
+			layoutDetail= new GridLayout(2,14){
 				{
 					setSpacing(true);
 					setMargin(true);
@@ -279,6 +280,7 @@ public class ReqPlanningListViewImpl extends VerticalLayout
 					addComponent(new Label("Keterangan"), 0, 10);
 					addComponent(new Label("Waktu Input"), 0,11);
 					addComponent(new Label("Estimasi Harga"), 0, 12);
+					addComponent(new Label("Estimasi Harga + PPN"), 0, 13);
 				}	
 			};
 			//instantiasi label
@@ -294,6 +296,7 @@ public class ReqPlanningListViewImpl extends VerticalLayout
 			labelTimestamp =new Label();
 			labelDateAccepted=new Label();
 			labelPriceEstimation =new Label();	
+			labelPriceEstimationPPN =new Label();
 			
 			//add Component konten ke layout
 			layoutDetail.addComponent(labelId, 1,1);
@@ -308,6 +311,7 @@ public class ReqPlanningListViewImpl extends VerticalLayout
 			layoutDetail.addComponent(labelInformation, 1,10);
 			layoutDetail.addComponent(labelTimestamp, 1,11);
 			layoutDetail.addComponent(labelPriceEstimation, 1,12);
+			layoutDetail.addComponent(labelPriceEstimationPPN, 1,13);
 		}
 		
 		setLabelData(data);
@@ -335,7 +339,8 @@ public class ReqPlanningListViewImpl extends VerticalLayout
 			labelInformation.setValue(data.getInformation());
 			labelTimestamp.setValue(data.getTimestamp().toString());
 			labelPriceEstimation.setValue("Rp "+data.getPriceEstimation());
-			labelDateAccepted.setValue(date.dateToText(data.getDateAccepted(), true));
+			labelPriceEstimation.setValue(text.doubleToRupiah(data.getPriceEstimation()));
+			labelPriceEstimationPPN.setValue(text.doubleToRupiah(data.getPriceEstimationPPN()));
 			
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -19,6 +19,7 @@ import com.binar.entity.ReqPlanning;
 import com.binar.entity.Supplier;
 import com.binar.entity.SupplierGoods;
 import com.binar.generalFunction.GeneralFunction;
+import com.binar.generalFunction.GetSetting;
 import com.vaadin.ui.FormFieldFactory;
 import com.vaadin.ui.FormLayout;
 
@@ -26,10 +27,11 @@ public class InputFormModel {
 
 	GeneralFunction function;
 	EbeanServer server;
-	
+	GetSetting setting;
 	public InputFormModel(GeneralFunction function){
 		this.function=function;
 		this.server=function.getServer();
+		this.setting=function.getSetting();
 	}
 	
 	public List<String> validate(FormLayout layout){
@@ -114,12 +116,30 @@ public class InputFormModel {
 			reqPlanning.setInformation(data.getInformation());
 			reqPlanning.setPeriod(function.getDate().parseDateMonth(data.getPeriode()).toDate());
 			reqPlanning.setPriceEstimation(Double.parseDouble(data.getPrice()));
+			
+			double priceDouble=Double.parseDouble(data.getPrice());
+			if(data.isPpn()){
+				reqPlanning.setPriceEstimationPPN(priceDouble);
+				double price=(100/(100+setting.getPPN())*priceDouble);
+				reqPlanning.setPriceEstimation(price);
+			}else{
+				reqPlanning.setPriceEstimation(priceDouble);
+				double pricePPN=(priceDouble+(priceDouble*setting.getPPN()/100));
+				reqPlanning.setPriceEstimationPPN(pricePPN);
+			}
+
 			reqPlanning.setQuantity(Integer.parseInt(data.getQuantity()));
 			reqPlanning.setSupplierGoods(supplierGoods);
 			reqPlanning.setTimestamp(new Date());
 			reqPlanning.setPurchaseOrderCreated(false);
 			
+			
+			
 			server.save(reqPlanning);
+			
+			SupplierGoods supp=reqPlanning.getSupplierGoods();
+			supp.setLastPrice(reqPlanning.getPriceEstimationPPN());
+			server.update(supp);
 			
 			server.commitTransaction();
 			return null;
@@ -211,12 +231,29 @@ public class InputFormModel {
 			reqPlanning.setAcceptedQuantity(0);
 			reqPlanning.setInformation(data.getInformation());
 			reqPlanning.setPeriod(function.getDate().parseDateMonth(data.getPeriode()).toDate());
-			reqPlanning.setPriceEstimation(Double.parseDouble(data.getPrice()));
+			
+			double priceDouble=Double.parseDouble(data.getPrice());
+			if(data.isPpn()){
+				reqPlanning.setPriceEstimationPPN(priceDouble);
+				double price=(100/(100+setting.getPPN())*priceDouble);
+				reqPlanning.setPriceEstimation(price);
+			}else{
+				reqPlanning.setPriceEstimation(priceDouble);
+				double pricePPN=(priceDouble+(priceDouble*setting.getPPN()/100));
+				reqPlanning.setPriceEstimationPPN(pricePPN);
+			}
+
+
+			
 			reqPlanning.setQuantity(Integer.parseInt(data.getQuantity()));
 			reqPlanning.setSupplierGoods(supplierGoods);
 			
 			server.update(reqPlanning);
 			
+			SupplierGoods supp=reqPlanning.getSupplierGoods();
+			supp.setLastPrice(reqPlanning.getPriceEstimationPPN());
+			server.update(supp);
+
 			server.commitTransaction();
 			return null;
 		} catch (NumberFormatException e) {
