@@ -95,7 +95,7 @@ public class ApprovalViewImpl extends VerticalLayout implements
         		addContainerProperty("Produsen", String.class, null);
         		addContainerProperty("Distributor", String.class, null);
         		addContainerProperty("Detail", Button.class, null);
-        		addContainerProperty("Disetujui?", CheckBox.class, new CheckBox("Disetujui"){{setValue(false);}});
+        		addContainerProperty("Disetujui?", ComboBox.class, new CheckBox("Disetujui"){{setValue(false);}});
         		addContainerProperty("Jumlah Disetujui", TextField.class, null);        		
         	}
         };
@@ -157,6 +157,13 @@ public class ApprovalViewImpl extends VerticalLayout implements
 	public boolean updateTableData(List<ReqPlanning> data) {
 		container.removeAllItems();
 		System.out.println(data.size());
+		
+		//Untuk data combobox 
+		List<Integer> comboData=new ArrayList<Integer>();
+		comboData.add(0);
+		comboData.add(1);
+		comboData.add(2);
+		
 		if(data.size()==0){
 			Notification.show("Data kebutuhan kosong", Type.WARNING_MESSAGE);
 			return false;
@@ -204,9 +211,21 @@ public class ApprovalViewImpl extends VerticalLayout implements
 					}
 				}
 			});
-			item.getItemProperty("Disetujui?").setValue(new CheckBox("Disetujui"){{
-				setValue(accept.isAcceptedBy(datumFinal.getAcceptance()));
-			}});
+			
+			item.getItemProperty("Disetujui?").setValue(new ComboBox("Disetujui", comboData){
+				{
+					setNullSelectionAllowed(false);
+					setItemCaption(0, "Belum Disetujui");
+					setItemCaption(1, "Tidak Disetujui");
+					setItemCaption(2, "Disetujui");
+					
+					setValue(accept.getDropdownChoice(datumFinal.getAcceptance()));
+				}
+			});
+			
+//			item.getItemProperty("Disetujui?").setValue(new CheckBox("Disetujui"){{
+//				setValue(accept.isAcceptedBy(datumFinal.getAcceptance()));
+//			}});
 			
 			//Set kebutuhan disetujui
 			int currentAccepted=datum.getAcceptedQuantity();

@@ -18,6 +18,7 @@ import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.ui.CheckBox;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.TextField;
 
 public class DeletionApprovalModel {
@@ -90,9 +91,10 @@ public class DeletionApprovalModel {
 			Item item=container.getItem(itemId);
 			
 			AcceptData acceptData=new AcceptData();
-			CheckBox checkboxResult=(CheckBox)item.getItemProperty("Disetujui?").getValue();
+			ComboBox comboResult=(ComboBox)item.getItemProperty("Disetujui?").getValue();
 			int quantityAccepted;
-			acceptData.setAccepted(accept.acceptedOrNot(checkboxResult.getValue()));
+			acceptData.setAccepted(accept.acceptedOrNot((Integer)comboResult.getValue()));
+
 			acceptData.setIdDel((Integer)itemId);
 			
 			returnValue.add(acceptData);
@@ -117,10 +119,14 @@ public class DeletionApprovalModel {
 				//jika yang lebih rendah menyimpan data baru. Kecuali jika checknya dihapus.
 				int currentValue=delGoods.getAcceptance();
 				
-				if(currentValue>=data.getAccepted() && data.getAccepted()!=accept.getUnacceptCriteria()){
-					delGoods.setAcceptance(currentValue);
+				if(currentValue>=data.getAccepted()){
+					if(!(data.getAccepted()<=accept.getUnacceptCriteria())){
+						delGoods.setAcceptance(currentValue);						
+					}else{
+						delGoods.setAcceptance(data.getAccepted());																
+					}
 				}else{
-					delGoods.setAcceptance(data.getAccepted());					
+					delGoods.setAcceptance(data.getAccepted());										
 				}
 
 				Goods goods=delGoods.getGoods();

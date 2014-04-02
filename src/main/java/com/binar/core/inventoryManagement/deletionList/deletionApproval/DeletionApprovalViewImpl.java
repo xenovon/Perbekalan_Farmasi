@@ -1,6 +1,7 @@
 package com.binar.core.inventoryManagement.deletionList.deletionApproval;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -102,7 +103,7 @@ DeletionApprovalView, Button.ClickListener, ValueChangeListener{
         		addContainerProperty("Nama Barang", String.class, null);
         		addContainerProperty("Jumlah", String.class, null);
         		addContainerProperty("Satuan", String.class, null);
-        		addContainerProperty("Disetujui?", CheckBox.class, null);
+        		addContainerProperty("Disetujui?", ComboBox.class, null);
         		addContainerProperty("Operasi", GridLayout.class, null);
         	}
         };
@@ -198,6 +199,11 @@ DeletionApprovalView, Button.ClickListener, ValueChangeListener{
 	public boolean updateTableData(List<DeletedGoods> data) {
 		container.removeAllItems();
 		System.out.println(data.size());
+		//Untuk data combobox 
+		List<Integer> comboData=new ArrayList<Integer>();
+		comboData.add(0);
+		comboData.add(1);
+		comboData.add(2);
 
 		for(DeletedGoods datum:data){
 			final DeletedGoods datumFinal=datum;
@@ -208,7 +214,18 @@ DeletionApprovalView, Button.ClickListener, ValueChangeListener{
 			item.getItemProperty("Nama Barang").setValue(datum.getGoods().getName());
 			item.getItemProperty("Jumlah").setValue(text.intToAngka(datum.getQuantity()));
 			item.getItemProperty("Satuan").setValue(datum.getGoods().getUnit());
-			item.getItemProperty("Disetujui?").setValue(new CheckBox("Disetujui",accept.isAcceptedBy(datum.getAcceptance())));
+			
+			item.getItemProperty("Disetujui?").setValue(new ComboBox("Disetujui", comboData){
+				{
+					setNullSelectionAllowed(false);
+					setItemCaption(0, "Belum Disetujui");
+					setItemCaption(1, "Tidak Disetujui");
+					setItemCaption(2, "Disetujui");
+					
+					setValue(accept.getDropdownChoice(datumFinal.getAcceptance()));
+				}
+			});
+			
 			item.getItemProperty("Operasi").setValue(new GridLayout(1,1){
 			{
 					Button buttonShow=new Button();

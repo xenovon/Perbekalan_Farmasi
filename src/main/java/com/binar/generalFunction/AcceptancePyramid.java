@@ -52,11 +52,14 @@ public class AcceptancePyramid {
 			return RoleEnum.IFRS;
 		}
 	}
-	public int acceptedOrNot(boolean accept){
-		if(accept){
-			return accepted();
-		}else{
+	public int acceptedOrNot(int accept){
+		System.out.println("Accepted or not" +accept);
+		if(accept==0){
+			return neutral();
+		}else if(accept==1){
 			return unAccepted();
+		}else{
+			return accepted();
 		}
 	}
 	//menerima penghapusan atau persetujuan
@@ -69,9 +72,8 @@ public class AcceptancePyramid {
 			return 9;
 		}else return 0;
 	}
-	
-	//tidak lagi menyetujui penghapusan atau persetujuan
-	private int unAccepted(){
+	//belum disetujui
+	private int neutral(){
 		if(getRole()==RoleEnum.IFRS){
 			return 0;
 		}else if(getRole()==RoleEnum.PNJ){
@@ -81,7 +83,27 @@ public class AcceptancePyramid {
 		}else return 0;
 	}
 	
-	
+	//tidak lagi menyetujui penghapusan atau persetujuan
+	private int unAccepted(){
+		if(getRole()==RoleEnum.IFRS){
+			return -1;
+		}else if(getRole()==RoleEnum.PNJ){
+			return 3;
+		}else if(getRole()==RoleEnum.PPK){
+			return 8;
+		}else return 0;
+	}
+	//tidak lagi menyetujui penghapusan atau persetujuan
+/*	private int unAccepted(){
+		if(getRole()==RoleEnum.IFRS){
+			return -1;
+		}else if(getRole()==RoleEnum.PNJ){
+			return 3;
+		}else if(getRole()==RoleEnum.PPK){
+			return 8;
+		}else return 0;
+	}	
+	*/
 	//apakah mesti ditampilin atau tidak 
 	public boolean isShow(int value){
 		if(getRole()==RoleEnum.IFRS){
@@ -137,12 +159,18 @@ public class AcceptancePyramid {
 			return "Oleh Kabid Penunjang";
 		}else if(value==9){
 			return "Oleh PPK";
+		}else if(value==-1){
+			return "Tidak Disetujui Oleh IFRS";
+		}else if(value==3){
+			return "Tidak Disetujui Oleh Kabid Penunjang";
+		}else if(value==8){
+			return "Tidak Disetujui Oleh PPK";
 		}else{
 			return "angka salah";
 		}
+		
+		
 	}
-
-	
 	//apakah sudah dianggap diterima atau belum oleh semua 
 	public boolean isAcceptedByAll(int value){
 		if(value==9){
@@ -169,8 +197,7 @@ public class AcceptancePyramid {
 		}
 		return 0;
 	}
-	//Untuk masing-masing role, berapa nilai agar dianggap sebagai tidak diterima 	
-	public int getUnacceptCriteria(){
+/*	public int getUnacceptCriteria(){
 		if(getRole()==RoleEnum.IFRS){
 			return 0;
 		}else if(getRole()==RoleEnum.PNJ){
@@ -180,10 +207,54 @@ public class AcceptancePyramid {
 		}
 		return 0;
 	}
+	*/
+	//Untuk masing-masing role, berapa nilai agar dianggap sebagai tidak diterima 	
+	public int getUnacceptCriteria(){
+		if(getRole()==RoleEnum.IFRS){
+			return 0;
+		}else if(getRole()==RoleEnum.PNJ){
+			return 3;
+		}else if(getRole()==RoleEnum.PPK){
+			return 8;
+		}
+		return 0;
+	}
+
 	//mendapatkan kriteria jika sudah diterima oleh semua
 	public int getAcceptedByAllCriteria(){
 		return 9;
 	}
-	
-	
+	//Berfungsi untuk memilih pilihan dropdown yang ada di halaman persetujuan
+	//  0 untuk belum dipilih
+	//  1 untuk ditolak
+	//  2 untuk diterima
+	public int getDropdownChoice(int value){
+		if(getRole()==RoleEnum.IFRS){
+			if(value==-1){
+				return 1;
+			}if(value==0){
+				return 0;
+			}else if(value>=1){
+				return 2;
+			}
+		}else if(getRole()==RoleEnum.PNJ){
+			if(value==3){
+				return 1;
+			}if(value<=2){
+				return 0;
+			}else if(value>=4){
+				return 2;
+			}
+		}else if(getRole()==RoleEnum.PPK){
+			if(value==8){
+				return 1;
+			}if(value<=7){
+				return 0;
+			}else if(value>=9){
+				return 2;
+			}
+		}
+		return 0;
+	}
+
 }

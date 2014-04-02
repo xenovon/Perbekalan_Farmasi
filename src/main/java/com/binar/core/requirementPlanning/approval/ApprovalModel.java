@@ -14,6 +14,7 @@ import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.ui.CheckBox;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.TextField;
 
 public class ApprovalModel {
@@ -79,7 +80,7 @@ public class ApprovalModel {
 			Item item=container.getItem(itemId);
 			
 			AcceptData acceptData=new AcceptData();
-			CheckBox checkboxResult=(CheckBox)item.getItemProperty("Disetujui?").getValue();
+			ComboBox comboResult=(ComboBox)item.getItemProperty("Disetujui?").getValue();
 			TextField textfieldResult=(TextField)item.getItemProperty("Jumlah Disetujui").getValue();
 			int quantityAccepted;
 			try {
@@ -90,7 +91,8 @@ public class ApprovalModel {
 				//maka nantinya nampilin pesan error
 				return null;
 			}
-			acceptData.setAccepted(accept.acceptedOrNot(checkboxResult.getValue()));
+			System.out.println("Accepted or not di web"+accept.acceptedOrNot((Integer)comboResult.getValue()));
+			acceptData.setAccepted(accept.acceptedOrNot((Integer)comboResult.getValue()));
 			acceptData.setIdReq((Integer)itemId);
 			acceptData.setQuantityAccepted(quantityAccepted);
 			
@@ -117,10 +119,17 @@ public class ApprovalModel {
 				//jika yang lebih rendah menyimpan data baru. Kecuali jika checknya dihapus.
 				int currentValue=planning.getAcceptance();
 				
-				if(currentValue>=data.getAccepted() && data.getAccepted()!=accept.getUnacceptCriteria()){
-					planning.setAcceptance(currentValue);
+			
+				//Jika nilai saat ini lebih besar data yang diset valuenya dan tidak sedang ditolak / dianggep belum disetujui
+				//Maka tidak perlu di ganti nilainya
+				if(currentValue>=data.getAccepted()){
+					if(!(data.getAccepted()<=accept.getUnacceptCriteria())){
+						planning.setAcceptance(currentValue);						
+					}else{
+						planning.setAcceptance(data.getAccepted());																
+					}
 				}else{
-					planning.setAcceptance(data.getAccepted());					
+					planning.setAcceptance(data.getAccepted());										
 				}
 				
 				planning.setDateAccepted(new Date());
