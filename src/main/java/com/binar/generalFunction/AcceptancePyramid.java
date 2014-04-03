@@ -154,11 +154,11 @@ public class AcceptancePyramid {
 		if(value==0){
 			return "Belum Disetujui";
 		}else if(value==1){
-			return "Oleh IFRS";
+			return "Disetujui Oleh IFRS";
 		}else if(value==4){
-			return "Oleh Kabid Penunjang";
+			return "Disetujui Oleh Kabid Penunjang";
 		}else if(value==9){
-			return "Oleh PPK";
+			return "Disetujui Oleh PPK";
 		}else if(value==-1){
 			return "Tidak Disetujui Oleh IFRS";
 		}else if(value==3){

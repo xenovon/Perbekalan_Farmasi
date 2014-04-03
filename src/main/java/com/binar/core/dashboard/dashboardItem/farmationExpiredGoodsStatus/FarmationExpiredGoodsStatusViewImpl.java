@@ -57,7 +57,7 @@ public class FarmationExpiredGoodsStatusViewImpl  extends Panel implements Farma
 				addContainerProperty("Tanggal Pengajuan", String.class,null);
 				addContainerProperty("Nama Barang", String.class,null);
 				addContainerProperty("Satuan",String.class,null);
-				addContainerProperty("Status Pengajuan", String.class,null);
+				addContainerProperty("Status", String.class,null);
 				addContainerProperty("Jumlah",String.class,null);
 			}
 		};
@@ -116,7 +116,7 @@ public class FarmationExpiredGoodsStatusViewImpl  extends Panel implements Farma
 			item.getItemProperty("Tanggal Pengajuan").setValue(date.dateToText(datum.getDeletionDate(),true));
 			item.getItemProperty("Nama Barang").setValue(datum.getGoods().getName());
 			item.getItemProperty("Satuan").setValue(datum.getGoods().getUnit());
-			item.getItemProperty("Status Pengajuan").setValue(accept.acceptedBy(datum.getAcceptance()));
+			item.getItemProperty("Status").setValue(accept.acceptedBy(datum.getAcceptance()));
 			item.getItemProperty("Jumlah").setValue(text.intToAngka(datum.getQuantity()));
 		}
 	}

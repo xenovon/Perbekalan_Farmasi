@@ -60,7 +60,7 @@ public class FarmationRequirementStatusViewImpl  extends Panel implements Farmat
 				addContainerProperty("Nama Barang", String.class,null);
 				addContainerProperty("Satuan",String.class,null);
 				addContainerProperty("Jumlah Pengajuan", String.class,null);
-				addContainerProperty("Sudah disetujui?",String.class,null);
+				addContainerProperty("Status",String.class,null);
 				addContainerProperty("Jumlah disetujui",String.class,null);
 			}
 		};
@@ -119,7 +119,7 @@ public class FarmationRequirementStatusViewImpl  extends Panel implements Farmat
 			item.getItemProperty("Nama Barang").setValue(datum.getSupplierGoods().getGoods().getName());
 			item.getItemProperty("Satuan").setValue(datum.getSupplierGoods().getGoods().getUnit());
 			item.getItemProperty("Jumlah Pengajuan").setValue(text.intToAngka(datum.getQuantity()));
-			item.getItemProperty("Sudah disetujui?").setValue(accept.acceptedBy(datum.getAcceptance()));
+			item.getItemProperty("Status").setValue(accept.acceptedBy(datum.getAcceptance()));
 			item.getItemProperty("Jumlah disetujui").setValue(text.intToAngka(datum.getAcceptedQuantity()));
 			
 			
