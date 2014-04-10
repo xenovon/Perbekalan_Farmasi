@@ -1,6 +1,7 @@
 package com.binar.core.report.reportInterface;
 
 import com.binar.generalFunction.GeneralFunction;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
@@ -21,7 +22,7 @@ public class ReportInterfaceViewImpl extends VerticalLayout implements ReportInt
 	private Button buttonStock;
 	private Button buttonExpiredGoods;
 	private Label title;
-	private final String BUTTON_WIDTH="250px";
+	private final String BUTTON_WIDTH="280px";
 	
 /*
  * YANG HANYA PER PERIODE (BULAN)!
@@ -60,30 +61,45 @@ D	Laporan barang kadaluarsa (udah disetujui)
 		buttonConsumption= new Button("Laporan Pemakaian Barang");
 		buttonConsumption.addClickListener(this);
 		buttonConsumption.setWidth(BUTTON_WIDTH);
+		buttonConsumption.addStyleName("button-report");
+		buttonConsumption.setIcon(new ThemeResource("icons/image/cart2.png"));
+
 		
 		buttonDailyConsumption=new Button("Daftar Pengeluaran Harian");
 		buttonDailyConsumption.addClickListener(this);
 		buttonDailyConsumption.setWidth(BUTTON_WIDTH);
+		buttonDailyConsumption.addStyleName("button-report");
+		buttonDailyConsumption.setIcon(new ThemeResource("icons/image/daily11.png"));
 		
 		buttonExpiredGoods=new Button("Laporan Barang Kadaluarsa");
 		buttonExpiredGoods.addClickListener(this);
 		buttonExpiredGoods.setWidth(BUTTON_WIDTH);
+		buttonExpiredGoods.addStyleName("button-report");
+		buttonExpiredGoods.setIcon(new ThemeResource("icons/image/recycling.png"));
 		
 		buttonProcurement=new Button("Laporan Pengadaan Barang");
 		buttonProcurement.addClickListener(this);
 		buttonProcurement.setWidth(BUTTON_WIDTH);
+		buttonProcurement.addStyleName("button-report");
+		buttonProcurement.setIcon(new ThemeResource("icons/image/shopping8.png"));
 		
 		buttonReceipt=new Button("Laporan Penerimaan Barang");
 		buttonReceipt.addClickListener(this);
 		buttonReceipt.setWidth(BUTTON_WIDTH);
+		buttonReceipt.addStyleName("button-report");
+		buttonReceipt.setIcon(new ThemeResource("icons/image/credit13.png"));
 	
 		buttonRequirement = new Button("Laporan Rencana Kebutuhan");
 		buttonRequirement.addClickListener(this);
 		buttonRequirement.setWidth(BUTTON_WIDTH);
+		buttonRequirement.addStyleName("button-report");
+		buttonRequirement.setIcon(new ThemeResource("icons/image/time5.png"));
 	
 		buttonStock=new Button("Laporan Stok Opname");
 		buttonStock.addClickListener(this);
 		buttonStock.setWidth(BUTTON_WIDTH);
+		buttonStock.addStyleName("button-report");
+		buttonStock.setIcon(new ThemeResource("icons/image/factory3.png"));
 		
 		construct();
 	}

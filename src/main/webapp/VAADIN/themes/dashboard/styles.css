@@ -5539,7 +5539,8 @@ body .dashboard.v-app .v-app-loading {
 }
 
 .dashboard.v-app {
-	background: #353637;
+	max-height: 100%;
+	background: #3498db;
 }
 
 .dashboard.v-app[id*="overlays"] {
@@ -5635,7 +5636,7 @@ body .dashboard.v-app .v-app-loading {
 }
 
 .dashboard .sidebar {
-	background: #414243 url(img/sidebar-gradient.png) repeat-y top right;
+	background: #3498db;
 	position: relative;
 	left: 0;
 	-webkit-animation: move-right 300ms ease-in-out;
@@ -5712,9 +5713,9 @@ body .dashboard.v-app .v-app-loading {
 	border-top: 1px solid #4b4c4d;
 	border-top-color: rgba(255, 255, 255, 0.05);
 	border-bottom: 1px solid #353637;
-	border-bottom-color: rgba(0, 0, 0, 0.18);
+	border-bottom-color: rgba(255, 255, 255, 0.8);
 	background: transparent;
-	color: #888a8c;
+	color: #FFFFFF;
 	font-weight: normal;
 	text-align: center;
 	-webkit-transition: color ease-in-out 100ms, background-color linear 60ms;
@@ -5743,7 +5744,8 @@ body .dashboard.v-app .v-app-loading {
 }
 
 .dashboard .sidebar .menu .v-nativebutton:hover, .dashboard .sidebar .menu .v-nativebutton:focus {
-	color: #e1e1e1;
+	color: #FFFFFF;
+	background-color: #1A6FA8;
 }
 
 .dashboard .sidebar .menu .v-nativebutton:before {
@@ -5753,12 +5755,13 @@ body .dashboard.v-app .v-app-loading {
 }
 
 .v-webkit .dashboard .menu .v-nativebutton:before {
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #e8e8e8), color-stop(100%, #d3d3d3));
-	background: -webkit-linear-gradient(top, #fff 0%, #777 100%);
+	background: #fff;
 	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-	opacity: 0.5;
+	-webkit-transition: opacity ease-in-out 200ms;
+	-moz-transition: opacity ease-in-out 200ms;
+	-ms-transition: opacity ease-in-out 200ms;
+	-o-transition: opacity ease-in-out 200ms;
+	transition: opacity ease-in-out 200ms;
 	-webkit-transition: opacity ease-in-out 200ms;
 	-moz-transition: opacity ease-in-out 200ms;
 	-ms-transition: opacity ease-in-out 200ms;
@@ -5775,14 +5778,11 @@ body .dashboard.v-app .v-app-loading {
 }
 
 .dashboard .sidebar .menu .v-nativebutton.selected {
-	color: #e1e1e1;
-	text-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
-	border-top-color: #262729;
-	border-bottom-color: #2b2c2e;
-	background: #333537;
+	color: #EBEBEB;
+	border-top-color: #F3F3F3;
+	border-bottom-color: #F3F3F3;
+	background: #1A6FA8;
 	background: -moz-linear-gradient(top, #2d2f30 0%, #333537 10%, #333537 90%, #2d2f30 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #2d2f30), color-stop(10%, #333537), color-stop(90%, #333537), color-stop(100%, #2d2f30));
-	background: -webkit-linear-gradient(top, #2d2f30 0%, #333537 10%, #333537 90%, #2d2f30 100%);
 	background: -o-linear-gradient(top, #2d2f30 0%, #333537 10%, #333537 90%, #2d2f30 100%);
 	background: -ms-linear-gradient(top, #2d2f30 0%, #333537 10%, #333537 90%, #2d2f30 100%);
 	-webkit-transition: none;
@@ -5826,7 +5826,6 @@ body .dashboard.v-app .v-app-loading {
 	background: #3b3c3d;
 	background-color: rgba(0, 0, 0, 0.1);
 	color: #898c8e;
-	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
 	-webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
 	-moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
 	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
@@ -5856,7 +5855,7 @@ body .dashboard.v-app .v-app-loading {
 	overflow: visible;
 	padding: 2px 8px;
 	height: 34px;
-	color: inherit;
+	color: #fff;
 	-webkit-font-smoothing: antialiased;
 }
 
@@ -5867,7 +5866,7 @@ body .dashboard.v-app .v-app-loading {
 	background: transparent;
 	width: 100%;
 	padding: 0;
-	color: inherit;
+	color: #fff;
 }
 
 .dashboard .sidebar .user .v-nativebutton:focus {
@@ -5932,17 +5931,12 @@ body .dashboard.v-app .v-app-loading {
 }
 
 .dashboard .help-overlay {
-	-webkit-border-radius: 2px;
-	-moz-border-radius: 2px;
-	border-radius: 2px;
 	-webkit-box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
 	-moz-box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
 	box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
 	padding: 15px 20px;
-	background: #464646;
-	background-color: rgba(40, 40, 40, 0.85);
-	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
-	color: #a6a9aa;
+	background: #EBEBEB;
+	color: #666666;
 	font: $font;
 	font-size: 12px;
 	-webkit-animation: fade-in 160ms ease-out;
@@ -5972,7 +5966,7 @@ body .dashboard.v-app .v-app-loading {
 
 .dashboard .help-overlay .v-window-outerheader {
 	padding: 0;
-	color: #fff;
+	color: #000;
 	font-size: 14px;
 	line-height: 1;
 }
@@ -5991,7 +5985,7 @@ body .dashboard.v-app .v-app-loading {
 }
 
 .dashboard .help-overlay a {
-	color: #a6a9aa;
+	color: #666666;
 	text-decoration: underline;
 }
 
@@ -6174,7 +6168,6 @@ body .dashboard.v-app .v-app-loading {
 }
 
 .dashboard .name-style:hover {
-	background: #333537 !important;
 	color: white !important;
 	cursor: pointer;
 }
@@ -6193,15 +6186,11 @@ body .dashboard.v-app .v-app-loading {
 }
 
 .dashboard .logout-button {
-	font-size: 13px !important;
-	font-weight: 700 !important;
 	margin: 5px 20px 20px 25px !important;
 	width: 80px !important;
-	color: #767C7B !important;
-	background: #414243 !important;
-	border: 1px solid #6E6F6F !important;
-	text-shadow: 0 0.1em 0 !important;
-	padding: 6px 3px;
+	color: #FFFFFF !important;
+	background: #1F72C5 !important;
+	border: 1px solid #FFFFFF !important;
 	line-height: 1.2em;
 }
 
@@ -6223,21 +6212,22 @@ body .dashboard.v-app .v-app-loading {
 }
 
 .dashboard .logout-button:hover {
-	background: #333537 !important;
+	background: #228BD1 !important;
 	color: white !important;
 	cursor: pointer;
 }
 
 .dashboard .header-style {
-	background-color: #414243;
-	font-size: 16px;
+	background-color: #3498db;
+	background-color: #3498db;
+	font-size: 30px;
 	height: 40px;
-	color: #fff;
+	color: #fff !important;
 	padding: 5px 6px 5px 30px;
 }
 
 .dashboard .header-style .v-widget {
-	font-size: 20px;
+	font-size: 20px !important;
 }
 
 .dashboard .tab-content {
@@ -6307,7 +6297,7 @@ body .dashboard.v-app .v-app-loading {
 
 .dashboard .non-caption-form {
 	padding-top: 0px !important;
-	top: -20px !important;
+	top: -20px;
 	margin-left: 14px;
 	margin-right: 20px;
 }
@@ -6332,4 +6322,13 @@ body .dashboard.v-app .v-app-loading {
 	width: 20px;
 	height: 20px;
 	margin: 4px;
+}
+
+.dashboard .button-report {
+	width: 250px;
+	height: 60px;
+	padding: 10px;
+	font-size: 17px;
+	vertical-align: middle !important;
+	text-align: left !important;
 }

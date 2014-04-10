@@ -82,8 +82,8 @@ public class RequirementPlanningView extends CustomComponent implements View, Se
 		}
 		
 		tabSheet=new TabSheet();
-		tabSheet.addTab(reqPlanning).setCaption("Daftar Rencana Kebutuhan");
 		tabSheet.addTab(inputReqPl).setCaption("Input Rencana Kebutuhan");;
+		tabSheet.addTab(reqPlanning).setCaption("Daftar Rencana Kebutuhan");
 		tabSheet.addTab(forecast).setCaption("Peramalan");
 
 		tabSheet.addSelectedTabChangeListener(this);

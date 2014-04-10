@@ -4,12 +4,30 @@ import java.util.List;
 import java.util.Map;
 
 import org.dussan.vaadin.dcharts.DCharts;
+import org.dussan.vaadin.dcharts.base.elements.XYaxis;
+import org.dussan.vaadin.dcharts.base.elements.XYseries;
 import org.dussan.vaadin.dcharts.data.DataSeries;
+import org.dussan.vaadin.dcharts.data.Ticks;
+import org.dussan.vaadin.dcharts.metadata.LegendPlacements;
+import org.dussan.vaadin.dcharts.metadata.SeriesToggles;
+import org.dussan.vaadin.dcharts.metadata.TooltipAxes;
+import org.dussan.vaadin.dcharts.metadata.XYaxes;
+import org.dussan.vaadin.dcharts.metadata.directions.AnimationDirections;
+import org.dussan.vaadin.dcharts.metadata.locations.TooltipLocations;
+import org.dussan.vaadin.dcharts.metadata.renderers.AxisRenderers;
+import org.dussan.vaadin.dcharts.metadata.renderers.LegendRenderers;
 import org.dussan.vaadin.dcharts.metadata.renderers.SeriesRenderers;
+import org.dussan.vaadin.dcharts.options.Axes;
 import org.dussan.vaadin.dcharts.options.Highlighter;
+import org.dussan.vaadin.dcharts.options.Legend;
 import org.dussan.vaadin.dcharts.options.Options;
+import org.dussan.vaadin.dcharts.options.Series;
 import org.dussan.vaadin.dcharts.options.SeriesDefaults;
+import org.dussan.vaadin.dcharts.renderers.legend.EnhancedLegendRenderer;
+import org.dussan.vaadin.dcharts.renderers.series.BarRenderer;
 import org.dussan.vaadin.dcharts.renderers.series.PieRenderer;
+import org.dussan.vaadin.dcharts.renderers.series.animations.BarAnimation;
+import org.dussan.vaadin.dcharts.renderers.tick.AxisTickRenderer;
 import org.joda.time.LocalDate;
 
 import com.binar.entity.Goods;
@@ -103,28 +121,57 @@ public class ProcurementSupplierRankViewImpl  extends Panel implements Procureme
 	
 	public void generateChart(Map<Integer, String> data){
 		
-		DataSeries dataSeries = new DataSeries()
-		.newSeries();
-
+//		DataSeries dataSeries = new DataSeries()
+//		.newSeries();
+		Object[] arrayValue=new Object[data.size()];
+		Object[] arrayText=new Object[data.size()];
 		//inisialisasi data
+		int i=0;
 		for(Map.Entry<Integer, String> entry:data.entrySet()){
-			dataSeries.add(entry.getValue(), entry.getKey());
+			arrayValue[i]=entry.getKey();
+			arrayText[i]=entry.getValue();
 		}		
-		SeriesDefaults seriesDefaults = new SeriesDefaults()
-		.setRenderer(SeriesRenderers.BAR)
-		.setRendererOptions(
-			new PieRenderer()
-				.setShowDataLabels(true));
+		DataSeries dataSeries = new DataSeries();
+		Series series = new Series();
+		for(Map.Entry<Integer, String> entry:data.entrySet()){
+			dataSeries.add(entry.getKey());
+			series.addSeries(new XYseries().setLabel(entry.getValue()));
+		}
+	SeriesDefaults seriesDefaults = new SeriesDefaults()
+		.setRenderer(SeriesRenderers.BAR).setRendererOptions(new BarRenderer().setAnimation(new BarAnimation(true, AnimationDirections.DOWN, 200)));
 
+	Ticks ticks=new Ticks();
+	ticks.add("PBF");
+	Axes axes = new Axes()
+		.addAxis(
+			new XYaxis()
+				.setRenderer(AxisRenderers.CATEGORY)
+				.setTicks(ticks)
+	);
 
 	Highlighter highlighter = new Highlighter()
-		.setShow(true)
-		.setShowTooltip(true)
-		.setTooltipAlwaysVisible(true)
-		.setKeepTooltipInsideChart(true);
+	.setShow(true)
+	.setShowTooltip(true)
+	.setTooltipAlwaysVisible(true)
+	.setKeepTooltipInsideChart(true)
+	.setTooltipLocation(TooltipLocations.NORTH)
+	.setTooltipAxes(TooltipAxes.Y_BAR)
+	.setTooltipFormatString("%d obat");
+
+	Legend legend = new Legend()
+	.setShow(true)
+	.setRenderer(LegendRenderers.ENHANCED)
+	.setRendererOptions(
+		new EnhancedLegendRenderer()
+			.setSeriesToggle(SeriesToggles.SLOW)
+			.setSeriesToggleReplot(true))
+	.setPlacement(LegendPlacements.OUTSIDE_GRID);
 
 	Options options = new Options()
 		.setSeriesDefaults(seriesDefaults)
+		.setAxes(axes)
+		.setSeries(series)
+		.setLegend(legend)
 		.setHighlighter(highlighter);
 
 	DCharts chart = new DCharts()

@@ -60,6 +60,18 @@ public class FarmationGoodsConsumptionModel {
 	/*
 	 * Sisanya ganti "lainnya....."
 	 */
+	
+	public Map<Integer, String> getGoodsCosumptionDummy(){
+		Map<Integer, String> map=new HashMap<Integer, String>();
+		map.put(800, "Clopedin");
+		map.put(600, "Closenin");
+		map.put(900, "Ambroxol");
+		map.put(600, "Betadine");
+		map.put(370, "Kain Kassa");
+		
+		return map;
+	}
+	
 	public Map<Integer, String> getGoodsCosumption(){
 		try {
 			Map<Goods, Integer> allGoods=getGoodsConsumptionByGoods();

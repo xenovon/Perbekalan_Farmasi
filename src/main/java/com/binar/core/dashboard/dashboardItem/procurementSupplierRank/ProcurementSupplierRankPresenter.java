@@ -30,6 +30,7 @@ DONE
 	}
 	@Override
 	public void updateChart() {
+//		Map<Integer, String> data=model.getSupplierDummyList();
 		Map<Integer, String> data=model.getSupplierTransaction();
 		if(data==null){
 			view.setEmptyDataView();

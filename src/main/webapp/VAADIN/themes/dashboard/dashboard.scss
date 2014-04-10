@@ -56,14 +56,24 @@
 	}
 	
 	&.v-app {
-		background: #353637;
+		max-height:100%;
+		background: #3498db;
+	  /*background: #353637; */
 	}
 	
 	&.v-app[id*="overlays"] {
 		height: 0;
 	}
 	
-	
+	/*
+	dashboard.v-app {
+		background: #3498db;
+	}
+
+	dashboard.v-app[id*="overlays"] {
+		height: 0;
+	}
+*/	
 	.login-bg {
 		content: "";
 		position: absolute;
@@ -148,8 +158,9 @@
 	
 	
 	.sidebar {
-		background: #414243 url(img/sidebar-gradient.png) repeat-y top right;
-		@include move-right;
+		background: #3498db;
+/*		background: #414243 url(img/sidebar-gradient.png) repeat-y top right; */
+ 		@include move-right;
 		-webkit-user-select: none;
 		-moz-user-select: none;
 		-ms-user-select: none;
@@ -217,7 +228,6 @@
 	.sidebar .menu .v-nativebutton {
 		/* TODO mixin */
 		-webkit-appearance: none;
-		
 		display: block;
 		padding: 5px 14px 5px;
 		width: 100%;
@@ -226,14 +236,17 @@
 		position: relative;
 		
 		border-top: 1px solid #4b4c4d;
-		border-top-color: rgba(255,255,255,.05);
-		
+		border-top-color: rgba(255, 255, 255, 0.05);
 		border-bottom: 1px solid #353637;
-		border-bottom-color: rgba(0,0,0,.18);
-		
+		border-bottom-color: rgba(255, 255, 255, 0.8);
 		background: transparent;
-		
-		color: #888a8c;
+				
+	  /*border-top: 1px solid #4b4c4d;
+		border-top-color: rgba(255, 255, 255, 0.05);
+		border-bottom: 1px solid #353637;
+		border-bottom-color: rgba(0, 0, 0, 0.18);
+		background: transparent; */
+		color: #FFFFFF;
 		font-weight: normal;
 	/*	text-shadow: 0 1px 0 rgba(0,0,0,.5); */
 		text-align: center;
@@ -266,7 +279,8 @@
 	
 	.sidebar .menu .v-nativebutton:hover,
 	.sidebar .menu .v-nativebutton:focus {
-		color: #e1e1e1;
+		color: #FFFFFF;
+		background-color: #1A6FA8;
 	}
 	
 	.sidebar .menu .v-nativebutton:before {
@@ -277,14 +291,18 @@
 	
 	.v-webkit & .menu .v-nativebutton:before {
 		/* TODO mixin */
-		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e8e8e8), color-stop(100%,#d3d3d3));
-		background: -webkit-linear-gradient(top, #fff 0%,#777 100%);
-	/* 	background: linear-gradient(to bottom, #e8e8e8 0%,#d3d3d3 100%); */
+
+		/* background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #e8e8e8), color-stop(100%, #d3d3d3)); */
+		background: #fff;
 		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		text-shadow: 0 1px 1px rgba(0,0,0,.2);
-		opacity: .5;
-		
+		/* -webkit-text-fill-color: transparent; */
+		/* text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2); */
+		/* opacity: 0.5; */
+		-webkit-transition: opacity ease-in-out 200ms;
+		-moz-transition: opacity ease-in-out 200ms;
+		-ms-transition: opacity ease-in-out 200ms;
+		-o-transition: opacity ease-in-out 200ms;
+		transition: opacity ease-in-out 200ms;		
 		/* TODO mixin */
 		-webkit-transition: opacity ease-in-out 200ms;
 		-moz-transition: opacity ease-in-out 200ms;
@@ -303,7 +321,20 @@
 	}
 	
 	.sidebar .menu .v-nativebutton.selected {
-		color: #e1e1e1;
+
+		color: #EBEBEB;
+		/* text-shadow: 0 2px 2px rgba(0, 0, 0, 0.5); */
+		border-top-color: #F3F3F3;
+		border-bottom-color: #F3F3F3;
+		background: #1A6FA8;
+		background: -moz-linear-gradient(top, #2d2f30 0%, #333537 10%, #333537 90%, #2d2f30 100%);
+		/* background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #2d2f30), color-stop(10%, #333537), color-stop(90%, #333537), color-stop(100%, #2d2f30)); */
+		/* background: #fff; */
+		background: -o-linear-gradient(top, #2d2f30 0%, #333537 10%, #333537 90%, #2d2f30 100%);
+		background: -ms-linear-gradient(top, #2d2f30 0%, #333537 10%, #333537 90%, #2d2f30 100%);
+		-webkit-transition: none;
+
+/*		color: #e1e1e1;
 		text-shadow: 0 2px 2px rgba(0,0,0,.5);
 		
 		border-top-color: #262729;
@@ -311,15 +342,16 @@
 		
 		background: #333537;
 		
-		/* TODO mixin */
 		background: -moz-linear-gradient(top, #2d2f30 0%, #333537 10%, #333537 90%, #2d2f30 100%);
 		background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#2d2f30), color-stop(10%,#333537), color-stop(90%,#333537), color-stop(100%,#2d2f30));
 		background: -webkit-linear-gradient(top, #2d2f30 0%,#333537 10%,#333537 90%,#2d2f30 100%);
 		background: -o-linear-gradient(top, #2d2f30 0%,#333537 10%,#333537 90%,#2d2f30 100%);
 		background: -ms-linear-gradient(top, #2d2f30 0%,#333537 10%,#333537 90%,#2d2f30 100%);
-	/* 	background: linear-gradient(to bottom, #2d2f30 0%,#333537 10%,#333537 90%,#2d2f30 100%); */
+	 	background: linear-gradient(to bottom, #2d2f30 0%,#333537 10%,#333537 90%,#2d2f30 100%); 
 	
 		-webkit-transition: none;
+		
+		*/
 	}
 	
 	.v-webkit & .menu .v-nativebutton.selected:before {
@@ -369,7 +401,7 @@
 		background-color: rgba(0,0,0,.1);
 		
 		color: #898c8e;
-		text-shadow: 0 1px 1px rgba(0,0,0,.5);
+	/*	text-shadow: 0 1px 1px rgba(0,0,0,.5); */
 		
 		@include box-shadow(inset 0 1px 0 rgba(255,255,255,.08));
 	}
@@ -398,7 +430,8 @@
 		overflow: visible;
 		padding: 2px 8px;
 		height: 34px;
-		color: inherit;
+/*		color: inherit; */
+		color:#fff;
 		-webkit-font-smoothing: antialiased;
 	}
 	
@@ -413,7 +446,9 @@
 		width: 100%;
 		padding: 0;
 		
-		color: inherit;
+/*		color: inherit; */
+		color:#fff;
+		
 	}
 	
 	.sidebar .user .v-nativebutton:focus {
@@ -480,13 +515,15 @@
 	
 	
 	.help-overlay {
-		@include border-radius(2px);
+/*		@include border-radius(2px); */
 		@include box-shadow(0 3px 10px rgba(0,0,0,.5));
 		padding: 15px 20px;
-		background: #464646;
+		background: #EBEBEB;
+/*		background: #464646;
 		background-color: rgba(40,40,40,.85);
-		text-shadow: 0 1px 1px rgba(0,0,0,.5);
-		color: #a6a9aa;
+		text-shadow: 0 1px 1px rgba(0,0,0,.5); */
+/*		color: #a6a9aa; */
+		color:#666666;
 		font: $font;
 		font-size: 12px;
 		
@@ -501,7 +538,7 @@
 
 		.v-window-outerheader {
 			padding: 0;
-			color: #fff;
+			color: #000;
 			font-size: 14px;
 			line-height: 1;
 		}
@@ -524,7 +561,8 @@
 		}
 	
 		a {
-			color: #a6a9aa;
+	/*		color: #a6a9aa; */
+			color: #666666;
 			text-decoration: underline;
 		}
 		
@@ -722,7 +760,7 @@
 		
 	}
 	.name-style:hover {
-		background: #333537 !important;
+/*		background: #333537 !important; */
 		color: white !important;
 		cursor: pointer;
 	}	
@@ -738,7 +776,20 @@
 		
 	}
 	.logout-button{
-		font-size: 13px !important;
+	
+	
+		/* font-size: 13px !important; */
+		/* font-weight: 700 !important; */
+		margin: 5px 20px 20px 25px !important;
+		width: 80px !important;
+		color: #FFFFFF !important;
+		background: #1F72C5 !important;
+		border: 1px solid #FFFFFF !important;
+		/* text-shadow: 0 0.1em 0 !important; */
+		/* padding: 6px 3px; */
+		line-height: 1.2em;
+		
+	/*	font-size: 13px !important;
 		font-weight: 700 !important;
 		margin: 5px 20px 20px 25px !important;
 		width: 80px !important;
@@ -747,7 +798,7 @@
 		border: 1px solid #6E6F6F !important;	
 		text-shadow: 0 0.1em 0 !important;
 		padding: 6px 3px;
-		line-height: 1.2em;		
+		line-height: 1.2em;		*/
 
 	}
 	
@@ -769,21 +820,28 @@
 	}
 	
 	.logout-button:hover {
-		background: #333537 !important;
+		background: #228BD1 !important;
 		color: white !important;
 		cursor: pointer;
 	}
 	
 	.header-style{
-		background-color:#414243;
+		background-color:#3498db;
+/*		background-color:#414243; 
 		font-size:16px;
 		height:40px;
 		color:#fff;
-		padding:5px 6px 5px 30px;
+		padding:5px 6px 5px 30px; */
+
+		background-color: #3498db;
+		font-size: 30px;
+		height: 40px;
+		color: #fff !important;
+		padding: 5px 6px 5px 30px;
 	}
 	
 	.header-style .v-widget{
-		font-size:20px;
+		font-size:20px !important;
 	}
 	
 	.tab-content{
@@ -877,5 +935,14 @@
 		margin: 4px;	
 	}
 	
+	.button-report{
+		width: 250px;
+		height: 60px;
+		padding: 10px;
+		font-size: 17px;
+		vertical-align: middle !important;
+		text-align: left !important;
+}
 	
+
 }

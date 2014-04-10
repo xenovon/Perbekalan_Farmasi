@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -26,6 +27,16 @@ public class ProcurementSupplierRankModel {
 	public ProcurementSupplierRankModel(GeneralFunction function) {
 		this.function=function;
 		this.server=function.getServer();
+	}
+	public  Map<Integer, String> getSupplierDummyList(){
+		List<Supplier> supp=server.find(Supplier.class).findList();
+		Map<Integer, String> map=new HashMap<Integer, String>();
+		Random random=new Random();
+		for(int x=0;x<2;x++){
+			map.put(random.nextInt(300)+100, supp.get(x).getSupplierName());
+		}
+		System.out.println(map.toString());
+		return map;
 	}
 	//menghasilkan daftar supplier dan jumlah transaksi barang dalam 1 3 bulan
 	private Map<Supplier, Integer> getSupplierList(){

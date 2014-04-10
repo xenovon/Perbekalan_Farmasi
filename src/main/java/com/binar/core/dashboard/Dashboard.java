@@ -9,6 +9,9 @@ import com.binar.core.dashboard.dashboardItem.farmationExpiredGoodsStatus.Farmat
 import com.binar.core.dashboard.dashboardItem.farmationGoodsConsumption.FarmationGoodsConsumptionModel;
 import com.binar.core.dashboard.dashboardItem.farmationGoodsConsumption.FarmationGoodsConsumptionPresenter;
 import com.binar.core.dashboard.dashboardItem.farmationGoodsConsumption.FarmationGoodsConsumptionViewImpl;
+import com.binar.core.dashboard.dashboardItem.farmationGoodsWithIncreasingTrend.FarmationGoodsWithIncreasingTrendModel;
+import com.binar.core.dashboard.dashboardItem.farmationGoodsWithIncreasingTrend.FarmationGoodsWithIncreasingTrendPresenter;
+import com.binar.core.dashboard.dashboardItem.farmationGoodsWithIncreasingTrend.FarmationGoodsWithIncreasingTrendViewImpl;
 import com.binar.core.dashboard.dashboardItem.farmationMinimumStock.FarmationMinimumStockModel;
 import com.binar.core.dashboard.dashboardItem.farmationMinimumStock.FarmationMinimumStockPresenter;
 import com.binar.core.dashboard.dashboardItem.farmationMinimumStock.FarmationMinimumStockViewImpl;
@@ -103,6 +106,10 @@ public class Dashboard extends VerticalLayout {
 //	FarmationMinimumStockViewImpl 	farmationMinimumStockViewImpl; 
 //	FarmationMinimumStockPresenter 	farmationMinimumStockPresenter; 
 
+	FarmationGoodsWithIncreasingTrendModel 	farmationGoodsWithIncreasingTrendModel; 
+	FarmationGoodsWithIncreasingTrendPresenter 	farmationGoodsWithIncreasingTrendPresenter; 
+	FarmationGoodsWithIncreasingTrendViewImpl 	farmationGoodsWithIncreasingTrendViewImpl; 
+
 	FarmationRequirementStatusModel farmationRequirementStatusModel;
 	FarmationRequirementStatusPresenter farmationRequirementStatusPresenter;
 	FarmationRequirementStatusViewImpl farmationRequirementStatusViewImpl;
@@ -161,8 +168,15 @@ public class Dashboard extends VerticalLayout {
 			farmationRequirementStatusPresenter = new FarmationRequirementStatusPresenter(
 					function, farmationRequirementStatusViewImpl, farmationRequirementStatusModel);
 		}
-		gridLayout.addComponent(farmationRequirementStatusViewImpl, 1,1);		
+		gridLayout.addComponent(farmationRequirementStatusViewImpl, 1,1);	
 		
+		if(farmationGoodsWithIncreasingTrendModel == null){
+			farmationGoodsWithIncreasingTrendViewImpl =new FarmationGoodsWithIncreasingTrendViewImpl(function);
+			farmationGoodsWithIncreasingTrendModel =new FarmationGoodsWithIncreasingTrendModel(function);
+			farmationGoodsWithIncreasingTrendPresenter = new FarmationGoodsWithIncreasingTrendPresenter(
+					function, farmationGoodsWithIncreasingTrendViewImpl, farmationGoodsWithIncreasingTrendModel);
+		}
+		gridLayout.addComponent(farmationGoodsWithIncreasingTrendViewImpl, 0,2);			
 	}
 	
 	IfrsDeletionApprovalModel ifrsDeletionApprovalModel;
