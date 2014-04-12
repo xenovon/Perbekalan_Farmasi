@@ -5,6 +5,7 @@ import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
@@ -108,8 +109,10 @@ D	Laporan barang kadaluarsa (udah disetujui)
 	public void construct() {
 		this.setMargin(true);
 		this.setSpacing(true);
-		
-		addComponents(title, buttonConsumption, buttonDailyConsumption, buttonExpiredGoods, buttonProcurement, buttonReceipt, buttonRequirement, buttonStock);
+		CssLayout layout=new CssLayout();
+		layout.addStyleName("layout-report");
+		layout.addComponents(buttonConsumption, buttonDailyConsumption, buttonExpiredGoods, buttonProcurement, buttonReceipt, buttonRequirement, buttonStock);
+		addComponents(title, layout);
 	}
 	
 	

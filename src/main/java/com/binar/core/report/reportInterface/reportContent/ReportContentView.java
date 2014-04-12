@@ -8,6 +8,9 @@ public interface ReportContentView {
 	public enum ReportType{
 		CONSUMPTION, DAILY_CONSUMPTION, EXPIRED_GOODS, PROCUREMENT, RECEIPT,REQUIREMENT, STOCK,
 	}
+	public enum ViewMode{
+		DAILY, WEEKLY, MONTHLY
+	}
 	interface ReportContentListener{
 		public void cancelClick(ReportType report);
 		public void printClick(ReportType report, ReportData data);

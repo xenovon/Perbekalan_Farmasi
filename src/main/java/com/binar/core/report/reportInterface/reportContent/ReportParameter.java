@@ -52,7 +52,7 @@ public class ReportParameter {
 	public final  String MONTH_PERIODE="yearmonth";
 	public final  String ACCEPTANCE="acceptance";
 	public final String WITHPPN="withppn";
-	
+	public final String WEEK="week";
 	public Map<String, String> generateParameter(ReportType reportType, ReportData reportData){
 		Map<String, String> parameter;
 		
@@ -106,6 +106,7 @@ public class ReportParameter {
 		parameter.put(GOODS_TYPE, reportData.getSelectedGoods());
 		parameter.put(MONTH_PERIODE, reportData.getSelectedMonth()+"-"+reportData.getSelectedYear());
 		parameter.put(DATE, format.format(reportData.getSelectedDay()));
+		parameter.put(WEEK, String.valueOf(reportData.getSelectedWeek()));
 		return parameter;
 	}
 	private ReportData processConsumption(VaadinRequest request){
@@ -116,6 +117,7 @@ public class ReportParameter {
 			data.setSelectedGoods(request.getParameter(GOODS_TYPE));
 			data.setDate(request.getParameter(DATE));
 			data.setDateMonth(request.getParameter(MONTH_PERIODE));
+			data.setSelectedWeek(Integer.parseInt(request.getParameter(WEEK)));
 			return data;
 		} catch (Exception e) {
 			e.printStackTrace();

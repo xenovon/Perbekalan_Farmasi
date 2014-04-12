@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 import com.binar.core.report.reportInterface.reportContent.ReportContentView.ReportType;
 import com.binar.generalFunction.DateManipulator;
@@ -18,7 +19,7 @@ public class ReportData {
 	 * Menampung data parameter laporan
 	 */
 	public enum PeriodeType{
-		BY_MONTH, BY_DAY, BY_RANGE
+		BY_MONTH, BY_DAY, BY_RANGE, BY_WEEK
 	}
 	private boolean withPPN;
 	public static final String SELECT_GOODS_OBAT="obat";
@@ -29,6 +30,7 @@ public class ReportData {
 	private String selectedGoods;
 	private String selectedMonth;
 	private String selectedYear;
+	private int selectedWeek;
 	private Date selectedDay;
 	private Date dateStart;
 	private Date dateEnd;
@@ -49,11 +51,36 @@ public class ReportData {
 	public void setDateMonth(String dateMonth) {
 		this.dateMonth = dateMonth;
 	}
+	
 	public void setDateRange(String dateRange) {
 		this.dateRange = dateRange;
 		Date[] date=getDateRange();
 		setDateStart(date[0]);
 		setDateEnd(date[1]);
+	}
+	//Mendapatkan rentang dalam minggu
+	public Date[] getDateWeek(){
+		//array 1= tanggal mulai
+		//array 2=tanggal akhir
+		
+		Date[] returnValue=new Date[2];
+		DateTime dateSelected=getDateTimeMonth();
+		
+		int week=selectedWeek;
+		System.out.println("Selected week "+week);
+		int dayOfWeek=dateSelected.getDayOfWeek();
+		DateTime dateWeek;
+		if(dayOfWeek==1){
+			dateWeek=dateSelected.plusDays(0);
+		}else{
+			//ambil hari senin terdekat
+			dateWeek=dateSelected.plusDays(6-dayOfWeek);
+		}
+		//Ambil rentang minggu ke - x
+		returnValue[0]=dateWeek.plusDays(7*(week-1)+2).toDate();
+		returnValue[1]=dateWeek.plusDays(7*week+1).toDate();
+
+		return returnValue;
 	}
 	public Date getDate() {
 		try {
@@ -63,14 +90,17 @@ public class ReportData {
 			return new Date();
 		}
 	}
-	public Date getDateMonth() {
+	public DateTime getDateTimeMonth(){
 		DateManipulator date=function.getDate();
 		DateTime dateTime=date.parseDateMonth(dateMonth);
 		if(dateTime!=null){
-			return dateTime.toDate();
+			return dateTime;
 		}else{
-			return new Date();
-		}
+			return new DateTime();
+		}		
+	}
+	public Date getDateMonth() {
+		return getDateTimeMonth().toDate();
 	}
 	private Date[] getDateRange() {
 		String[] range=dateRange.split("--");
@@ -204,6 +234,42 @@ public class ReportData {
 	public boolean isWithPPN() {
 		return withPPN;
 	}
-	
-	
+	public int getSelectedWeek() {
+		return selectedWeek;
+	}
+	public void setSelectedWeek(int selectedWeek) {
+		this.selectedWeek = selectedWeek;
+	}
+
+	public static void main(String[] args) {
+		//array 2=tanggal akhir
+		
+		Date[] returnValue=new Date[2];
+		DateTime dateSelected=new DateTime().withDayOfMonth(1);
+		
+		int week=2;
+		int dayOfWeek=dateSelected.getDayOfWeek();
+		DateTime dateWeek;
+		if(dayOfWeek==1){
+			dateWeek=dateSelected.plusDays(0);
+		}else{
+			//ambil hari senin terdekat
+			dateWeek=dateSelected.plusDays(6-dayOfWeek);
+		}
+		//Ambil rentang minggu ke - x
+		returnValue[0]=dateWeek.plusDays(7*(week-1)+2).toDate();
+		returnValue[1]=dateWeek.plusDays(7*week+1).toDate();
+
+		for(int i=0;i<4;i++){
+			System.out.println();
+			System.out.println("Minggu ke "+i);
+			returnValue[0]=dateWeek.plusDays(7*(i-1)+2).toDate();
+			returnValue[1]=dateWeek.plusDays(7*i+1).toDate();
+			System.out.println(returnValue[0].toString());
+			System.out.println(returnValue[1].toString());
+			
+		}
+		
+	}
 }
+

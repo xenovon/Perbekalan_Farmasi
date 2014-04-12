@@ -12,6 +12,7 @@ import com.binar.core.report.reportInterface.reportContent.ReportContentView;
 import com.binar.core.report.reportInterface.reportContent.ReportData;
 import com.binar.core.report.reportInterface.reportContent.ReportContentView.ReportContentListener;
 import com.binar.core.report.reportInterface.reportContent.ReportContentView.ReportType;
+import com.binar.core.report.reportInterface.reportContent.ReportContentView.ViewMode;
 import com.binar.core.report.reportInterface.reportContent.ReportData.PeriodeType;
 import com.binar.core.report.reportInterface.reportContent.ReportPrint;
 import com.binar.generalFunction.GeneralFunction;
@@ -46,7 +47,7 @@ public class ReportConsumptionViewImpl extends VerticalLayout implements ClickLi
 	private DateField selectDate;
 	private ComboBox   selectYear;
 	private ComboBox selectMonth;
-	
+	private ComboBox selectWeek;
 	private GeneralFunction function;
 	
 	private BrowserWindowOpener opener;
@@ -96,7 +97,19 @@ public class ReportConsumptionViewImpl extends VerticalLayout implements ClickLi
 		selectYear.setTextInputAllowed(false);
 		selectMonth.setWidth(function.FORM_WIDTH);
 		selectYear.setWidth(function.FORM_WIDTH);
-		
+		 selectWeek =new ComboBox("Minggu Ke");
+		 selectWeek.setImmediate(true);
+		 selectWeek.addItem(1);
+		 selectWeek.addItem(2);
+		 selectWeek.addItem(3);
+		 selectWeek.addItem(4);
+		 selectWeek.setItemCaption(1, "Minggu Ke-1");
+		 selectWeek.setItemCaption(2, "Minggu Ke-2");
+		 selectWeek.setItemCaption(3, "Minggu Ke-3");
+		 selectWeek.setItemCaption(4, "Minggu Ke-4");
+		 selectWeek.setValue(1);
+		 
+
 
 		selectGoodsType=new OptionGroup("Tipe Laporan");
 		selectGoodsType.addItem("obat");
@@ -109,11 +122,13 @@ public class ReportConsumptionViewImpl extends VerticalLayout implements ClickLi
 		
 		selectPeriode=new OptionGroup("Periode Laporan");
 		selectPeriode.addItem("bulanan");
+		selectPeriode.addItem("mingguan");
 		selectPeriode.addItem("harian");
 		selectPeriode.setImmediate(true);
 		selectPeriode.addValueChangeListener(this);
 		selectPeriode.setItemCaption("bulanan", "Laporan Bulanan");
 		selectPeriode.setItemCaption("harian", "Laporan Harian");
+		selectPeriode.setItemCaption("mingguan", "Laporan Mingguan");
 		selectPeriode.setValue("bulanan");
 		
 		 selectGoodsType.addValueChangeListener(this);
@@ -121,9 +136,11 @@ public class ReportConsumptionViewImpl extends VerticalLayout implements ClickLi
 		 selectDate.addValueChangeListener(this);
 		 selectYear.addValueChangeListener(this);
 		 selectMonth.addValueChangeListener(this);
-		
-		 updateWindowOpener();
-		changeViewMode(true);
+		 selectWeek.addValueChangeListener(this);
+
+
+		updateWindowOpener();
+		changeViewMode(ViewMode.MONTHLY);
 		construct();
 
 	}
@@ -140,7 +157,7 @@ public class ReportConsumptionViewImpl extends VerticalLayout implements ClickLi
 				setMargin(true);
 			}
 		};
-		this.addComponents(selectGoodsType, selectPeriode, selectDate, selectYear, selectMonth, layout);
+		this.addComponents(selectGoodsType, selectPeriode, selectDate, selectYear, selectMonth, selectWeek,layout);
 
 	}
 	@Override
@@ -154,11 +171,7 @@ public class ReportConsumptionViewImpl extends VerticalLayout implements ClickLi
 	public void valueChange(ValueChangeEvent event) {
 		if(event.getProperty()==selectPeriode){
 			String value=(String)selectPeriode.getValue();
-			if(isViewMonthMode()){
-				changeViewMode(true);
-			}else{
-				changeViewMode(false);
-			}
+			changeViewMode(getViewMode());
 		}
 		updateWindowOpener();
 	}
@@ -178,34 +191,47 @@ public class ReportConsumptionViewImpl extends VerticalLayout implements ClickLi
 	}
 	
 	//apakah yang pilih adalah bulanan
-	private boolean isViewMonthMode(){
+	private ViewMode getViewMode(){
 		if(selectPeriode.getValue().equals("bulanan")){
-			return true;
+			return ViewMode.MONTHLY;
+		}else if(selectPeriode.getValue().equals("harian")){
+			return ViewMode.DAILY;
 		}else{
-			return false;
+			return ViewMode.WEEKLY;
 		}
 
 	}
-	public void changeViewMode(boolean viewByMonth) {
-		if(viewByMonth){
+
+	public void changeViewMode(ViewMode viewMode) {
+		if(viewMode==ViewMode.MONTHLY){
 			selectMonth.setVisible(true);
 			selectYear.setVisible(true);
 			selectDate.setVisible(false);
-		}else{
+			selectWeek.setVisible(false);
+		}else if(viewMode==ViewMode.DAILY){
 			selectMonth.setVisible(false);
 			selectYear.setVisible(false);
 			selectDate.setVisible(true);
+			selectWeek.setVisible(false);
+		}else{  //artinya mingguan
+			selectMonth.setVisible(true);
+			selectYear.setVisible(true);
+			selectDate.setVisible(false);
+			selectWeek.setVisible(true);			
 		}
 	}
 	@Override
 	public ReportData getReportData() {
 		ReportData data=new ReportData(function);
 		PeriodeType periodeType;
-		if(isViewMonthMode()){
+		if(getViewMode()==ViewMode.MONTHLY){
 			periodeType=PeriodeType.BY_MONTH;
-		}else{
+		}else if(getViewMode()==ViewMode.MONTHLY){
 			periodeType=PeriodeType.BY_DAY;
+		}else{
+			periodeType=PeriodeType.BY_WEEK;			
 		}
+		data.setSelectedWeek((Integer)selectWeek.getValue());
 		data.setPeriodeType(periodeType);
 		data.setSelectedDay(selectDate.getValue());
 		data.setSelectedMonth((String) selectMonth.getValue());

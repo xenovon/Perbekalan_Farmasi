@@ -60,17 +60,21 @@ public class ReportConsumptionModel extends Label{
 		if(data.getSelectedGoods().equals(ReportData.SELECT_GOODS_OBAT.toString())){
 			goodsType="Obat";
 			if(data.getPeriodeType()==PeriodeType.BY_MONTH){
-				tableCode=generateTableCode(getConsumptionDataMonthly(data.getDateMonth(), true));
-			}else{
+				tableCode=generateTableCode(getConsumptionDataMonthly(data.getDateMonth(), null, true));
+			}else if(data.getPeriodeType()==PeriodeType.BY_DAY){
 				tableCode=generateTableCode(getConsumptionDataDaily(data.getDate(), true));				
+			}else{
+				tableCode=generateTableCode(getConsumptionDataMonthly(null, data.getDateWeek(), true));				
 			}
 			
 		}else if(data.getSelectedGoods().equals(ReportData.SELECT_GOODS_ALKES.toString())){
 			goodsType="Alkes & BMHP";
 			if(data.getPeriodeType()==PeriodeType.BY_MONTH){
-				tableCode=generateTableCode(getConsumptionDataMonthly(data.getDateMonth(), false));
+				tableCode=generateTableCode(getConsumptionDataMonthly(data.getDateMonth(), null, true));
+			}else if(data.getPeriodeType()==PeriodeType.BY_DAY){
+				tableCode=generateTableCode(getConsumptionDataDaily(data.getDate(), true));				
 			}else{
-				tableCode=generateTableCode(getConsumptionDataDaily(data.getDate(), false));				
+				tableCode=generateTableCode(getConsumptionDataMonthly(null, data.getDateWeek(), true));				
 			}
 		}
 		if(data.getPeriodeType()==PeriodeType.BY_MONTH){
@@ -79,6 +83,9 @@ public class ReportConsumptionModel extends Label{
 		}else if(data.getPeriodeType()==PeriodeType.BY_DAY){
 			timecycle="Harian";
 			periode="Per "+date.dateToText(data.getDate(), true);
+		}else if(data.getPeriodeType()==PeriodeType.BY_WEEK){
+			timecycle="Mingguan";
+			periode="Periode "+date.dateToText(data.getDateWeek()[0], true)+" - "+date.dateToText(data.getDateWeek()[1], true);
 		}
 		reportDate = date.dateToText(new Date(),true);
 		city=setting.getSetting("rs_city").getSettingValue();
@@ -158,16 +165,21 @@ public class ReportConsumptionModel extends Label{
 			}
 		}
 		return returnValue; 
-
 	}
 	
 	//mendapatkan konsumsi barang pada tanggal tertentu
-	private Map<Goods, Integer> getConsumptionDataMonthly(Date periode, boolean isObat){
+	private Map<Goods, Integer> getConsumptionDataMonthly(Date periode, Date[] periode2, boolean isObat){
 		System.out.println("Mendapatkan periode");
-		
-		DateTime startDate=new DateTime(periode);
-			startDate=startDate.withDayOfMonth(startDate.dayOfMonth().getMinimumValue());
-		DateTime endDate=startDate.withDayOfMonth(startDate.dayOfMonth().getMaximumValue());
+		DateTime startDate = new DateTime();
+		DateTime endDate = new DateTime();
+		if(periode!=null){
+			startDate=new DateTime(periode);
+			startDate=startDate.withDayOfMonth(startDate.dayOfMonth().getMinimumValue());	
+			endDate=startDate.withDayOfMonth(startDate.dayOfMonth().getMaximumValue());				
+		}else if(periode2!=null){
+			startDate=new DateTime(periode2[0]);
+			endDate=new DateTime(periode2[1]);
+		}
 		
 		List<String> goodsTypeList=new ArrayList<String>();
 		if(isObat){

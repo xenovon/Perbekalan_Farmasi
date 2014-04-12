@@ -34,6 +34,7 @@ public class Forecaster {
 	
 	public  static  final String INDEPENDENT_VARIABLE="bulan";
 	public static final int PERIODE_PER_YEAR=12;
+	public static final String TIME_VARIABLE="month";
 	private DoubleExponentialSmoothingProcess processDoubleES;
 	private MovingAverageProcess processMovingAverage;
 	private SimpleExponentialSmoothingProcess processSimpleES;
@@ -101,6 +102,7 @@ public class Forecaster {
 			i++;
 		}
 		dataSet.setPeriodsPerYear(PERIODE_PER_YEAR);
+		dataSet.setTimeVariable(TIME_VARIABLE);
 		return dataSet;
 	}
 

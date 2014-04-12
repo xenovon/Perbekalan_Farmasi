@@ -6218,7 +6218,7 @@ body .dashboard.v-app .v-app-loading {
 }
 
 .dashboard .header-style {
-	background-color: #3498db;
+	background-color: #1B6FA7;
 	background-color: #3498db;
 	font-size: 30px;
 	height: 40px;
@@ -6325,10 +6325,41 @@ body .dashboard.v-app .v-app-loading {
 }
 
 .dashboard .button-report {
-	width: 250px;
-	height: 60px;
+	width: 150px !important;
+	height: 150px !important;
 	padding: 10px;
 	font-size: 17px;
 	vertical-align: middle !important;
 	text-align: left !important;
+}
+
+.dashboard .dashboard .v-button-wrap, .dashboard .dashboard .v-button-caption {
+	display: inherit;
+}
+
+.dashboard .button-report .v-button-caption {
+	vertical-align: middle;
+	white-space: normal;
+	font: inherit;
+	color: inherit;
+	line-height: normal;
+	text-align: center;
+	display: block;
+	margin: 10px 0 0 0;
+	padding: 0;
+	font-weight: bold;
+}
+
+.dashboard .button-report .v-button-wrap {
+	text-align: center !important;
+	display: block;
+}
+
+.dashboard .layout-report {
+	width: 600px;
+	height: auto;
+}
+
+.dashboard .layout-report .button-report {
+	margin: 10px;
 }

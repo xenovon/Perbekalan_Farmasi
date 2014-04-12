@@ -63,17 +63,21 @@ public class ReportReceiptModel extends Label {
 		if(data.getSelectedGoods().equals(ReportData.SELECT_GOODS_OBAT.toString())){
 			goodsType="Obat";
 			if(data.getPeriodeType()==PeriodeType.BY_MONTH){
-				tableCode=generateTableCode(getReception(data.getDateMonth(), false, true));
+				tableCode=generateTableCode(getReception(data.getDateMonth(), null, PeriodeType.BY_MONTH, true));
+			}else if(data.getPeriodeType()==PeriodeType.BY_DAY){
+				tableCode=generateTableCode(getReception(data.getDate(), null, PeriodeType.BY_DAY, true));
 			}else{
-				tableCode=generateTableCode(getReception(data.getDate(), true, true));
+				tableCode=generateTableCode(getReception(null, data.getDateWeek(), PeriodeType.BY_WEEK, true));				
 			}
 			
 		}else if(data.getSelectedGoods().equals(ReportData.SELECT_GOODS_ALKES.toString())){
 			goodsType="Alkes & BMHP";
 			if(data.getPeriodeType()==PeriodeType.BY_MONTH){
-				tableCode=generateTableCode(getReception(data.getDateMonth(), false, false));
+				tableCode=generateTableCode(getReception(data.getDateMonth(), null, PeriodeType.BY_MONTH, true));
+			}else if(data.getPeriodeType()==PeriodeType.BY_DAY){
+				tableCode=generateTableCode(getReception(data.getDate(), null, PeriodeType.BY_DAY, true));
 			}else{
-				tableCode=generateTableCode(getReception(data.getDate(), true, false));
+				tableCode=generateTableCode(getReception(null, data.getDateWeek(), PeriodeType.BY_WEEK, true));				
 			}
 		}
 		if(data.getPeriodeType()==PeriodeType.BY_MONTH){
@@ -82,6 +86,10 @@ public class ReportReceiptModel extends Label {
 		}else if(data.getPeriodeType()==PeriodeType.BY_DAY){
 			timecycle="Harian";
 			periode="Per "+date.dateToText(data.getDate(), true);
+		}else if(data.getPeriodeType()==PeriodeType.BY_WEEK){
+			timecycle="Mingguan";
+			periode="Periode "+date.dateToText(data.getDateWeek()[0], true)+" - "+date.dateToText(data.getDateWeek()[1], true);
+			
 		}
 		reportDate = date.dateToText(new Date(),true);
 		city=setting.getSetting("rs_city").getSettingValue();
@@ -131,21 +139,31 @@ public class ReportReceiptModel extends Label {
 		
 		return returnValue;
 	}
+	
 	//untuk mendapatkan konsumsi barang dalam hari tertentu
-	private List<GoodsReception> getReception(Date periode, boolean isDaily, boolean isObat){
+	private List<GoodsReception> getReception(Date periode, Date[] period2, PeriodeType periodType, boolean isObat){
 		System.out.println("Mendapatkan periode");
 		
-		DateTime startDate;
-		DateTime endDate;
+		DateTime startDate=new DateTime();
+		DateTime endDate=new DateTime();
 		//tentukan rentang tanggal
-		if(isDaily){
-			startDate=new DateTime(periode);
-				startDate=startDate.withHourOfDay(startDate.hourOfDay().getMinimumValue());
-			endDate=startDate.withHourOfDay(startDate.hourOfDay().getMaximumValue());
-		}else{
-			startDate=new DateTime(periode);
+		if(periodType==PeriodeType.BY_DAY){
+			if(periode!=null){
+				startDate=new DateTime(periode);
+					startDate=startDate.withHourOfDay(startDate.hourOfDay().getMinimumValue());
+				endDate=startDate.withHourOfDay(startDate.hourOfDay().getMaximumValue());
+			}
+		}else if(periodType==PeriodeType.BY_MONTH){
+			if(periode!=null){
+				startDate=new DateTime(periode);
 				startDate=startDate.withDayOfMonth(startDate.dayOfMonth().getMinimumValue());
-			endDate=startDate.withDayOfMonth(startDate.dayOfMonth().getMaximumValue());
+				endDate=startDate.withDayOfMonth(startDate.dayOfMonth().getMaximumValue());
+			}
+		}else{ //berarti By week
+			if(period2!=null){
+				startDate=new DateTime(period2[0]);
+				endDate=new DateTime(period2[1]);
+			}
 		}
 		List<String> goodsTypeList=new ArrayList<String>();
 		if(isObat){
@@ -167,7 +185,6 @@ public class ReportReceiptModel extends Label {
 		return consumptionOfMonth; 
 
 	}
-	
 	
 	
 	
