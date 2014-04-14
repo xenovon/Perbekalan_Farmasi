@@ -11,9 +11,11 @@ public interface ReportContentView {
 	public enum ViewMode{
 		DAILY, WEEKLY, MONTHLY
 	}
-	interface ReportContentListener{
+	public interface ReportContentListener{
 		public void cancelClick(ReportType report);
 		public void printClick(ReportType report, ReportData data);
+		public void showClick(ReportType report, ReportData data);
+		public void backClick(ReportType report);
 	}
 	
 	public void init();

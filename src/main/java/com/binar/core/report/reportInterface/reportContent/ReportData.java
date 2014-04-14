@@ -1,5 +1,6 @@
 package com.binar.core.report.reportInterface.reportContent;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,6 +22,9 @@ public class ReportData {
 	public enum PeriodeType{
 		BY_MONTH, BY_DAY, BY_RANGE, BY_WEEK
 	}
+	public enum ReportContent{
+		TABLE, CHART, TABLE_CHART, PRINT
+	}
 	private boolean withPPN;
 	public static final String SELECT_GOODS_OBAT="obat";
 	public static final String SELECT_GOODS_ALKES="alkesbmhp";
@@ -38,13 +42,20 @@ public class ReportData {
 	private PeriodeType periodeType;
 	private GeneralFunction function;
 	
+	private ReportContent reportContent;
 	//untuk dikirim ke UI lain
 	private String dateRange; //dd-MM-yyyy--dd-MM-yyyy
 	private String dateMonth; //month-year 
 	private String date;  //dd-MM-yyyy
 	
 	SimpleDateFormat format=new SimpleDateFormat("dd-MM-yyyy");
-	
+
+	public ReportContent getReportContent() {
+		return reportContent;
+	}
+	public void setReportContent(ReportContent reportContent) {
+		this.reportContent = reportContent;
+	}
 	public void setDate(String date) {
 		this.date = date;
 	}
@@ -67,7 +78,7 @@ public class ReportData {
 		DateTime dateSelected=getDateTimeMonth();
 		
 		int week=selectedWeek;
-		System.out.println("Selected week "+week);
+		System.out.println("Selected week ");
 		int dayOfWeek=dateSelected.getDayOfWeek();
 		DateTime dateWeek;
 		if(dayOfWeek==1){
@@ -84,6 +95,9 @@ public class ReportData {
 	}
 	public Date getDate() {
 		try {
+			if(date==null){
+				date=format.format(getSelectedDay());
+			}
 			return format.parse(date);
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -91,6 +105,10 @@ public class ReportData {
 		}
 	}
 	public DateTime getDateTimeMonth(){
+		System.out.println("Date Month "+dateMonth);
+		if(dateMonth==null){
+			dateMonth=selectedMonth+"-"+selectedYear;
+		}
 		DateManipulator date=function.getDate();
 		DateTime dateTime=date.parseDateMonth(dateMonth);
 		if(dateTime!=null){
@@ -103,6 +121,9 @@ public class ReportData {
 		return getDateTimeMonth().toDate();
 	}
 	private Date[] getDateRange() {
+		if(dateRange==null){
+			dateRange=format.format(getDateStart())+"--"+format.format(getDateEnd());
+		}
 		String[] range=dateRange.split("--");
 		Date[] date=new Date[2];
 		try {

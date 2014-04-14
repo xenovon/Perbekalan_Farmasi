@@ -14,6 +14,7 @@ import com.binar.core.report.reportInterface.reportContent.ReportContentView.Rep
 import com.binar.core.report.reportInterface.reportContent.ReportContentView.ReportType;
 import com.binar.core.report.reportInterface.reportContent.ReportContentView.ViewMode;
 import com.binar.core.report.reportInterface.reportContent.ReportData.PeriodeType;
+import com.binar.core.report.reportInterface.reportContent.ReportData.ReportContent;
 import com.binar.core.report.reportInterface.reportContent.ReportPrint;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.data.Item;
@@ -41,6 +42,7 @@ public class ReportConsumptionViewImpl extends VerticalLayout implements ClickLi
 	
 	private Button buttonCancel;
 	private Button buttonPrint;
+	private Button buttonShow;
 	
 	private OptionGroup selectGoodsType;
 	private OptionGroup selectPeriode;
@@ -48,7 +50,10 @@ public class ReportConsumptionViewImpl extends VerticalLayout implements ClickLi
 	private ComboBox   selectYear;
 	private ComboBox selectMonth;
 	private ComboBox selectWeek;
+	private ComboBox selectContent;
+	
 	private GeneralFunction function;
+	
 	
 	private BrowserWindowOpener opener;
 	
@@ -56,8 +61,6 @@ public class ReportConsumptionViewImpl extends VerticalLayout implements ClickLi
 	public ReportConsumptionViewImpl(GeneralFunction function) {
 		this.function=function;
 	}
-	
-	
 	@Override
 	public void init() {
 		buttonCancel=new Button("Batalkan");
@@ -66,6 +69,10 @@ public class ReportConsumptionViewImpl extends VerticalLayout implements ClickLi
 		buttonPrint.addClickListener(this);
 		buttonPrint.setIcon(new ThemeResource("icons/image/icon-print.png"));
 
+		buttonShow=new Button("Tampilkan Laporan");
+		buttonShow.addClickListener(this);
+
+		
 		opener=new BrowserWindowOpener(ReportPrint.class);
 		opener.setFeatures("height=200,width=400,resizable");
 		// A button to open the printer-friendly page.
@@ -109,7 +116,16 @@ public class ReportConsumptionViewImpl extends VerticalLayout implements ClickLi
 		 selectWeek.setItemCaption(4, "Minggu Ke-4");
 		 selectWeek.setValue(1);
 		 
-
+		 selectContent =new ComboBox("Pilih Tampilan");
+		 selectContent.setImmediate(true);
+		 selectContent.addItem(ReportContent.CHART);
+		 selectContent.addItem(ReportContent.TABLE);
+		 selectContent.addItem(ReportContent.TABLE_CHART);
+		 selectContent.setItemCaption(ReportContent.CHART, "Tampilkan Chart");
+		 selectContent.setItemCaption(ReportContent.TABLE, "Tampilkan Tabel");
+		 selectContent.setItemCaption(ReportContent.TABLE_CHART, "Tampilkan Tabel dan Chart");
+		 selectContent.setItemCaption(4, "Minggu Ke-4");
+		 selectContent.setValue(ReportContent.TABLE);
 
 		selectGoodsType=new OptionGroup("Tipe Laporan");
 		selectGoodsType.addItem("obat");
@@ -137,6 +153,7 @@ public class ReportConsumptionViewImpl extends VerticalLayout implements ClickLi
 		 selectYear.addValueChangeListener(this);
 		 selectMonth.addValueChangeListener(this);
 		 selectWeek.addValueChangeListener(this);
+		 selectContent.addValueChangeListener(this);
 
 
 		updateWindowOpener();
@@ -149,15 +166,16 @@ public class ReportConsumptionViewImpl extends VerticalLayout implements ClickLi
 	public void construct() {
 		this.setSpacing(true);
 		this.setMargin(true);
-		GridLayout layout=new GridLayout(2, 1){
+		GridLayout layout=new GridLayout(3, 1){
 			{
 				addComponent(buttonPrint, 0,0);
-				addComponent(buttonCancel, 1, 0);
+				addComponent(buttonShow, 1,0);
+				addComponent(buttonCancel, 2, 0);
 				setSpacing(true);
 				setMargin(true);
 			}
 		};
-		this.addComponents(selectGoodsType, selectPeriode, selectDate, selectYear, selectMonth, selectWeek,layout);
+		this.addComponents(selectContent, selectGoodsType, selectPeriode, selectDate, selectYear, selectMonth, selectWeek,layout);
 
 	}
 	@Override
@@ -172,16 +190,24 @@ public class ReportConsumptionViewImpl extends VerticalLayout implements ClickLi
 		if(event.getProperty()==selectPeriode){
 			String value=(String)selectPeriode.getValue();
 			changeViewMode(getViewMode());
+		}else if(event.getProperty()==selectContent){
+			ReportContent value=(ReportContent)selectContent.getValue();
+			if(!(value==ReportContent.TABLE)){
+				buttonPrint.setEnabled(false);
+			}else{
+				buttonPrint.setEnabled(true);
+			}
 		}
 		updateWindowOpener();
 	}
 
+	
 	@Override
 	public void buttonClick(ClickEvent event) {
 		if(event.getButton()==buttonCancel){
 			listener.cancelClick(ReportType.CONSUMPTION);
-		}if(event.getButton()==buttonPrint){
-//			listener.printClick(ReportType.CONSUMPTION, getReportData());
+		}if(event.getButton()==buttonShow){
+			listener.showClick(ReportType.CONSUMPTION, getReportData());
 		}
 	}
 	
@@ -231,6 +257,7 @@ public class ReportConsumptionViewImpl extends VerticalLayout implements ClickLi
 		}else{
 			periodeType=PeriodeType.BY_WEEK;			
 		}
+		data.setReportContent((ReportContent)selectContent.getValue());
 		data.setSelectedWeek((Integer)selectWeek.getValue());
 		data.setPeriodeType(periodeType);
 		data.setSelectedDay(selectDate.getValue());

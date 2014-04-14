@@ -249,7 +249,6 @@ public class ForecastStepViewImpl extends VerticalLayout implements ForecastStep
 			}};
 
 		}
-		
 		layoutResult.addComponent(layoutSimple);
 		
 		if(minimumMSE==ForecastType.DOUBLE){

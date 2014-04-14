@@ -7,6 +7,7 @@ import java.util.Map;
 import com.binar.core.procurement.purchaseOrder.printPurchaseOrder.GeneralPrint;
 import com.binar.core.report.reportInterface.reportContent.ReportContentView.ReportContentListener;
 import com.binar.core.report.reportInterface.reportContent.ReportContentView.ReportType;
+import com.binar.core.report.reportInterface.reportContent.reportConsumption.ReportConsumptionResultView;
 import com.binar.core.report.reportInterface.reportContent.reportConsumption.ReportConsumptionViewImpl;
 import com.binar.core.report.reportInterface.reportContent.reportDailyConsumption.ReportDailyConsumptionViewImpl;
 import com.binar.core.report.reportInterface.reportContent.reportExpiredGoods.ReportExpiredGoodsViewImpl;
@@ -19,6 +20,7 @@ import com.vaadin.server.BrowserWindowOpener;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 
 public class ReportContentPresenter  implements ReportContentListener{
@@ -31,6 +33,8 @@ public class ReportContentPresenter  implements ReportContentListener{
 	ReportRequirementViewImpl reportRequirement;
 	ReportStockViewImpl reportStock;
 	
+	public final String WINDOW_WIDTH="750px";
+	public final String WINDOW_WIDTH_COMPACT="500px";
 	GeneralFunction function;
 	
 	ReportParameter parameter;
@@ -217,5 +221,68 @@ public class ReportContentPresenter  implements ReportContentListener{
 		}		
 		
 	}
-	
+	Window window;	
+	public void showClick(ReportType report, ReportData data){
+		/* Dapatkan window */
+		Collection<Window> windows=UI.getCurrent().getWindows();
+		if(windows.size()>=1){
+			window=windows.iterator().next();
+		}else{
+			return;
+		}
+		
+		if(windows.size()>1){
+			while(windows.iterator().hasNext()){
+				UI.getCurrent().removeWindow(windows.iterator().next());				
+			}
+			
+			UI.getCurrent().addWindow(window);
+		}
+		
+		//End dapatkan window
+		
+		if(report==ReportType.CONSUMPTION){
+			window.setContent(getComponentConsumption(data));
+			window.setWidth(WINDOW_WIDTH);
+		}else if(report==ReportType.DAILY_CONSUMPTION){
+			
+		}else if(report==ReportType.EXPIRED_GOODS){
+
+		}else if(report==ReportType.PROCUREMENT){
+
+		}else if(report==ReportType.RECEIPT){
+
+		}else if(report==ReportType.REQUIREMENT){
+		
+		}else if(report==ReportType.STOCK){
+
+		}
+		
+	}
+	@Override
+	public void backClick(ReportType report) {
+		if(window!=null){
+			if(report==ReportType.CONSUMPTION){
+				window.setContent(getViewConsumption());
+				window.setWidth(WINDOW_WIDTH_COMPACT);
+			}else if(report==ReportType.DAILY_CONSUMPTION){
+				
+			}else if(report==ReportType.EXPIRED_GOODS){
+
+			}else if(report==ReportType.PROCUREMENT){
+
+			}else if(report==ReportType.RECEIPT){
+
+			}else if(report==ReportType.REQUIREMENT){
+			
+			}else if(report==ReportType.STOCK){
+
+			}
+		}
+	}
+	private Component getComponentConsumption(ReportData data){
+		ReportConsumptionResultView resultView=new ReportConsumptionResultView(function);
+		resultView.init(data, this);
+		return resultView;
+	}
 }
