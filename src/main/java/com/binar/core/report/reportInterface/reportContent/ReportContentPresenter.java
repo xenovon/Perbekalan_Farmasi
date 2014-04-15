@@ -10,10 +10,14 @@ import com.binar.core.report.reportInterface.reportContent.ReportContentView.Rep
 import com.binar.core.report.reportInterface.reportContent.reportConsumption.ReportConsumptionResultView;
 import com.binar.core.report.reportInterface.reportContent.reportConsumption.ReportConsumptionViewImpl;
 import com.binar.core.report.reportInterface.reportContent.reportDailyConsumption.ReportDailyConsumptionViewImpl;
+import com.binar.core.report.reportInterface.reportContent.reportExpiredGoods.ReportExpiredGoodsResultView;
 import com.binar.core.report.reportInterface.reportContent.reportExpiredGoods.ReportExpiredGoodsViewImpl;
 import com.binar.core.report.reportInterface.reportContent.reportProcurement.ReportProcurementViewImpl;
+import com.binar.core.report.reportInterface.reportContent.reportReceipt.ReportReceiptResultView;
 import com.binar.core.report.reportInterface.reportContent.reportReceipt.ReportReceiptViewImpl;
+import com.binar.core.report.reportInterface.reportContent.reportRequirement.ReportRequirementResultView;
 import com.binar.core.report.reportInterface.reportContent.reportRequirement.ReportRequirementViewImpl;
+import com.binar.core.report.reportInterface.reportContent.reportStock.ReportStockResultView;
 import com.binar.core.report.reportInterface.reportContent.reportStock.ReportStockViewImpl;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.server.BrowserWindowOpener;
@@ -247,15 +251,21 @@ public class ReportContentPresenter  implements ReportContentListener{
 		}else if(report==ReportType.DAILY_CONSUMPTION){
 			
 		}else if(report==ReportType.EXPIRED_GOODS){
-
+			window.setContent(getComponentExpiredGoods(data));
+			window.setWidth(WINDOW_WIDTH);
 		}else if(report==ReportType.PROCUREMENT){
 
 		}else if(report==ReportType.RECEIPT){
+			window.setContent(getComponentReceipt(data));
+			window.setWidth(WINDOW_WIDTH);
 
 		}else if(report==ReportType.REQUIREMENT){
+			window.setContent(getComponentRequirement(data));
+			window.setWidth(WINDOW_WIDTH);
 		
 		}else if(report==ReportType.STOCK){
-
+			window.setContent(getComponentStock(data));
+			window.setWidth(WINDOW_WIDTH);
 		}
 		
 	}
@@ -268,15 +278,22 @@ public class ReportContentPresenter  implements ReportContentListener{
 			}else if(report==ReportType.DAILY_CONSUMPTION){
 				
 			}else if(report==ReportType.EXPIRED_GOODS){
+				window.setContent(getExpiredGoods());
+				window.setWidth(WINDOW_WIDTH_COMPACT);
 
 			}else if(report==ReportType.PROCUREMENT){
 
 			}else if(report==ReportType.RECEIPT){
+				window.setContent(getReceipt());
+				window.setWidth(WINDOW_WIDTH_COMPACT);
 
 			}else if(report==ReportType.REQUIREMENT){
-			
-			}else if(report==ReportType.STOCK){
+				window.setContent(getRequirement());
+				window.setWidth(WINDOW_WIDTH_COMPACT);
 
+			}else if(report==ReportType.STOCK){
+				window.setContent(getStock());
+				window.setWidth(WINDOW_WIDTH_COMPACT);
 			}
 		}
 	}
@@ -285,4 +302,25 @@ public class ReportContentPresenter  implements ReportContentListener{
 		resultView.init(data, this);
 		return resultView;
 	}
+	private Component getComponentStock(ReportData data){
+		ReportStockResultView resultView=new ReportStockResultView(function);
+		resultView.init(data, this);
+		return resultView;
+	}
+	private Component getComponentReceipt(ReportData data){
+		ReportReceiptResultView resultView=new ReportReceiptResultView(function);
+		resultView.init(data, this);
+		return resultView;
+	}
+	private Component getComponentRequirement(ReportData data){
+		ReportRequirementResultView resultView=new ReportRequirementResultView(function);
+		resultView.init(data, this);
+		return resultView;
+	}
+	private Component getComponentExpiredGoods(ReportData data){
+		ReportExpiredGoodsResultView resultView=new ReportExpiredGoodsResultView(function);
+		resultView.init(data, this);
+		return resultView;
+	}	
+	
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import com.binar.core.report.reportInterface.ReportInterfaceView.ReportInterfaceListener;
 import com.binar.core.report.reportInterface.reportContent.ReportContentView;
 import com.binar.core.report.reportInterface.reportContent.ReportData;
+import com.binar.core.report.reportInterface.reportContent.ReportData.ReportContent;
 import com.binar.core.report.reportInterface.reportContent.ReportPrint;
 import com.binar.core.report.reportInterface.reportContent.ReportContentView.ReportContentListener;
 import com.binar.core.report.reportInterface.reportContent.ReportContentView.ReportType;
@@ -37,11 +38,13 @@ public class ReportStockViewImpl extends VerticalLayout implements ClickListener
 	 */
 	private Button buttonCancel;
 	private Button buttonPrint;
-	
+	private Button buttonShow;
+
 	private OptionGroup selectGoodsType;
 	private DateField selectDate;
 	private OptionGroup selectWithPPN;
-	
+	private ComboBox selectContent;
+
 	private GeneralFunction function;
 	
 	private BrowserWindowOpener opener;
@@ -59,6 +62,8 @@ public class ReportStockViewImpl extends VerticalLayout implements ClickListener
 		buttonPrint=new Button("Cetak");
 		buttonPrint.addClickListener(this);
 		buttonPrint.setIcon(new ThemeResource("icons/image/icon-print.png"));
+		buttonShow=new Button("Tampilkan Laporan");
+		buttonShow.addClickListener(this);
 
 		opener=new BrowserWindowOpener(ReportPrint.class);
 		opener.setFeatures("height=200,width=400,resizable");
@@ -86,11 +91,23 @@ public class ReportStockViewImpl extends VerticalLayout implements ClickListener
 		
 		selectWithPPN.setItemCaption("ya", "Ya");
 		selectWithPPN.setItemCaption("tidak", "Tidak");
-
 		
+		selectContent =new ComboBox("Pilih Tampilan");
+	 	selectContent.setImmediate(true);
+	 	selectContent.addItem(ReportContent.CHART);
+	 	selectContent.addItem(ReportContent.TABLE);
+	 	selectContent.addItem(ReportContent.TABLE_CHART);
+	 	selectContent.setItemCaption(ReportContent.CHART, "Tampilkan Chart");
+	 	selectContent.setItemCaption(ReportContent.TABLE, "Tampilkan Tabel");
+	 	selectContent.setItemCaption(ReportContent.TABLE_CHART, "Tampilkan Tabel dan Chart");
+	 	selectContent.setItemCaption(4, "Minggu Ke-4");
+	 	selectContent.setValue(ReportContent.TABLE);
+
+		selectContent.addValueChangeListener(this);
 		selectDate.addValueChangeListener(this);
 		selectGoodsType.addValueChangeListener(this);
 		selectWithPPN.addValueChangeListener(this);
+		
 		updateWindowOpener();
 		construct();
 
@@ -104,15 +121,16 @@ public class ReportStockViewImpl extends VerticalLayout implements ClickListener
 	public void construct() {
 		this.setSpacing(true);
 		this.setMargin(true);
-		GridLayout layout=new GridLayout(2, 1){
+		GridLayout layout=new GridLayout(3, 1){
 			{
 				addComponent(buttonPrint, 0,0);
-				addComponent(buttonCancel, 1, 0);
+				addComponent(buttonShow, 1,0);
+				addComponent(buttonCancel, 2, 0);
 				setSpacing(true);
 				setMargin(true);
 			}
 		};
-		this.addComponents(selectGoodsType, selectDate, selectWithPPN, layout);
+		this.addComponents(selectContent, selectGoodsType, selectDate, selectWithPPN, layout);
 	}
 	@Override
 	public void setListener(ReportContentListener listener) {
@@ -123,6 +141,14 @@ public class ReportStockViewImpl extends VerticalLayout implements ClickListener
 	}
 	@Override
 	public void valueChange(ValueChangeEvent event) {
+		if(event.getProperty()==selectContent){
+			ReportContent value=(ReportContent)selectContent.getValue();
+			if(!(value==ReportContent.TABLE)){
+				buttonPrint.setEnabled(false);
+			}else{
+				buttonPrint.setEnabled(true);
+			}
+		}
 		updateWindowOpener();
 	}
 
@@ -130,7 +156,8 @@ public class ReportStockViewImpl extends VerticalLayout implements ClickListener
 	public void buttonClick(ClickEvent event) {
 		if(event.getButton()==buttonCancel){
 			listener.cancelClick(ReportType.STOCK);
-		}if(event.getButton()==buttonPrint){
+		}if(event.getButton()==buttonShow){
+			listener.showClick(ReportType.STOCK, getReportData());
 		}
 	}
 	
@@ -144,10 +171,12 @@ public class ReportStockViewImpl extends VerticalLayout implements ClickListener
 		return false;
 	}
 	public void changeViewMode(boolean viewByMonth) {
+		
 	}
 	@Override
 	public ReportData getReportData() {
 		ReportData data=new ReportData(function);
+		data.setReportContent((ReportContent)selectContent.getValue());
 		data.setSelectedDay(selectDate.getValue());
 		data.setSelectedGoods((String)selectGoodsType.getValue());
 		data.setType(ReportType.STOCK);

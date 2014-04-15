@@ -70,6 +70,7 @@ public class GeneralFunction {
 	private EmailValidator emailValidator;
 	private DecimalFormat format;
 	private MinimumStockUpdater minimumStock;
+	private MapSorting mapSort;
 	
 	//Method konstruktor kosong, jaga-jaga  kalo butuh konstruktor
 	public GeneralFunction() {
@@ -148,6 +149,12 @@ public class GeneralFunction {
 			acceptancePyramid= new AcceptancePyramid(getLogin());
 		}
 			return acceptancePyramid;
+	}
+	public MapSorting getMapSort(){
+		if(mapSort==null){
+			mapSort=new MapSorting();
+		}
+		return mapSort;
 	}
 	
 }

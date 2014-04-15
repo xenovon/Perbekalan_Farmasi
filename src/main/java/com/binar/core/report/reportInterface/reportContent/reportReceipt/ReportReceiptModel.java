@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 import com.avaje.ebean.EbeanServer;
 import com.binar.core.report.reportInterface.reportContent.ReportData;
@@ -46,6 +47,14 @@ public class ReportReceiptModel extends Label {
 	
 	private String html="<html> <head> <title> Laporan Penerimaan {{Timecycle}} </title> <style type='text/css'>body{width:750px;font-family:arial}h1.title{display:block;margin:0 auto;font-size:24px;text-align:center}h2.address{display:block;margin:0 auto;font-size:16px;font-weight:normal;text-align:center}.center{padding-bottom:20px;margin-bottom:30px}.kepada{width:400px;margin-top:30px;line-height:1.5em}.PONumber{float:right;top:40px}table{width:100%;border:1px solid black;border-collapse:collapse}table tr td,table tr th{border:1px solid black;padding:2px;margin:0}.footer{float:right;margin-top:60px}.tapak-asma{text-align:center}.kepala{margin-bottom:100px}</style> </head> <body> <div class='center'> <h1 class='title'>Laporan Penerimaan {{GoodsType}}</h1> <h2 class='address'> {{Periode}} </h2> </div> <table> <tr> <th>No</th> <th>Nama</th> <th>Sat</th> <th>PBF</th> <th>Jumlah</th> <th>Faktur</th> <th>Harga</th> <th>Ket</th> </tr> {{TableCode}} </table> <div class='footer'> {{City}} , {{ReportDate}} <div class='tapak-asma'> <div class='kepala'>Petugas Gudang Farmasi </br>RSUD Ajibarang</div> <div>{{UserName}}</div> <div>NIP: {{UserNum}}</div> </div> </div> </body> </html>";
 	
+	public ReportReceiptModel(GeneralFunction function) {
+		this.function=function;
+		this.setContentMode(ContentMode.HTML);
+		this.server=function.getServer();
+		this.date=function.getDate();
+		this.setting=function.getSetting();
+	}
+	
 	public ReportReceiptModel(GeneralFunction function, ReportData data) {
 		this.function=function;
 		this.setContentMode(ContentMode.HTML);
@@ -73,11 +82,11 @@ public class ReportReceiptModel extends Label {
 		}else if(data.getSelectedGoods().equals(ReportData.SELECT_GOODS_ALKES.toString())){
 			goodsType="Alkes & BMHP";
 			if(data.getPeriodeType()==PeriodeType.BY_MONTH){
-				tableCode=generateTableCode(getReception(data.getDateMonth(), null, PeriodeType.BY_MONTH, true));
+				tableCode=generateTableCode(getReception(data.getDateMonth(), null, PeriodeType.BY_MONTH, false));
 			}else if(data.getPeriodeType()==PeriodeType.BY_DAY){
-				tableCode=generateTableCode(getReception(data.getDate(), null, PeriodeType.BY_DAY, true));
+				tableCode=generateTableCode(getReception(data.getDate(), null, PeriodeType.BY_DAY, false));
 			}else{
-				tableCode=generateTableCode(getReception(null, data.getDateWeek(), PeriodeType.BY_WEEK, true));				
+				tableCode=generateTableCode(getReception(null, data.getDateWeek(), PeriodeType.BY_WEEK, false));				
 			}
 		}
 		if(data.getPeriodeType()==PeriodeType.BY_MONTH){
@@ -141,7 +150,7 @@ public class ReportReceiptModel extends Label {
 	}
 	
 	//untuk mendapatkan konsumsi barang dalam hari tertentu
-	private List<GoodsReception> getReception(Date periode, Date[] period2, PeriodeType periodType, boolean isObat){
+	List<GoodsReception> getReception(Date periode, Date[] period2, PeriodeType periodType, boolean isObat){
 		System.out.println("Mendapatkan periode");
 		
 		DateTime startDate=new DateTime();
@@ -149,13 +158,13 @@ public class ReportReceiptModel extends Label {
 		//tentukan rentang tanggal
 		if(periodType==PeriodeType.BY_DAY){
 			if(periode!=null){
-				startDate=new DateTime(periode);
+				startDate=new DateTime(periode).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
 					startDate=startDate.withHourOfDay(startDate.hourOfDay().getMinimumValue());
 				endDate=startDate.withHourOfDay(startDate.hourOfDay().getMaximumValue());
 			}
 		}else if(periodType==PeriodeType.BY_MONTH){
 			if(periode!=null){
-				startDate=new DateTime(periode);
+				startDate=new DateTime(periode).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
 				startDate=startDate.withDayOfMonth(startDate.dayOfMonth().getMinimumValue());
 				endDate=startDate.withDayOfMonth(startDate.dayOfMonth().getMaximumValue());
 			}

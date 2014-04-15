@@ -50,6 +50,17 @@ public class ReportStockModel extends Label {
 	//Variabel untuk ditampilkan di surat pesanan
 		
 	private String html="<html><head><title>Laporan Stok Opname {{GoodsType}} </title> <style type='text/css'>body{width:750px;font-family:arial}h1.title{display:block;margin:0 auto;font-size:24px;text-align:center}h2.address{display:block;margin:0 auto;font-size:16px;font-weight:normal;text-align:center}.center{padding-bottom:20px;margin-bottom:30px}.kepada{width:400px;margin-top:30px;line-height:1.5em}.PONumber{float:right;top:40px}table{width:100%;border:1px solid black;border-collapse:collapse}table tr td,table tr th{border:1px solid black;padding:2px;margin:0}.footer{float:right;margin-top:60px}.tapak-asma{text-align:center}.kepala{margin-bottom:100px}.total{float:right}.container{width:100%;margin-top:10px;}</style> </head> <body> <div class='center'> <h1 class='title'>Laporan Stok Opname {{GoodsType}}</h1> <h2 class='address'> {{Periode}} </h2> </div> <table> <tr> <th>No</th> <th>Nama</th> <th>Satuan</th> <th>Stok</th> <th>Jumlah</th> </tr> {{TableCode}} </table> <div class='container'></div> </br> <div class='footer'> {{City}} , {{ReportDate}} <div class='tapak-asma'> <div class='kepala'>Petugas Gudang Farmasi </br>RSUD Ajibarang</div> <div>{{UserName}}</div> <div>NIP: {{UserNum}}</div> </div> </div> </body> </html>";
+
+	public ReportStockModel(GeneralFunction function) {
+		this.function=function;
+		this.accept=function.getAcceptancePyramid();
+		this.server=function.getServer();
+		this.date=function.getDate();
+		this.setting=function.getSetting();
+		this.text=function.getTextManipulator();
+
+		// TODO Auto-generated constructor stub
+	}
 	public ReportStockModel(GeneralFunction function, ReportData data) {
 		this.function=function;
 		this.setContentMode(ContentMode.HTML);
@@ -145,7 +156,7 @@ public class ReportStockModel extends Label {
 	//untuk mendapatkan data barang yang dihapus
 	//menggunakan kelas Map, Goods untuk menampung barang, dan array Integer untuk menampung jumlah stok dan jumlah harga
 	//Array 1 untuk stok, array 2 untuk harga
-	private Map<Goods, Double[]> getGoods(Date periodeDate, boolean isObat){
+	protected Map<Goods, Double[]> getGoods(Date periodeDate, boolean isObat){
 		System.out.println("Mendapatkan periode");
 		
 		DateTime periode=new DateTime(periodeDate);
@@ -218,7 +229,6 @@ public class ReportStockModel extends Label {
 					}
 					
 				}
-				
 				if(isForward){
 					startDate =startDate.plus(30);
 					endDate   = endDate.plus(30);
