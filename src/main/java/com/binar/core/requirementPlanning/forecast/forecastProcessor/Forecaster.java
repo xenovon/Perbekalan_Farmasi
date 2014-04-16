@@ -32,11 +32,11 @@ import com.vaadin.ui.Component;
 public class Forecaster {
 
 	
-	public  static  final String INDEPENDENT_VARIABLE="bulan";
+	public  static  final String INDEPENDENT_VARIABLE="month";
 	public static final int PERIODE_PER_YEAR=12;
 	public static final String TIME_VARIABLE="month";
 	private DoubleExponentialSmoothingProcess processDoubleES;
-	private MovingAverageProcess processMovingAverage;
+//	private MovingAverageProcess processMovingAverage;
 	private SimpleExponentialSmoothingProcess processSimpleES;
 	private TripleExponentialSmoothingProcess processTripleES;
 	private NaiveProcess processNaive;
@@ -52,10 +52,10 @@ public class Forecaster {
 		}
 		processDoubleES.init(dataSet);
 		
-		if(processMovingAverage==null){
-			processMovingAverage =new MovingAverageProcess();
-		}
-		processMovingAverage.init(dataSet);
+//		if(processMovingAverage==null){
+//			processMovingAverage =new MovingAverageProcess();
+//		}
+//		processMovingAverage.init(dataSet);
 		
 		if(processSimpleES==null){
 			processSimpleES=new SimpleExponentialSmoothingProcess();
@@ -110,9 +110,9 @@ public class Forecaster {
 		return processDoubleES;
 	}
 
-	public MovingAverageProcess getProcessMovingAverage() {
-		return processMovingAverage;
-	}
+//	public MovingAverageProcess getProcessMovingAverage() {
+//		return processMovingAverage;
+//	}
 
 	public SimpleExponentialSmoothingProcess getProcessSimpleES() {
 		return processSimpleES;

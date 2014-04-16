@@ -91,9 +91,9 @@ public class ForecastChart extends CustomComponent {
 			series.add(dataSize, forecaster.getDataFilter().get(dataSize-1));
 			series.add(dataSize+1, forecaster.getProcessDoubleES().getNextMonthValue());
 
-			series.newSeries();
-			series.add(dataSize, forecaster.getDataFilter().get(dataSize-1));
-			series.add(dataSize+1, forecaster.getProcessMovingAverage().getNextMonthValue());
+//			series.newSeries();
+//			series.add(dataSize, forecaster.getDataFilter().get(dataSize-1));
+//			series.add(dataSize+1, forecaster.getProcessMovingAverage().getNextMonthValue());
 
 			series.newSeries();
 			series.add(dataSize, forecaster.getDataFilter().get(dataSize-1));

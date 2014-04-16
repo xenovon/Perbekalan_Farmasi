@@ -269,24 +269,24 @@ public class ForecastStepViewImpl extends VerticalLayout implements ForecastStep
 		}
 		layoutResult.addComponent(layoutDouble);
 		
-		if(minimumMSE==ForecastType.MOVING){
-			layoutMoving =new VerticalLayout(){{
-				addComponent(new Label("<h4 style='color:#00d607'>Moving Average</h4>", ContentMode.HTML));
-				addComponent(new Label("<span style='color:#00d607'>"+text.intToAngka(finalForecaster.getProcessMovingAverage().getNextMonthValue())+"</span>", ContentMode.HTML));
-				addComponent(new Label("<span style='color:#00d607'>MSE : "+text.doubleToAngka2(finalForecaster.getProcessMovingAverage().getNextMonthMSE())+"</span>", ContentMode.HTML));			
-			}};
-			
-		}else{
-			layoutMoving =new VerticalLayout(){{
-				addComponent(new Label("<h4>Moving Average</h4>", ContentMode.HTML));
-				addComponent(new Label(text.intToAngka(finalForecaster.getProcessMovingAverage().getNextMonthValue())+"", ContentMode.HTML));
-				addComponent(new Label("MSE : "+text.doubleToAngka2(finalForecaster.getProcessMovingAverage().getNextMonthMSE())));			
-			}};
+//		if(minimumMSE==ForecastType.MOVING){
+//			layoutMoving =new VerticalLayout(){{
+//				addComponent(new Label("<h4 style='color:#00d607'>Moving Average</h4>", ContentMode.HTML));
+//				addComponent(new Label("<span style='color:#00d607'>"+text.intToAngka(finalForecaster.getProcessMovingAverage().getNextMonthValue())+"</span>", ContentMode.HTML));
+//				addComponent(new Label("<span style='color:#00d607'>MSE : "+text.doubleToAngka2(finalForecaster.getProcessMovingAverage().getNextMonthMSE())+"</span>", ContentMode.HTML));			
+//			}};
+//			
+//		}else{
+//			layoutMoving =new VerticalLayout(){{
+//				addComponent(new Label("<h4>Moving Average</h4>", ContentMode.HTML));
+//				addComponent(new Label(text.intToAngka(finalForecaster.getProcessMovingAverage().getNextMonthValue())+"", ContentMode.HTML));
+//				addComponent(new Label("MSE : "+text.doubleToAngka2(finalForecaster.getProcessMovingAverage().getNextMonthMSE())));			
+//			}};
+//
+//		}
 
-		}
-
 			
-		layoutResult.addComponent(layoutMoving);
+//		layoutResult.addComponent(layoutMoving);
 		
 		if(minimumMSE==ForecastType.NAIVE){
 			layoutNaive =new VerticalLayout(){{
@@ -356,7 +356,7 @@ public class ForecastStepViewImpl extends VerticalLayout implements ForecastStep
 		sort.put(forecast.getProcessDoubleES().getNextMonthMSE(), ForecastType.DOUBLE );
 		sort.put( forecast.getProcessSimpleES().getNextMonthMSE(), ForecastType.SIMPLE);
 		sort.put( forecast.getProcessNaive().getNextMonthMSE(), ForecastType.NAIVE);
-		sort.put(forecast.getProcessMovingAverage().getNextMonthMSE(), ForecastType.MOVING);
+//		sort.put(forecast.getProcessMovingAverage().getNextMonthMSE(), ForecastType.MOVING);
 		
 		return sort.get(sort.firstKey());
 	}

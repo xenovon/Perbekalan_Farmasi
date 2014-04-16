@@ -55,8 +55,8 @@ DCharts chart = new DCharts()
 
 	@Override
 	public void updateChart() {
-		Map<String, List<Integer>> data=model.getChartDataDummy();
-//		Map<String, List<Integer>> data=model.getChartData();
+//		Map<String, List<Integer>> data=model.getChartDataDummy();
+		Map<String, List<Integer>> data=model.getChartData();
 		if(data==null){
 			view.setEmptyDataView();
 		}else{
