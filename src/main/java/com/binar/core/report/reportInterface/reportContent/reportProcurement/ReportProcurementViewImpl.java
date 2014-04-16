@@ -8,6 +8,7 @@ import org.joda.time.DateTime;
 import com.binar.core.report.reportInterface.ReportInterfaceView.ReportInterfaceListener;
 import com.binar.core.report.reportInterface.reportContent.ReportContentView;
 import com.binar.core.report.reportInterface.reportContent.ReportData;
+import com.binar.core.report.reportInterface.reportContent.ReportData.ReportContent;
 import com.binar.core.report.reportInterface.reportContent.ReportPrint;
 import com.binar.core.report.reportInterface.reportContent.ReportContentView.ReportContentListener;
 import com.binar.core.report.reportInterface.reportContent.ReportContentView.ReportType;
@@ -38,11 +39,13 @@ public class ReportProcurementViewImpl extends VerticalLayout implements ClickLi
 	 */
 	private Button buttonCancel;
 	private Button buttonPrint;
-	
+	private Button buttonShow;
+
 	private OptionGroup selectGoodsType;
 	private ComboBox  selectYear;
 	private ComboBox selectMonth;
-	
+	private ComboBox selectContent;
+
 	private GeneralFunction function;
 	
 	BrowserWindowOpener opener;
@@ -58,6 +61,10 @@ public class ReportProcurementViewImpl extends VerticalLayout implements ClickLi
 		buttonPrint=new Button("Cetak");
 		buttonPrint.addClickListener(this);
 		buttonPrint.setIcon(new ThemeResource("icons/image/icon-print.png"));
+
+
+		buttonShow=new Button("Tampilkan Laporan");
+		buttonShow.addClickListener(this);
 
 		opener=new BrowserWindowOpener(ReportPrint.class);
 		opener.setFeatures("height=200,width=400,resizable");
@@ -95,11 +102,22 @@ public class ReportProcurementViewImpl extends VerticalLayout implements ClickLi
 		selectGoodsType.setValue("obat");
 		selectGoodsType.setItemCaption("obat", "Laporan Pengadaan Obat");
 		selectGoodsType.setItemCaption("alkesbmhp", "Laporan Pengadaan Alkes & BMHP");
-		
+		 selectContent =new ComboBox("Pilih Tampilan");
+		 selectContent.setImmediate(true);
+		 selectContent.addItem(ReportContent.CHART);
+		 selectContent.addItem(ReportContent.TABLE);
+		 selectContent.addItem(ReportContent.TABLE_CHART);
+		 selectContent.setItemCaption(ReportContent.CHART, "Tampilkan Chart");
+		 selectContent.setItemCaption(ReportContent.TABLE, "Tampilkan Tabel");
+		 selectContent.setItemCaption(ReportContent.TABLE_CHART, "Tampilkan Tabel dan Chart");
+		 selectContent.setItemCaption(4, "Minggu Ke-4");
+		 selectContent.setValue(ReportContent.TABLE);
+
 		 selectGoodsType.addValueChangeListener(this);
 		 selectYear.addValueChangeListener(this);
 		 selectMonth.addValueChangeListener(this);
-		 
+		 selectContent.addValueChangeListener(this);
+
 
 		 updateWindowOpener();
 		construct();
@@ -110,15 +128,16 @@ public class ReportProcurementViewImpl extends VerticalLayout implements ClickLi
 	public void construct() {
 		this.setSpacing(true);
 		this.setMargin(true);
-		GridLayout layout=new GridLayout(2, 1){
+		GridLayout layout=new GridLayout(3, 1){
 			{
 				addComponent(buttonPrint, 0,0);
-				addComponent(buttonCancel, 1, 0);
+				addComponent(buttonShow, 1,0);
+				addComponent(buttonCancel, 2, 0);
 				setSpacing(true);
 				setMargin(true);
 			}
 		};
-		this.addComponents(selectGoodsType, selectYear, selectMonth, layout);
+		this.addComponents(selectContent,selectGoodsType, selectYear, selectMonth, layout);
 	}
 	@Override
 	public void setListener(ReportContentListener listener) {
@@ -129,6 +148,14 @@ public class ReportProcurementViewImpl extends VerticalLayout implements ClickLi
 	}
 	@Override
 	public void valueChange(ValueChangeEvent event) {
+		if(event.getProperty()==selectContent){
+			ReportContent value=(ReportContent)selectContent.getValue();
+			if(!(value==ReportContent.TABLE)){
+				buttonPrint.setEnabled(false);
+			}else{
+				buttonPrint.setEnabled(true);
+			}
+		}
 		updateWindowOpener();
 	}
 
@@ -136,7 +163,9 @@ public class ReportProcurementViewImpl extends VerticalLayout implements ClickLi
 	public void buttonClick(ClickEvent event) {
 		if(event.getButton()==buttonCancel){
 			listener.cancelClick(ReportType.PROCUREMENT);
-		}if(event.getButton()==buttonPrint){
+		}if(event.getButton()==buttonShow){
+			listener.showClick(ReportType.PROCUREMENT, getReportData());
+
 		}
 	}
 	public void updateWindowOpener(){
@@ -156,6 +185,8 @@ public class ReportProcurementViewImpl extends VerticalLayout implements ClickLi
 	@Override
 	public ReportData getReportData() {
 		ReportData data=new ReportData(function);
+		data.setReportContent((ReportContent)selectContent.getValue());
+
 		data.setSelectedMonth((String)selectMonth.getValue());
 		data.setSelectedYear((String)selectYear.getValue());
 		data.setSelectedGoods((String)selectGoodsType.getValue());

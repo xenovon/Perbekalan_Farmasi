@@ -5,8 +5,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 import com.avaje.ebean.EbeanServer;
 import com.binar.core.report.reportInterface.reportContent.ReportData;
@@ -43,6 +46,17 @@ public class ReportProcurementModel extends Label{
 	
 	//Variabel untuk ditampilkan di surat pesanan
 	private String html="<html> <head> <title> Laporan Pengadaan {{GoodsType}} </title> <style type='text/css'>body{width:750px;font-family:arial}h1.title{display:block;margin:0 auto;font-size:24px;text-align:center}h2.address{display:block;margin:0 auto;font-size:16px;font-weight:normal;text-align:center}.center{padding-bottom:20px;margin-bottom:30px}.kepada{width:400px;margin-top:30px;line-height:1.5em}.PONumber{float:right;top:40px}table{width:100%;border:1px solid black;border-collapse:collapse}table tr td,table tr th{border:1px solid black;padding:2px;margin:0}.footer{float:right;margin-top:60px}.tapak-asma{text-align:center}.kepala{margin-bottom:100px}</style> </head> <body> <div class='center'> <h1 class='title'>Laporan Pengadaan {{GoodsType}}</h1> <h2 class='address'> {{Periode}} </h2> </div> <table> <tr> <th>No</th> <th>Nomor SP</th> <th>Tanggal</th> <th>Pemasok</th> <th>Produsen</th> <th>Nama Barang</th> <th>Jumlah</th> </tr> {{TableCode}} </table> <div class='footer'> {{City}} , {{ReportDate}} <div class='tapak-asma'> <div class='kepala'>Petugas Gudang Farmasi </br>RSUD Ajibarang</div> <div>{{UserName}}</div> <div>NIP: {{UserNum}}</div> </div> </div> </body> </html>";
+
+	public ReportProcurementModel(GeneralFunction function){
+		this.function=function;
+		this.setContentMode(ContentMode.HTML);
+		this.data=data;
+		this.server=function.getServer();
+		this.date=function.getDate();
+		this.setting=function.getSetting();
+		this.user=function.getLogin().getUserLogin();
+		
+	}
 	public ReportProcurementModel(GeneralFunction function, ReportData data) {
 		this.function=function;
 		this.setContentMode(ContentMode.HTML);
@@ -118,8 +132,46 @@ public class ReportProcurementModel extends Label{
 		}
 		return returnValue;
 	}
+	
+	SortedMap<Date, Integer> getChartPurchaseOrderData(Date periode, boolean isObat){
+		System.out.println("Mendapatkan periode");
+		SortedMap<Date, Integer> returnValue=new TreeMap<Date, Integer>();
+		DateTime startDate=new DateTime(periode);
+			startDate=startDate.withDayOfMonth(startDate.dayOfMonth().getMinimumValue());
+		DateTime endDate=startDate.withDayOfMonth(startDate.dayOfMonth().getMaximumValue());
+		int i=0;
+		while(endDate.plusDays(1).isAfter(startDate)){
+			DateTime startDay=startDate.withMillisOfDay(startDate.millisOfDay().getMinimumValue());
+			DateTime endDay=startDate.withMillisOfDay(startDate.millisOfDay().getMaximumValue());
+			List<PurchaseOrder> purchaseOrders=server.find(PurchaseOrder.class).where().
+					between("date", startDay.toDate(), endDay.toDate()).findList();
+			
+			if(purchaseOrders.size()==0){
+				returnValue.put(startDay.toDate(), 0);
+			}else{
+				int quantity=0;
+				for(PurchaseOrder order:purchaseOrders){
+					List<PurchaseOrderItem> data=filterList(order.getPurchaseOrderItem(), isObat);
+					for(PurchaseOrderItem item:data){
+						quantity=quantity+item.getQuantity();
+					}
+				}
+				
+				returnValue.put(startDay.toDate(), quantity);
+			}
+			
+			System.out.println("Start Date : "+startDate);
+			System.out.println("End Date : "+endDate);
+			
+			startDate=startDate.plusDays(1);
+		}
+		
+		return returnValue; 
+		
+	}
+	
 	//untuk mendapatkan surat pesanan dalam tempo 1 bulan
-	private Map<PurchaseOrder, List<PurchaseOrderItem>> getPurchaseOrder(Date periode, boolean isObat){
+	Map<PurchaseOrder, List<PurchaseOrderItem>> getPurchaseOrder(Date periode, boolean isObat){
 		System.out.println("Mendapatkan periode");
 		
 		DateTime startDate=new DateTime(periode);
@@ -164,6 +216,28 @@ public class ReportProcurementModel extends Label{
 			}
 			return itemSelected;
 		}
+	
+	public static void main(String[] args) {
+		LocalDate date1=new LocalDate().withDayOfMonth(1).plusMonths(1);
+		LocalDate date2=new LocalDate().plusMonths(1).withDayOfMonth(date1.dayOfMonth().getMaximumValue());
+		int i=0;
+		while(date2.plusDays(1).isAfter(date1)){
+			System.out.println(i+" "+date1);
+			date1=date1.plusDays(1);
+		}
+	
+		SortedMap<Date, String> anu=new TreeMap<Date, String>();
+		
+		anu.put(new DateTime().toDate(), "sad");
+		anu.put(new DateTime().plusDays(1).toDate(), "sad");
+		anu.put(new DateTime().plusDays(2).toDate(), "sad");
+		anu.put(new DateTime().plusDays(3).toDate(), "sad");
+		anu.put(new DateTime().plusDays(4).toDate(), "sad");
+		anu.put(new DateTime().plusDays(5).toDate(), "sad");
+		
+		System.out.println(anu.toString());
+	}
+	
 
 	
 }

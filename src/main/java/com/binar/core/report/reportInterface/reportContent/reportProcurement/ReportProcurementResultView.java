@@ -1,11 +1,15 @@
-package com.binar.core.report.reportInterface.reportContent.reportConsumption;
+package com.binar.core.report.reportInterface.reportContent.reportProcurement;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.dussan.vaadin.dcharts.DCharts;
 import org.dussan.vaadin.dcharts.base.elements.XYaxis;
@@ -15,12 +19,17 @@ import org.dussan.vaadin.dcharts.data.Ticks;
 import org.dussan.vaadin.dcharts.metadata.LegendPlacements;
 import org.dussan.vaadin.dcharts.metadata.SeriesToggles;
 import org.dussan.vaadin.dcharts.metadata.TooltipAxes;
+import org.dussan.vaadin.dcharts.metadata.XYaxes;
 import org.dussan.vaadin.dcharts.metadata.directions.AnimationDirections;
+import org.dussan.vaadin.dcharts.metadata.locations.LegendLocations;
 import org.dussan.vaadin.dcharts.metadata.locations.TooltipLocations;
 import org.dussan.vaadin.dcharts.metadata.renderers.AxisRenderers;
+import org.dussan.vaadin.dcharts.metadata.renderers.LabelRenderers;
 import org.dussan.vaadin.dcharts.metadata.renderers.LegendRenderers;
 import org.dussan.vaadin.dcharts.metadata.renderers.SeriesRenderers;
 import org.dussan.vaadin.dcharts.options.Axes;
+import org.dussan.vaadin.dcharts.options.AxesDefaults;
+import org.dussan.vaadin.dcharts.options.Cursor;
 import org.dussan.vaadin.dcharts.options.Highlighter;
 import org.dussan.vaadin.dcharts.options.Legend;
 import org.dussan.vaadin.dcharts.options.Options;
@@ -37,6 +46,8 @@ import com.binar.core.report.reportInterface.reportContent.ReportContentView.Rep
 import com.binar.core.report.reportInterface.reportContent.ReportData.PeriodeType;
 import com.binar.core.report.reportInterface.reportContent.ReportData.ReportContent;
 import com.binar.entity.Goods;
+import com.binar.entity.PurchaseOrder;
+import com.binar.entity.PurchaseOrderItem;
 import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.data.Item;
@@ -44,26 +55,27 @@ import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.RowHeaderMode;
 import com.vaadin.ui.VerticalLayout;
 
-public class ReportConsumptionResultView extends VerticalLayout implements Button.ClickListener{
+public class ReportProcurementResultView extends VerticalLayout implements Button.ClickListener{
 
 	private Label title;
 	private  Label subTitle;
-	private DCharts chart;
+	private Component chart;
 	private Table table;
 	//khusus untuk report Consumption
-	private ReportConsumptionModel model;
+	private ReportProcurementModel model;
 	private IndexedContainer tableContainer;
 	private Button buttonBack;
 	private ReportContentListener listener;
 	private DateManipulator date;
 	
 	private GeneralFunction function;
-	public ReportConsumptionResultView(GeneralFunction function) {
+	public ReportProcurementResultView(GeneralFunction function) {
 		this.function=function;
 		this.date=function.getDate();
 	}
@@ -72,7 +84,7 @@ public class ReportConsumptionResultView extends VerticalLayout implements Butto
 		this.listener=listener;
 		this.setMargin(true);
 		this.setSpacing(true);
-		model=new ReportConsumptionModel(function);
+		model=new ReportProcurementModel(function);
 
 		title=new Label();
 		title.setContentMode(ContentMode.HTML);
@@ -85,12 +97,15 @@ public class ReportConsumptionResultView extends VerticalLayout implements Butto
 		table.setPageLength(10);
 		table.setSortEnabled(true);
 		table.setImmediate(true);
-		table.setRowHeaderMode(RowHeaderMode.INDEX);
 		tableContainer=new IndexedContainer(){
 			{
-				addContainerProperty("Nama", String.class,null);
-				addContainerProperty("Satuan",String.class,null);
-				addContainerProperty("Jumlah Pengeluaran", Integer.class,null);
+				addContainerProperty("No", String.class, null);
+				addContainerProperty("Nomor SP", String.class,null);
+				addContainerProperty("Tanggal",String.class,null);
+				addContainerProperty("Pemasok", String.class,null);
+				addContainerProperty("Produsen", String.class,null);
+				addContainerProperty("Nama Barang", String.class,null);
+				addContainerProperty("Jumlah", String.class,null);
 			}
 		};
 		table.setContainerDataSource(tableContainer);
@@ -104,50 +119,43 @@ public class ReportConsumptionResultView extends VerticalLayout implements Butto
 	String timecycle; //ok
 	 
 
+	
 	private void processData(ReportData data){
+		boolean isObat=true;
+		Map<PurchaseOrder, List<PurchaseOrderItem>> dataContent = new HashMap<PurchaseOrder, List<PurchaseOrderItem>>(); 
 		if(data.getSelectedGoods().equals(ReportData.SELECT_GOODS_OBAT.toString())){
 			goodsType="Obat";
-			
+			dataContent=model.getPurchaseOrder(data.getDateMonth(), true);
+			isObat=true;
 		}else if(data.getSelectedGoods().equals(ReportData.SELECT_GOODS_ALKES.toString())){
+			dataContent=model.getPurchaseOrder(data.getDateMonth(), false);
 			goodsType="Alkes & BMHP";
+			isObat=false;
 		}
-
-		Map<Goods, Integer> dataContent;
-		if(data.getPeriodeType()==PeriodeType.BY_MONTH){
-
-			periode="Periode "+date.dateToText(data.getDateMonth());
-			timecycle="Bulanan";
-			dataContent=model.getConsumptionDataMonthly(data.getDateMonth(), null, true);
-		}else if(data.getPeriodeType()==PeriodeType.BY_DAY){
-			timecycle="Harian";
-			periode="Per "+date.dateToText(data.getDate(), true);
-			dataContent=model.getConsumptionDataDaily(data.getDate(), true);
-		}else{
-			timecycle="Mingguan";
-			periode="Periode "+date.dateToText(data.getDateWeek()[0], true)+" - "+date.dateToText(data.getDateWeek()[1], true);
-			dataContent=model.getConsumptionDataMonthly(null, data.getDateWeek(), true);
-		}
+		periode="Periode "+date.dateToText(data.getDateMonth());
 		
+
+		//		
 		
-		construct(data.getReportContent(), dataContent);
+		construct(data.getReportContent(), dataContent, isObat, data.getDateMonth());
 	}
 	
 	
-	private void construct(ReportContent reportContent, Map<Goods, Integer> data){
+	private void construct(ReportContent reportContent, Map<PurchaseOrder, List<PurchaseOrderItem>> data, boolean isObat, Date dateMonth){
 		this.removeAllComponents();
 		this.addComponent(buttonBack);
-		title.setValue("<h2 style='text-align:center'>Laporan Pengeluaran "+goodsType+"</h3>");
+		title.setValue("<h2 style='text-align:center'>Laporan Pengadaan "+goodsType+"</h3>");
 		subTitle.setValue("<h5 style='text-align:center'>"+periode+"</h5>");
 		
 		this.addComponents(title, subTitle);
 		if(reportContent==ReportContent.CHART){
-			chart=generateChartData(data);
+			chart=generateChartData(model.getChartPurchaseOrderData(dateMonth, isObat));
 			this.addComponent(chart);
 		}else if(reportContent==ReportContent.TABLE){
 			generateTabelData(data);
 			this.addComponent(table);
 		}else if(reportContent==ReportContent.TABLE_CHART){
-			chart=generateChartData(data);
+			chart=generateChartData(model.getChartPurchaseOrderData(dateMonth, isObat));
 			generateTabelData(data);
 			this.addComponent(chart);
 			this.addComponent(table);			
@@ -155,91 +163,94 @@ public class ReportConsumptionResultView extends VerticalLayout implements Butto
 		
 	}
 	
-	public void generateTabelData(Map<Goods, Integer> data){
+	public void generateTabelData(Map<PurchaseOrder, List<PurchaseOrderItem>> data){
 		table.setVisible(true);
 
 		tableContainer.removeAllItems();
-		System.out.println(data.size());
+		System.out.println(data.size());		
+		String returnValue="";		
+		int i=0;
 
-		for(Map.Entry<Goods, Integer> datum:data.entrySet()){
-			Item item=tableContainer.addItem(datum.getKey().getIdGoods());
-			item.getItemProperty("Nama").setValue(datum.getKey().getName());
-			item.getItemProperty("Satuan").setValue(datum.getKey().getUnit());
-			item.getItemProperty("Jumlah Pengeluaran").setValue(datum.getValue());
+		for(Map.Entry<PurchaseOrder, List<PurchaseOrderItem>> entry:data.entrySet()){
+			i++;
+			if(entry.getValue().size()!=0){
+				Item item=tableContainer.addItem(entry.getKey().getIdPurchaseOrder()+"");
+				item.getItemProperty("No").setValue(i+"");
+				item.getItemProperty("Nomor SP").setValue(entry.getKey().getPurchaseOrderNumber()+"");
+				item.getItemProperty("Tanggal").setValue(date.dateToText(entry.getKey().getDate(), true));
+				item.getItemProperty("Pemasok").setValue(entry.getValue().get(0).getSupplierGoods().getSupplier().getSupplierName());
+				item.getItemProperty("Produsen").setValue(entry.getValue().get(0).getSupplierGoods().getManufacturer().getManufacturerName());
+				
+				int x=0;
+				for(PurchaseOrderItem purchaseOrderItem:entry.getValue()){
+					if(x==0){
+						item.getItemProperty("Nama Barang").setValue(purchaseOrderItem.getSupplierGoods().getGoods().getName());
+						item.getItemProperty("Jumlah").setValue(function.getTextManipulator().intToAngka(purchaseOrderItem.getQuantity()));
+
+					}else{
+						item=tableContainer.addItem(entry.getKey().getIdPurchaseOrder()+"-"+purchaseOrderItem.getIdPurchaseOrderItem());
+						item.getItemProperty("Nama Barang").setValue(purchaseOrderItem.getSupplierGoods().getGoods().getName());
+						item.getItemProperty("Jumlah").setValue(function.getTextManipulator().intToAngka(purchaseOrderItem.getQuantity()));
+					}
+					x++;
+				}
+			}
+			
 		}
+		
 	}
-	public Map<String, Integer> filterData(Map<Goods, Integer> data){
+	public Map<String, Integer> filterData(Map<PurchaseOrder, List<PurchaseOrderItem>> data){
 		Map<String, Integer> returnValue=new HashMap<String, Integer>();
 		
-		//Urutkan dari besar ke kecil
-		data=FarmationGoodsWithIncreasingTrendModel.MapUtil.sortByValue(data);
-		int i=0;
-		for(Map.Entry<Goods, Integer> entry:data.entrySet()){
-			if(i==10){
-				break;
-			}
-			returnValue.put(entry.getKey().getName(), entry.getValue());
-			i++;			
-		}
 		return returnValue;
 	}
-	public DCharts generateChartData(Map<Goods, Integer> data){
-		Map<String, Integer> filtered=filterData(data);
-		Object[] arrayValue=new Object[data.size()];
-		Object[] arrayText=new Object[data.size()];
-		//inisialisasi data
-		int i=0;
-		for(Map.Entry<String,Integer> entry:filtered.entrySet()){
-			arrayValue[i]=entry.getValue();
-			arrayText[i]=entry.getKey();
-		}		
-		DataSeries dataSeries = new DataSeries();
-		Series series = new Series();
-		for(Map.Entry<Goods, Integer> entry:data.entrySet()){
-			dataSeries.add(entry.getValue());
-			series.addSeries(new XYseries().setLabel(entry.getKey().getName()));
+	public Component generateChartData(SortedMap<Date, Integer> data){
+
+		if(data.size()==0){
+			return new Label("Data Kosong");
 		}
-		SeriesDefaults seriesDefaults = new SeriesDefaults()
-			.setRenderer(SeriesRenderers.BAR).setRendererOptions(new BarRenderer().setAnimation(new BarAnimation(true, AnimationDirections.DOWN, 200)));
-	
-		Ticks ticks=new Ticks();
-		ticks.add("Nama Barang");
+
+		DataSeries series=new DataSeries();
+		series.newSeries();
+		int i=1;
+
+		for(Map.Entry<Date, Integer> entry:data.entrySet()){
+			series.add(i,entry.getValue());
+			i++;
+		}
+		
+
+		AxesDefaults axesDefaults = new AxesDefaults()
+		.setLabelRenderer(LabelRenderers.CANVAS);		
+		
 		Axes axes = new Axes()
-			.addAxis(
-				new XYaxis()
-					.setRenderer(AxisRenderers.CATEGORY)
-					.setTicks(ticks)
-		);
-	
+		.addAxis(
+			new XYaxis()
+				.setLabel("Hari")
+				.setPad(0))
+		.addAxis(new XYaxis(XYaxes.Y)
+				.setLabel("Jumlah Pengadaan"));
 		Highlighter highlighter = new Highlighter()
 		.setShow(true)
-		.setShowTooltip(true)
-		.setTooltipAlwaysVisible(true)
-		.setKeepTooltipInsideChart(true)
+		.setSizeAdjust(10)
 		.setTooltipLocation(TooltipLocations.NORTH)
-		.setTooltipAxes(TooltipAxes.Y_BAR)
-		.setTooltipFormatString("%d obat");
-	
-		Legend legend = new Legend()
-		.setShow(true)
-		.setRenderer(LegendRenderers.ENHANCED)
-		.setRendererOptions(
-			new EnhancedLegendRenderer()
-				.setSeriesToggle(SeriesToggles.SLOW)
-				.setSeriesToggleReplot(true))
-		.setPlacement(LegendPlacements.OUTSIDE_GRID);
-	
+		.setTooltipAxes(TooltipAxes.Y)
+		.setTooltipFormatString("%.2f")
+		.setUseAxesFormatters(false);
+
+		Cursor cursor = new Cursor()
+		.setShow(true);
+
+		
 		Options options = new Options()
-			.setSeriesDefaults(seriesDefaults)
-			.setAxes(axes)
-			.setSeries(series)
-			.setLegend(legend)
-			.setHighlighter(highlighter);
-	
-		DCharts chart = new DCharts()
-			.setDataSeries(dataSeries)
-			.setOptions(options)
-			.show();
+		.setAxesDefaults(axesDefaults)
+		.setAxes(axes)
+		.setHighlighter(highlighter)
+		.setCursor(cursor)
+		.setAnimate(true);
+		
+		DCharts chart=new DCharts().setOptions(options).setDataSeries(series).show();
+		chart.setCaption("Grafik Jumlah Pengadaan "+goodsType+" Harian");
 		return chart;
 	}
 	@Override

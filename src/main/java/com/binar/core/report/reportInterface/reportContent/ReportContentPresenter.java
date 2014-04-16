@@ -12,6 +12,7 @@ import com.binar.core.report.reportInterface.reportContent.reportConsumption.Rep
 import com.binar.core.report.reportInterface.reportContent.reportDailyConsumption.ReportDailyConsumptionViewImpl;
 import com.binar.core.report.reportInterface.reportContent.reportExpiredGoods.ReportExpiredGoodsResultView;
 import com.binar.core.report.reportInterface.reportContent.reportExpiredGoods.ReportExpiredGoodsViewImpl;
+import com.binar.core.report.reportInterface.reportContent.reportProcurement.ReportProcurementResultView;
 import com.binar.core.report.reportInterface.reportContent.reportProcurement.ReportProcurementViewImpl;
 import com.binar.core.report.reportInterface.reportContent.reportReceipt.ReportReceiptResultView;
 import com.binar.core.report.reportInterface.reportContent.reportReceipt.ReportReceiptViewImpl;
@@ -254,7 +255,9 @@ public class ReportContentPresenter  implements ReportContentListener{
 			window.setContent(getComponentExpiredGoods(data));
 			window.setWidth(WINDOW_WIDTH);
 		}else if(report==ReportType.PROCUREMENT){
-
+			window.setContent(getComponentProcurement(data));
+			window.setWidth(WINDOW_WIDTH);
+			
 		}else if(report==ReportType.RECEIPT){
 			window.setContent(getComponentReceipt(data));
 			window.setWidth(WINDOW_WIDTH);
@@ -282,6 +285,8 @@ public class ReportContentPresenter  implements ReportContentListener{
 				window.setWidth(WINDOW_WIDTH_COMPACT);
 
 			}else if(report==ReportType.PROCUREMENT){
+				window.setContent(getProcurement());
+				window.setWidth(WINDOW_WIDTH_COMPACT);
 
 			}else if(report==ReportType.RECEIPT){
 				window.setContent(getReceipt());
@@ -322,5 +327,11 @@ public class ReportContentPresenter  implements ReportContentListener{
 		resultView.init(data, this);
 		return resultView;
 	}	
+	
+	private Component getComponentProcurement(ReportData data){
+		ReportProcurementResultView  resultView=new ReportProcurementResultView(function);
+		resultView.init(data, this);
+		return resultView;
+	}
 	
 }
