@@ -94,9 +94,6 @@ public class ReportExpiredGoodsViewImpl extends VerticalLayout implements ClickL
 		selectAcceptance.setItemCaption("diterima", "Barang Kadaluarsa Disetujui");
 
 		selectAcceptance.setItemCaption("belumditerima", "Barang Kadaluarsa Belum Disetujui");
-		selectAcceptance.addValueChangeListener(this);
-		selectStartDate.addValueChangeListener(this);
-		selectEndDate.addValueChangeListener(this);
 		 selectContent =new ComboBox("Pilih Tampilan");
 		 selectContent.setImmediate(true);
 		 selectContent.addItem(ReportContent.CHART);
@@ -108,7 +105,10 @@ public class ReportExpiredGoodsViewImpl extends VerticalLayout implements ClickL
 		 selectContent.setItemCaption(4, "Minggu Ke-4");
 		 selectContent.setValue(ReportContent.TABLE);
 
-		
+		selectAcceptance.addValueChangeListener(this);
+		selectStartDate.addValueChangeListener(this);
+		selectEndDate.addValueChangeListener(this);
+		selectContent.addValueChangeListener(this);
 		 updateWindowOpener();
 
 		construct();
@@ -148,6 +148,7 @@ public class ReportExpiredGoodsViewImpl extends VerticalLayout implements ClickL
 				buttonPrint.setEnabled(true);
 			}
 		}
+		
 		updateWindowOpener();
 	}
 

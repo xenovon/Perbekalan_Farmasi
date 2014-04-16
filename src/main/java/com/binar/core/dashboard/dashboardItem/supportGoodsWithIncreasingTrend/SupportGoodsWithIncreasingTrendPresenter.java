@@ -1,16 +1,18 @@
-package com.binar.core.dashboard.dashboardItem.farmationGoodsWithIncreasingTrend;
+package com.binar.core.dashboard.dashboardItem.supportGoodsWithIncreasingTrend;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.binar.core.dashboard.dashboardItem.farmationGoodsWithIncreasingTrend.FarmationGoodsWithIncreasingTrendModel;
 import com.binar.core.dashboard.dashboardItem.farmationGoodsWithIncreasingTrend.FarmationGoodsWithIncreasingTrendView.FarmationGoodsWithIncreasingTrendListener;
+import com.binar.core.dashboard.dashboardItem.farmationGoodsWithIncreasingTrend.FarmationGoodsWithIncreasingTrendViewImpl;
 import com.binar.entity.Goods;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.UI;
 
-public class FarmationGoodsWithIncreasingTrendPresenter implements FarmationGoodsWithIncreasingTrendListener {
+public class SupportGoodsWithIncreasingTrendPresenter implements FarmationGoodsWithIncreasingTrendListener {
 /*
  * 5 Obat yang trendnya naik
 > Line Chart, nama obat dan jumlahnya
@@ -42,7 +44,7 @@ DCharts chart = new DCharts()
 	FarmationGoodsWithIncreasingTrendModel model;
 	FarmationGoodsWithIncreasingTrendViewImpl view;
 	GeneralFunction function;
-	public FarmationGoodsWithIncreasingTrendPresenter(GeneralFunction function
+	public SupportGoodsWithIncreasingTrendPresenter(GeneralFunction function
 			, FarmationGoodsWithIncreasingTrendViewImpl view, FarmationGoodsWithIncreasingTrendModel model) {
 		this.model=model;
 		this.function=function;
@@ -55,8 +57,8 @@ DCharts chart = new DCharts()
 
 	@Override
 	public void updateChart() {
-		Map<String, List<Integer>> data=model.getChartDataDummy();
-//		Map<String, List<Integer>> data=model.getChartData();
+//		Map<String, List<Integer>> data=model.getChartDataDummy();
+		Map<String, List<Integer>> data=model.getChartData();
 		if(data==null){
 			view.setEmptyDataView();
 		}else{

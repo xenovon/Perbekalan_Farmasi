@@ -88,24 +88,24 @@ public class FarmationGoodsWithIncreasingTrendModel {
 		Random random=new Random();
 		Map<String, List<Integer>> data=new HashMap<String, List<Integer>>();
 		List<Integer> data1=new ArrayList<Integer>();
-		for(int i=0;i<6;i++){
-			data1.add(random.nextInt(500)+200);			
+		for(int i=0;i<6;i++){	
+			data1.add(random.nextInt(40)+10*i);			
 		}
 		List<Integer> data2=new ArrayList<Integer>();
 		for(int i=0;i<6;i++){
-			data2.add(random.nextInt(500)+200);			
+			data2.add(random.nextInt(40)+30*i);			
 		}
 		List<Integer> data3=new ArrayList<Integer>();
 		for(int i=0;i<6;i++){
-			data3.add(random.nextInt(500)+200);			
+			data3.add(random.nextInt(40)+30*i);			
 		}
 		List<Integer> data4=new ArrayList<Integer>();
 		for(int i=0;i<6;i++){
-			data4.add(random.nextInt(500)+200);			
+			data4.add(random.nextInt(50)+40*i);			
 		}
 		List<Integer> data5=new ArrayList<Integer>();
 		for(int i=0;i<6;i++){
-			data5.add(random.nextInt(500)+200);			
+			data5.add(random.nextInt(30)+40*i);			
 		}
 		data.put("Clopedin", data1);
 		data.put("Closenin", data2);
@@ -127,6 +127,7 @@ public class FarmationGoodsWithIncreasingTrendModel {
 			data2.put(entry.getKey(),countIncreasingTrend(entry.getValue()));
 		}
 		data2=MapUtil.sortByValue(data2);
+		System.out.println("Data trend "+data2.toString());
 		
 		Map<String, List<Integer>> filteredData=filterData(data2, monthlyData);
 		
@@ -157,11 +158,16 @@ public class FarmationGoodsWithIncreasingTrendModel {
 	}
 	//Memfilter hanya mengambil 5 data yang trennya paling naik
 	private Map<String, List<Integer>> filterData(Map<String,Integer> data,Map<String, List<Integer>> data2){
+		System.out.println("Data Result" +data2.toString());
+		System.out.println("Data Count" +data.toString());
 		Map<String, List<Integer>> dataReturn=new HashMap<String, List<Integer>>();
 		int i=0;
 		for(Map.Entry<String, Integer> singleData:data.entrySet()){
 			System.out.print(singleData.getValue()+" + "+singleData.getKey()+" | ");
-			dataReturn.put(singleData.getKey(), data2.get(singleData.getKey()));
+			if(singleData.getValue()>=0){
+				System.out.println(singleData.getValue()+" + "+singleData.getKey()+" | ");
+				dataReturn.put(singleData.getKey(), data2.get(singleData.getKey()));				
+			}
 			if(i==4){
 				break;
 			}

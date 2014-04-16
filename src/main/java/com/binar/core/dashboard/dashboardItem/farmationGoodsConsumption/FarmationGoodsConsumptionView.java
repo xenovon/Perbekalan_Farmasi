@@ -6,7 +6,7 @@ import java.util.Map;
 import com.binar.entity.Goods;
 import com.vaadin.ui.Panel;
 
-interface  FarmationGoodsConsumptionView {
+public interface  FarmationGoodsConsumptionView {
 	public interface FarmationGoodsConsumptionListener{
 		public void updateChart();
 		public void buttonGo();

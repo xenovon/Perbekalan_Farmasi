@@ -113,12 +113,16 @@ public class FarmationGoodsWithIncreasingTrendViewImpl  extends Panel implements
 	}
 	
 	public void generateChart(Map<String, List<Integer>> data){
-		DCharts chart=new DCharts().setOptions(generateOptions(data)).setDataSeries(generateDataSeries(data));
-		chart.setCaption("Barang Dengan Tren Naik");
-		chart.show();
+		if(data.size()!=0){
+			DCharts chart=new DCharts().setOptions(generateOptions(data)).setDataSeries(generateDataSeries(data));
+			chart.setCaption("Barang Dengan Tren Naik");
+			chart.show();
 
-		layoutChart.removeAllComponents();
-		layoutChart.addComponent(chart);
+			layoutChart.removeAllComponents();
+			layoutChart.addComponent(chart);			
+		}else{
+			layoutChart.addComponent(new Label("Tidak Ada Barang Dengan Trend Naik"));
+		}
 	}
 	
 	private DataSeries generateDataSeries(Map<String, List<Integer>> data){
@@ -164,22 +168,46 @@ public class FarmationGoodsWithIncreasingTrendViewImpl  extends Panel implements
 		legend.setPlacement(LegendPlacements.OUTSIDE_GRID);
 		String[] labelData=new String[data.size()];
 
-		if(data.size()>=5){
-			int i=0;
-			Iterator<String> dataIt=data.keySet().iterator();
-			while(dataIt.hasNext()){
-				labelData[i]=dataIt.next();
-				System.out.println(labelData[i]);
-				i++;
-			}
-			legend.setLabels(labelData);			
+		int i=0;
+		Iterator<String> dataIt=data.keySet().iterator();
+		while(dataIt.hasNext()){
+			labelData[i]=dataIt.next();
+			System.out.println(labelData[i]);
+			i++;
 		}
-		String label1=labelData[0].toString();
-		String label2=labelData[1].toString();
-		String label3=labelData[2].toString();
-		String label4=labelData[3].toString();
-		String label5=labelData[4].toString();
-		legend.setLabels(label1,label2,label3,label4,label5);			
+		legend.setLabels(labelData);			
+
+		
+		if(data.size()==1){
+			String label1=labelData[0].toString();
+			legend.setLabels(label1);			
+			
+		}else if(data.size()==2){
+			String label1=labelData[0].toString();
+			String label2=labelData[1].toString();
+			legend.setLabels(label1,label2);			
+			
+		}else if(data.size()==3){
+			String label1=labelData[0].toString();
+			String label2=labelData[1].toString();
+			String label3=labelData[2].toString();
+			legend.setLabels(label1,label2,label3);			
+			
+		}else if(data.size()==4){
+			String label1=labelData[0].toString();
+			String label2=labelData[1].toString();
+			String label3=labelData[2].toString();
+			String label4=labelData[3].toString();
+			legend.setLabels(label1,label2,label3,label4);			
+			
+		}else{
+			String label1=labelData[0].toString();
+			String label2=labelData[1].toString();
+			String label3=labelData[2].toString();
+			String label4=labelData[3].toString();
+			String label5=labelData[4].toString();
+			legend.setLabels(label1,label2,label3,label4,label5);						
+		}
 
 		System.out.println("Label : "+legend.getLabels().length+" "+legend.getLabels()[1]);
 		legend.setLocation(LegendLocations.SOUTH);

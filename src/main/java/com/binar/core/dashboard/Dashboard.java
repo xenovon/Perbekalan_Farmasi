@@ -30,6 +30,8 @@ import com.binar.core.dashboard.dashboardItem.ifrsGoodProcurement.IfrsGoodsProcu
 import com.binar.core.dashboard.dashboardItem.ifrsGoodReceptionSummary.IfrsGoodsReceptionSummaryModel;
 import com.binar.core.dashboard.dashboardItem.ifrsGoodReceptionSummary.IfrsGoodsReceptionSummaryPresenter;
 import com.binar.core.dashboard.dashboardItem.ifrsGoodReceptionSummary.IfrsGoodsReceptionSummaryViewImpl;
+import com.binar.core.dashboard.dashboardItem.ifrsGoodsConsumption.IfrsGoodsConsumptionPresenter;
+import com.binar.core.dashboard.dashboardItem.ifrsGoodsWithIncreasingTrend.IfrsGoodsWithIncreasingTrendPresenter;
 import com.binar.core.dashboard.dashboardItem.ifrsRequirementPlanning.IfrsRequirementPlanningPresenter;
 import com.binar.core.dashboard.dashboardItem.ppkExpiredGoodsNonAccepted.PpkExpiredGoodsNonAcceptedModel;
 import com.binar.core.dashboard.dashboardItem.ppkExpiredGoodsNonAccepted.PpkExpiredGoodsNonAcceptedPresenter;
@@ -48,7 +50,9 @@ import com.binar.core.dashboard.dashboardItem.procurementSupplierRank.Procuremen
 import com.binar.core.dashboard.dashboardItem.procurementSupplierRank.ProcurementSupplierRankPresenter;
 import com.binar.core.dashboard.dashboardItem.procurementSupplierRank.ProcurementSupplierRankViewImpl;
 import com.binar.core.dashboard.dashboardItem.supportDeletedGoodsNonApproved.SupportDeletedGoodsNonApprovedPresenter;
+import com.binar.core.dashboard.dashboardItem.supportGoodsConsumption.SupportGoodsConsumptionPresenter;
 import com.binar.core.dashboard.dashboardItem.supportGoodsProcurementSummary.SupportGoodsProcurementSummaryPresenter;
+import com.binar.core.dashboard.dashboardItem.supportGoodsWithIncreasingTrend.SupportGoodsWithIncreasingTrendPresenter;
 import com.binar.core.dashboard.dashboardItem.supportRequirementNonApproved.SupportRequirementNonApprovedModel;
 import com.binar.core.dashboard.dashboardItem.supportRequirementNonApproved.SupportRequirementNonApprovedPresenter;
 import com.binar.core.dashboard.dashboardItem.supportRequirementNonApproved.SupportRequirementNonApprovedViewImpl;
@@ -193,6 +197,10 @@ public class Dashboard extends VerticalLayout {
 	
 	IfrsRequirementPlanningPresenter ifrsRequirementPlanningPresenter;
 	
+	IfrsGoodsWithIncreasingTrendPresenter ifrsGoodsWithIncreasingTrendPresenter;
+	
+	IfrsGoodsConsumptionPresenter ifrsGoodsConsumptionPresenter;
+	
 	public void generateIfrsView(){
 		gridLayout.removeAllComponents();
 		if(farmationExpiredGoodsStatusModel==null){
@@ -243,6 +251,24 @@ public class Dashboard extends VerticalLayout {
 					function, ifrsGoodsReceptionSummaryViewImpl, ifrsGoodsReceptionSummaryModel);
 		}
 		gridLayout.addComponent(ifrsGoodsReceptionSummaryViewImpl,1,2);
+		if(ifrsGoodsConsumptionPresenter == null){
+			farmationGoodsConsumptionModel =new FarmationGoodsConsumptionModel(function);
+			farmationGoodsConsumptionViewImpl=new FarmationGoodsConsumptionViewImpl(function);
+			ifrsGoodsConsumptionPresenter=new IfrsGoodsConsumptionPresenter(
+					function, farmationGoodsConsumptionViewImpl, farmationGoodsConsumptionModel);
+		}
+		
+		gridLayout.addComponent(farmationGoodsConsumptionViewImpl, 0,3);
+		
+		if(ifrsGoodsWithIncreasingTrendPresenter == null){
+			farmationGoodsWithIncreasingTrendViewImpl =new FarmationGoodsWithIncreasingTrendViewImpl(function);
+			farmationGoodsWithIncreasingTrendModel =new FarmationGoodsWithIncreasingTrendModel(function);
+			ifrsGoodsWithIncreasingTrendPresenter = new IfrsGoodsWithIncreasingTrendPresenter(
+					function, farmationGoodsWithIncreasingTrendViewImpl, farmationGoodsWithIncreasingTrendModel);
+		}
+		gridLayout.addComponent(farmationGoodsWithIncreasingTrendViewImpl, 1,3);			
+
+
 	}
 	
 	PpkExpiredGoodsNonAcceptedModel ppkExpiredGoodsNonAcceptedModel;
@@ -372,6 +398,10 @@ public class Dashboard extends VerticalLayout {
 	SupportRequirementNonApprovedViewImpl supportRequirementNonApprovedViewImpl;
 	SupportRequirementNonApprovedPresenter supportRequirementNonApprovedPresenter;
 	
+	SupportGoodsWithIncreasingTrendPresenter supportGoodsWithIncreasingTrendPresenter;
+	
+	SupportGoodsConsumptionPresenter supportGoodsConsumptionPresenter;
+
 	public void generateSupportView(){
 		gridLayout.removeAllComponents();
 		if(farmationExpiredGoodsStatusModel==null){
@@ -414,6 +444,24 @@ public class Dashboard extends VerticalLayout {
 		}
 		gridLayout.addComponent(ifrsGoodsProcurementViewImpl,0,2);
 
+		gridLayout.addComponent(ifrsGoodsReceptionSummaryViewImpl,1,2);
+		
+		if(supportGoodsConsumptionPresenter == null){
+			farmationGoodsConsumptionModel =new FarmationGoodsConsumptionModel(function);
+			farmationGoodsConsumptionViewImpl=new FarmationGoodsConsumptionViewImpl(function);
+			supportGoodsConsumptionPresenter=new SupportGoodsConsumptionPresenter(
+					function, farmationGoodsConsumptionViewImpl, farmationGoodsConsumptionModel);
+		}
+		
+		gridLayout.addComponent(farmationGoodsConsumptionViewImpl, 0,3);
+		
+		if(supportGoodsWithIncreasingTrendPresenter == null){
+			farmationGoodsWithIncreasingTrendViewImpl =new FarmationGoodsWithIncreasingTrendViewImpl(function);
+			farmationGoodsWithIncreasingTrendModel =new FarmationGoodsWithIncreasingTrendModel(function);
+			supportGoodsWithIncreasingTrendPresenter = new SupportGoodsWithIncreasingTrendPresenter(
+					function, farmationGoodsWithIncreasingTrendViewImpl, farmationGoodsWithIncreasingTrendModel);
+		}
+		gridLayout.addComponent(farmationGoodsWithIncreasingTrendViewImpl, 1,3);
 	}
 	
 }

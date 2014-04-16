@@ -1,19 +1,19 @@
-package com.binar.core.dashboard.dashboardItem.farmationGoodsWithIncreasingTrend;
+package com.binar.core.dashboard.dashboardItem.supportGoodsConsumption;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
-import com.binar.core.dashboard.dashboardItem.farmationGoodsWithIncreasingTrend.FarmationGoodsWithIncreasingTrendView.FarmationGoodsWithIncreasingTrendListener;
+import com.binar.core.dashboard.dashboardItem.farmationGoodsConsumption.FarmationGoodsConsumptionModel;
+import com.binar.core.dashboard.dashboardItem.farmationGoodsConsumption.FarmationGoodsConsumptionView.FarmationGoodsConsumptionListener;
+import com.binar.core.dashboard.dashboardItem.farmationGoodsConsumption.FarmationGoodsConsumptionViewImpl;
 import com.binar.entity.Goods;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.UI;
 
-public class FarmationGoodsWithIncreasingTrendPresenter implements FarmationGoodsWithIncreasingTrendListener {
+public class SupportGoodsConsumptionPresenter implements FarmationGoodsConsumptionListener {
 /*
- * 5 Obat yang trendnya naik
-> Line Chart, nama obat dan jumlahnya
+ * Daftar obat paling banyak keluar selama bulan ini :
+> Bar chart, nama obat dan jumlahnya
 		
 		DataSeries dataSeries = new DataSeries()
 	.newSeries()
@@ -39,11 +39,11 @@ DCharts chart = new DCharts()
 	/*
 	 * 
 	 */
-	FarmationGoodsWithIncreasingTrendModel model;
-	FarmationGoodsWithIncreasingTrendViewImpl view;
+	FarmationGoodsConsumptionModel model;
+	FarmationGoodsConsumptionViewImpl view;
 	GeneralFunction function;
-	public FarmationGoodsWithIncreasingTrendPresenter(GeneralFunction function
-			, FarmationGoodsWithIncreasingTrendViewImpl view, FarmationGoodsWithIncreasingTrendModel model) {
+	public SupportGoodsConsumptionPresenter(GeneralFunction function
+			, FarmationGoodsConsumptionViewImpl view, FarmationGoodsConsumptionModel model) {
 		this.model=model;
 		this.function=function;
 		this.view=view;
@@ -55,8 +55,8 @@ DCharts chart = new DCharts()
 
 	@Override
 	public void updateChart() {
-		Map<String, List<Integer>> data=model.getChartDataDummy();
-//		Map<String, List<Integer>> data=model.getChartData();
+		Map<Integer, String> data=model.getGoodsCosumption();
+//		Map<Integer, String> data=model.getGoodsCosumptionDummy();
 		if(data==null){
 			view.setEmptyDataView();
 		}else{

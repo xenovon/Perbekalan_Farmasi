@@ -6,7 +6,7 @@ import java.util.Map;
 import com.binar.entity.Goods;
 import com.vaadin.ui.Panel;
 
-interface  FarmationGoodsWithIncreasingTrendView {
+public interface  FarmationGoodsWithIncreasingTrendView {
 	public interface FarmationGoodsWithIncreasingTrendListener{
 		public void updateChart();
 		public void buttonGo();
