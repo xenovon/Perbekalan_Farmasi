@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.joda.time.DateTime;
+import org.joda.time.Months;
+
 import com.binar.core.dashboard.dashboardItem.farmationGoodsWithIncreasingTrend.FarmationGoodsWithIncreasingTrendModel;
 import com.binar.core.dashboard.dashboardItem.farmationGoodsWithIncreasingTrend.FarmationGoodsWithIncreasingTrendView.FarmationGoodsWithIncreasingTrendListener;
 import com.binar.core.dashboard.dashboardItem.farmationGoodsWithIncreasingTrend.FarmationGoodsWithIncreasingTrendViewImpl;
 import com.binar.entity.Goods;
+import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.UI;
@@ -44,21 +48,23 @@ DCharts chart = new DCharts()
 	FarmationGoodsWithIncreasingTrendModel model;
 	FarmationGoodsWithIncreasingTrendViewImpl view;
 	GeneralFunction function;
+	DateManipulator dateMan;
 	public SupportGoodsWithIncreasingTrendPresenter(GeneralFunction function
 			, FarmationGoodsWithIncreasingTrendViewImpl view, FarmationGoodsWithIncreasingTrendModel model) {
 		this.model=model;
 		this.function=function;
 		this.view=view;
+		this.dateMan=function.getDate();
 		view.init(model.getCurrentMonth());
 		view.setListener(this);
-		updateChart();
+		buttonSubmit();
 	}
 	
 
 	@Override
-	public void updateChart() {
-//		Map<String, List<Integer>> data=model.getChartDataDummy();
-		Map<String, List<Integer>> data=model.getChartData();
+	public void updateChart(DateTime dateStart, int period) {
+		Map<String, List<Integer>> data=model.getChartDataDummy(period);
+//		Map<String, List<Integer>> data=model.getChartData(dateStart, period);
 		if(data==null){
 			view.setEmptyDataView();
 		}else{
@@ -66,11 +72,33 @@ DCharts chart = new DCharts()
 		}
 	}
 	
+	
 	@Override
 	public void buttonGo() {
 		Navigator navigator=UI.getCurrent().getNavigator();
 		navigator.navigateTo("/inventorymanagement/"+function.VIEW_INVENTORY_CONSUMPTION);
 	}
+	@Override
+	public void buttonSubmit() {
+		String[] date=view.getSubmitData();
+		System.out.println(date.toString());
+		DateTime dateStart=dateMan.parseDateMonth(date[0]);
+		DateTime dateEnd=dateMan.parseDateMonth(date[1]);
+		
+		//mengambil period bulan yang dipilih
+		int period=Math.abs(Months.monthsBetween(dateStart, dateEnd).getMonths());
+
+		//untuk date yang akan diteruskan ke model
+		DateTime dateSelected;		
+		if(dateStart.isAfter(dateEnd)){
+			dateSelected=dateStart;
+		}else{
+			dateSelected=dateEnd;
+		}
+		
+		updateChart(dateSelected, period);
+	}
+
 //  put("/dashboard", DashboardView.class);
 //  put("/requirementplanning/", RequirementPlanningView.class);
 //  put("/procurement", ProcurementView.class);

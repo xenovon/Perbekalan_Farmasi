@@ -17,6 +17,7 @@ import java.util.Map.Entry;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.joda.time.Months;
 
 import com.avaje.ebean.EbeanServer;
 import com.binar.entity.Goods;
@@ -36,18 +37,26 @@ public class FarmationGoodsWithIncreasingTrendModel {
 		this.server=function.getServer();
 	}
 	//Mendapatkan data konsumsi untuk setiap barang
-	private Map<String, List<Integer>> getGoodsConsumptionData(){
+	private Map<String, List<Integer>> getGoodsConsumptionData(DateTime startDate, int period){
+		if(startDate==null){
+			period=6;
+		}
 		Map<String, List<Integer>> data=new HashMap<String, List<Integer>>();
 		List<Goods> goods=server.find(Goods.class).findList();
 		for(Goods singleGoods:goods){
-			data.put(singleGoods.getIdGoods(), generateConsumptionData(singleGoods.getIdGoods(), 6));
+			data.put(singleGoods.getIdGoods(), generateConsumptionData(singleGoods.getIdGoods(), period, startDate));
 		}
 		return data;
 	}
 	//Mendapatkan data konsumsi pada satu barang
-	private List<Integer> generateConsumptionData(String idGoods, int period){
+	private List<Integer> generateConsumptionData(String idGoods, int period, DateTime startDate){
 		List<Integer> returnValue =new ArrayList<Integer>();
-		LocalDate time=new LocalDate().minusMonths(period);
+		DateTime time;
+		if(startDate==null){
+			time=new DateTime().minusMonths(period).withMillisOfDay(startDate.millisOfDay().getMinimumValue());			
+		}else{
+			time=startDate.minusMonths(period);
+		}
 		int i=0;
 		Goods goods;
 		try {
@@ -66,10 +75,10 @@ public class FarmationGoodsWithIncreasingTrendModel {
 		return returnValue;
 	}
 	//mendapatkan konsumsi satu barang dalam 1 bulan.
-	private int getConsumptionPerMonth(LocalDate periode, Goods goods){
+	private int getConsumptionPerMonth(DateTime periode, Goods goods){
 		System.out.println("Mendapatkan periode");
-		Date startDate=periode.withDayOfMonth(periode.dayOfMonth().getMinimumValue()).toDate();
-		Date endDate=periode.withDayOfMonth(periode.dayOfMonth().getMaximumValue()).toDate();
+		Date startDate=periode.withDayOfMonth(periode.dayOfMonth().getMinimumValue()).withMillisOfDay(periode.millisOfDay().getMinimumValue()).toDate();
+		Date endDate=periode.withDayOfMonth(periode.dayOfMonth().getMaximumValue()).withMillisOfDay(periode.millisOfDay().getMaximumValue()).toDate();
 
 		List<GoodsConsumption> consumptionOfMonth=server.find(GoodsConsumption.class).where().
 				between("consumptionDate", startDate, endDate).eq("goods", goods).findList();
@@ -84,27 +93,27 @@ public class FarmationGoodsWithIncreasingTrendModel {
 		return returnValue;
 	}
 	//Method untuk data dummy 
-	public Map<String,List<Integer>> getChartDataDummy(){
+	public Map<String,List<Integer>> getChartDataDummy(int period){
 		Random random=new Random();
 		Map<String, List<Integer>> data=new HashMap<String, List<Integer>>();
 		List<Integer> data1=new ArrayList<Integer>();
-		for(int i=0;i<6;i++){	
+		for(int i=0;i<period;i++){	
 			data1.add(random.nextInt(40)+10*i);			
 		}
 		List<Integer> data2=new ArrayList<Integer>();
-		for(int i=0;i<6;i++){
+		for(int i=0;i<period;i++){
 			data2.add(random.nextInt(40)+30*i);			
 		}
 		List<Integer> data3=new ArrayList<Integer>();
-		for(int i=0;i<6;i++){
+		for(int i=0;i<period;i++){
 			data3.add(random.nextInt(40)+30*i);			
 		}
 		List<Integer> data4=new ArrayList<Integer>();
-		for(int i=0;i<6;i++){
+		for(int i=0;i<period;i++){
 			data4.add(random.nextInt(50)+40*i);			
 		}
 		List<Integer> data5=new ArrayList<Integer>();
-		for(int i=0;i<6;i++){
+		for(int i=0;i<period;i++){
 			data5.add(random.nextInt(30)+40*i);			
 		}
 		data.put("Clopedin", data1);
@@ -117,9 +126,9 @@ public class FarmationGoodsWithIncreasingTrendModel {
 	}	
 	//method utama
 	
-	public Map<String,List<Integer>> getChartData(){
+	public Map<String,List<Integer>> getChartData(DateTime dateStart, int period){
 		//Dapatkan data bulanan semua barang, selama 6 bulan
-		Map<String, List<Integer>> monthlyData=getGoodsConsumptionData();
+		Map<String, List<Integer>> monthlyData=getGoodsConsumptionData(dateStart, period);
 
 		//konversikan ke jumlah trend
 		Map<String, Integer> data2=new HashMap<String, Integer>();

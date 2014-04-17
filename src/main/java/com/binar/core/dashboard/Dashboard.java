@@ -85,7 +85,7 @@ public class Dashboard extends VerticalLayout {
 		panel.setWidth("100%");
 		panel.setHeight("550px");
 		this.addComponent(new Label("<h2>Dashboard</h2>", ContentMode.HTML));
-		gridLayout=new GridLayout(2,4);
+		gridLayout=new GridLayout(2,5);
 		panel.setContent(gridLayout);
 		this.addComponent(panel);
 	}
@@ -180,7 +180,7 @@ public class Dashboard extends VerticalLayout {
 			farmationGoodsWithIncreasingTrendPresenter = new FarmationGoodsWithIncreasingTrendPresenter(
 					function, farmationGoodsWithIncreasingTrendViewImpl, farmationGoodsWithIncreasingTrendModel);
 		}
-		gridLayout.addComponent(farmationGoodsWithIncreasingTrendViewImpl, 0,2);			
+		gridLayout.addComponent(farmationGoodsWithIncreasingTrendViewImpl, 0,2, 1,2);			
 	}
 	
 	IfrsDeletionApprovalModel ifrsDeletionApprovalModel;
@@ -266,7 +266,7 @@ public class Dashboard extends VerticalLayout {
 			ifrsGoodsWithIncreasingTrendPresenter = new IfrsGoodsWithIncreasingTrendPresenter(
 					function, farmationGoodsWithIncreasingTrendViewImpl, farmationGoodsWithIncreasingTrendModel);
 		}
-		gridLayout.addComponent(farmationGoodsWithIncreasingTrendViewImpl, 1,3);			
+		gridLayout.addComponent(farmationGoodsWithIncreasingTrendViewImpl, 0,4, 1,4);			
 
 
 	}
@@ -461,7 +461,7 @@ public class Dashboard extends VerticalLayout {
 			supportGoodsWithIncreasingTrendPresenter = new SupportGoodsWithIncreasingTrendPresenter(
 					function, farmationGoodsWithIncreasingTrendViewImpl, farmationGoodsWithIncreasingTrendModel);
 		}
-		gridLayout.addComponent(farmationGoodsWithIncreasingTrendViewImpl, 1,3);
+		gridLayout.addComponent(farmationGoodsWithIncreasingTrendViewImpl, 0,4, 1, 4);
 	}
 	
 }

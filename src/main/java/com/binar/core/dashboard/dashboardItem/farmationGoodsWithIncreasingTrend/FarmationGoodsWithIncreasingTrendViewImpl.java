@@ -1,5 +1,6 @@
 package com.binar.core.dashboard.dashboardItem.farmationGoodsWithIncreasingTrend;
 
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,8 @@ import org.dussan.vaadin.dcharts.renderers.legend.EnhancedLegendRenderer;
 import org.dussan.vaadin.dcharts.renderers.series.BarRenderer;
 import org.dussan.vaadin.dcharts.renderers.series.PieRenderer;
 import org.dussan.vaadin.dcharts.renderers.series.animations.BarAnimation;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeField;
 
 import com.binar.entity.Goods;
 import com.binar.generalFunction.GeneralFunction;
@@ -41,6 +44,7 @@ import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
@@ -59,6 +63,15 @@ public class FarmationGoodsWithIncreasingTrendViewImpl  extends Panel implements
 	private Button buttonGo;
 	private GeneralFunction function;
 	private CssLayout layoutChart;
+	private ComboBox selectYearStart;
+	private ComboBox selectMonthStart;
+	private ComboBox selectYearEnd;
+	private ComboBox selectMonthEnd;
+	
+	private Label labelDateStart;
+	private Label labelDateEnd;
+	private final String FORM_WIDTH="100px";
+	private Button buttonSubmit;
 	public FarmationGoodsWithIncreasingTrendViewImpl(GeneralFunction function) {
 		this.function=function;
 	}
@@ -71,15 +84,69 @@ public class FarmationGoodsWithIncreasingTrendViewImpl  extends Panel implements
 		buttonRefresh=new Button("Refresh");
 		buttonRefresh.addClickListener(this);
 
+		
+		List<String> yearList=function.getListFactory().createYearList(6, 2, false);
+		selectYearStart = new ComboBox("", yearList);
+		selectYearStart.setImmediate(true);
+		selectYearStart.setNullSelectionAllowed(false);
+		selectYearStart.setValue(yearList.get(2));
+		selectYearStart.setTextInputAllowed(false);
+		selectYearStart.setWidth(FORM_WIDTH);
+		selectYearStart.addStyleName("non-caption-form");
+
+		List<String> monthList=function.getListFactory().createMonthList();
+		selectMonthStart =new ComboBox("", monthList);
+		selectMonthStart.setImmediate(true);
+		selectMonthStart.setNullSelectionAllowed(false);
+		selectMonthStart.setValue(monthList.get(Calendar.getInstance().get(Calendar.MONTH)));
+		selectMonthStart.setTextInputAllowed(false);
+		selectMonthStart.setWidth(FORM_WIDTH);
+		selectMonthStart.addStyleName("non-caption-form");
+		
+		DateTime dateTime=new DateTime().minusMonths(6);		
+		List<String> yearList2=function.getListFactory().createYearList(6, 2, false);
+		selectYearEnd = new ComboBox("", yearList2);
+		selectYearEnd.setImmediate(true);
+		selectYearEnd.setNullSelectionAllowed(false);
+		selectYearEnd.setValue(String.valueOf(dateTime.getYear()));
+		selectYearEnd.setTextInputAllowed(false);
+		selectYearEnd.setWidth(FORM_WIDTH);
+		selectYearEnd.addStyleName("non-caption-form");
+
+		System.out.println(selectYearEnd.getItemIds().toString());
+		System.out.println("Date now "+dateTime.getYear());
+		List<String> monthList2=function.getListFactory().createMonthList();
+		selectMonthEnd =new ComboBox("", monthList2);
+		selectMonthEnd.setImmediate(true);
+		selectMonthEnd.setNullSelectionAllowed(false);
+		selectMonthEnd.setValue(monthList.get(dateTime.getMonthOfYear()-1));
+		selectMonthEnd.setTextInputAllowed(false);
+		selectMonthEnd.setWidth(FORM_WIDTH);		
+		selectMonthEnd.addStyleName("non-caption-form");
+
+		buttonSubmit =new Button("Submit");
+		buttonSubmit.addClickListener(this);
 		construct(month);
 	}
 
 	@Override
 	public void construct(String month) {
 		setCaption("Barang Dengan Trend Naik "+month);
-		setHeight("430px");
-		setWidth("500px");
-		
+		setHeight("600px");
+		setWidth("890px");
+		final GridLayout submitLayout=new GridLayout(7, 1){
+			{
+				setSpacing(true);
+				setMargin(true);
+				addComponent(new Label("Rentang Awal"));
+				addComponent(selectMonthStart);
+				addComponent(selectYearStart);
+				addComponent(new Label("Rentang Akhir"));
+				addComponent(selectMonthEnd);
+				addComponent(selectYearEnd);
+				addComponent(buttonSubmit);
+			}
+		};
 		final GridLayout layout=new GridLayout(2,1){
 			{
 				setSpacing(true);
@@ -92,6 +159,7 @@ public class FarmationGoodsWithIncreasingTrendViewImpl  extends Panel implements
 			{
 				setSpacing(true);
 				setMargin(true);
+				addComponent(submitLayout);
 				addComponent(layoutChart);
 				addComponent(layout);
 			}
@@ -108,7 +176,9 @@ public class FarmationGoodsWithIncreasingTrendViewImpl  extends Panel implements
 		if(event.getButton()==buttonGo){
 			listener.buttonGo();
 		}else if(event.getButton()==buttonRefresh){
-			listener.updateChart();
+			listener.buttonSubmit();
+		}else if(event.getButton()==buttonSubmit){
+			listener.buttonSubmit();
 		}
 	}
 	
@@ -227,5 +297,16 @@ public class FarmationGoodsWithIncreasingTrendViewImpl  extends Panel implements
 	public void setEmptyDataView() {
 		layoutChart.removeAllComponents();
 		layoutChart.addComponent(new Label("Data konsumsi bulan ini belum tersedia"));
+	}
+	public String[] getSubmitData(){
+		String[] returnValue=new String[2];
+		returnValue[0]=selectMonthStart.getValue()+"-"+selectYearStart.getValue();
+		returnValue[1]=selectMonthEnd.getValue()+"-"+selectYearEnd.getValue();
+		System.out.println(returnValue[0].toString()+"---"+ returnValue[1].toString()+" Submit data");
+		return returnValue;
+	}
+	public static void main(String[] args) {
+		System.out.println(new DateTime().getMonthOfYear());
+		System.out.println(Calendar.getInstance().get(Calendar.MONTH));
 	}
 }
