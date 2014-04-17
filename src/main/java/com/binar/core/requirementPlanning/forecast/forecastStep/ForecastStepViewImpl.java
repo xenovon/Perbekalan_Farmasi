@@ -189,7 +189,6 @@ public class ForecastStepViewImpl extends VerticalLayout implements ForecastStep
 	VerticalLayout layoutSimple;
 	VerticalLayout layoutDouble;
 	VerticalLayout layoutNaive;
-	VerticalLayout layoutMoving;
 
 	@Override
 	public void generateForecastView(Component chartAll, Component chartTriple,
@@ -320,7 +319,6 @@ public class ForecastStepViewImpl extends VerticalLayout implements ForecastStep
 						finalChartAll.setVisible(true);
 						
 						layoutDouble.setVisible(true);
-						layoutMoving.setVisible(true);
 						layoutNaive.setVisible(true);
 						layoutSimple.setVisible(true);
 						
@@ -332,7 +330,6 @@ public class ForecastStepViewImpl extends VerticalLayout implements ForecastStep
 						finalChartAll.setVisible(false);
 						
 						layoutDouble.setVisible(false);
-						layoutMoving.setVisible(false);
 						layoutNaive.setVisible(false);
 						layoutSimple.setVisible(false);
 
