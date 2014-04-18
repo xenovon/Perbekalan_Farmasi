@@ -81,14 +81,21 @@ public class ForecastChart extends CustomComponent {
 			series.add(dataSize+1, forecaster.getProcessTripleES().getNextMonthValue());
 
 		}else{
-			int dataSize=forecaster.getDataFilter().size();
+//			int dataSize=forecaster.getDataFilter().size();
+			int dataSize=forecaster.getData().size();
 
-			for(Integer integer:forecaster.getDataFilter()){
+			for(Integer integer:forecaster.getData()){
 				series.add(i,integer);
 				i++;
 			}	
+//			for(Integer integer:forecaster.getDataFilter()){
+//				series.add(i,integer);
+//				i++;
+//			}	
+
 			series.newSeries();
-			series.add(dataSize, forecaster.getDataFilter().get(dataSize-1));
+//			series.add(dataSize, forecaster.getDataFilter().get(dataSize-1));
+			series.add(dataSize, forecaster.getData().get(dataSize-1));
 			series.add(dataSize+1, forecaster.getProcessDoubleES().getNextMonthValue());
 
 //			series.newSeries();
@@ -96,11 +103,13 @@ public class ForecastChart extends CustomComponent {
 //			series.add(dataSize+1, forecaster.getProcessMovingAverage().getNextMonthValue());
 
 			series.newSeries();
-			series.add(dataSize, forecaster.getDataFilter().get(dataSize-1));
+			series.add(dataSize, forecaster.getData().get(dataSize-1));
+//			series.add(dataSize, forecaster.getDataFilter().get(dataSize-1));
 			series.add(dataSize+1, forecaster.getProcessNaive().getNextMonthValue());
 
 			series.newSeries();
-			series.add(dataSize, forecaster.getDataFilter().get(dataSize-1));
+			series.add(dataSize, forecaster.getData().get(dataSize-1));
+//			series.add(dataSize, forecaster.getDataFilter().get(dataSize-1));
 			series.add(dataSize+1, forecaster.getProcessSimpleES().getNextMonthValue());
 
 		}
@@ -137,7 +146,7 @@ public class ForecastChart extends CustomComponent {
 		legend.setPlacement(LegendPlacements.OUTSIDE_GRID);
 		
 		if(!triple){
-			legend.setLabels("Riwayat Data","Double Exponential Smoothing" ,"Moving Average","Naive", "Simple Exponential Smoothing");
+			legend.setLabels("Riwayat Data","Double Exponential Smoothing" ,"Naive", "Simple Exponential Smoothing");
 		
 		}else{
 			legend.setLabels("Riwayat Data", "Triple Exponential Smoothing");		

@@ -40,31 +40,35 @@ public class Forecaster {
 	private SimpleExponentialSmoothingProcess processSimpleES;
 	private TripleExponentialSmoothingProcess processTripleES;
 	private NaiveProcess processNaive;
+	private DataSet dataSet;
 	private List<Integer> data;
 	private boolean tripleSupport=false;
 	
 	public void execute(List<Integer> data){
 		this.data=data;
-		DataSet dataSet=generateDataSet(data,false);
-
-		if(processDoubleES==null){
-			processDoubleES=new DoubleExponentialSmoothingProcess();
+		dataSet=generateDataSet(data,false);
+		if(dataSet.size()!=0){
+			System.out.println("Ukuran Data Set"+dataSet.size());
+			if(processDoubleES==null){
+				processDoubleES=new DoubleExponentialSmoothingProcess();
+			}
+			processDoubleES.init(dataSet);
+			
+//			if(processMovingAverage==null){
+//				processMovingAverage =new MovingAverageProcess();
+//			}
+//			processMovingAverage.init(dataSet);
+			
+			if(processSimpleES==null){
+				processSimpleES=new SimpleExponentialSmoothingProcess();
+			}
+			processSimpleES.init(dataSet);
+			if(processNaive==null){
+				processNaive=new NaiveProcess();
+			}
+			processNaive.init(dataSet);			
+			return;
 		}
-		processDoubleES.init(dataSet);
-		
-//		if(processMovingAverage==null){
-//			processMovingAverage =new MovingAverageProcess();
-//		}
-//		processMovingAverage.init(dataSet);
-		
-		if(processSimpleES==null){
-			processSimpleES=new SimpleExponentialSmoothingProcess();
-		}
-		processSimpleES.init(dataSet);
-		if(processNaive==null){
-			processNaive=new NaiveProcess();
-		}
-		processNaive.init(dataSet);
 		
 		tripleSupport=false;
 		
@@ -77,23 +81,23 @@ public class Forecaster {
 		}
 	}
 	//Untuk menghilangkan value kosong
-	private List<Integer> filterData(List<Integer> input){
-		List<Integer> returnValue=new ArrayList<Integer>();
-		for (Integer integer : input) {
-			if(integer!=0){
-				returnValue.add(integer);
-			}
-		}
-		return returnValue;
-	}
+//	private List<Integer> filterData(List<Integer> input){
+//		List<Integer> returnValue=new ArrayList<Integer>();
+//		for (Integer integer : input) {
+//			if(integer!=0){
+//				returnValue.add(integer);
+//			}
+//		}
+//		return returnValue;
+//	}
 	
 	// jika getTripleModel true maka method akan mengembalikan  
 	//dataset yang dikhususkan untuk triple exponential smoothing, yakni tidak difilter
 	private DataSet generateDataSet(List<Integer> data, boolean getTripleModel){
 		DataSet dataSet=new DataSet();
-		if(!getTripleModel){
-			data=filterData(data); //difilter
-		}
+//		if(!getTripleModel){
+//			data=filterData(data); //difilter
+//		}
 		int i=1;
 		for(Integer integer:data){
 			Observation obs=new Observation(integer);
@@ -134,7 +138,10 @@ public class Forecaster {
 		return data;
 	}
 	
-	public List<Integer> getDataFilter() {
-		return filterData(data);
+//	public List<Integer> getDataFilter() {
+//		return filterData(data);
+//	}
+	public DataSet getDataSet() {
+		return dataSet;
 	}
 }

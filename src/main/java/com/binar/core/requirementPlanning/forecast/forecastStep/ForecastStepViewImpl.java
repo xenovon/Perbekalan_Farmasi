@@ -370,6 +370,32 @@ public class ForecastStepViewImpl extends VerticalLayout implements ForecastStep
 		
 		System.out.println(sort.get(sort.firstKey()));
 	}
+	public void generateForecastEmpty(Component chartTriple,
+			Forecaster forecaster){
+		final Forecaster finalForecaster=forecaster;
+		final Component finalChartTriple=chartTriple;
+		//langkah 1, tambahkan chart;
+		layoutChart.removeAllComponents();
+		layoutResult.removeAllComponents();
+		if(chartTriple!=null){
+			layoutChart.addComponent(chartTriple);
+			layoutResult.removeAllComponents();
+			layoutTriple=new VerticalLayout(){{
+				addComponent(new Label("<h4>Triple Exponential Smoothing</h4>", ContentMode.HTML));
+				addComponent(new Label(text.intToAngka(finalForecaster.getProcessTripleES().getNextMonthValue())+"", ContentMode.HTML));
+				addComponent(new Label("MSE : "+text.doubleToAngka2(finalForecaster.getProcessTripleES().getNextMonthMSE())));
+			}};
+			layoutTriple.setVisible(false);
+			layoutResult.addComponent(layoutTriple);
+			
+		}else{
+			layoutChart.addComponent(new Label("Data Tidak Tersedia"));
+		}
+		
+
+
+	}
+	
 
 	
 }
