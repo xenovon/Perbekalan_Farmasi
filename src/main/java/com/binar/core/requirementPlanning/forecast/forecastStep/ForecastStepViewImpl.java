@@ -191,31 +191,20 @@ public class ForecastStepViewImpl extends VerticalLayout implements ForecastStep
 	VerticalLayout layoutNaive;
 
 	@Override
-	public void generateForecastView(Component chartAll, Component chartTriple,
+	public void generateForecastView(Component chartAll, boolean isTripleMode,
 			Forecaster forecaster) {
 		final Forecaster finalForecaster=forecaster;
-		final Component finalChartTriple=chartTriple;
 		final Component finalChartAll=chartAll;
 		
 		
 		System.out.println("Generate Forecast VIew");
 		
-		boolean isTripleMode;
-		if(chartTriple!=null){
-			isTripleMode=true;
-		}else{
-			isTripleMode=false;
-		}
 		
 		ForecastType minimumMSE=getSmallestMSE(finalForecaster);
 		
 		
 		//langkah 1, tambahkan chart;
 		layoutChart.removeAllComponents();
-		if(isTripleMode){
-			layoutChart.addComponent(chartTriple);
-			chartTriple.setVisible(false);
-		}
 		layoutChart.addComponent(chartAll);
 		
 		
@@ -224,13 +213,21 @@ public class ForecastStepViewImpl extends VerticalLayout implements ForecastStep
 		//inisialisasi  variabel
 		layoutResult.removeAllComponents();
 		if(isTripleMode){
-			
-			layoutTriple=new VerticalLayout(){{
-				addComponent(new Label("<h4>Triple Exponential Smoothing</h4>", ContentMode.HTML));
-				addComponent(new Label(text.intToAngka(finalForecaster.getProcessTripleES().getNextMonthValue())+"", ContentMode.HTML));
-				addComponent(new Label("MSE : "+text.doubleToAngka2(finalForecaster.getProcessTripleES().getNextMonthMSE())));
-			}};
-			layoutTriple.setVisible(false);
+			if(minimumMSE==ForecastType.TRIPLE){
+				layoutTriple=new VerticalLayout(){{
+					addComponent(new Label("<h4 style='color:#00d607'>Triple Exponential Smoothing</h4>", ContentMode.HTML));
+					addComponent(new Label("<span style='color:#00d607'>"+text.intToAngka(finalForecaster.getProcessTripleES().getNextMonthValue())+"", ContentMode.HTML));
+					addComponent(new Label("<span style='color:#00d607'>  MSE : "+text.doubleToAngka2(finalForecaster.getProcessTripleES().getNextMonthMSE())));
+				}};
+
+			}else{
+				layoutTriple=new VerticalLayout(){{
+					addComponent(new Label("<h4>Triple Exponential Smoothing</h4>", ContentMode.HTML));
+					addComponent(new Label(text.intToAngka(finalForecaster.getProcessTripleES().getNextMonthValue())+"", ContentMode.HTML));
+					addComponent(new Label("MSE : "+text.doubleToAngka2(finalForecaster.getProcessTripleES().getNextMonthMSE())));
+				}};
+			}
+
 			layoutResult.addComponent(layoutTriple);
 		}
 		
@@ -294,7 +291,6 @@ public class ForecastStepViewImpl extends VerticalLayout implements ForecastStep
 				addComponent(new Label("<span style='color:#00d607'>MSE : "+text.doubleToAngka2(finalForecaster.getProcessNaive().getNextMonthMSE())+"</span>", ContentMode.HTML));			
 			}};			
 		}else{
-			
 			layoutNaive =new VerticalLayout(){{
 				addComponent(new Label("<h4>Naive</h4>", ContentMode.HTML));
 				addComponent(new Label(text.intToAngka(finalForecaster.getProcessNaive().getNextMonthValue())+"", ContentMode.HTML));
@@ -306,45 +302,45 @@ public class ForecastStepViewImpl extends VerticalLayout implements ForecastStep
 		
 		//Langkah 3, jika ada triple, tambahkan tombol
 		
-		layoutButtonSwitch.removeAllComponents();
-		if(isTripleMode){
-			final Button button=new Button("Tampilkan Triple Exp Smoothing");
-			button.addClickListener(new ClickListener() {
-				
-				@Override
-				public void buttonClick(ClickEvent event) {
-					if(layoutTriple.isVisible()){
-						layoutTriple.setVisible(false);
-						finalChartTriple.setVisible(false);
-						finalChartAll.setVisible(true);
-						
-						layoutDouble.setVisible(true);
-						layoutNaive.setVisible(true);
-						layoutSimple.setVisible(true);
-						
-						button.setCaption("Tampilkan Triple Exp Smoothing");
-
-					}else{
-						layoutTriple.setVisible(true);
-						finalChartTriple.setVisible(true);
-						finalChartAll.setVisible(false);
-						
-						layoutDouble.setVisible(false);
-						layoutNaive.setVisible(false);
-						layoutSimple.setVisible(false);
-
-						button.setCaption("Tampilkan Metode Lainnya");
-
-					}
-				}
-			});
-			
-			layoutButtonSwitch.addComponent(button);
-		}
+//		layoutButtonSwitch.removeAllComponents();
+//		if(isTripleMode){
+//			final Button button=new Button("Tampilkan Triple Exp Smoothing");
+//			button.addClickListener(new ClickListener() {
+//				
+//				@Override
+//				public void buttonClick(ClickEvent event) {
+//					if(layoutTriple.isVisible()){
+//						layoutTriple.setVisible(false);
+//						finalChartTriple.setVisible(false);
+//						finalChartAll.setVisible(true);
+//						
+//						layoutDouble.setVisible(true);
+//						layoutNaive.setVisible(true);
+//						layoutSimple.setVisible(true);
+//						
+//						button.setCaption("Tampilkan Triple Exp Smoothing");
+//
+//					}else{
+//						layoutTriple.setVisible(true);
+//						finalChartTriple.setVisible(true);
+//						finalChartAll.setVisible(false);
+//						
+//						layoutDouble.setVisible(false);
+//						layoutNaive.setVisible(false);
+//						layoutSimple.setVisible(false);
+//
+//						button.setCaption("Tampilkan Metode Lainnya");
+//
+//					}
+//				}
+//			});
+//			
+//			layoutButtonSwitch.addComponent(button);
+//		}
 	}
 	
 	enum ForecastType{
-		NAIVE, SIMPLE, DOUBLE, MOVING, 
+		NAIVE, SIMPLE, DOUBLE, MOVING, TRIPLE
 	}
 	
 	private ForecastType getSmallestMSE(Forecaster forecast){
@@ -353,6 +349,9 @@ public class ForecastStepViewImpl extends VerticalLayout implements ForecastStep
 		sort.put(forecast.getProcessDoubleES().getNextMonthMSE(), ForecastType.DOUBLE );
 		sort.put( forecast.getProcessSimpleES().getNextMonthMSE(), ForecastType.SIMPLE);
 		sort.put( forecast.getProcessNaive().getNextMonthMSE(), ForecastType.NAIVE);
+		if(forecast.getProcessTripleES()!=null){			
+			sort.put( forecast.getProcessTripleES().getNextMonthMSE(), ForecastType.TRIPLE);
+		}
 //		sort.put(forecast.getProcessMovingAverage().getNextMonthMSE(), ForecastType.MOVING);
 		
 		return sort.get(sort.firstKey());

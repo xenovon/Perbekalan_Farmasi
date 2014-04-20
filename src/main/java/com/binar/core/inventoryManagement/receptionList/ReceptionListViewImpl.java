@@ -12,6 +12,7 @@ import com.binar.entity.GoodsConsumption;
 import com.binar.entity.GoodsReception;
 import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
+import com.binar.generalFunction.StockFunction;
 import com.binar.generalFunction.TableFilter;
 import com.binar.generalFunction.TextManipulator;
 import com.vaadin.data.Item;
@@ -75,11 +76,13 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 	
 	Window window;
 	Window windowEdit;
-	
+	private StockFunction stock;
+
 	public ReceptionListViewImpl (GeneralFunction function) {
 		this.generalFunction=function;
 		text=generalFunction.getTextManipulator();
 		this.date=generalFunction.getDate();
+		this.stock=function.getStock();
 	}
 	
 	public DateTime getCurrentDate() {
@@ -483,7 +486,11 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 					this.setSpacing(true);
 					if(withEditReception){
 						this.addComponent(buttonEdit, 0, 0);
-						this.addComponent(buttonDelete, 1, 0);												
+						this.addComponent(buttonDelete, 1, 0);		
+						if(stock.isAnyNewestItem(receptionFinal)){
+							buttonDelete.setEnabled(false);
+						}
+
 					}
 				}});		
 			}
@@ -545,7 +552,10 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 					if(withEditReception){
 						this.addComponent(buttonEdit, 0, 0);
 						this.addComponent(buttonDelete, 1, 0);												
-					}
+						if(stock.isAnyNewestItem(receptionFinal)){
+							buttonDelete.setEnabled(false);
+						}
+}
 				}});		
 			}			
 		} catch (Exception e) {

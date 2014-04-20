@@ -90,8 +90,8 @@ public class InventoryManagementView extends CustomComponent implements View, Se
 			stock=new StockList(generalFunction);			
 		}
 		tabSheet=new TabSheet();
-		tabSheet.addTab(consumption).setCaption("Daftar Pengeluaran Harian");
 		tabSheet.addTab(receipt).setCaption("Daftar Penerimaan");
+		tabSheet.addTab(consumption).setCaption("Daftar Pengeluaran Harian");
 		tabSheet.addTab(stock).setCaption("Stok Gudang Farmasi");
 		tabSheet.addTab(deletion).setCaption("Daftar Barang Kadaluarsa");
 		
@@ -127,8 +127,8 @@ public class InventoryManagementView extends CustomComponent implements View, Se
 		}
 		
 		tabSheet=new TabSheet();
-		tabSheet.addTab(consumption).setCaption("Daftar Pengeluaran Harian");
 		tabSheet.addTab(receipt).setCaption("Daftar Penerimaan");
+		tabSheet.addTab(consumption).setCaption("Daftar Pengeluaran Harian");
 		tabSheet.addTab(stock).setCaption("Stok Gudang Farmasi");
 		tabSheet.addTab(deletion).setCaption("Daftar Barang Kadaluarsa");
 		tabSheet.addTab(deletionApproval).setCaption("Persetujuan Barang Kadaluarsa");
@@ -175,7 +175,6 @@ public class InventoryManagementView extends CustomComponent implements View, Se
 			tabSheet.setSelectedTab(deletionApproval);
 		}
 		this.setCompositionRoot(tabSheet);		
-	
 	}
 
 	private  void generatePPKView(ViewChangeEvent event){

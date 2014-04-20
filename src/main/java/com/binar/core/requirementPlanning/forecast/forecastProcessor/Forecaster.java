@@ -46,7 +46,7 @@ public class Forecaster {
 	
 	public void execute(List<Integer> data){
 		this.data=data;
-		dataSet=generateDataSet(data,false);
+		dataSet=generateDataSet(data);
 		if(dataSet.size()!=0){
 			System.out.println("Ukuran Data Set"+dataSet.size());
 			if(processDoubleES==null){
@@ -67,18 +67,17 @@ public class Forecaster {
 				processNaive=new NaiveProcess();
 			}
 			processNaive.init(dataSet);			
-			return;
 		}
 		
 		tripleSupport=false;
-		
 		if(data.size()>=24){
 			if(processTripleES==null){
 				processTripleES=new TripleExponentialSmoothingProcess();
 			}
 			tripleSupport=true;
-			processTripleES.init(generateDataSet(data, true));
+			processTripleES.init(dataSet);
 		}
+		
 	}
 	//Untuk menghilangkan value kosong
 //	private List<Integer> filterData(List<Integer> input){
@@ -93,7 +92,7 @@ public class Forecaster {
 	
 	// jika getTripleModel true maka method akan mengembalikan  
 	//dataset yang dikhususkan untuk triple exponential smoothing, yakni tidak difilter
-	private DataSet generateDataSet(List<Integer> data, boolean getTripleModel){
+	private DataSet generateDataSet(List<Integer> data/*, boolean getTripleModel */){
 		DataSet dataSet=new DataSet();
 //		if(!getTripleModel){
 //			data=filterData(data); //difilter

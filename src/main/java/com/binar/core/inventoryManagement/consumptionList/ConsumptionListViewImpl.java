@@ -12,6 +12,7 @@ import com.binar.entity.Goods;
 import com.binar.entity.GoodsConsumption;
 import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
+import com.binar.generalFunction.StockFunction;
 import com.binar.generalFunction.TableFilter;
 import com.binar.generalFunction.TextManipulator;
 import com.vaadin.data.Item;
@@ -63,10 +64,13 @@ public class ConsumptionListViewImpl extends VerticalLayout implements Consumpti
 	private Label labelSearch;
 	private Label labelMode;
 	private DateManipulator dateMan;
+	private StockFunction stock;
+	
 	public ConsumptionListViewImpl (GeneralFunction function) {
 		this.generalFunction=function;
 		text=generalFunction.getTextManipulator();
 		this.dateMan=generalFunction.getDate();
+		this.stock=generalFunction.getStock();
 	}
 	
 	private TableFilter filter;
@@ -503,8 +507,12 @@ public class ConsumptionListViewImpl extends VerticalLayout implements Consumpti
 					});
 					this.setSpacing(true);
 					if(withEditConsumption){
-						this.addComponent(buttonEdit, 0, 0);
-						this.addComponent(buttonDelete, 1, 0);												
+						this.addComponent(buttonEdit, 0, 0);							
+						this.addComponent(buttonDelete, 1, 0);																			
+
+						if(stock.isAnyNewestItem(consumptionFinal)){
+							buttonDelete.setEnabled(false);
+						}
 					}
 				}});		
 			}
@@ -563,7 +571,10 @@ public class ConsumptionListViewImpl extends VerticalLayout implements Consumpti
 					this.setSpacing(true);
 					if(withEditConsumption){
 						this.addComponent(buttonEdit, 0, 0);
-						this.addComponent(buttonDelete, 1, 0);												
+						this.addComponent(buttonDelete, 1, 0);	
+						if(stock.isAnyNewestItem(consumptionFinal)){
+							buttonDelete.setEnabled(false);
+						}
 					}
 				}});		
 			}

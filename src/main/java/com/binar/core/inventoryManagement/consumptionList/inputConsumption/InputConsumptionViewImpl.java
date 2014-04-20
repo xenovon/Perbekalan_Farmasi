@@ -8,6 +8,7 @@ import com.binar.core.requirementPlanning.inputRequierementPlanning.inputEditFor
 import com.binar.entity.GoodsConsumption;
 import com.binar.entity.ReqPlanning;
 import com.binar.generalFunction.GeneralFunction;
+import com.binar.generalFunction.StockFunction;
 import com.binar.generalFunction.TextManipulator;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
@@ -45,13 +46,16 @@ Button.ClickListener, ValueChangeListener{
 	private TextManipulator text;
 	private Label labelErrorQuantity; //untuk error realtime
 	private Label labelGeneralError; //error saat tombol submit ditekan
-	
+	private Label labelErrorDate; //jika tanggal tidak valid
 	private InputConsumptionListener listener;
-
+	
+	
 	GeneralFunction function;
+	StockFunction stock;
 	
 	public InputConsumptionViewImpl(GeneralFunction function){
 		this.function=function;
+		this.stock=function.getStock();
 	}
 
 	@Override
@@ -65,7 +69,13 @@ Button.ClickListener, ValueChangeListener{
 				setContentMode(ContentMode.HTML);
 			}
 		};
-		
+		labelErrorDate=new Label(){
+			{
+				setVisible(false);
+				addStyleName("form-error");
+				setContentMode(ContentMode.HTML);
+			}
+		};
 		labelGeneralError=new Label(){
 			{
 				setVisible(false);
@@ -128,6 +138,7 @@ Button.ClickListener, ValueChangeListener{
 		this.setSpacing(true);
 
 		this.addComponent(inputConsumptionDate);
+		this.addComponent(labelErrorDate);
 		this.addComponent(inputGoodsSelect);
 		this.addComponent(inputGoodsQuantity);
 		this.addComponent(labelErrorQuantity);
@@ -185,7 +196,9 @@ Button.ClickListener, ValueChangeListener{
 		this.inputGoodsQuantity.setValue("");
 		this.inputWardSelect.setValue("");
 		this.information.setValue("");	
-		
+		inputGoodsQuantity.setEnabled(true);
+		inputConsumptionDate.setEnabled(true);
+
 	}
 	
 	public void setDataSubmit(){
@@ -201,8 +214,13 @@ Button.ClickListener, ValueChangeListener{
 		inputWardSelect.setValue(data.getWard());
 		System.out.println("Data instalasi : "+(data.getWard()));
 		information.setValue(data.getInformation());
-		
+		inputConsumptionDate.setEnabled(false);
 		buttonSubmit.setCaption("Simpan Perubahan");
+		if(stock.isAnyNewestItem(data)){
+			inputGoodsQuantity.setEnabled(false);
+		}else{
+			inputGoodsQuantity.setEnabled(true);
+		}
 	}
 
 	@Override
@@ -214,6 +232,9 @@ Button.ClickListener, ValueChangeListener{
 		case QUANTITY:labelErrorQuantity.setVisible(true);
 					  labelErrorQuantity.setValue(content);
 					  break;
+		case ERROR_DATE: labelErrorDate.setVisible(true);
+						labelErrorQuantity.setValue(content);
+						break;
 		default:
 			break;
 		}
@@ -224,6 +245,7 @@ Button.ClickListener, ValueChangeListener{
 		switch (label) {
 		case GENERAL:labelGeneralError.setVisible(false);break;
 		case QUANTITY:labelErrorQuantity.setVisible(false);break;
+		case ERROR_DATE:labelErrorDate.setVisible(false);break;
 		default:
 			break;
 		}
@@ -233,6 +255,7 @@ Button.ClickListener, ValueChangeListener{
 	public void hideAllError() {
 		labelErrorQuantity.setVisible(false);
 		labelGeneralError.setVisible(false);
+		labelErrorDate.setVisible(false);
 	}
 
 	@Override

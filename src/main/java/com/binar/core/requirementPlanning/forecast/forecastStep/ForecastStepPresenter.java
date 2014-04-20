@@ -54,22 +54,16 @@ public class ForecastStepPresenter implements ForecastStepListener{
 				forecaster.execute(data); //menghitung forecast			
 				ForecastChart chart=new ForecastChart(forecaster, goods);
 				if(forecaster.getDataSet().size()==0){
-					if(forecaster.isTripleSupport()){
-						ForecastChart chartTriple=new ForecastChart(forecaster, goods);
-						chartTriple.generateTripleESChart();
-						view.generateForecastEmpty(chartTriple, forecaster);					
-					}else{
-						view.generateForecastEmpty(null, forecaster);
-					}
+					view.generateForecastEmpty(null, forecaster);
 				}
 				if(forecaster.isTripleSupport()){
 					ForecastChart chartTriple=new ForecastChart(forecaster, goods);
 					chart.generateChart();
-					chartTriple.generateTripleESChart();
-					view.generateForecastView(chart, chartTriple, forecaster);					
+					view.generateForecastView(chart, true, forecaster);					
 				}else{
 					chart.generateChart();
-					view.generateForecastView(chart, null, forecaster);					
+					//true jika 
+					view.generateForecastView(chart, false, forecaster);					
 				}
 			}
 		}

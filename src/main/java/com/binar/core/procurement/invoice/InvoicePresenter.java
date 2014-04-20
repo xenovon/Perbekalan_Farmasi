@@ -119,7 +119,6 @@ public class InvoicePresenter implements InvoiceListener{
 						}
 					}
 				}, view.getUI());
-		
 	}
 	@Override
 	public void showClick(int idInvoice) {

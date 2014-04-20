@@ -16,7 +16,7 @@ public interface InputReceptionView {
 	}
 	
 	public enum ErrorLabel{
-		QUANTITY,GENERAL
+		QUANTITY,GENERAL, ERROR_DATE
 	}
 
 	public void init();

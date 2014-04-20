@@ -9,6 +9,7 @@ import com.binar.core.inventoryManagement.consumptionList.inputConsumption.FormC
 import com.binar.entity.GoodsConsumption;
 import com.binar.entity.GoodsReception;
 import com.binar.generalFunction.GeneralFunction;
+import com.binar.generalFunction.StockFunction;
 import com.binar.generalFunction.TextManipulator;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
@@ -44,15 +45,18 @@ Button.ClickListener, ValueChangeListener {
 	private TextManipulator text;
 	private Label labelErrorQuantity; //untuk error realtime
 	private Label labelGeneralError; //error saat tombol submit ditekan
-	
+	private Label labelErrorDate; 
 	private InputReceptionListener listener;
 	GeneralFunction function;
 	private boolean editMode;
 	
-	
+	StockFunction stock;
+
 	
 	public InputReceptionViewImpl(GeneralFunction function){
 		this.function=function;
+		this.stock=function.getStock();
+
 	}
 	
 	public void init() {
@@ -64,7 +68,13 @@ Button.ClickListener, ValueChangeListener {
 				setContentMode(ContentMode.HTML);
 			}
 		};
-		
+		labelErrorDate=new Label(){
+			{
+				setVisible(false);
+				addStyleName("form-error");
+				setContentMode(ContentMode.HTML);
+			}
+		};
 		labelGeneralError=new Label(){
 			{
 				setVisible(false);
@@ -158,6 +168,7 @@ Button.ClickListener, ValueChangeListener {
 		this.addComponent(inputGoodsSelect);
 		this.addComponent(new Label("<b>Data Penerimaan Barang</b>", ContentMode.HTML));
 		this.addComponent(inputReceptionDate);
+		this.addComponent(labelErrorDate);
 		this.addComponent(inputGoodsQuantity);
 		this.addComponent(labelSatuan);
 		this.addComponent(labelErrorQuantity);
@@ -185,13 +196,14 @@ Button.ClickListener, ValueChangeListener {
 	public void resetForm() {
 		this.inputGoodsQuantity.setValue("");
 		this.inputInformation.setValue("");
+		inputGoodsQuantity.setEnabled(true);
 		
 		inputExpiredDate.setValue(DateTime.now().withYear(DateTime.now().getYear()+4).toDate());
-		inputExpiredDate.setValue(DateTime.now().toDate());
+		inputReceptionDate.setValue(DateTime.now().toDate());
 		DateTime defaultValue=new DateTime().now();
 		inputInvoiceStartDate.setValue(defaultValue.withDayOfMonth(defaultValue.dayOfMonth().getMinimumValue()).toDate());
 		inputInvoiceEndDate.setValue(defaultValue.withDayOfMonth(defaultValue.dayOfMonth().getMaximumValue()).toDate());
-		
+	
 	}
 
 	@Override
@@ -207,7 +219,9 @@ Button.ClickListener, ValueChangeListener {
 		else if(event.getProperty()==inputInvoiceEndDate){
 			listener.realTimeValidator("inputInvoiceEndDate");					
 		}
-		
+		else if(event.getProperty()==inputReceptionDate){
+			listener.realTimeValidator("inputReceptionDate");			
+		}
 		else if(event.getProperty()==inputInvoiceStartDate){
 			listener.realTimeValidator("inputInvoiceStartDate");			
 		}else if(event.getProperty()==inputGoodsQuantity){
@@ -239,7 +253,12 @@ Button.ClickListener, ValueChangeListener {
 		inputExpiredDate.setValue(data.getExpiredDate());
 		inputInformation.setValue(data.getInformation());
 		setUnit(data.getInvoiceItem().getPurchaseOrderItem().getSupplierGoods().getGoods().getUnit());
-				
+		if(stock.isAnyNewestItem(data)){
+			inputGoodsQuantity.setEnabled(false);
+		}else{
+			inputGoodsQuantity.setEnabled(true);
+		}
+		
 	}
 
 	@Override
@@ -251,6 +270,9 @@ Button.ClickListener, ValueChangeListener {
 		case QUANTITY:labelErrorQuantity.setVisible(true);
 					  labelErrorQuantity.setValue(content);
 					  break;
+		case ERROR_DATE: labelErrorDate.setVisible(true);
+						labelErrorQuantity.setValue(content);
+						break;
 		default:
 			break;
 		}		
@@ -260,6 +282,8 @@ Button.ClickListener, ValueChangeListener {
 	public void hideAllError() {
 		labelErrorQuantity.setVisible(false);
 		labelGeneralError.setVisible(false);
+		labelErrorDate.setVisible(false);
+
 	}
 
 	@Override

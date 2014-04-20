@@ -53,45 +53,34 @@ public class ForecastChart extends CustomComponent {
 		}
 
 	}
-	public void generateTripleESChart(){
-		if(forecaster!=null){
-			DCharts chart=new DCharts().setOptions(generateOptions(true)).setDataSeries(generateDataSeries(true));
-			chart.setCaption("Peramalan "+goods.getName());
-			chart.show();
-			this.setCompositionRoot(chart);
-		}else{
-			this.setCompositionRoot(new Label("Kesalahan dalam menghasilkan chart >_< "));
-		}
-	}
+//	public void generateTripleESChart(){
+//		if(forecaster!=null){
+//			DCharts chart=new DCharts().setOptions(generateOptions(true)).setDataSeries(generateDataSeries(true));
+//			chart.setCaption("Peramalan "+goods.getName());
+//			chart.show();
+//			this.setCompositionRoot(chart);
+//		}else{
+//			this.setCompositionRoot(new Label("Kesalahan dalam menghasilkan chart >_< "));
+//		}
+//	}
 	
 	private DataSeries generateDataSeries(boolean triple){
 		DataSeries series=new DataSeries();
 		series.newSeries();
 		int i=1;
+		int dataSize=forecaster.getData().size();
+
+		for(Integer integer:forecaster.getData()){
+			series.add(i,integer);
+			i++;
+		}
 
 		if(triple){
-			int dataSize=forecaster.getData().size();
-
-			for(Integer integer:forecaster.getData()){
-				series.add(i,integer);
-				i++;
-			}
 			series.newSeries();
 			series.add(dataSize, forecaster.getData().get(dataSize-1));
 			series.add(dataSize+1, forecaster.getProcessTripleES().getNextMonthValue());
 
-		}else{
-//			int dataSize=forecaster.getDataFilter().size();
-			int dataSize=forecaster.getData().size();
-
-			for(Integer integer:forecaster.getData()){
-				series.add(i,integer);
-				i++;
-			}	
-//			for(Integer integer:forecaster.getDataFilter()){
-//				series.add(i,integer);
-//				i++;
-//			}	
+		}
 
 			series.newSeries();
 //			series.add(dataSize, forecaster.getDataFilter().get(dataSize-1));
@@ -112,7 +101,7 @@ public class ForecastChart extends CustomComponent {
 //			series.add(dataSize, forecaster.getDataFilter().get(dataSize-1));
 			series.add(dataSize+1, forecaster.getProcessSimpleES().getNextMonthValue());
 
-		}
+		
 		return series;		
 	}
 	
@@ -149,7 +138,7 @@ public class ForecastChart extends CustomComponent {
 			legend.setLabels("Riwayat Data","Double Exponential Smoothing" ,"Naive", "Simple Exponential Smoothing");
 		
 		}else{
-			legend.setLabels("Riwayat Data", "Triple Exponential Smoothing");		
+			legend.setLabels("Riwayat Data", "Triple Exponential Smoothing", "Double Exponential Smoothing" ,"Naive", "Simple Exponential Smoothing");		
 		}
 		legend.setLocation(LegendLocations.SOUTH);
 		

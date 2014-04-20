@@ -9,6 +9,7 @@ import com.binar.core.inventoryManagement.consumptionList.inputConsumption.Input
 import com.binar.core.inventoryManagement.consumptionList.inputConsumption.InputConsumptionViewImpl;
 import com.binar.entity.Goods;
 import com.binar.generalFunction.GeneralFunction;
+import com.binar.generalFunction.StockFunction;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
@@ -25,17 +26,19 @@ public class InputConsumptionPresenter implements InputConsumptionView.InputCons
 	boolean editMode=false;
 	Date selectedDate;
 	Window window;
-	
+	StockFunction stock;
 	public InputConsumptionPresenter(InputConsumptionModel model, InputConsumptionViewImpl view,
 			GeneralFunction function, String periode, Window window){
 		this.view=view;
 		this.model=model;
 		view.init();
+		
 		this.window=window;
 		view.addListener(this);
 		
 		this.generalFunction=function;
 		this.data=new FormConsumption(function);
+		this.stock=function.getStock();
 		this.data.setPeriode(periode);
 		
 		view.resetForm();
@@ -145,6 +148,8 @@ public class InputConsumptionPresenter implements InputConsumptionView.InputCons
 		}
 		if(inputField.equals("inputGoodsSelect")){
 			goodsSelectChange();
+		}if(inputField.equals("inputConsumptionDate")){
+			dateSelectChange();
 		}
 	}
 
@@ -156,7 +161,13 @@ public class InputConsumptionPresenter implements InputConsumptionView.InputCons
 		data.setWard((String)view.getWard().getValue());
 		System.out.println(data.getQuantity());
 	}
-	
+	private void dateSelectChange(){
+		setData();
+		String result=data.validateDate();
+		if(!result.equals("")){
+			view.showError(ErrorLabel.ERROR_DATE, result);
+		}
+	}
 	private void goodsSelectChange() {
 		String unit=model.getGoodsUnit((String)view.getInputGoodsSelect().getValue());
 		view.setUnit(unit);

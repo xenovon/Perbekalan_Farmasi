@@ -8,6 +8,7 @@ import com.avaje.ebean.EbeanServer;
 import com.binar.entity.Goods;
 import com.binar.generalFunction.GeneralFunction;
 import com.binar.generalFunction.GetSetting;
+import com.binar.generalFunction.StockFunction;
 import com.binar.generalFunction.TextManipulator;
 
 public class FormConsumption {
@@ -33,7 +34,7 @@ public class FormConsumption {
 	private EbeanServer server;
 	private GetSetting setting;
 	private TextManipulator text;
-
+	private StockFunction stock;
 	public FormConsumption(GeneralFunction function){
 		this.function=function;
 		this.server=function.getServer();
@@ -43,6 +44,10 @@ public class FormConsumption {
 	
 	public List<String> validate(){
 		List<String> error=new ArrayList<String>();
+		String errorDate=validateDate();
+		if(!errorDate.equals("")){
+			error.add(errorDate);
+		}
 		if(goodsId!=null ){
 			if(goodsId.equals("")){
 				error.add("Data obat harus diisi");
@@ -72,7 +77,14 @@ public class FormConsumption {
 		System.out.println("Size : "+error.size());
 		return (error.size()==0)?null:error;
 	}
-	
+	public String validateDate(){
+		Date date=getConsumptionDate();
+		if(stock.isDateValid(date, getGoodsId())){
+			return "";
+		}else{
+			return "Tidak bisa menginput untuk tanggal ini";
+		}
+	}
 	public String validateQuantity(){
 		if(this.quantity!=null){	
 			if(!this.quantity.equals("")){

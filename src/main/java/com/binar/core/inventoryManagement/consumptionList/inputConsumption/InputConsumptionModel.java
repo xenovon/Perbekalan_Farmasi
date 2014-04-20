@@ -18,6 +18,7 @@ import com.binar.entity.Supplier;
 import com.binar.entity.SupplierGoods;
 import com.binar.generalFunction.GeneralFunction;
 import com.binar.generalFunction.GetSetting;
+import com.binar.generalFunction.StockFunction;
 import com.binar.generalFunction.TextManipulator;
 import com.google.gwt.resources.css.ast.CssProperty.StringValue;
 
@@ -26,11 +27,13 @@ public class InputConsumptionModel {
 	EbeanServer server;
 	TextManipulator text;
 	GetSetting setting;
+	StockFunction stock;
 	
 	public InputConsumptionModel(GeneralFunction function){
 		this.function=function;
 		this.server=function.getServer();
 		this.setting=function.getSetting();
+		this.stock=function.getStock();
 	}
 	
 	public Map<String,String> getGoodsData(){
@@ -51,10 +54,14 @@ public class InputConsumptionModel {
 		
 		server.beginTransaction();
 		try {
+			if(stock.isDateValid(data.getConsumptionDate(), data.getGoodsId())){
+				return "Tanggal tidak valid";
+			}
 			Goods goods=server.find(Goods.class, data.getGoodsId());			
 			//mulai insert
 			GoodsConsumption consumption = new GoodsConsumption();
-			consumption.setQuantity(Integer.parseInt(data.getQuantity())); 
+			consumption.setQuantity(Integer.parseInt(data.getQuantity()));
+			
 			consumption.setConsumptionDate(data.getConsumptionDate());
 			consumption.setWard(data.getWard());
 			consumption.setTimestamp(new Date());	
@@ -111,7 +118,8 @@ public class InputConsumptionModel {
 		try {
 			GoodsConsumption consumption=server.find(GoodsConsumption.class, idCons);
 			int beforeUpdateQuantity=consumption.getQuantity();
-			consumption.setQuantity(Integer.parseInt(data.getQuantity()));
+			int newQuantity=Integer.parseInt(data.getQuantity());
+			consumption.setQuantity(newQuantity);
 			consumption.setWard(data.getWard());
 			consumption.setConsumptionDate(data.getConsumptionDate());
 			consumption.setInformation(data.getInformation());			

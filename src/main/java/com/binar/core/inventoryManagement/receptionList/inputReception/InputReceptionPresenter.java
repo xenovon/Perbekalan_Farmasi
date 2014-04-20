@@ -12,6 +12,7 @@ import com.binar.entity.GoodsReception;
 import com.binar.entity.Invoice;
 import com.binar.entity.InvoiceItem;
 import com.binar.generalFunction.GeneralFunction;
+import com.binar.generalFunction.StockFunction;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
@@ -29,6 +30,8 @@ public class InputReceptionPresenter implements InputReceptionView.InputReceptio
 	boolean editMode=false;
 	FormReception formReception;
 	Window window;
+	StockFunction stock;
+
 	public InputReceptionPresenter(InputReceptionModel model, InputReceptionViewImpl view,
 			GeneralFunction function){
 		this.view=view;
@@ -38,6 +41,7 @@ public class InputReceptionPresenter implements InputReceptionView.InputReceptio
 		this.server=function.getServer();
 		view.addListener(this);
 		view.init();
+		this.stock=function.getStock();
 		
 		this.generalFunction=function;
 	}
@@ -92,6 +96,7 @@ public class InputReceptionPresenter implements InputReceptionView.InputReceptio
 
 	private void submitClick() {
 		FormReception data=view.getFormData();
+		
 		List<String> errors=model.insertData(data); //insert data
 		if(errors!=null){
 			String textError="Penyimpanan Tidak Berhasil, Silahkan koreksi Error berikut : </br>";
@@ -142,8 +147,18 @@ public class InputReceptionPresenter implements InputReceptionView.InputReceptio
 		}
 		if(inputField.equals("inputInvoiceSelect")){
 			invoiceChange();
+		}if(inputField.equals("inputReceptionDate")){
+			dateSelectChange();
 		}
 	}
+	private void dateSelectChange(){
+		FormReception data=view.getFormData();
+		String result=data.validateDate();
+		if(!result.equals("")){
+			view.showError(ErrorLabel.ERROR_DATE, result);
+		}
+	}
+
 	private void dateRangeChange(){
 		Date startDate=view.getDateRangeStart();
 		Date endDate=view.getDateDateRangeEnd();

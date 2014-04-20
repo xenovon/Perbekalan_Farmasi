@@ -71,6 +71,7 @@ public class GeneralFunction {
 	private DecimalFormat format;
 	private MinimumStockUpdater minimumStock;
 	private MapSorting mapSort;
+	private StockFunction stock;
 	
 	//Method konstruktor kosong, jaga-jaga  kalo butuh konstruktor
 	public GeneralFunction() {
@@ -156,5 +157,10 @@ public class GeneralFunction {
 		}
 		return mapSort;
 	}
-	
+	public StockFunction getStock() {
+		if(stock==null){
+			stock=new StockFunction(this);
+		}
+		return stock;
+	}
 }

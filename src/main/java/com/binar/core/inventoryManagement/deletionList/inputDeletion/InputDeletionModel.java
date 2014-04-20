@@ -153,6 +153,7 @@ public class InputDeletionModel {
 	public Goods getGoods(String idGoods){
 		return server.find(Goods.class, idGoods);
 	}
+	//mendapatkan daftar harga untuk ditampilkan saat penghapusan
 	public String generatePriceGuide(String idGoods){
 		try {
 			Goods goods=server.find(Goods.class, idGoods);

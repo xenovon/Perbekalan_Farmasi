@@ -114,7 +114,8 @@ public class ForecastStepModel {
 		} catch (Exception e) {
 			select=12;
 		}
-		LocalDate dateNow=new LocalDate();
+		//dihitung dari bulan lalu
+		LocalDate dateNow=new LocalDate().minusMonths(1);
 		LocalDate dateLater=dateNow.minusMonths(select);
 		return date.dateToText(dateLater.toDate())+"-"+date.dateToText(dateNow.toDate());
 	}

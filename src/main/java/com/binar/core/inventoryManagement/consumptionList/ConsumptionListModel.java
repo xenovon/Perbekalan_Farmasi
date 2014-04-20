@@ -16,15 +16,18 @@ import com.binar.entity.Goods;
 import com.binar.entity.GoodsConsumption;
 import com.binar.entity.ReqPlanning;
 import com.binar.generalFunction.GeneralFunction;
+import com.binar.generalFunction.StockFunction;
+import com.binar.generalFunction.StockFunction.StockType;
 
 public class ConsumptionListModel {
 	
 	GeneralFunction generalFunction;
 	EbeanServer server;
-	
+	StockFunction stock;
 	public ConsumptionListModel(GeneralFunction function){
 		this.generalFunction=function;
 		server=generalFunction.getServer();	
+		this.stock=function.getStock();
 	}
 	public int getTableDataQuantity(DateTime periode, String goodsSelected){
 		Map<Goods, Integer> quantityList=getTableData(periode);
@@ -151,16 +154,20 @@ public class ConsumptionListModel {
 		try {
 			GoodsConsumption goodsCon= server.find(GoodsConsumption.class, consIdFinal);
 			String idGoods=goodsCon.getGoods().getIdGoods();
-			int consumptionCount=goodsCon.getQuantity();
-			Goods goods=server.find(Goods.class, idGoods);
-			int currentStock=goods.getCurrentStock();
-			goods.setCurrentStock(currentStock+consumptionCount);
-			server.delete(goodsCon);
-			server.update(goods);
-			generalFunction.getMinimumStock().update(goods.getIdGoods());
-
-			server.commitTransaction();
-			return true;
+			//fungsi untuk mencegah penghapusan
+			if(!stock.isAnyNewestItem(goodsCon)){
+				int consumptionCount=goodsCon.getQuantity();
+				Goods goods=server.find(Goods.class, idGoods);
+				int currentStock=goods.getCurrentStock();
+				goods.setCurrentStock(currentStock+consumptionCount);
+				server.delete(goodsCon);
+				server.update(goods);
+				generalFunction.getMinimumStock().update(goods.getIdGoods());
+				server.commitTransaction();
+				return true;				
+			}else{
+				return false;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			server.rollbackTransaction();

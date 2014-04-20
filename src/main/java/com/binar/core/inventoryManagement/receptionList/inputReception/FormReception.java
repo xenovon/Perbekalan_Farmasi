@@ -5,8 +5,10 @@ import java.util.Date;
 import java.util.List;
 
 import com.avaje.ebean.EbeanServer;
+import com.binar.entity.InvoiceItem;
 import com.binar.generalFunction.GeneralFunction;
 import com.binar.generalFunction.GetSetting;
+import com.binar.generalFunction.StockFunction;
 import com.binar.generalFunction.TextManipulator;
 
 public class FormReception {
@@ -30,6 +32,8 @@ public class FormReception {
 	private EbeanServer server;
 	private GetSetting setting;
 	private TextManipulator text;
+	private StockFunction stock;
+	
 	
 	public void setEditMode(boolean editMode) {
 		this.editMode = editMode;
@@ -42,10 +46,15 @@ public class FormReception {
 		this.server=function.getServer();
 		this.setting=function.getSetting();
 		this.text=function.getTextManipulator();
+		this.stock=function.getStock();
 	}
 	
 	public List<String> validate(){
 		List<String> error=new ArrayList<String>();
+		String errorDate=validateDate();
+		if(!errorDate.equals("")){
+			error.add(errorDate);
+		}
 		if(expiredDate!=null ){
 			if(expiredDate.equals("")){
 				error.add("Data tanggal kadaluarsa harus diisi");
@@ -84,7 +93,22 @@ public class FormReception {
 		}
 		return "";
 	}
-	
+	public String validateDate(){
+		try {
+			Date date=getReceptionDate();
+			String idGoods=server.find(InvoiceItem.class, getInvoiceItemId()).getPurchaseOrderItem().getSupplierGoods().getGoods().getIdGoods();
+			if(stock.isDateValid(date,idGoods)){
+				return "";
+			}else{
+				return "Tidak bisa menginput untuk tanggal ini";
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "Program Bug, Hubungi Developer untuk pencerahan";
+		}
+	}
+
 	protected Integer getInvoiceItemId() {
 		return invoiceItemId;
 	}

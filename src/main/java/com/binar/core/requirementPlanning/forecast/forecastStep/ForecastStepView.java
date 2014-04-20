@@ -22,6 +22,6 @@ interface  ForecastStepView {
 	public void setViewMode(ViewMode mode);
 	public void setComboGoodsData(Map<String, String> data);
 	//chart dan data forecast
-	public void generateForecastView(Component chartAll, Component chartTriple, final Forecaster forecaster);
+	public void generateForecastView(Component chartAll, boolean isTripleMode, final Forecaster forecaster);
 
 }
