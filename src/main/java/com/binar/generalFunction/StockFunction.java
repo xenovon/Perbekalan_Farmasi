@@ -62,7 +62,6 @@ public class StockFunction {
 		boolean receptionResult;
 		boolean deletionResult;
 		boolean consumptionResult;
-		
 		switch (stockType) {
 		case CONSUMPTION:
 						receptionResult=isAnyReception(dateTimeStartDay, goods);
@@ -92,7 +91,7 @@ public class StockFunction {
 		}
 		
 		//jika ada recepsi, deletion, dan konsumsi : maka true
-		return receptionResult && deletionResult && consumptionResult?true:false;
+		return receptionResult || deletionResult || consumptionResult?true:false;
 		
 	}
 	//Untuk menentukan suatu konsumsi merupakan yang terakhir di input
@@ -109,6 +108,7 @@ public class StockFunction {
 				return true;
 			}
 		}
+		
 		return false;
 		
 	}
@@ -145,8 +145,8 @@ public class StockFunction {
 		boolean anyDeletion=isAnyDeletion(dateTimeEndDay, goods);
 		boolean anyReception=isAnyReception(dateTimeEndDay, goods);
 		
-		return anyConsumption && anyDeletion && anyReception?false:true;
-
+		return anyConsumption || anyDeletion || anyReception?false:true;
+		
 	}
 	
 	public static void main(String[] args) {

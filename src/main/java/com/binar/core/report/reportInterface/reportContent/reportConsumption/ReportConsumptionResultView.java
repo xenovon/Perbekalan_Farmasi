@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.dussan.vaadin.dcharts.DCharts;
@@ -37,6 +38,7 @@ import com.binar.core.report.reportInterface.reportContent.ReportContentView.Rep
 import com.binar.core.report.reportInterface.reportContent.ReportData.PeriodeType;
 import com.binar.core.report.reportInterface.reportContent.ReportData.ReportContent;
 import com.binar.entity.Goods;
+import com.binar.entity.Insurance;
 import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.data.Item;
@@ -85,9 +87,9 @@ public class ReportConsumptionResultView extends VerticalLayout implements Butto
 		table.setPageLength(10);
 		table.setSortEnabled(true);
 		table.setImmediate(true);
-		table.setRowHeaderMode(RowHeaderMode.INDEX);
 		tableContainer=new IndexedContainer(){
 			{
+				addContainerProperty("No", Integer.class,null);
 				addContainerProperty("Nama", String.class,null);
 				addContainerProperty("Satuan",String.class,null);
 				addContainerProperty("Jumlah Pengeluaran", Integer.class,null);
@@ -160,12 +162,30 @@ public class ReportConsumptionResultView extends VerticalLayout implements Butto
 
 		tableContainer.removeAllItems();
 		System.out.println(data.size());
+		int idInsurance=0;
+		int i=0;
 
 		for(Map.Entry<Goods, Integer> datum:data.entrySet()){
-			Item item=tableContainer.addItem(datum.getKey().getIdGoods());
-			item.getItemProperty("Nama").setValue(datum.getKey().getName());
-			item.getItemProperty("Satuan").setValue(datum.getKey().getUnit());
-			item.getItemProperty("Jumlah Pengeluaran").setValue(datum.getValue());
+			i++;
+			if(idInsurance==datum.getKey().getInsurance().getIdInsurance()){
+				Item item=tableContainer.addItem(datum.getKey().getIdGoods());
+				item.getItemProperty("No").setValue(i);
+				item.getItemProperty("Nama").setValue(datum.getKey().getName());
+				item.getItemProperty("Satuan").setValue(datum.getKey().getUnit());
+				item.getItemProperty("Jumlah Pengeluaran").setValue(datum.getValue());				
+			}else{
+				Insurance insurance=datum.getKey().getInsurance();
+				
+				Item item=tableContainer.addItem(datum.getKey().getIdGoods()+""+insurance.getIdInsurance());
+				item.getItemProperty("Nama").setValue("Asuransi : "+insurance.getName());
+
+				Item item2=tableContainer.addItem(datum.getKey().getIdGoods());
+				item2.getItemProperty("No").setValue(i);
+				item2.getItemProperty("Nama").setValue(datum.getKey().getName());
+				item2.getItemProperty("Satuan").setValue(datum.getKey().getUnit());
+				item2.getItemProperty("Jumlah Pengeluaran").setValue(datum.getValue());					
+			}
+			idInsurance=datum.getKey().getInsurance().getIdInsurance();
 		}
 	}
 	public Map<String, Integer> filterData(Map<Goods, Integer> data){

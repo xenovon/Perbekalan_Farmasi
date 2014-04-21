@@ -7,6 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.binar.entity.Goods;
+
 public class MapSorting
 {
 	//Descending
@@ -50,4 +52,27 @@ public class MapSorting
         }
         return result;
     }
+    
+    //order berdasarkan asuransi barang
+	//Descending
+    public  Map<Goods, Integer> sortByInsurance( Map<Goods, Integer> map )
+    {
+        List<Map.Entry<Goods, Integer>> list =
+            new LinkedList<Map.Entry<Goods, Integer>>( map.entrySet() );
+        Collections.sort( list, new Comparator<Map.Entry<Goods, Integer>>()
+        {
+            public int compare( Map.Entry<Goods, Integer> o1, Map.Entry<Goods, Integer> o2 )
+            {
+                return (o2.getKey().getInsurance().getIdInsurance()-o1.getKey().getInsurance().getIdInsurance());
+            }
+        } );
+
+        Map<Goods, Integer> result = new LinkedHashMap<Goods, Integer>();
+        for (Map.Entry<Goods, Integer> entry : list)
+        {
+            result.put( entry.getKey(), entry.getValue() );
+        }
+        return result;
+    }
+    
 }

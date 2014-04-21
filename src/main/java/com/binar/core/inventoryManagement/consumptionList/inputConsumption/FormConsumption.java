@@ -40,6 +40,7 @@ public class FormConsumption {
 		this.server=function.getServer();
 		this.setting=function.getSetting();
 		this.text=function.getTextManipulator();
+		this.stock=function.getStock();
 	}
 	
 	public List<String> validate(){

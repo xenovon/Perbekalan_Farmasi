@@ -62,11 +62,23 @@ public class SettingView extends CustomComponent  implements View {
 		user=new UserSetting(function);
 		
 		tabSheet.addTab(user).setCaption("Pengaturan Akun");
+
 		tabSheet.setSizeFull();
 		if(loginManager.getRoleId().equals(loginManager.FRM)){
+			finance=new SettingFinance(function);
+			general = new SettingGeneral(function);
+			goods =new SettingGoods(function);
 			settingInsurance=new SettingInsurance(function);
 			tabSheet.addTab(settingInsurance).setCaption("Pengaturan Data Asuransi");
+			tabSheet.addTab(general).setCaption("Pengaturan Umum");
+			tabSheet.addTab(goods).setCaption("Pengaturan Barang");
+			tabSheet.addTab(finance).setCaption("Pengaturan Keuangan");
+		}else if(loginManager.getRoleId().equals(loginManager.TPN)){
+			purchaseOrder =new SettingPurchaseOrder(function);
+			tabSheet.addTab(purchaseOrder).setCaption("Pengaturan Surat Pesanan");
+				
 		}
+		
 		this.setCompositionRoot(tabSheet);
 
 	}

@@ -125,7 +125,6 @@ public class FormReception {
 		this.quantity = quantity;
 	}
 	
-	
 	public Date getReceptionDate() {
 		return receptionDate;
 	}

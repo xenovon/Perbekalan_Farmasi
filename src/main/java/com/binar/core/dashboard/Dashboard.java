@@ -72,7 +72,6 @@ public class Dashboard extends VerticalLayout {
 		this.function=function;
 		init();
 	}
-	
 	public void init(){
 		this.setSpacing(true);
 		this.setMargin(true);
@@ -443,6 +442,12 @@ public class Dashboard extends VerticalLayout {
 					function, ifrsGoodsProcurementViewImpl, ifrsGoodsProcurementModel);
 		}
 		gridLayout.addComponent(ifrsGoodsProcurementViewImpl,0,2);
+		if(ifrsGoodsReceptionSummaryPresenter == null){
+			ifrsGoodsReceptionSummaryViewImpl =new IfrsGoodsReceptionSummaryViewImpl(function);
+			ifrsGoodsReceptionSummaryModel =new IfrsGoodsReceptionSummaryModel(function);
+			ifrsGoodsReceptionSummaryPresenter = new IfrsGoodsReceptionSummaryPresenter(
+					function, ifrsGoodsReceptionSummaryViewImpl, ifrsGoodsReceptionSummaryModel);
+		}
 
 		gridLayout.addComponent(ifrsGoodsReceptionSummaryViewImpl,1,2);
 		

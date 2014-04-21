@@ -42,7 +42,7 @@ public class GoodsManagementViewImpl extends VerticalLayout
 	private Button buttonInput;
 	private Label labelFilter;
 	private TextField inputFilter;
-	
+	private Label labelLegend;
 	private TableFilter filter;
 	private TextManipulator text;
 	public GoodsManagementViewImpl(GeneralFunction function) {
@@ -52,6 +52,11 @@ public class GoodsManagementViewImpl extends VerticalLayout
 	
 	public void init(){
 		title=new Label("<h2>Manajemen Barang</h2>", ContentMode.HTML);
+		labelLegend =new Label();
+		String legend="<span style='background:black;min-width:15px;min-height:15px;display:inline-block'></span> Stok Aman | <span style='background:rgb(226, 152, 20);min-width:15px;min-height:15px;display:inline-block'></span> Stok Tidak Aman | <span style='background:red;min-width:15px;min-height:15px;display:inline-block'></span> Stok Kurang";
+		labelLegend.setContentMode(ContentMode.HTML);
+		
+		labelLegend.setValue(legend);
 		
 		filter=function.getFilter("");
 		inputFilter=new TextField(){
@@ -116,6 +121,7 @@ public class GoodsManagementViewImpl extends VerticalLayout
 			}
 		});
 		this.addComponent(table);
+		this.addComponent(labelLegend);
 	}	
 
 	
@@ -240,6 +246,7 @@ public class GoodsManagementViewImpl extends VerticalLayout
 			}else{
 				color="black";
 			}
+			
 			item.getItemProperty("Kode Barang").setValue(new Label("<div style='color:"+color+";'>"+datum.getIdGoods()+"</div>", ContentMode.HTML));
 			item.getItemProperty("Nama Barang").setValue(new Label("<div style='color:"+color+";'>"+datum.getName()+"</div>", ContentMode.HTML));
 			item.getItemProperty("Tipe Barang").setValue(new Label("<div style='color:"+color+";'>"+datum.getType().toString()+"</div>", ContentMode.HTML));

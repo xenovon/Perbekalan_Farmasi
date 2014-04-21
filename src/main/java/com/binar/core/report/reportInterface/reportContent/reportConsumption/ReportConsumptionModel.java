@@ -9,15 +9,18 @@ import java.util.Map;
 import org.joda.time.DateTime;
 
 import com.avaje.ebean.EbeanServer;
+import com.binar.core.dashboard.dashboardItem.farmationGoodsWithIncreasingTrend.FarmationGoodsWithIncreasingTrendModel.MapUtil;
 import com.binar.core.report.reportInterface.reportContent.ReportData;
 import com.binar.core.report.reportInterface.reportContent.ReportData.PeriodeType;
 import com.binar.entity.Goods;
 import com.binar.entity.GoodsConsumption;
+import com.binar.entity.Insurance;
 import com.binar.entity.User;
 import com.binar.entity.enumeration.EnumGoodsType;
 import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
 import com.binar.generalFunction.GetSetting;
+import com.binar.generalFunction.MapSorting;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Label;
 
@@ -29,6 +32,7 @@ public class ReportConsumptionModel extends Label{
 	private User user; //untuk penanggung jawab yang tanda tangan
 	private GetSetting setting;
 	private DateManipulator date;
+	private MapSorting mapSort;
 	
 	//Variabel untuk ditampilkan di surat pesanan
 	
@@ -59,6 +63,7 @@ public class ReportConsumptionModel extends Label{
 		this.date=function.getDate();
 		this.setting=function.getSetting();
 		this.user=function.getLogin().getUserLogin();
+		this.mapSort=function.getMapSort();
 		
 		setContent();
 		replaceText();
@@ -123,14 +128,33 @@ public class ReportConsumptionModel extends Label{
 		if(data.size()==0){
 			return "<tr><td style='text-align:center;font-style:italic;' colspan='4'>Data kosong</td></tr>";
 		}
+		int idInsurance=0;
 		for(Map.Entry<Goods, Integer> entry:data.entrySet()){
 			i++;
-			returnValue=returnValue+"<tr>";
-				returnValue=returnValue+"<td>"+i+"</td>";
-				returnValue=returnValue+"<td>"+entry.getKey().getName()+"</td>";
-				returnValue=returnValue+"<td>"+entry.getKey().getUnit()+"</td>";
-				returnValue=returnValue+"<td>"+entry.getValue()+"</td>";
-			returnValue=returnValue+"</tr>";
+			if(idInsurance==entry.getKey().getInsurance().getIdInsurance()){
+				returnValue=returnValue+"<tr>";
+					returnValue=returnValue+"<td>"+i+"</td>";
+					returnValue=returnValue+"<td>"+entry.getKey().getName()+"</td>";
+					returnValue=returnValue+"<td>"+entry.getKey().getUnit()+"</td>";
+					returnValue=returnValue+"<td>"+entry.getValue()+"</td>";
+				returnValue=returnValue+"</tr>";
+				
+			}else{
+				Insurance insurance=entry.getKey().getInsurance();
+				returnValue=returnValue+"<tr>";
+					returnValue=returnValue+"<td></td>";
+					returnValue=returnValue+"<td colspan='3'>Asuransi : "+insurance.getName()+"</td>";
+				returnValue=returnValue+"</tr>";
+				
+				returnValue=returnValue+"<tr>";
+					returnValue=returnValue+"<td>"+i+"</td>";
+					returnValue=returnValue+"<td>"+entry.getKey().getName()+"</td>";
+					returnValue=returnValue+"<td>"+entry.getKey().getUnit()+"</td>";
+					returnValue=returnValue+"<td>"+entry.getValue()+"</td>";
+				returnValue=returnValue+"</tr>";
+
+			}
+			idInsurance=entry.getKey().getInsurance().getIdInsurance();
 			
 		}
 		
@@ -219,6 +243,8 @@ public class ReportConsumptionModel extends Label{
 		}
 		return returnValue; 
 	}
-	
+	public Map<Goods, Integer> orderByInsurance(Map<Goods, Integer> input){
+		return mapSort.sortByInsurance(input);
+	}
 	
 }
