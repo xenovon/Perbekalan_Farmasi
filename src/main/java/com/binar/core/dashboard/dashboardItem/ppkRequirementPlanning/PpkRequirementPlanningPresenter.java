@@ -5,12 +5,15 @@ import java.util.List;
 import com.binar.core.dashboard.dashboardItem.farmationRequirementStatus.FarmationRequirementStatusModel;
 import com.binar.core.dashboard.dashboardItem.farmationRequirementStatus.FarmationRequirementStatusViewImpl;
 import com.binar.core.dashboard.dashboardItem.farmationRequirementStatus.FarmationRequirementStatusView.FarmationRequirementStatusListener;
+import com.binar.core.dashboard.dashboardItem.supportRequirementNonApproved.SupportRequirementNonApprovedModel;
+import com.binar.core.dashboard.dashboardItem.supportRequirementNonApproved.SupportRequirementNonApprovedView.SupportRequirementNonApprovedListener;
+import com.binar.core.dashboard.dashboardItem.supportRequirementNonApproved.SupportRequirementNonApprovedViewImpl;
 import com.binar.entity.ReqPlanning;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.ui.UI;
 
-public class PpkRequirementPlanningPresenter implements FarmationRequirementStatusListener {
+public class PpkRequirementPlanningPresenter implements SupportRequirementNonApprovedListener {
  /*
   * 
 Pengajuan Rencana Kebutuhan tanggal <<Tanggal Pengajuan>>
@@ -19,34 +22,28 @@ Pengajuan Rencana Kebutuhan tanggal <<Tanggal Pengajuan>>
 <<Jumlah>>
 
 */
-	FarmationRequirementStatusModel model;
-	FarmationRequirementStatusViewImpl view;
+	SupportRequirementNonApprovedModel model;
+	SupportRequirementNonApprovedViewImpl view;
 	GeneralFunction function;
 	public PpkRequirementPlanningPresenter(GeneralFunction function
-			, FarmationRequirementStatusViewImpl view, FarmationRequirementStatusModel model) {
+			, SupportRequirementNonApprovedViewImpl view, SupportRequirementNonApprovedModel model) {
 		this.model=model;
 		this.function=function;
 		this.view=view;
-		view.init(model.getCurrentMonth());
+		view.init();
 		view.setListener(this);
 		updateTable();
 		
 	}
 	@Override
 	public void updateTable() {
-		List<ReqPlanning> data=model.getReqList();
-		if(data.size()==0){
-			view.setEmptyDataView();
-		}else{
-			view.updateTable(model.getReqList());			
-		}
+		view.updateTable(model.getReqList());
 	}
 	@Override
 	public void buttonGo() {
 		Navigator navigator=UI.getCurrent().getNavigator();
 		navigator.navigateTo("/requirementplanning/"+function.VIEW_REQ_PLANNING_APPROVAL);
 	}
-	
 //  put("/dashboard", DashboardView.class);
 //  put("/requirementplanning/", RequirementPlanningView.class);
 //  put("/procurement", ProcurementView.class);
