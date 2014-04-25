@@ -34,6 +34,7 @@ import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
+import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
@@ -104,7 +105,9 @@ DeletionApprovalView, Button.ClickListener, ValueChangeListener{
         		addContainerProperty("Jumlah", String.class, null);
         		addContainerProperty("Satuan", String.class, null);
         		addContainerProperty("Disetujui?", ComboBox.class, null);
+        		addContainerProperty("Keterangan", TextArea.class, null);        		
         		addContainerProperty("Operasi", GridLayout.class, null);
+        	
         	}
         };
         table.setContainerDataSource(container);		
@@ -244,7 +247,12 @@ DeletionApprovalView, Button.ClickListener, ValueChangeListener{
 					this.addComponent(buttonShow, 0, 0);
 				}
 			});
-			
+			TextArea textarea=new TextArea();
+			textarea.setWidth("150px");
+			textarea.setHeight("60px");
+			textarea.setValue(accept.getCommentDeletion(datum.getIdDeletedGoods()));
+			item.getItemProperty("Keterangan").setValue(textarea);
+
 		}
 
 		return true;
@@ -256,6 +264,7 @@ DeletionApprovalView, Button.ClickListener, ValueChangeListener{
 	private Label labelAcceptedDate;
 	private Label labelTimeStamp;
 	private Label labelInformation;
+	private Label labelComment;
 	
 	private Window windowDetail;
 	private Window windowInputEdit;
@@ -264,7 +273,7 @@ DeletionApprovalView, Button.ClickListener, ValueChangeListener{
 	public void showDetailWindow(DeletedGoods deletedGoods) {
 		if(layoutData==null){ //jika layout null
 			//buat konten 
-			layoutData= new GridLayout(2,7){ 
+			layoutData= new GridLayout(2,8){ 
 				{
 					setSpacing(true);
 					setMargin(true);
@@ -275,6 +284,8 @@ DeletionApprovalView, Button.ClickListener, ValueChangeListener{
 					addComponent(new Label("Tanggal Diterima : "), 0, 4);
 					addComponent(new Label("Waktu input : "), 0, 5);
 					addComponent(new Label("Keterangan : "), 0, 6);
+					addComponent(new Label("Komentar : "), 0, 7);
+					
 				}	
 			};
 			//instantiasi label
@@ -285,6 +296,7 @@ DeletionApprovalView, Button.ClickListener, ValueChangeListener{
 			 labelAcceptedDate=new Label("");
 			 labelTimeStamp=new Label("");
 			 labelInformation=new Label("");
+			 labelComment=new Label("", ContentMode.HTML);
 						
 			//add Component konten ke layout
 			layoutData.addComponent(labelDeletionDate, 1,0);
@@ -294,6 +306,7 @@ DeletionApprovalView, Button.ClickListener, ValueChangeListener{
 			layoutData.addComponent(labelAcceptedDate, 1,4);
 			layoutData.addComponent(labelTimeStamp, 1,5);
 			layoutData.addComponent(labelInformation, 1,6);
+			layoutData.addComponent(labelComment, 1,7);
 				        
 		}//menutup jika layoutdetail null
 	    setLabelData(deletedGoods);
@@ -322,6 +335,8 @@ DeletionApprovalView, Button.ClickListener, ValueChangeListener{
 		 }
 		 labelTimeStamp.setValue(data.getTimestamp().toString());
 		 labelInformation.setValue(data.getInformation());
+		 labelComment.setValue(accept.getCommentDeletionFormat(data.getIdDeletedGoods()));
+
 	}
 
 	@Override

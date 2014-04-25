@@ -35,7 +35,9 @@ public class DeletedGoods {
     private double price;
     @Column(name= "approval_date" )
     private Date approvalDate;
-
+    
+	@Column(columnDefinition="TEXT")
+    private String comment;
 	
 	public Goods getGoods() {
 		return goods;
@@ -96,5 +98,12 @@ public class DeletedGoods {
 	}
 	public void setInformation(String information) {
 		this.information = information;
+	}
+	
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 }

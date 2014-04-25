@@ -30,6 +30,7 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.RowHeaderMode;
+import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -97,6 +98,7 @@ public class ApprovalViewImpl extends VerticalLayout implements
         		addContainerProperty("Detail", Button.class, null);
         		addContainerProperty("Disetujui?", ComboBox.class, new CheckBox("Disetujui"){{setValue(false);}});
         		addContainerProperty("Jumlah Disetujui", TextField.class, null);        		
+        		addContainerProperty("Keterangan", TextArea.class, null);        		
         	}
         };
         table.setContainerDataSource(container);		
@@ -236,6 +238,13 @@ public class ApprovalViewImpl extends VerticalLayout implements
 			field.setValue(String.valueOf(currentAccepted));
 			item.getItemProperty("Jumlah Disetujui").setValue(field);
 			
+			TextArea textarea=new TextArea();
+			textarea.setWidth("150px");
+			textarea.setHeight("60px");
+			System.out.println("Isi Data "+accept.getCommentReqPlanning(datum.getIdReqPlanning()));
+			textarea.setValue(accept.getCommentReqPlanning(datum.getIdReqPlanning()));
+			item.getItemProperty("Keterangan").setValue(textarea);
+			
 			
 		}
 		return true;
@@ -255,6 +264,7 @@ public class ApprovalViewImpl extends VerticalLayout implements
 	Label labelInformation;
 	Label labelTimestamp;
 	Label labelPriceEstimation;	
+	Label labelComment;
 	Window windowDetail;
 	GridLayout layoutDetail;
 	
@@ -266,7 +276,7 @@ public class ApprovalViewImpl extends VerticalLayout implements
 		}
 		if(layoutDetail==null){
 			//buat konten 
-			layoutDetail= new GridLayout(2,12){
+			layoutDetail= new GridLayout(2,13){
 				{
 					setSpacing(true);
 					setMargin(true);
@@ -281,6 +291,7 @@ public class ApprovalViewImpl extends VerticalLayout implements
 					addComponent(new Label("Keterangan"), 0, 9);
 					addComponent(new Label("Waktu Input"), 0,10);
 					addComponent(new Label("Estimasi Harga"), 0, 11);
+					addComponent(new Label("Komentar"), 0, 12);
 				}	
 			};
 			//instantiasi label
@@ -295,7 +306,7 @@ public class ApprovalViewImpl extends VerticalLayout implements
 			labelInformation =new Label();
 			labelTimestamp =new Label();
 			labelPriceEstimation =new Label();	
-			
+			labelComment=new Label("", ContentMode.HTML);
 			//add Component konten ke layout
 			layoutDetail.addComponent(labelId, 1,1);
 			layoutDetail.addComponent(labelName, 1,2);
@@ -308,6 +319,7 @@ public class ApprovalViewImpl extends VerticalLayout implements
 			layoutDetail.addComponent(labelInformation, 1,9);
 			layoutDetail.addComponent(labelTimestamp, 1,10);
 			layoutDetail.addComponent(labelPriceEstimation, 1,11);
+			layoutDetail.addComponent(labelComment,1,12);
 		}
 		
 		setLabelData(data);
@@ -335,6 +347,7 @@ public class ApprovalViewImpl extends VerticalLayout implements
 			labelInformation.setValue(data.getInformation());
 			labelTimestamp.setValue(data.getTimestamp().toString());
 			labelPriceEstimation.setValue("Rp "+data.getPriceEstimation());
+			labelComment.setValue(accept.getCommentReqPlanningFormat(data.getIdReqPlanning()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		

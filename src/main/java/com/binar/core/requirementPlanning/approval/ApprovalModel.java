@@ -15,6 +15,7 @@ import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 
 public class ApprovalModel {
@@ -28,6 +29,7 @@ public class ApprovalModel {
 		private int idReq;
 		private int accepted;
 		private int quantityAccepted;
+		private String comment;
 		protected int getIdReq() {
 			return idReq;
 		}
@@ -45,6 +47,12 @@ public class ApprovalModel {
 		}
 		protected void setQuantityAccepted(int quantityAccepted) {
 			this.quantityAccepted = quantityAccepted;
+		}
+		public String getComment() {
+			return comment;
+		}
+		public void setComment(String comment) {
+			this.comment = comment;
 		}
 		
 	}
@@ -82,6 +90,8 @@ public class ApprovalModel {
 			AcceptData acceptData=new AcceptData();
 			ComboBox comboResult=(ComboBox)item.getItemProperty("Disetujui?").getValue();
 			TextField textfieldResult=(TextField)item.getItemProperty("Jumlah Disetujui").getValue();
+			TextArea textAreaResult=(TextArea)item.getItemProperty("Keterangan").getValue();
+			
 			int quantityAccepted;
 			try {
 				quantityAccepted=Integer.parseInt(textfieldResult.getValue());
@@ -95,6 +105,7 @@ public class ApprovalModel {
 			acceptData.setAccepted(accept.acceptedOrNot((Integer)comboResult.getValue()));
 			acceptData.setIdReq((Integer)itemId);
 			acceptData.setQuantityAccepted(quantityAccepted);
+			acceptData.setComment((String)textAreaResult.getValue());
 			
 			returnValue.add(acceptData);
 		}
@@ -133,6 +144,7 @@ public class ApprovalModel {
 				}
 				
 				planning.setDateAccepted(new Date());
+				planning.setComment(accept.saveReqPlanning(data.getComment(), data.getIdReq()));
 				server.update(planning);
 			}
 			server.commitTransaction();

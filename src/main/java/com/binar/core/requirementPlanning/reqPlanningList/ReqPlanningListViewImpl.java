@@ -257,6 +257,7 @@ public class ReqPlanningListViewImpl extends VerticalLayout
 	Label labelPriceEstimation;	
 	Label labelDateAccepted;
 	Label labelPriceEstimationPPN;
+	Label labelComment;
 	Window windowDetail;
 	GridLayout layoutDetail;
 	
@@ -264,7 +265,7 @@ public class ReqPlanningListViewImpl extends VerticalLayout
 	public void showDetailWindow(ReqPlanning data){
 		if(layoutDetail==null){
 			//buat konten 
-			layoutDetail= new GridLayout(2,14){
+			layoutDetail= new GridLayout(2,15){
 				{
 					setSpacing(true);
 					setMargin(true);
@@ -281,6 +282,7 @@ public class ReqPlanningListViewImpl extends VerticalLayout
 					addComponent(new Label("Waktu Input"), 0,11);
 					addComponent(new Label("Estimasi Harga"), 0, 12);
 					addComponent(new Label("Estimasi Harga + PPN"), 0, 13);
+					addComponent(new Label("Komentar"), 0, 14);
 				}	
 			};
 			//instantiasi label
@@ -297,7 +299,8 @@ public class ReqPlanningListViewImpl extends VerticalLayout
 			labelDateAccepted=new Label();
 			labelPriceEstimation =new Label();	
 			labelPriceEstimationPPN =new Label();
-			
+			labelComment=new Label("", ContentMode.HTML);
+
 			//add Component konten ke layout
 			layoutDetail.addComponent(labelId, 1,1);
 			layoutDetail.addComponent(labelName, 1,2);
@@ -312,6 +315,7 @@ public class ReqPlanningListViewImpl extends VerticalLayout
 			layoutDetail.addComponent(labelTimestamp, 1,11);
 			layoutDetail.addComponent(labelPriceEstimation, 1,12);
 			layoutDetail.addComponent(labelPriceEstimationPPN, 1,13);
+			layoutDetail.addComponent(labelComment, 1,14);
 		}
 		
 		setLabelData(data);
@@ -324,6 +328,7 @@ public class ReqPlanningListViewImpl extends VerticalLayout
 			};
 		}
 		windowDetail.setContent(layoutDetail);
+		this.getUI().removeWindow(windowDetail);
 		this.getUI().addWindow(windowDetail);		
 	}
 	private void setLabelData(ReqPlanning data){
@@ -341,7 +346,7 @@ public class ReqPlanningListViewImpl extends VerticalLayout
 			labelPriceEstimation.setValue("Rp "+data.getPriceEstimation());
 			labelPriceEstimation.setValue(text.doubleToRupiah(data.getPriceEstimation()));
 			labelPriceEstimationPPN.setValue(text.doubleToRupiah(data.getPriceEstimationPPN()));
-			
+			labelComment.setValue(accept.getCommentReqPlanningFormat(data.getIdReqPlanning()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		

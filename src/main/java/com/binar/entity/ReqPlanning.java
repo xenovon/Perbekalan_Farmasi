@@ -51,6 +51,8 @@ public class ReqPlanning {
 	private double priceEstimationPPN; 
 	
 	private boolean isPurchaseOrderCreated;
+	@Column(columnDefinition="TEXT")
+	private String comment;
 	public boolean isPurchaseOrderCreated() {
 		return isPurchaseOrderCreated;
 	}
@@ -161,5 +163,11 @@ public class ReqPlanning {
 	}
 	public void setPriceEstimationPPN(double priceEstimationPPN) {
 		this.priceEstimationPPN = priceEstimationPPN;
+	}
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 }

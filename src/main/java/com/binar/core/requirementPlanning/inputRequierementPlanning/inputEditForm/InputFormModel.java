@@ -83,11 +83,33 @@ public class InputFormModel {
 		}
 		return data;
 	}
+	public String insertData(List<FormData> data){
+		String returnValue=null;
+		server.beginTransaction();
+		for(FormData datum:data){
+			returnValue=insertData(datum, false);
+			if(returnValue!=null){
+				break;
+			}
+		}
+		if(returnValue!=null){
+			server.rollbackTransaction();
+		}else{
+			server.commitTransaction();
+		}
+		server.endTransaction();
+		return returnValue;
+
+	}
 	//menyimpan data analisis kebutuhan
-	public String insertData(FormData data){
+	public String insertData(FormData data, boolean isSingle){
 		//mulai transaksi
 		
-		server.beginTransaction();
+		//jika data tunggal maka menggunakan sistem transaksi
+		//jika jamak, maka menggunakan transaksi di insertData(List<FormData> data)
+		if(isSingle){
+			server.beginTransaction();			
+		}
 		try {
 			SupplierGoods supplierGoods=getSupplierGoods(data.getSupplierId(), 
 										data.getManufacturId(), data.getGoodsId());
@@ -140,24 +162,33 @@ public class InputFormModel {
 			SupplierGoods supp=reqPlanning.getSupplierGoods();
 			supp.setLastPrice(reqPlanning.getPriceEstimationPPN());
 			server.update(supp);
-			
-			server.commitTransaction();
+			if(isSingle){
+				server.commitTransaction();				
+			}
 			return null;
 		} catch (NumberFormatException e) {
-			server.rollbackTransaction();
+			if(isSingle){
+				server.rollbackTransaction();				
+			}
 			e.printStackTrace();
 			return "Kesalahan pengisian angka :"+e.getMessage();
 		} catch (OptimisticLockException e) {
-			server.rollbackTransaction();
+			if(isSingle){
+				server.rollbackTransaction();				
+			}
 			e.printStackTrace();
 			return "Kesalahan tulis data ke database " + e.getMessage();
 		}catch(Exception e){
-			server.rollbackTransaction();
+			if(isSingle){
+				server.rollbackTransaction();				
+			}
 			e.printStackTrace();
 			return "Kesalahan submit : " + e.getMessage();
 		
 		}finally{
-			server.endTransaction();			
+			if(isSingle){				
+				server.endTransaction();			
+			}
 		}
 	}
 	public String getGoodsUnit(String goodsId){

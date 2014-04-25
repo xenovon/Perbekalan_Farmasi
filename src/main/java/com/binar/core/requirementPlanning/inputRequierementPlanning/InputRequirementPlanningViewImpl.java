@@ -163,7 +163,9 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 				{
 					center();
 					setClosable(false);
-					setWidth("500px");					
+					setWidth("500px");		
+					setHeight("90%");
+					
 				}
 			};
 
@@ -257,13 +259,14 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 	Label labelTimestamp;
 	Label labelPriceEstimation;	
 	Label labelPriceEstimationPPN;	
+	Label labelComment;
 	
 	Window windowDetail;
 	//menampilkan jendela untuk detail
 	public void showDetailWindow(ReqPlanning data){
 		if(layoutDetail==null){
 			//buat konten 
-			layoutDetail= new GridLayout(2,13){
+			layoutDetail= new GridLayout(2,14){
 				{
 					setSpacing(true);
 					setMargin(true);
@@ -279,6 +282,7 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 					addComponent(new Label("Waktu Input"), 0,10);
 					addComponent(new Label("Estimasi Harga"), 0, 11);
 					addComponent(new Label("Estimasi Harga + PPN"), 0, 12);
+					addComponent(new Label("Komentar"), 0, 13);
 				}	
 			};
 			//instantiasi label
@@ -294,6 +298,7 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 			labelTimestamp =new Label();
 			labelPriceEstimation =new Label();	
 			labelPriceEstimationPPN=new Label();
+			labelComment=new Label("", ContentMode.HTML);
 			
 			//add Component konten ke layout
 			layoutDetail.addComponent(labelId, 1,1);
@@ -308,6 +313,7 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 			layoutDetail.addComponent(labelTimestamp, 1,10);
 			layoutDetail.addComponent(labelPriceEstimation, 1,11);
 			layoutDetail.addComponent(labelPriceEstimationPPN, 1,12);
+			layoutDetail.addComponent(labelComment, 1,13);
 		}
 		
 		setLabelData(data);
@@ -315,7 +321,8 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 			windowDetail=new Window("Detail Rencana Kebutuhan"){
 				{
 					center();
-					setWidth("500px");					
+					setWidth("500px");
+					setHeight("90%");
 				}
 			};
 		}
@@ -345,6 +352,7 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 			labelTimestamp.setValue(data.getTimestamp().toString());
 			labelPriceEstimation.setValue(text.doubleToRupiah(data.getPriceEstimation()));
 			labelPriceEstimationPPN.setValue(text.doubleToRupiah(data.getPriceEstimationPPN()));
+			labelComment.setValue(accept.getCommentReqPlanningFormat(data.getIdReqPlanning()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		

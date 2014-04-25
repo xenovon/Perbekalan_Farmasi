@@ -19,6 +19,7 @@ import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 
 public class DeletionApprovalModel {
@@ -30,6 +31,7 @@ public class DeletionApprovalModel {
 	public class AcceptData{
 		private int idDel;
 		private int accepted;
+		private String comment;
 		protected int getIdDel() {
 			return idDel;
 		}
@@ -42,7 +44,12 @@ public class DeletionApprovalModel {
 		protected void setAccepted(int accepted) {
 			this.accepted = accepted;
 		}
-		
+		public void setComment(String comment) {
+			this.comment = comment;
+		}
+		public String getComment() {
+			return comment;
+		}
 	}
 	
 	public DeletionApprovalModel(GeneralFunction function){
@@ -92,11 +99,14 @@ public class DeletionApprovalModel {
 			
 			AcceptData acceptData=new AcceptData();
 			ComboBox comboResult=(ComboBox)item.getItemProperty("Disetujui?").getValue();
+			TextArea textAreaResult=(TextArea)item.getItemProperty("Keterangan").getValue();
+
 			int quantityAccepted;
 			acceptData.setAccepted(accept.acceptedOrNot((Integer)comboResult.getValue()));
 
 			acceptData.setIdDel((Integer)itemId);
-			
+			acceptData.setComment((String)textAreaResult.getValue());
+
 			returnValue.add(acceptData);
 		}
 		
@@ -140,10 +150,12 @@ public class DeletionApprovalModel {
 					delGoods.setApprovalDate(null);
 				}
 				delGoods.setStockQuantity(stock);
-				
+				delGoods.setComment(accept.saveDeletion(data.getComment(), data.getIdDel()));
+
 				server.update(delGoods);
 				Goods goodsDuplicate=server.find(Goods.class, goods.getIdGoods());
 				goodsDuplicate.setCurrentStock(stock);
+				
 				server.update(goodsDuplicate);
 				function.getMinimumStock().update(goods.getIdGoods());
 	

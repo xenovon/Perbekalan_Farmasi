@@ -147,7 +147,7 @@ public class GeneralFunction {
 	AcceptancePyramid acceptancePyramid;
 	public AcceptancePyramid getAcceptancePyramid(){
 		if(acceptancePyramid==null){
-			acceptancePyramid= new AcceptancePyramid(getLogin());
+			acceptancePyramid= new AcceptancePyramid(this);
 		}
 			return acceptancePyramid;
 	}

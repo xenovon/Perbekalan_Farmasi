@@ -70,6 +70,7 @@ public class DateManipulator {
 	public DateTime parseDateMonth(String date){
 		
 		try {
+			
 			String monthString=date.split("-")[0];
 			String yearString=date.split("-")[1];
 			

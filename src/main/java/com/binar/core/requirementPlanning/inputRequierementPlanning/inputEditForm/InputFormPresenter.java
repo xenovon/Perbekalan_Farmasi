@@ -46,6 +46,7 @@ public class InputFormPresenter implements PresenterInterface, InputFormView.Inp
 		this.generalFunction=function;
 		this.data=new FormData(function);
 		this.data.setPeriode(periode);
+		view.setPeriode(periode);
 		view.resetForm();
 		
 		view.setSelectGoodsData(model.getGoodsData());
@@ -109,6 +110,8 @@ public class InputFormPresenter implements PresenterInterface, InputFormView.Inp
 							}
 						}
 					}, view.getUI());
+			view.resetView();
+
 			
 					
 		}
@@ -176,60 +179,115 @@ public class InputFormPresenter implements PresenterInterface, InputFormView.Inp
 	}
 	//Dijalankan ketika goods select berubah
 	private void goodsSelectChange(){
-		String unit=model.getGoodsUnit((String)view.getInputGoodsSelect().getValue());
-		Goods goods=model.getGoods((String) view.getInputGoodsSelect().getValue());
-		String het="HET "+generalFunction.getTextManipulator().doubleToRupiah(goods.getHet());
-		view.showError(ErrorLabel.SUPPLIER, het);
-		view.setUnit(unit);
+		String data=(String)view.getInputGoodsSelect().getValue();
+		if(data!=null){
+			String unit=model.getGoodsUnit(data);
+			Goods goods=model.getGoods((String) view.getInputGoodsSelect().getValue());
+			String het="HET "+generalFunction.getTextManipulator().doubleToRupiah(goods.getHet());
+			view.showError(ErrorLabel.SUPPLIER, het);
+			view.setUnit(unit);
+			
+		}
 		
 	}
 	//Dijalankan ketika dropdown manufacturer berubah
 	private void manufacturerChange(){
 		setData();
-		String price=model.getGoodsPrice(data.getSupplierId(), 
-					 data.getManufacturId(), data.getGoodsId());
-		if(!price.equals("")){
-			view.getInputPrice().setValue(price);
+		String supplierId=data.getSupplierId();
+		String manId=data.getManufacturId();
+		String gId=data.getGoodsId();
+		if(supplierId!=null && manId!=null && gId!=null){
+			String price=model.getGoodsPrice(supplierId, 
+						 data.getManufacturId(), data.getGoodsId());
+			if(!price.equals("")){
+				view.getInputPrice().setValue(price);
+			}
+			
 		}
 	}
 	//Dijalankan ketika goods supplier berubah
 	private void supplierChange(){
 		setData();
-		String price=model.getGoodsPrice(data.getSupplierId(), 
-					 data.getManufacturId(), data.getGoodsId());
-		if(!price.equals("")){
-			view.getInputPrice().setValue(price);
-		}		
-	}
+		String supplierId=data.getSupplierId();
+		String manId=data.getManufacturId();
+		String gId=data.getGoodsId();
+		if(supplierId!=null && manId!=null && gId!=null){
+			String price=model.getGoodsPrice(supplierId, 
+						 data.getManufacturId(), data.getGoodsId());
+			if(!price.equals("")){
+				view.getInputPrice().setValue(price);
+			}
+			
+		}	}
 	private void submitClick(){
-		setData();
-		System.err.println(data.toString());
 		
-		
-		List<String> errors=data.validate();
-		if(errors!=null){
-			String textError="Penyimpanan Tidak Berhasil, Silahkan koreksi Error berikut : </br>";
-			for(String error:errors){
-				textError=textError+error+"</br>";
-			}
-			view.showError(ErrorLabel.GENERAL, textError);
+		if(view.getFormDataList().size()!=0){
+			submitManyData();
 		}else{
-			String status=model.insertData(data); //insert data
-			if(status!=null){ //penyimpanan gagal
-				view.showError(ErrorLabel.GENERAL, status);
-			}else{ //penyimpanan sukses
-				Collection<Window> list=view.getUI().getWindows();
-				for(Window w:list){
-					view.getUI().removeWindow(w);
-				}	
-				view.resetForm();
-				Notification.show("Penyimpanan rencana kebutuhan berhasil", Type.TRAY_NOTIFICATION);
-			}
-		
+			setData();
+			System.err.println(data.toString());
+			
+			
+			List<String> errors=data.validate();
+			if(errors!=null){
+				String textError="Penyimpanan Tidak Berhasil, Silahkan koreksi Error berikut : </br>";
+				for(String error:errors){
+					textError=textError+error+"</br>";
+				}
+				view.showError(ErrorLabel.GENERAL, textError);
+			}else{
+				String status=model.insertData(data, true); //insert data
+				if(status!=null){ //penyimpanan gagal
+					view.showError(ErrorLabel.GENERAL, status);
+				}else{ //penyimpanan sukses
+					Collection<Window> list=view.getUI().getWindows();
+					for(Window w:list){
+						view.getUI().removeWindow(w);
+					}	
+					view.resetForm();
+					Notification.show("Penyimpanan rencana kebutuhan berhasil", Type.TRAY_NOTIFICATION);
+				}
+			
+			}			
 		}
 		
+		
 	}
+	private void submitManyData(){
+		
+		List<FormData> data=view.getFormDataList();
+		//jika data terakhir belum disave ke list form data
+		//Jumlahnya antara jumlah pos dan ukuran data beda
+		if(data.size()!=view.getPosCount()){
+			setData();
+			List<String> errors=this.data.validate();
+			if(errors!=null){
+				String textError="Silahkan terlebih dahulu koreksi Error berikut : </br>";
+				for(String error:errors){
+					textError=textError+error+"</br>";
+				}
+				view.showError(ErrorLabel.GENERAL, textError);
+			}else{
+				data.add(this.data);				
+			}
+		}
+//		/simpan
+		String status=model.insertData(data); //insert data
+		if(status!=null){ //penyimpanan gagal
+			view.showError(ErrorLabel.GENERAL, status);
+		}else{ //penyimpanan sukses
+			Collection<Window> list=view.getUI().getWindows();
+			for(Window w:list){
+				view.getUI().removeWindow(w);
+			}
+			view.resetView();
+			view.resetForm();
+			Notification.show("Penyimpanan rencana kebutuhan berhasil", Type.TRAY_NOTIFICATION);
+		}
 
+		
+	
+	}
 	private void saveEditClick(){
 		setData();
 		List<String> errors=data.validate();

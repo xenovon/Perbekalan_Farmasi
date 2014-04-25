@@ -286,7 +286,7 @@ public class DeletionListViewImpl extends VerticalLayout implements DeletionList
 	private Label labelAcceptedDate;
 	private Label labelTimeStamp;
 	private Label labelInformation;
-	
+	private Label labelComment;
 	private Window windowDetail;
 	private Window windowInputEdit;
 	private  GridLayout layoutData;
@@ -294,7 +294,7 @@ public class DeletionListViewImpl extends VerticalLayout implements DeletionList
 	public void showDetailWindow(DeletedGoods deletedGoods) {
 		if(layoutData==null){ //jika layout null
 			//buat konten 
-			layoutData= new GridLayout(2,9){ 
+			layoutData= new GridLayout(2,10){ 
 				{
 					setSpacing(true);
 					setMargin(true);
@@ -307,6 +307,7 @@ public class DeletionListViewImpl extends VerticalLayout implements DeletionList
 					addComponent(new Label("Tanggal Disetujui : "), 0, 6);
 					addComponent(new Label("Waktu input : "), 0, 7);
 					addComponent(new Label("Keterangan : "), 0, 8);
+					addComponent(new Label("Komentar : "), 0, 9);
 				}	
 			};
 			//instantiasi label
@@ -319,6 +320,7 @@ public class DeletionListViewImpl extends VerticalLayout implements DeletionList
 			 labelAcceptedDate=new Label("");
 			 labelTimeStamp=new Label("");
 			 labelInformation=new Label("");
+			 labelComment=new Label("", ContentMode.HTML);
 						
 			//add Component konten ke layout
 			layoutData.addComponent(labelDeletionDate, 1,0);
@@ -330,6 +332,7 @@ public class DeletionListViewImpl extends VerticalLayout implements DeletionList
 			layoutData.addComponent(labelAcceptedDate, 1,6);
 			layoutData.addComponent(labelTimeStamp, 1,7);
 			layoutData.addComponent(labelInformation, 1,8);
+			layoutData.addComponent(labelComment, 1,9);
 				        
 		}//menutup jika layoutdetail null
 	    setLabelData(deletedGoods);
@@ -359,6 +362,7 @@ public class DeletionListViewImpl extends VerticalLayout implements DeletionList
 		 }
 		 labelTimeStamp.setValue(data.getTimestamp().toString());
 		 labelInformation.setValue(data.getInformation());
+		 labelComment.setValue(accept.getCommentDeletionFormat(data.getIdDeletedGoods()));
 	}
 	@Override
 	public Date getSelectedStartRange() {
