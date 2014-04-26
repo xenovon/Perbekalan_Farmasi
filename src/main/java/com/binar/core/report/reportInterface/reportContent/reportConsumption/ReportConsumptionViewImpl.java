@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.joda.time.DateTime;
 
@@ -73,7 +74,15 @@ public class ReportConsumptionViewImpl extends VerticalLayout implements ClickLi
 		buttonShow.addClickListener(this);
 
 		
-		opener=new BrowserWindowOpener(ReportPrint.class);
+		opener=new BrowserWindowOpener(ReportPrint.class){
+			public void beforeClientResponse(boolean initial) {
+				super.beforeClientResponse(initial);
+				getState().target = "win" + UUID.randomUUID().toString();
+				
+			}
+		};
+		
+		
 		opener.setFeatures("height=200,width=400,resizable");
 		// A button to open the printer-friendly page.
 		opener.extend(buttonPrint);

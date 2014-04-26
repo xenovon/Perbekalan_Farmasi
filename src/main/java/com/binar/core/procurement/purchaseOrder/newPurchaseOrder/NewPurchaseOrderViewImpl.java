@@ -102,6 +102,7 @@ public class NewPurchaseOrderViewImpl extends Window implements NewPurchaseOrder
     		addContainerProperty("Nama Barang", String.class, null);
     		addContainerProperty("Satuan", String.class, null);
     		addContainerProperty("Distributor", String.class, null);
+    		addContainerProperty("Asuransi", String.class, null);
     		addContainerProperty("Kebutuhan Disetujui", String.class, null);
 		}
 		};
@@ -263,6 +264,7 @@ public class NewPurchaseOrderViewImpl extends Window implements NewPurchaseOrder
 			item.getItemProperty("Nama Barang").setValue(reqPlanning.getSupplierGoods().getGoods().getName());
 			item.getItemProperty("Satuan").setValue(reqPlanning.getSupplierGoods().getGoods().getUnit());
 			item.getItemProperty("Distributor").setValue(reqPlanning.getSupplierGoods().getSupplier().getSupplierName());
+			item.getItemProperty("Asuransi").setValue(reqPlanning.getSupplierGoods().getGoods().getInsurance().getName());
 			item.getItemProperty("Kebutuhan Disetujui").setValue(function.getTextManipulator().intToAngka(reqPlanning.getAcceptedQuantity()));
 		}
 	}

@@ -151,7 +151,7 @@ public class NewInvoiceModel {
 		String supplierName=invoice.getInvoiceItem().get(0).
 				getPurchaseOrderItem().getSupplierGoods().getSupplier().getSupplierName();
 		String invoiceDate=date.dateToText(invoice.getInvoiceDate(), true);
-		return "Faktur dari distributor "+supplierName+" pada tanggal "+invoiceDate+"";
+		return "Faktur "+supplierName+" tanggal "+invoiceDate+"";
 	}
 	public double countPrice(boolean isPPN, double price, double quantity){
 		if(isPPN){

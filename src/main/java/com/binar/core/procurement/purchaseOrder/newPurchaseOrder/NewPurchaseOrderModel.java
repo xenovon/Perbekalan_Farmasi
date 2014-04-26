@@ -267,9 +267,9 @@ public class NewPurchaseOrderModel {
 	private String generateName(PurchaseOrder purchaseOrder){
 		String goodsType=getPurchaseType(purchaseOrder);
 		String supplierName=getSupplierName(purchaseOrder);
-		String date=function.getDate().dateToText(purchaseOrder.getDate());
-		return "Surat Pesanan "+goodsType+", bulan "+date+","
-				+ " Untuk Distributor "+supplierName;
+		String date=function.getDate().dateToText(purchaseOrder.getDate(), true);
+		return "SP "+goodsType+" "+date+","
+				+ " Untuk "+supplierName;
 	}
 	
 	

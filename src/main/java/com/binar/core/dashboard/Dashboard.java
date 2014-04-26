@@ -195,28 +195,46 @@ public class Dashboard extends VerticalLayout {
 	IfrsGoodsReceptionSummaryModel ifrsGoodsReceptionSummaryModel;
 	
 	IfrsRequirementPlanningPresenter ifrsRequirementPlanningPresenter;
-	
+	SupportRequirementNonApprovedModel ifrsRequirementPlanningModel;
+	SupportRequirementNonApprovedViewImpl ifrsRequirementPlanningViewImpl;
 	IfrsGoodsWithIncreasingTrendPresenter ifrsGoodsWithIncreasingTrendPresenter;
+	FarmationGoodsWithIncreasingTrendViewImpl ifrsGoodsWithIncreasingTrendViewImpl;
+	FarmationGoodsWithIncreasingTrendModel ifrsGoodsWithIncreasingTrendModel;
 	
 	IfrsGoodsConsumptionPresenter ifrsGoodsConsumptionPresenter;
+	FarmationGoodsConsumptionModel  ifrsGoodsConsumptionModel;
+	FarmationGoodsConsumptionViewImpl  ifrsGoodsConsumptionViewImpl;
 	
+	FarmationRequirementStatusModel farmationRequirementStatusModelIFRS;
+	FarmationRequirementStatusPresenter farmationRequirementStatusPresenterIFRS;
+	FarmationRequirementStatusViewImpl farmationRequirementStatusViewImplIFRS;
+
+	FarmationExpiredGoodsStatusModel farmationExpiredGoodsStatusModelIFRS;
+	FarmationExpiredGoodsStatusViewImpl farmationExpiredGoodsStatusViewImplIFRS;
+	FarmationExpiredGoodsStatusPresenter farmationExpiredGoodsStatusPresenterIFRS;
+	
+	PpkExpiredGoodsNonAcceptedModel ppkExpiredGoodsNonAcceptedModelIFRS;
+	PpkExpiredGoodsNonAcceptedViewImpl ppkExpiredGoodsNonAcceptedViewImplIFRS;
+	PpkExpiredGoodsNonAcceptedPresenter ppkExpiredGoodsNonAcceptedPresenterIFRS;
+
+
 	public void generateIfrsView(){
 		gridLayout.removeAllComponents();
-		if(farmationExpiredGoodsStatusModel==null){
-			farmationExpiredGoodsStatusModel=new FarmationExpiredGoodsStatusModel(function);
-			farmationExpiredGoodsStatusViewImpl=new FarmationExpiredGoodsStatusViewImpl(function);
-			farmationExpiredGoodsStatusPresenter=new FarmationExpiredGoodsStatusPresenter(
-					function, farmationExpiredGoodsStatusViewImpl, farmationExpiredGoodsStatusModel);
+		if(farmationExpiredGoodsStatusModelIFRS==null){
+			farmationExpiredGoodsStatusModelIFRS=new FarmationExpiredGoodsStatusModel(function);
+			farmationExpiredGoodsStatusViewImplIFRS=new FarmationExpiredGoodsStatusViewImpl(function);
+			farmationExpiredGoodsStatusPresenterIFRS=new FarmationExpiredGoodsStatusPresenter(
+					function, farmationExpiredGoodsStatusViewImplIFRS, farmationExpiredGoodsStatusModelIFRS);
 		}
-		gridLayout.addComponent(farmationExpiredGoodsStatusViewImpl, 0,0);
+		gridLayout.addComponent(farmationExpiredGoodsStatusViewImplIFRS, 0,0);
 		
-		if(farmationRequirementStatusModel == null){
-			farmationRequirementStatusModel =new FarmationRequirementStatusModel(function);
-			farmationRequirementStatusViewImpl =new FarmationRequirementStatusViewImpl(function);
-			farmationRequirementStatusPresenter = new FarmationRequirementStatusPresenter(
-					function, farmationRequirementStatusViewImpl, farmationRequirementStatusModel);
+		if(farmationRequirementStatusModelIFRS == null){
+			farmationRequirementStatusModelIFRS =new FarmationRequirementStatusModel(function);
+			farmationRequirementStatusViewImplIFRS =new FarmationRequirementStatusViewImpl(function);
+			farmationRequirementStatusPresenterIFRS = new FarmationRequirementStatusPresenter(
+					function, farmationRequirementStatusViewImplIFRS, farmationRequirementStatusModelIFRS);
 		}
-		gridLayout.addComponent(farmationRequirementStatusViewImpl, 0,1);		
+		gridLayout.addComponent(farmationRequirementStatusViewImplIFRS, 0,1);		
 		
 //		if(ifrsDeletionApprovalModel == null){
 //			ifrsDeletionApprovalModel=new IfrsDeletionApprovalModel(function);
@@ -225,19 +243,19 @@ public class Dashboard extends VerticalLayout {
 //					function ,ifrsDeletionApprovalViewImpl, ifrsDeletionApprovalModel);
 //		}
 //		gridLayout.addComponent(ifrsDeletionApprovalViewImpl,1,0);
-		if(ppkExpiredGoodsNonAcceptedPresenter == null){
-			ppkExpiredGoodsNonAcceptedModel =new PpkExpiredGoodsNonAcceptedModel(function);
-			ppkExpiredGoodsNonAcceptedViewImpl =new PpkExpiredGoodsNonAcceptedViewImpl(function);
-			ppkExpiredGoodsNonAcceptedPresenter = new PpkExpiredGoodsNonAcceptedPresenter(
-					function, ppkExpiredGoodsNonAcceptedViewImpl, ppkExpiredGoodsNonAcceptedModel);
+		if(ppkExpiredGoodsNonAcceptedPresenterIFRS == null){
+			ppkExpiredGoodsNonAcceptedModelIFRS =new PpkExpiredGoodsNonAcceptedModel(function);
+			ppkExpiredGoodsNonAcceptedViewImplIFRS =new PpkExpiredGoodsNonAcceptedViewImpl(function);
+			ppkExpiredGoodsNonAcceptedPresenterIFRS = new PpkExpiredGoodsNonAcceptedPresenter(
+					function, ppkExpiredGoodsNonAcceptedViewImplIFRS, ppkExpiredGoodsNonAcceptedModelIFRS);
 		}
 		gridLayout.addComponent(ppkExpiredGoodsNonAcceptedViewImpl,1,0);
 
 		if(ifrsRequirementPlanningPresenter == null){
-			supportRequirementNonApprovedModel =new SupportRequirementNonApprovedModel(function);
-			supportRequirementNonApprovedViewImpl =new SupportRequirementNonApprovedViewImpl(function);
+			ifrsRequirementPlanningModel =new SupportRequirementNonApprovedModel(function);
+			ifrsRequirementPlanningViewImpl =new SupportRequirementNonApprovedViewImpl(function);
 			ifrsRequirementPlanningPresenter = new IfrsRequirementPlanningPresenter(
-					function, supportRequirementNonApprovedViewImpl, supportRequirementNonApprovedModel);
+					function, ifrsRequirementPlanningViewImpl, ifrsRequirementPlanningModel);
 		}
 		gridLayout.addComponent(supportRequirementNonApprovedViewImpl,1,1);
 
@@ -258,10 +276,10 @@ public class Dashboard extends VerticalLayout {
 		}
 		gridLayout.addComponent(ifrsGoodsReceptionSummaryViewImpl,1,2);
 		if(ifrsGoodsConsumptionPresenter == null){
-			farmationGoodsConsumptionModel =new FarmationGoodsConsumptionModel(function);
-			farmationGoodsConsumptionViewImpl=new FarmationGoodsConsumptionViewImpl(function);
+			ifrsGoodsConsumptionModel =new FarmationGoodsConsumptionModel(function);
+			ifrsGoodsConsumptionViewImpl=new FarmationGoodsConsumptionViewImpl(function);
 			ifrsGoodsConsumptionPresenter=new IfrsGoodsConsumptionPresenter(
-					function, farmationGoodsConsumptionViewImpl, farmationGoodsConsumptionModel);
+					function, ifrsGoodsConsumptionViewImpl, ifrsGoodsConsumptionModel);
 		}
 		
 		gridLayout.addComponent(farmationGoodsConsumptionViewImpl, 0,3);
@@ -269,10 +287,10 @@ public class Dashboard extends VerticalLayout {
 
 		
 		if(ifrsGoodsWithIncreasingTrendPresenter == null){
-			farmationGoodsWithIncreasingTrendViewImpl =new FarmationGoodsWithIncreasingTrendViewImpl(function);
-			farmationGoodsWithIncreasingTrendModel =new FarmationGoodsWithIncreasingTrendModel(function);
+			ifrsGoodsWithIncreasingTrendViewImpl =new FarmationGoodsWithIncreasingTrendViewImpl(function);
+			ifrsGoodsWithIncreasingTrendModel =new FarmationGoodsWithIncreasingTrendModel(function);
 			ifrsGoodsWithIncreasingTrendPresenter = new IfrsGoodsWithIncreasingTrendPresenter(
-					function, farmationGoodsWithIncreasingTrendViewImpl, farmationGoodsWithIncreasingTrendModel);
+					function, ifrsGoodsWithIncreasingTrendViewImpl, ifrsGoodsWithIncreasingTrendModel);
 		}
 		gridLayout.addComponent(farmationGoodsWithIncreasingTrendViewImpl, 0,4, 1,4);			
 
@@ -284,6 +302,9 @@ public class Dashboard extends VerticalLayout {
 	PpkExpiredGoodsNonAcceptedPresenter ppkExpiredGoodsNonAcceptedPresenter;
 	
 	PpkGoodsProcurementPresenter ppkGoodsProcurementPresenter;
+	IfrsGoodsProcurementViewImpl ppkGoodsProcurementViewImpl;
+	IfrsGoodsProcurementModel ppkGoodsProcurementModel;
+	
 	
 	PpkRequirementPlanningPresenter ppkRequirementPlanningPresenter;
 	
@@ -316,10 +337,11 @@ public class Dashboard extends VerticalLayout {
 
 
 		if(ppkGoodsProcurementPresenter == null){
-			ifrsGoodsProcurementModel =new IfrsGoodsProcurementModel(function);
-			ifrsGoodsProcurementViewImpl =new IfrsGoodsProcurementViewImpl(function);
+			ppkGoodsProcurementModel =new IfrsGoodsProcurementModel(function);
+			ppkGoodsProcurementViewImpl =new IfrsGoodsProcurementViewImpl(function);
 			ppkGoodsProcurementPresenter = new PpkGoodsProcurementPresenter(
-					function, ifrsGoodsProcurementViewImpl, ifrsGoodsProcurementModel);
+					function, ppkGoodsProcurementViewImpl
+					, ppkGoodsProcurementModel);
 		}
 		gridLayout.addComponent(ifrsGoodsProcurementViewImpl,1,1);
 		

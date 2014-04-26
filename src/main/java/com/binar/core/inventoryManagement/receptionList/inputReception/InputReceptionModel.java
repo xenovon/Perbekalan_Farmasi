@@ -48,7 +48,12 @@ public class InputReceptionModel {
 		Invoice invoice=server.find(Invoice.class, idInvoice);
 		Map<Integer, String> data=new HashMap<Integer, String>();
 		for(InvoiceItem item:invoice.getInvoiceItem()){
-			data.put(item.getIdInvoiceItem(),item.getPurchaseOrderItem().getSupplierGoods().getGoods().getName());
+			Goods goods=item.getPurchaseOrderItem().getSupplierGoods().getGoods();
+			String insurance="";
+			if(goods.getInsurance()!=null){
+				insurance=" - "+goods.getInsurance().getName();				
+			}
+			data.put(item.getIdInvoiceItem(),goods.getName()+insurance);
 		}
 		return data;
 	}

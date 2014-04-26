@@ -40,7 +40,11 @@ public class InputConsumptionModel {
 		List<Goods> goodsList=server.find(Goods.class).findList();
 		Map<String, String> data=new TreeMap<String, String>();
 		for(Goods goods:goodsList){
-			data.put(goods.getIdGoods(), goods.getName());
+			String insurance="";
+			if(goods.getInsurance()!=null){
+				insurance=" - "+goods.getInsurance().getName();				
+			}
+			data.put(goods.getIdGoods(), goods.getName()+insurance);
 		}
 		return data;
 	}
