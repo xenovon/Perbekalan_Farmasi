@@ -249,7 +249,7 @@ public class Dashboard extends VerticalLayout {
 			ppkExpiredGoodsNonAcceptedPresenterIFRS = new PpkExpiredGoodsNonAcceptedPresenter(
 					function, ppkExpiredGoodsNonAcceptedViewImplIFRS, ppkExpiredGoodsNonAcceptedModelIFRS);
 		}
-		gridLayout.addComponent(ppkExpiredGoodsNonAcceptedViewImpl,1,0);
+		gridLayout.addComponent(ppkExpiredGoodsNonAcceptedViewImplIFRS,1,0);
 
 		if(ifrsRequirementPlanningPresenter == null){
 			ifrsRequirementPlanningModel =new SupportRequirementNonApprovedModel(function);
