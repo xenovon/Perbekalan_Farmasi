@@ -257,7 +257,7 @@ public class Dashboard extends VerticalLayout {
 			ifrsRequirementPlanningPresenter = new IfrsRequirementPlanningPresenter(
 					function, ifrsRequirementPlanningViewImpl, ifrsRequirementPlanningModel);
 		}
-		gridLayout.addComponent(supportRequirementNonApprovedViewImpl,1,1);
+		gridLayout.addComponent(ifrsRequirementPlanningViewImpl,1,1);
 
 		if(ifrsGoodsProcurementPresenter == null){
 			ifrsGoodsProcurementModel =new IfrsGoodsProcurementModel(function);
