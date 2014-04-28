@@ -58,9 +58,7 @@ public class InputConsumptionModel {
 		
 		server.beginTransaction();
 		try {
-			if(stock.isDateValid(data.getConsumptionDate(), data.getGoodsId())){
-				return "Tanggal tidak valid";
-			}
+
 			Goods goods=server.find(Goods.class, data.getGoodsId());			
 			//mulai insert
 			GoodsConsumption consumption = new GoodsConsumption();

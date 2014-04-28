@@ -144,8 +144,8 @@ Button.ClickListener, ValueChangeListener{
 		this.addComponent(labelErrorQuantity);
 		this.addComponent(labelSatuan);
 		this.addComponent(inputWardSelect);
-		this.addComponent(labelGeneralError);
 		this.addComponent(information);
+		this.addComponent(labelGeneralError);
 		this.addComponent(new GridLayout(3, 1){
 			{
 				addComponent(buttonSubmit, 0,0);

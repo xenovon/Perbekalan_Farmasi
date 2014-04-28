@@ -135,6 +135,11 @@ public class StockFunction {
 	}
 
 	public boolean isDateValid(Date date, String idGoods){
+		if(idGoods==null){
+			System.out.println("goods null");
+			return true;
+		}
+		
 		DateTime date2=new DateTime();
  
 		//variabel untuk tanggal akhir hari. Agar tidak menghitung tanggal pada hari yang sama.
@@ -144,7 +149,10 @@ public class StockFunction {
 		boolean anyConsumption=isAnyConsumption(dateTimeEndDay, goods);
 		boolean anyDeletion=isAnyDeletion(dateTimeEndDay, goods);
 		boolean anyReception=isAnyReception(dateTimeEndDay, goods);
-		
+		System.out.println("GOods "+idGoods);
+		System.out.println("anyConsumption " +anyConsumption);
+		System.out.println("anyDeletion " +anyDeletion);
+		System.out.println("anyReception " +anyReception);
 		return anyConsumption || anyDeletion || anyReception?false:true;
 		
 	}
