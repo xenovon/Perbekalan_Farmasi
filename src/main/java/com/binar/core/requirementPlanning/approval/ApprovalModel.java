@@ -145,6 +145,9 @@ public class ApprovalModel {
 				
 				planning.setDateAccepted(new Date());
 				planning.setComment(accept.saveReqPlanning(data.getComment(), data.getIdReq()));
+				System.out.println("Comment : "+planning.getComment());
+				System.out.println("Acceptance : "+planning.getAcceptance());
+				System.out.println("Quantity : "+planning.getAcceptedQuantity());
 				server.update(planning);
 			}
 			server.commitTransaction();

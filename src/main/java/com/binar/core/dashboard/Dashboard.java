@@ -343,7 +343,7 @@ public class Dashboard extends VerticalLayout {
 					function, ppkGoodsProcurementViewImpl
 					, ppkGoodsProcurementModel);
 		}
-		gridLayout.addComponent(ifrsGoodsProcurementViewImpl,1,1);
+		gridLayout.addComponent(ppkGoodsProcurementViewImpl,1,1);
 		
 		if(ppkRequirementPlanningPresenter == null){
 			supportRequirementNonApprovedModel =new SupportRequirementNonApprovedModel(function);
