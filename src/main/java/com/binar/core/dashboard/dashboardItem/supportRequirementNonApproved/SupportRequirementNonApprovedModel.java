@@ -32,7 +32,17 @@ public class SupportRequirementNonApprovedModel {
 		List<ReqPlanning> reqPlanning=server.find(ReqPlanning.class).where().
 				between("period",startDate.toDate(), endDate.toDate()).le("acceptance", accept.getUnacceptCriteria()).findList();
 		
-		return reqPlanning;
+		return filterReqPlanning(reqPlanning);
 		
 	}
+	private List<ReqPlanning> filterReqPlanning(List<ReqPlanning> list){
+		List<ReqPlanning> returnValue=new ArrayList<ReqPlanning>();
+		for(ReqPlanning req:list){
+			if(accept.isManipulable(req.getAcceptance())){
+				returnValue.add(req);
+			}
+		}
+		return  returnValue;
+	}
+
 }

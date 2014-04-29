@@ -31,6 +31,9 @@ public class AcceptancePyramid {
 		
 		
 		
+		
+		
+		
 		Jika value == 9, maka rencana kebutuhan dianggap sudah disetujui
 		
 		Jika role dibawahnya mengubah persetujuannya, maka value diatasnya akan direset.
@@ -215,7 +218,7 @@ public class AcceptancePyramid {
 		return 0;
 	}
 	*/
-	//Untuk masing-masing role, berapa nilai agar dianggap sebagai tidak diterima 	
+	//Untuk masing-masing role, berapa nilai agar dianggap sebagai belum disetujui	
 	public int getUnacceptCriteria(){
 		if(getRole()==RoleEnum.IFRS){
 			return 0;
@@ -226,7 +229,34 @@ public class AcceptancePyramid {
 		}
 		return 0;
 	}
+	//untuk di dashboard, menentukan apakah rencana kebutuhan sudah bisa di atur2 oleh pengguna atau tidak
+	//mirip dengan method isShow()
+	public boolean isManipulable(int value){
+		if(getRole()==RoleEnum.IFRS){
+			if(value==0){
+				return true;
+			}else{
+				return false;
+			}
 
+		}else if(getRole()==RoleEnum.PNJ){
+			if(value==1){
+				return true;
+			}else{
+				return false;
+			}
+		}else if(getRole()==RoleEnum.PPK){
+			if(value==4){
+				return true;
+			}else{
+				return false;
+			}
+		}
+		return false;
+
+	}
+	
+	
 	//mendapatkan kriteria jika sudah diterima oleh semua
 	public int getAcceptedByAllCriteria(){
 		return 9;
@@ -454,7 +484,6 @@ public class AcceptancePyramid {
 			}
 			System.out.println(comment[0]+" "+content);
 		}
-		
-
+	
 	}
 }

@@ -10,6 +10,7 @@ import org.joda.time.LocalDate;
 import com.avaje.ebean.EbeanServer;
 import com.binar.entity.DeletedGoods;
 import com.binar.entity.Goods;
+import com.binar.entity.DeletedGoods;
 import com.binar.entity.enumeration.EnumStockStatus;
 import com.binar.generalFunction.AcceptancePyramid;
 import com.binar.generalFunction.DateManipulator;
@@ -33,10 +34,20 @@ public class PpkExpiredGoodsNonAcceptedModel {
 		DateTime endDate=DateTime.now();
 		List<DeletedGoods> deletedGoods=server.find(DeletedGoods.class).
 				where().between("deletion_date", endDate.minusMonths(6).toDate(), endDate).le("acceptance",accept.getUnacceptCriteria()).order().desc("deletion_date").findList();		
-		return deletedGoods;
-		
+		return filterDeletedGoods(deletedGoods);
 		
 	}
+	private List<DeletedGoods> filterDeletedGoods(List<DeletedGoods> list){
+		List<DeletedGoods> returnValue=new ArrayList<DeletedGoods>();
+		for(DeletedGoods req:list){
+			if(accept.isManipulable(req.getAcceptance())){
+				returnValue.add(req);
+			}
+		}
+		return  returnValue;
+	}
+
+
 	public String getCurrentMonth(){
 		LocalDate now=new LocalDate();
 		LocalDate notNow=now.minusMonths(6);
