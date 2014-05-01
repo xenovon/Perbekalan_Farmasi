@@ -109,6 +109,7 @@ public class DeletionListViewImpl extends VerticalLayout implements DeletionList
         	{
         		addContainerProperty("Tanggal", String.class, null);
         		addContainerProperty("Nama Barang", String.class, null);
+        		addContainerProperty("Asuransi", String.class, null);
         		addContainerProperty("Jumlah", String.class, null);
         		addContainerProperty("Satuan", String.class, null);
         		addContainerProperty("Harga", String.class, null);
@@ -209,6 +210,7 @@ public class DeletionListViewImpl extends VerticalLayout implements DeletionList
 
 			item.getItemProperty("Tanggal").setValue(date.dateToText(datum.getDeletionDate(), true));
 			item.getItemProperty("Nama Barang").setValue(datum.getGoods().getName());
+			item.getItemProperty("Asuransi").setValue(datum.getGoods().getInsurance().getName());
 			item.getItemProperty("Jumlah").setValue(text.intToAngka(datum.getQuantity()));
 			item.getItemProperty("Satuan").setValue(datum.getGoods().getUnit());
 			item.getItemProperty("Harga").setValue(text.doubleToRupiah(datum.getPrice()));

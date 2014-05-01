@@ -3,6 +3,8 @@ package com.binar.core.procurement.invoice;
 import java.util.Calendar;
 import java.util.List;
 
+import org.joda.time.DateTime;
+
 import com.binar.entity.Invoice;
 import com.binar.entity.InvoiceItem;
 import com.binar.generalFunction.DateManipulator;
@@ -98,10 +100,12 @@ public class InvoiceViewImpl extends VerticalLayout implements InvoiceView, Clic
 		selectYear.setImmediate(true);
 		selectMonth.setImmediate(true);
 
+		String selectedValue=monthList.get(DateTime.now().getMonthOfYear());
+
 		
 		selectYear.setNullSelectionAllowed(false);
 		selectMonth.setNullSelectionAllowed(false);
-		selectMonth.setValue(monthList.get(Calendar.getInstance().get(Calendar.MONTH)));
+		selectMonth.setValue(selectedValue);
 		selectYear.setValue(yearList.get(2));
 		for(String month:monthList){
 			System.out.println("Bulan "+month);
@@ -379,6 +383,7 @@ public class InvoiceViewImpl extends VerticalLayout implements InvoiceView, Clic
 					addContainerProperty("Kode Barang", String.class, null);
 					addContainerProperty("Nama Barang", String.class, null);
 					addContainerProperty("Batch", String.class, null);
+					addContainerProperty("Asuransi", String.class, null);
 					addContainerProperty("ED", String.class, null);
 					addContainerProperty("Harga Satuan", String.class, null);
 					addContainerProperty("Harga + PPN", String.class, null);
@@ -423,6 +428,7 @@ public class InvoiceViewImpl extends VerticalLayout implements InvoiceView, Clic
 				item.getItemProperty("Kode Barang").setValue(datum.getPurchaseOrderItem().getSupplierGoods().getGoods().getIdGoods());
 				item.getItemProperty("Nama Barang").setValue(datum.getPurchaseOrderItem().getSupplierGoods().getGoods().getName());
 				item.getItemProperty("Batch").setValue(datum.getBatch());
+				item.getItemProperty("Asuransi").setValue(datum.getPurchaseOrderItem().getSupplierGoods().getGoods().getInsurance().getName());
 				item.getItemProperty("ED").setValue(date.dateToText(datum.getExpiredDate(), true));
 				item.getItemProperty("Harga Satuan").setValue(text.doubleToRupiah(datum.getPrice()));
 				item.getItemProperty("Harga + PPN").setValue(text.doubleToRupiah(datum.getPricePPN()));

@@ -90,7 +90,12 @@ public class FormData {
 					e.printStackTrace();
 					return "Data harus berupa angka";
 				}
+			}else{
+				return "Kuantitas tidak boleh kosong";
 			}
+		}else{
+			return "Kuantitas tidak boleh kosong";
+
 		}
 		return "";
 	}
@@ -108,8 +113,10 @@ public class FormData {
 					return "Harga harus berupa angka";
 				}
 			}else{
-				return "harga kosong";
+				return "Harga tidak boleh kosong";
 			}
+		}else{
+			return "Harga tidak boleh kosong";
 		}
 		
 		return "";

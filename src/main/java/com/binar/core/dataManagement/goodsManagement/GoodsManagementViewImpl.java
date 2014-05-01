@@ -7,6 +7,7 @@ import com.binar.entity.ReqPlanning;
 import com.binar.entity.enumeration.EnumStockStatus;
 import com.binar.generalFunction.GeneralFunction;
 import com.binar.generalFunction.TableFilter;
+import com.binar.generalFunction.TableFilter.TableFilterLabel;
 import com.binar.generalFunction.TextManipulator;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;
@@ -43,7 +44,7 @@ public class GoodsManagementViewImpl extends VerticalLayout
 	private Label labelFilter;
 	private TextField inputFilter;
 	private Label labelLegend;
-	private TableFilter filter;
+	private TableFilterLabel filter;
 	private TextManipulator text;
 	public GoodsManagementViewImpl(GeneralFunction function) {
 		this.function=function;
@@ -58,7 +59,7 @@ public class GoodsManagementViewImpl extends VerticalLayout
 		
 		labelLegend.setValue(legend);
 		
-		filter=function.getFilter("");
+		filter=function.getFilterLabel("");
 		inputFilter=new TextField(){
 			{
 				setImmediate(true);

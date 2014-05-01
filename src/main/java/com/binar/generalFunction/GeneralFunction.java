@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 
 import com.avaje.ebean.EbeanServer;
 import com.binar.database.GetEbeanServer;
+import com.binar.generalFunction.TableFilter.TableFilterLabel;
 import com.binar.view.DashboardView;
 import com.binar.view.DataManagementView;
 import com.binar.view.InventoryManagementView;
@@ -116,6 +117,10 @@ public class GeneralFunction {
 	//Alasan : Biar tiap tabel memiliki filter yang unik
 	public TableFilter getFilter(String regex){
 		return new TableFilter(regex);
+	}
+	public TableFilterLabel getFilterLabel(String regex){
+		TableFilterLabel tabel=getFilter(regex).new TableFilterLabel(regex);
+		return tabel;
 	}
 	public TextManipulator getTextManipulator(){
 		if(text==null){

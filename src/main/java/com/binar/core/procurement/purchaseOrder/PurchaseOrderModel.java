@@ -57,8 +57,8 @@ public class PurchaseOrderModel {
 				endDate=year.withDayOfYear(year.dayOfYear().getMaximumValue()).withHourOfDay(year.hourOfDay().getMaximumValue()).toDate();
 				System.out.println("Print " + startDate.toString() + " " +endDate.toString());
 			}else{
-				startDate=month.withDayOfMonth(month.dayOfMonth().getMinimumValue()).withYear(year.getYear()).toDate();	
-				endDate=month.withDayOfMonth(month.dayOfMonth().getMaximumValue()).withYear(year.getYear()).toDate();
+				startDate=month.withDayOfMonth(month.dayOfMonth().getMinimumValue()).withMillisOfDay(month.millisOfDay().getMinimumValue()).withYear(year.getYear()).toDate();	
+				endDate=month.withDayOfMonth(month.dayOfMonth().getMaximumValue()).withMillisOfDay(month.millisOfDay().getMaximumValue()).withYear(year.getYear()).toDate();
 			}
 			System.out.println("Month null" + endDate.toString()+" "+startDate.toString());
 			

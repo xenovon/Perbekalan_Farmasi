@@ -100,6 +100,7 @@ public class ReportRequirementResultView extends VerticalLayout implements Butto
 			{
 				addContainerProperty("Nama", String.class,null);
 				addContainerProperty("Satuan",String.class,null);
+				addContainerProperty("Asuransi",String.class,null);
 				addContainerProperty("HNA+PPN", String.class,null);
 				addContainerProperty("Kebutuhan", String.class,null);
 				addContainerProperty("Perkiraan Jumlah Harga", String.class,null);
@@ -174,6 +175,7 @@ public class ReportRequirementResultView extends VerticalLayout implements Butto
 			Supplier supplier=datum.getSupplierGoods().getSupplier();
 			item.getItemProperty("Nama").setValue(goods.getName());
 			item.getItemProperty("Satuan").setValue(goods.getUnit());
+			item.getItemProperty("Asuransi").setValue(goods.getInsurance().getName());
 			item.getItemProperty("HNA+PPN").setValue(text.doubleToRupiah(datum.getPriceEstimation()));
 			item.getItemProperty("Kebutuhan").setValue(text.intToAngka(datum.getQuantity()));
 			item.getItemProperty("Perkiraan Jumlah Harga").setValue(text.doubleToRupiah(datum.getPriceEstimationPPN()*datum.getQuantity()));

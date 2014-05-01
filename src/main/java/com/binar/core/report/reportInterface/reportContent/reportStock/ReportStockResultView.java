@@ -93,6 +93,7 @@ public class ReportStockResultView extends VerticalLayout implements Button.Clic
 			{
 				addContainerProperty("Nama", String.class,null);
 				addContainerProperty("Satuan",String.class,null);
+				addContainerProperty("Asuransi",String.class,null);
 				addContainerProperty("Stok", String.class,null);
 				addContainerProperty("Jumlah", String.class,null);
 			}
@@ -163,6 +164,7 @@ public class ReportStockResultView extends VerticalLayout implements Button.Clic
 
 			item.getItemProperty("Nama").setValue(datum.getKey().getName());
 			item.getItemProperty("Satuan").setValue(datum.getKey().getUnit());
+			item.getItemProperty("Asuransi").setValue(datum.getKey().getInsurance().getName());
 			item.getItemProperty("Stok").setValue(String.valueOf(datum.getValue()[0]));
 			item.getItemProperty("Jumlah").setValue(text.doubleToRupiah(datum.getValue()[1]));
 		}

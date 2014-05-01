@@ -92,6 +92,7 @@ public class ReportConsumptionResultView extends VerticalLayout implements Butto
 				addContainerProperty("No", Integer.class,null);
 				addContainerProperty("Nama", String.class,null);
 				addContainerProperty("Satuan",String.class,null);
+				addContainerProperty("Asuransi",String.class,null);
 				addContainerProperty("Jumlah Pengeluaran", Integer.class,null);
 			}
 		};
@@ -167,25 +168,12 @@ public class ReportConsumptionResultView extends VerticalLayout implements Butto
 
 		for(Map.Entry<Goods, Integer> datum:data.entrySet()){
 			i++;
-			if(idInsurance==datum.getKey().getInsurance().getIdInsurance()){
 				Item item=tableContainer.addItem(datum.getKey().getIdGoods());
 				item.getItemProperty("No").setValue(i);
 				item.getItemProperty("Nama").setValue(datum.getKey().getName());
 				item.getItemProperty("Satuan").setValue(datum.getKey().getUnit());
+				item.getItemProperty("Asuransi").setValue(datum.getKey().getInsurance().getName());
 				item.getItemProperty("Jumlah Pengeluaran").setValue(datum.getValue());				
-			}else{
-				Insurance insurance=datum.getKey().getInsurance();
-				
-				Item item=tableContainer.addItem(datum.getKey().getIdGoods()+""+insurance.getIdInsurance());
-				item.getItemProperty("Nama").setValue("Asuransi : "+insurance.getName());
-
-				Item item2=tableContainer.addItem(datum.getKey().getIdGoods());
-				item2.getItemProperty("No").setValue(i);
-				item2.getItemProperty("Nama").setValue(datum.getKey().getName());
-				item2.getItemProperty("Satuan").setValue(datum.getKey().getUnit());
-				item2.getItemProperty("Jumlah Pengeluaran").setValue(datum.getValue());					
-			}
-			idInsurance=datum.getKey().getInsurance().getIdInsurance();
 		}
 	}
 	public Map<String, Integer> filterData(Map<Goods, Integer> data){

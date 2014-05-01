@@ -264,19 +264,18 @@ public class ApprovalViewImpl extends VerticalLayout implements
 	Label labelInformation;
 	Label labelTimestamp;
 	Label labelPriceEstimation;	
+	Label labelDateAccepted;
+	Label labelPriceEstimationPPN;
 	Label labelComment;
+	Label labelTotalPrice;
 	Window windowDetail;
 	GridLayout layoutDetail;
 	
+	//menampilkan jendela untuk detail
 	public void showDetailWindow(ReqPlanning data){
-		
-		//menghapus semua window terlebih dahulu
-		for(Window window:this.getUI().getWindows()){
-			window.close();
-		}
 		if(layoutDetail==null){
 			//buat konten 
-			layoutDetail= new GridLayout(2,13){
+			layoutDetail= new GridLayout(2,16){
 				{
 					setSpacing(true);
 					setMargin(true);
@@ -287,11 +286,14 @@ public class ApprovalViewImpl extends VerticalLayout implements
 					addComponent(new Label("Periode"), 0,5);
 					addComponent(new Label("Kuantitas"), 0,6);
 					addComponent(new Label("Disetujui?"), 0, 7);
-					addComponent(new Label("Kuantitas Disetujui"), 0,8);
-					addComponent(new Label("Keterangan"), 0, 9);
-					addComponent(new Label("Waktu Input"), 0,10);
-					addComponent(new Label("Estimasi Harga"), 0, 11);
-					addComponent(new Label("Komentar"), 0, 12);
+					addComponent(new Label("Tanggal Disetujui"), 0,8);
+					addComponent(new Label("Kuantitas Disetujui"), 0,9);
+					addComponent(new Label("Keterangan"), 0, 10);
+					addComponent(new Label("Waktu Input"), 0,11);
+					addComponent(new Label("Estimasi Harga"), 0, 12);
+					addComponent(new Label("Estimasi Harga + PPN"), 0, 13);
+					addComponent(new Label("Total Harga Dengan PPN"), 0, 14);
+					addComponent(new Label("Komentar"), 0, 15);
 				}	
 			};
 			//instantiasi label
@@ -305,8 +307,12 @@ public class ApprovalViewImpl extends VerticalLayout implements
 			labelAcceptedQuantity =new Label();
 			labelInformation =new Label();
 			labelTimestamp =new Label();
+			labelDateAccepted=new Label();
 			labelPriceEstimation =new Label();	
+			labelPriceEstimationPPN =new Label();
+			labelTotalPrice=new Label();
 			labelComment=new Label("", ContentMode.HTML);
+
 			//add Component konten ke layout
 			layoutDetail.addComponent(labelId, 1,1);
 			layoutDetail.addComponent(labelName, 1,2);
@@ -315,11 +321,14 @@ public class ApprovalViewImpl extends VerticalLayout implements
 			layoutDetail.addComponent(labelPeriode, 1,5);
 			layoutDetail.addComponent(labelQuantity, 1,6);
 			layoutDetail.addComponent(labelIsAccepted, 1,7);
-			layoutDetail.addComponent(labelAcceptedQuantity, 1,8);
-			layoutDetail.addComponent(labelInformation, 1,9);
-			layoutDetail.addComponent(labelTimestamp, 1,10);
-			layoutDetail.addComponent(labelPriceEstimation, 1,11);
-			layoutDetail.addComponent(labelComment,1,12);
+			layoutDetail.addComponent(labelDateAccepted, 1,8);
+			layoutDetail.addComponent(labelAcceptedQuantity, 1,9);
+			layoutDetail.addComponent(labelInformation, 1,10);
+			layoutDetail.addComponent(labelTimestamp, 1,11);
+			layoutDetail.addComponent(labelPriceEstimation, 1,12);
+			layoutDetail.addComponent(labelPriceEstimationPPN, 1,13);
+			layoutDetail.addComponent(labelTotalPrice,1, 14);
+			layoutDetail.addComponent(labelComment, 1,15);
 		}
 		
 		setLabelData(data);
@@ -332,6 +341,7 @@ public class ApprovalViewImpl extends VerticalLayout implements
 			};
 		}
 		windowDetail.setContent(layoutDetail);
+		this.getUI().removeWindow(windowDetail);
 		this.getUI().addWindow(windowDetail);		
 	}
 	private void setLabelData(ReqPlanning data){
@@ -347,7 +357,10 @@ public class ApprovalViewImpl extends VerticalLayout implements
 			labelInformation.setValue(data.getInformation());
 			labelTimestamp.setValue(data.getTimestamp().toString());
 			labelPriceEstimation.setValue("Rp "+data.getPriceEstimation());
+			labelPriceEstimation.setValue(text.doubleToRupiah(data.getPriceEstimation()));
+			labelPriceEstimationPPN.setValue(text.doubleToRupiah(data.getPriceEstimationPPN()));
 			labelComment.setValue(accept.getCommentReqPlanningFormat(data.getIdReqPlanning()));
+			labelTotalPrice.setValue(text.doubleToRupiah(data.getPriceEstimationPPN()*data.getQuantity()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		

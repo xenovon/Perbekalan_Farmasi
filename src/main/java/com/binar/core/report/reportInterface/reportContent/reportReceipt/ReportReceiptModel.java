@@ -45,7 +45,7 @@ public class ReportReceiptModel extends Label {
 	private String userNum; //ok
 	private String timecycle; //ok
 	
-	private String html="<html> <head> <title> Laporan Penerimaan {{Timecycle}} </title> <style type='text/css'>body{width:750px;font-family:arial}h1.title{display:block;margin:0 auto;font-size:24px;text-align:center}h2.address{display:block;margin:0 auto;font-size:16px;font-weight:normal;text-align:center}.center{padding-bottom:20px;margin-bottom:30px}.kepada{width:400px;margin-top:30px;line-height:1.5em}.PONumber{float:right;top:40px}table{width:100%;border:1px solid black;border-collapse:collapse}table tr td,table tr th{border:1px solid black;padding:2px;margin:0}.footer{float:right;margin-top:60px}.tapak-asma{text-align:center}.kepala{margin-bottom:100px}</style> </head> <body> <div class='center'> <h1 class='title'>Laporan Penerimaan {{GoodsType}}</h1> <h2 class='address'> {{Periode}} </h2> </div> <table> <tr> <th>No</th> <th>Nama</th> <th>Sat</th> <th>PBF</th> <th>Jumlah</th> <th>Faktur</th> <th>Harga</th> <th>Ket</th> </tr> {{TableCode}} </table> <div class='footer'> {{City}} , {{ReportDate}} <div class='tapak-asma'> <div class='kepala'>Petugas Gudang Farmasi </br>RSUD Ajibarang</div> <div>{{UserName}}</div> <div>NIP: {{UserNum}}</div> </div> </div> </body> </html>";
+	private String html="<html> <head> <title> Laporan Penerimaan {{Timecycle}} </title> <style type='text/css'>body{width:750px;font-family:arial}h1.title{display:block;margin:0 auto;font-size:24px;text-align:center}h2.address{display:block;margin:0 auto;font-size:16px;font-weight:normal;text-align:center}.center{padding-bottom:20px;margin-bottom:30px}.kepada{width:400px;margin-top:30px;line-height:1.5em}.PONumber{float:right;top:40px}table{width:100%;border:1px solid black;border-collapse:collapse}table tr td,table tr th{border:1px solid black;padding:2px;margin:0}.footer{float:right;margin-top:60px}.tapak-asma{text-align:center}.kepala{margin-bottom:100px}</style> </head> <body> <div class='center'> <h1 class='title'>Laporan Penerimaan {{GoodsType}}</h1> <h2 class='address'> {{Periode}} </h2> </div> <table> <tr> <th>No</th> <th>Nama</th> <th>Sat</th> <th>Asuransi</th> <th>PBF</th> <th>Jumlah</th> <th>Faktur</th> <th>Harga</th> <th>Ket</th> </tr> {{TableCode}} </table> <div class='footer'> {{City}} , {{ReportDate}} <div class='tapak-asma'> <div class='kepala'>Petugas Gudang Farmasi </br>RSUD Ajibarang</div> <div>{{UserName}}</div> <div>NIP: {{UserNum}}</div> </div> </div> </body> </html>";
 	
 	public ReportReceiptModel(GeneralFunction function) {
 		this.function=function;
@@ -125,7 +125,7 @@ public class ReportReceiptModel extends Label {
 		
 		int i=0;
 		if(data.size()==0){
-			return "<tr><td style='text-align:center;font-style:italic;' colspan='8'>Data kosong</td></tr>";
+			return "<tr><td style='text-align:center;font-style:italic;' colspan='9'>Data kosong</td></tr>";
 		}
 		for(GoodsReception reception:data){
 			i++;
@@ -135,6 +135,7 @@ public class ReportReceiptModel extends Label {
 				returnValue=returnValue+"<td>"+i+"</td>";
 				returnValue=returnValue+"<td>"+goods.getName()+"</td>";
 				returnValue=returnValue+"<td>"+goods.getUnit()+"</td>";
+				returnValue=returnValue+"<td>"+goods.getInsurance().getName()+"</td>";
 				returnValue=returnValue+"<td>"+supplier.getSupplierName()+"</td>";
 				returnValue=returnValue+"<td>"+reception.getQuantityReceived()+"</td>";
 				returnValue=returnValue+"<td>"+reception.getInvoiceItem().getInvoice().getInvoiceNumber()+"</td>";

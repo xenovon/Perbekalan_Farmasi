@@ -103,6 +103,7 @@ public class ConsumptionListViewImpl extends VerticalLayout implements Consumpti
        container=new IndexedContainer(){
         	{ //inisialisasi 
         		addContainerProperty("Nama Barang", String.class, null);
+        		addContainerProperty("Asuransi", String.class, null);
         		addContainerProperty("Satuan", String.class, null);
         		addContainerProperty("Total Pengeluaran", String.class, null);
         		addContainerProperty("Operasi", Button.class, null);
@@ -256,6 +257,7 @@ public class ConsumptionListViewImpl extends VerticalLayout implements Consumpti
 			Item item = container.addItem(goods.getIdGoods()); //membuat item untuk diisi ke container
 			/* add data ke database */
 			item.getItemProperty("Nama Barang").setValue(goods.getName()); //mengeset nama barang
+			item.getItemProperty("Asuransi").setValue(goods.getInsurance().getName()); //mengeset nama barang
 			item.getItemProperty("Satuan").setValue(goods.getUnit());
 			item.getItemProperty("Total Pengeluaran").setValue(text.intToAngka(quantity));	
 			item.getItemProperty("Operasi").setValue(new Button(){ //mengeset operasi

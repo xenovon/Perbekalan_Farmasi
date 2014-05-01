@@ -49,7 +49,7 @@ public class ReportStockModel extends Label {
 	private AcceptancePyramid accept;
 	//Variabel untuk ditampilkan di surat pesanan
 		
-	private String html="<html><head><title>Laporan Stok Opname {{GoodsType}} </title> <style type='text/css'>body{width:750px;font-family:arial}h1.title{display:block;margin:0 auto;font-size:24px;text-align:center}h2.address{display:block;margin:0 auto;font-size:16px;font-weight:normal;text-align:center}.center{padding-bottom:20px;margin-bottom:30px}.kepada{width:400px;margin-top:30px;line-height:1.5em}.PONumber{float:right;top:40px}table{width:100%;border:1px solid black;border-collapse:collapse}table tr td,table tr th{border:1px solid black;padding:2px;margin:0}.footer{float:right;margin-top:60px}.tapak-asma{text-align:center}.kepala{margin-bottom:100px}.total{float:right}.container{width:100%;margin-top:10px;}</style> </head> <body> <div class='center'> <h1 class='title'>Laporan Stok Opname {{GoodsType}}</h1> <h2 class='address'> {{Periode}} </h2> </div> <table> <tr> <th>No</th> <th>Nama</th> <th>Satuan</th> <th>Stok</th> <th>Jumlah</th> </tr> {{TableCode}} </table> <div class='container'></div> </br> <div class='footer'> {{City}} , {{ReportDate}} <div class='tapak-asma'> <div class='kepala'>Petugas Gudang Farmasi </br>RSUD Ajibarang</div> <div>{{UserName}}</div> <div>NIP: {{UserNum}}</div> </div> </div> </body> </html>";
+	private String html="<html><head><title>Laporan Stok Opname {{GoodsType}} </title> <style type='text/css'>body{width:750px;font-family:arial}h1.title{display:block;margin:0 auto;font-size:24px;text-align:center}h2.address{display:block;margin:0 auto;font-size:16px;font-weight:normal;text-align:center}.center{padding-bottom:20px;margin-bottom:30px}.kepada{width:400px;margin-top:30px;line-height:1.5em}.PONumber{float:right;top:40px}table{width:100%;border:1px solid black;border-collapse:collapse}table tr td,table tr th{border:1px solid black;padding:2px;margin:0}.footer{float:right;margin-top:60px}.tapak-asma{text-align:center}.kepala{margin-bottom:100px}.total{float:right}.container{width:100%;margin-top:10px;}</style> </head> <body> <div class='center'> <h1 class='title'>Laporan Stok Opname {{GoodsType}}</h1> <h2 class='address'> {{Periode}} </h2> </div> <table> <tr> <th>No</th> <th>Nama</th> <th>Satuan</th><th>Asuransi</th> <th>Stok</th> <th>Jumlah</th> </tr> {{TableCode}} </table> <div class='container'></div> </br> <div class='footer'> {{City}} , {{ReportDate}} <div class='tapak-asma'> <div class='kepala'>Petugas Gudang Farmasi </br>RSUD Ajibarang</div> <div>{{UserName}}</div> <div>NIP: {{UserNum}}</div> </div> </div> </body> </html>";
 
 	public ReportStockModel(GeneralFunction function) {
 		this.function=function;
@@ -116,7 +116,7 @@ public class ReportStockModel extends Label {
 		
 		int i=0;
 		if(data.size()==0){
-			return "<tr><td style='text-align:center;font-style:italic;' colspan='4'>Data kosong</td></tr>";
+			return "<tr><td style='text-align:center;font-style:italic;' colspan='6'>Data kosong</td></tr>";
 		}
 		for(Map.Entry<Goods, Double[]> datum:data.entrySet()){
 			i++;
@@ -124,6 +124,7 @@ public class ReportStockModel extends Label {
 				returnValue=returnValue+"<td>"+i+"</td>";
 				returnValue=returnValue+"<td>"+datum.getKey().getName()+"</td>";
 				returnValue=returnValue+"<td>"+datum.getKey().getUnit()+"</td>";
+				returnValue=returnValue+"<td>"+datum.getKey().getInsurance().getName()+"</td>";
 				returnValue=returnValue+"<td>"+text.intToAngka(datum.getValue()[0].intValue())+"</td>";
 				returnValue=returnValue+"<td>"+text.doubleToRupiah(datum.getValue()[1])+"</td>";
 			returnValue=returnValue+"</tr>";

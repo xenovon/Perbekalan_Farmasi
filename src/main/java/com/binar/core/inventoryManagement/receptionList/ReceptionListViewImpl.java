@@ -123,6 +123,7 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
         container=new IndexedContainer(){
         	{
         		addContainerProperty("Nama Barang", String.class, null);
+        		addContainerProperty("Asuransi", String.class, null);
         		addContainerProperty("Satuan", String.class, null);
         		addContainerProperty("Total Penerimaan", String.class, null);
         		addContainerProperty("Operasi", Button.class, null);
@@ -277,6 +278,7 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 			Item item = container.addItem(goods.getIdGoods()); //membuat item untuk diisi ke container
 			/* add data ke database */
 			item.getItemProperty("Nama Barang").setValue(goods.getName()); //mengeset nama barang
+			item.getItemProperty("Asuransi").setValue(goods.getInsurance().getName()); //mengeset nama barang
 			item.getItemProperty("Satuan").setValue(goods.getUnit());
 			item.getItemProperty("Total Penerimaan").setValue(text.intToAngka(quantity));	
 			item.getItemProperty("Operasi").setValue(new Button(){ //mengeset operasi

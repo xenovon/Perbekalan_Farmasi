@@ -105,6 +105,7 @@ public class ReportProcurementResultView extends VerticalLayout implements Butto
 				addContainerProperty("Pemasok", String.class,null);
 				addContainerProperty("Produsen", String.class,null);
 				addContainerProperty("Nama Barang", String.class,null);
+				addContainerProperty("Asuransi", String.class,null);
 				addContainerProperty("Jumlah", String.class,null);
 			}
 		};
@@ -185,11 +186,13 @@ public class ReportProcurementResultView extends VerticalLayout implements Butto
 				for(PurchaseOrderItem purchaseOrderItem:entry.getValue()){
 					if(x==0){
 						item.getItemProperty("Nama Barang").setValue(purchaseOrderItem.getSupplierGoods().getGoods().getName());
+						item.getItemProperty("Asuransi").setValue(purchaseOrderItem.getSupplierGoods().getGoods().getInsurance().getName());
 						item.getItemProperty("Jumlah").setValue(function.getTextManipulator().intToAngka(purchaseOrderItem.getQuantity()));
 
 					}else{
 						item=tableContainer.addItem(entry.getKey().getIdPurchaseOrder()+"-"+purchaseOrderItem.getIdPurchaseOrderItem());
 						item.getItemProperty("Nama Barang").setValue(purchaseOrderItem.getSupplierGoods().getGoods().getName());
+						item.getItemProperty("Asuransi").setValue(purchaseOrderItem.getSupplierGoods().getGoods().getInsurance().getName());
 						item.getItemProperty("Jumlah").setValue(function.getTextManipulator().intToAngka(purchaseOrderItem.getQuantity()));
 					}
 					x++;

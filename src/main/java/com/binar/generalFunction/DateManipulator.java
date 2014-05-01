@@ -30,6 +30,9 @@ public class DateManipulator {
 			monthIndo="Februari";
 		}else if(month.equals("March")){
 			monthIndo="Maret";
+		}
+		else if(month.equals("May")){
+				monthIndo="Mei";
 		}else if(month.equals("June")){
 			monthIndo="Juni";
 		}else if(month.equals("July")){
@@ -65,6 +68,19 @@ public class DateManipulator {
 		}
 	}
 	
+	public String dateTimeToText(Date date){
+		String returnValue=dateToText(date,true);
+
+		if(format==null){
+			format=new SimpleDateFormat("hh:mm:ss");
+		}else{
+			format.applyPattern("hh:mm:ss");
+		}
+		returnValue=returnValue+" "+format.format(date);
+		return returnValue;
+		
+	
+	}
 	
 	//Untuk mengubah  format Januari-2013 menjadi Date
 	public DateTime parseDateMonth(String date){
@@ -116,6 +132,8 @@ public class DateManipulator {
 		DateManipulator x=new DateManipulator();
 		System.out.println(x.parseDateMonth("Desember-2014").toDate().toString());
 		System.out.println(x.dateToText(new Date(), true));
+		
+		System.out.println(x.dateTimeToText(DateTime.now().toDate()));
 	}
 	
 

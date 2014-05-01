@@ -15,6 +15,7 @@ import com.binar.entity.Goods;
 import com.binar.entity.ReqPlanning;
 import com.binar.entity.SupplierGoods;
 import com.binar.generalFunction.AcceptancePyramid;
+import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
 import com.binar.generalFunction.TableFilter;
 import com.binar.generalFunction.TextManipulator;
@@ -65,13 +66,14 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 	private TextField inputFilter;
 	private IndexedContainer tableContainer;
 	private GridLayout layoutDetail;
-	
+	private DateManipulator date;
 	private InputRequirementListener listener;
 	private AcceptancePyramid accept;
 	public InputRequirementPlanningViewImpl(GeneralFunction function){
 		this.generalFunction=function;
 		this.text=function.getTextManipulator();
 		this.accept=function.getAcceptancePyramid();
+		this.date=function.getDate();
 	}
 	//Table Filter
 	TableFilter filter;
@@ -127,6 +129,7 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
         		addContainerProperty("Kebutuhan",Integer.class, null);
         		addContainerProperty("Produsen",String.class, null);
         		addContainerProperty("Distributor",String.class, null);
+        		addContainerProperty("Asuransi",String.class, null);
         		addContainerProperty("Operasi", GridLayout.class, null);
         	}
         };
@@ -181,7 +184,7 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 		tableContainer.removeAllItems();
 		System.out.println(data.size());
 		if(data.size()==0){
-			Notification.show("Data kebutuhan kosong", Type.WARNING_MESSAGE);
+			Notification.show("Data rencana kebutuhan kosong", Type.WARNING_MESSAGE);
 			return false;
 		}
 		for(TableData datum:data){
@@ -192,6 +195,7 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 			item.getItemProperty("Kebutuhan").setValue(datum.getReq());
 			item.getItemProperty("Produsen").setValue(datum.getManufacturer());
 			item.getItemProperty("Distributor").setValue(datum.getSupp());
+			item.getItemProperty("Asuransi").setValue(datum.getInsurance());
 			item.getItemProperty("Operasi").setValue(new GridLayout(3,1){
 				{
 					//jika sudah diaccept, maka button ubah  tidak ditampilkan
@@ -260,13 +264,13 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 	Label labelPriceEstimation;	
 	Label labelPriceEstimationPPN;	
 	Label labelComment;
-	
+	Label labelTotalPrice;
 	Window windowDetail;
 	//menampilkan jendela untuk detail
 	public void showDetailWindow(ReqPlanning data){
 		if(layoutDetail==null){
 			//buat konten 
-			layoutDetail= new GridLayout(2,14){
+			layoutDetail= new GridLayout(2,15){
 				{
 					setSpacing(true);
 					setMargin(true);
@@ -282,7 +286,8 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 					addComponent(new Label("Waktu Input"), 0,10);
 					addComponent(new Label("Estimasi Harga"), 0, 11);
 					addComponent(new Label("Estimasi Harga + PPN"), 0, 12);
-					addComponent(new Label("Komentar"), 0, 13);
+					addComponent(new Label("Total Harga Dengan PPN"), 0, 13);
+					addComponent(new Label("Komentar"), 0, 14);
 				}	
 			};
 			//instantiasi label
@@ -299,7 +304,7 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 			labelPriceEstimation =new Label();	
 			labelPriceEstimationPPN=new Label();
 			labelComment=new Label("", ContentMode.HTML);
-			
+			labelTotalPrice=new Label();
 			//add Component konten ke layout
 			layoutDetail.addComponent(labelId, 1,1);
 			layoutDetail.addComponent(labelName, 1,2);
@@ -313,7 +318,8 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 			layoutDetail.addComponent(labelTimestamp, 1,10);
 			layoutDetail.addComponent(labelPriceEstimation, 1,11);
 			layoutDetail.addComponent(labelPriceEstimationPPN, 1,12);
-			layoutDetail.addComponent(labelComment, 1,13);
+			layoutDetail.addComponent(labelTotalPrice, 1,13);
+			layoutDetail.addComponent(labelComment, 1,14);
 		}
 		
 		setLabelData(data);
@@ -349,10 +355,12 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
 			labelIsAccepted.setValue(accept.acceptedBy(data.getAcceptance()));
 			labelAcceptedQuantity.setValue(String.valueOf(data.getAcceptedQuantity()));
 			labelInformation.setValue(data.getInformation());
-			labelTimestamp.setValue(data.getTimestamp().toString());
+			labelTimestamp.setValue(date.dateTimeToText(data.getTimestamp()));
 			labelPriceEstimation.setValue(text.doubleToRupiah(data.getPriceEstimation()));
 			labelPriceEstimationPPN.setValue(text.doubleToRupiah(data.getPriceEstimationPPN()));
 			labelComment.setValue(accept.getCommentReqPlanningFormat(data.getIdReqPlanning()));
+			labelTotalPrice.setValue(text.doubleToRupiah(data.getPriceEstimationPPN()*data.getQuantity()));
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}		

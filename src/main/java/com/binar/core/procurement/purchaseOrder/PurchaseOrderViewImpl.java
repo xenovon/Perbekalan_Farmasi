@@ -83,9 +83,11 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 		selectMonth.setImmediate(true);
 
 		
+		String selectedValue=monthList.get(DateTime.now().getMonthOfYear());
+		
 		selectYear.setNullSelectionAllowed(false);
 		selectMonth.setNullSelectionAllowed(false);
-		selectMonth.setValue(monthList.get(Calendar.getInstance().get(Calendar.MONTH)));
+		selectMonth.setValue(selectedValue);
 		selectYear.setValue(yearList.get(2));
 		for(String month:monthList){
 			System.out.println("Bulan "+month);
@@ -140,6 +142,7 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 				addContainerProperty("Nomor Surat", String.class,null);
 				addContainerProperty("Nama", Label.class,null);
 				addContainerProperty("Distributor",String.class,null);
+				addContainerProperty("Asuransi",String.class,null);
 				addContainerProperty("Jenis Surat", String.class,null);
 				addContainerProperty("Tanggal",String.class,null);
 				addContainerProperty("Jumlah Barang",Integer.class,null);
@@ -204,6 +207,7 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 			item.getItemProperty("Nomor Surat").setValue(datum.getPurchaseOrderNumber());
 			item.getItemProperty("Nama").setValue(new Label(datum.getPurchaseOrderName()){{setWidth("200px");}});
 			item.getItemProperty("Distributor").setValue(datum.getPurchaseOrderItem().get(0).getSupplierGoods().getSupplier().getSupplierName());
+			item.getItemProperty("Asuransi").setValue(datum.getPurchaseOrderItem().get(0).getSupplierGoods().getGoods().getInsurance().getName());
 			item.getItemProperty("Jenis Surat").setValue(datum.getPurchaseOrderType().toString());
 			item.getItemProperty("Tanggal").setValue(date.dateToText(datum.getDate(), true));
 			item.getItemProperty("Jumlah Barang").setValue(datum.getPurchaseOrderItem().size());

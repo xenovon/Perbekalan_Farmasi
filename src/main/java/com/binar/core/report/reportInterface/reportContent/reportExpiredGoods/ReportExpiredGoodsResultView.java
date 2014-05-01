@@ -102,6 +102,7 @@ public class ReportExpiredGoodsResultView extends VerticalLayout implements Butt
 			{
 				addContainerProperty("Nama", String.class,null);
 				addContainerProperty("Satuan",String.class,null);
+				addContainerProperty("Asuransi",String.class,null);
 				addContainerProperty("Jumlah", String.class,null);
 				addContainerProperty("Harga", String.class,null);
 				addContainerProperty("Total Harga", String.class,null);
@@ -184,6 +185,7 @@ public class ReportExpiredGoodsResultView extends VerticalLayout implements Butt
 
 			item.getItemProperty("Nama").setValue(datum.getGoods().getName());
 			item.getItemProperty("Satuan").setValue(datum.getGoods().getUnit());
+			item.getItemProperty("Asuransi").setValue(datum.getGoods().getInsurance().getName());
 			item.getItemProperty("Jumlah").setValue(function.getTextManipulator().intToAngka(datum.getQuantity()));
 			item.getItemProperty("Harga").setValue(function.getTextManipulator().doubleToRupiah(datum.getPrice()));
 			item.getItemProperty("Total Harga").setValue(function.getTextManipulator().doubleToRupiah((datum.getPrice()*datum.getQuantity())));

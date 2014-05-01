@@ -8,6 +8,7 @@ public class TableData {
 	private String manufacturer;
 	private String supp;
 	private int acceptance;
+	private String insurance;
 	
 	protected int getAcceptance(){
 		return acceptance;
@@ -44,6 +45,12 @@ public class TableData {
 	}
 	protected void setSupp(String supp) {
 		this.supp = supp;
+	}
+	public String getInsurance() {
+		return insurance;
+	}
+	public void setInsurance(String insurance) {
+		this.insurance = insurance;
 	}
 	
 }

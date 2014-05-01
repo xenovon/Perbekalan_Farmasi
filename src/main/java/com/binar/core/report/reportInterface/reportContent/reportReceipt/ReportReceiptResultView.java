@@ -95,6 +95,7 @@ public class ReportReceiptResultView extends VerticalLayout implements Button.Cl
 			{
 				addContainerProperty("Nama", String.class,null);
 				addContainerProperty("Satuan",String.class,null);
+				addContainerProperty("Asuransi",String.class,null);
 				addContainerProperty("PBF", String.class,null);
 				addContainerProperty("Jumlah", String.class,null);
 				addContainerProperty("Faktur", String.class,null);
@@ -181,6 +182,7 @@ public class ReportReceiptResultView extends VerticalLayout implements Button.Cl
 
 			item.getItemProperty("Nama").setValue(goods.getName());
 			item.getItemProperty("Satuan").setValue(goods.getUnit());
+			item.getItemProperty("Satuan").setValue(goods.getInsurance().getName());
 			item.getItemProperty("PBF").setValue(supplier.getSupplierName());
 			item.getItemProperty("Jumlah").setValue(String.valueOf(datum.getQuantityReceived()));
 			item.getItemProperty("Faktur").setValue(datum.getInvoiceItem().getInvoice().getInvoiceNumber());

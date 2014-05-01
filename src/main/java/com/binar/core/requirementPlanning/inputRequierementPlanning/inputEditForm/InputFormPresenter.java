@@ -107,6 +107,7 @@ public class InputFormPresenter implements PresenterInterface, InputFormView.Inp
 							for(Window w:list){
 								view.getUI().removeWindow(w);
 								view.resetForm();
+								view.hideAllError();
 							}
 						}
 					}, view.getUI());

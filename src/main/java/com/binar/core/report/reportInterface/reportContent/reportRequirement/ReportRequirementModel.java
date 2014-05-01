@@ -43,7 +43,7 @@ public class ReportRequirementModel extends Label{
 	private AcceptancePyramid accept;
 	//Variabel untuk ditampilkan di surat pesanan
 		
-	private String html="<html> <head> <title> Daftar Kebutuhan {{GoodsType}} </title> <style type='text/css'>body{width:750px;font-family:arial}h1.title{display:block;margin:0 auto;font-size:24px;text-align:center}h2.address{display:block;margin:0 auto;font-size:16px;font-weight:normal;text-align:center}.center{padding-bottom:20px;margin-bottom:30px}.kepada{width:400px;margin-top:30px;line-height:1.5em}.PONumber{float:right;top:40px}table{width:100%;border:1px solid black;border-collapse:collapse}table tr td,table tr th{border:1px solid black;padding:2px;margin:0}.footer{float:right;margin-top:60px}.tapak-asma{text-align:center}.kepala{margin-bottom:100px}</style> </head> <body> <div class='center'> <h1 class='title'>Daftar Kebutuhan {{GoodsType}}</h1> <h2 class='address'> {{Periode}} </h2> </div> <table> <tr> <th>No</th> <th>Nama</th> <th>Satuan</th> <th>HNA + PPN %</th> <th>Kebutuhan</th> <th>Perkiraan Jumlah Harga</th> <th>Produsen</th> <th>Distributor</th> <th>Keterangan</th> </tr> {{TableCode}} </table> <div class='footer'> {{City}} , {{ReportDate}} </br> <div class='tapak-asma'> <div class='kepala'>Disusun Oleh, </br>Petugas Gudang Farmasi </br>RSUD Ajibarang</div> <div>{{UserName}}</div> <div>NIP: {{UserNum}}</div> </div> </div> </body> </html>";
+	private String html="<html> <head> <title> Daftar Kebutuhan {{GoodsType}} </title> <style type='text/css'>body{width:750px;font-family:arial}h1.title{display:block;margin:0 auto;font-size:24px;text-align:center}h2.address{display:block;margin:0 auto;font-size:16px;font-weight:normal;text-align:center}.center{padding-bottom:20px;margin-bottom:30px}.kepada{width:400px;margin-top:30px;line-height:1.5em}.PONumber{float:right;top:40px}table{width:100%;border:1px solid black;border-collapse:collapse}table tr td,table tr th{border:1px solid black;padding:2px;margin:0}.footer{float:right;margin-top:60px}.tapak-asma{text-align:center}.kepala{margin-bottom:100px}</style> </head> <body> <div class='center'> <h1 class='title'>Daftar Kebutuhan {{GoodsType}}</h1> <h2 class='address'> {{Periode}} </h2> </div> <table> <tr> <th>No</th> <th>Nama</th> <th>Satuan</th> <th>Asuransi</th> <th>HNA + PPN %</th> <th>Kebutuhan</th> <th>Perkiraan Jumlah Harga</th> <th>Produsen</th> <th>Distributor</th> <th>Keterangan</th> </tr> {{TableCode}} </table> <div class='footer'> {{City}} , {{ReportDate}} </br> <div class='tapak-asma'> <div class='kepala'>Disusun Oleh, </br>Petugas Gudang Farmasi </br>RSUD Ajibarang</div> <div>{{UserName}}</div> <div>NIP: {{UserNum}}</div> </div> </div> </body> </html>";
 
 	public ReportRequirementModel(GeneralFunction function) {
 		this.function=function;
@@ -103,7 +103,7 @@ public class ReportRequirementModel extends Label{
 		
 		int i=0;
 		if(data.size()==0){
-			return "<tr><td style='text-align:center;font-style:italic;' colspan='9'>Data kosong</td></tr>";
+			return "<tr><td style='text-align:center;font-style:italic;' colspan='10'>Data kosong</td></tr>";
 		}
 		for(ReqPlanning datum:data){
 			i++;
@@ -111,6 +111,7 @@ public class ReportRequirementModel extends Label{
 				returnValue=returnValue+"<td>"+i+"</td>";
 				returnValue=returnValue+"<td>"+datum.getSupplierGoods().getGoods().getName()+"</td>";
 				returnValue=returnValue+"<td>"+datum.getSupplierGoods().getGoods().getUnit()+"</td>";
+				returnValue=returnValue+"<td>"+datum.getSupplierGoods().getGoods().getInsurance().getName()+"</td>";
 				returnValue=returnValue+"<td>"+text.doubleToRupiah(datum.getPriceEstimation())+"</td>";   //ERROR
 				returnValue=returnValue+"<td>"+text.intToAngka(datum.getQuantity())+"</td>";
 				returnValue=returnValue+"<td>"+text.doubleToRupiah(datum.getPriceEstimationPPN()*datum.getQuantity())+"</td>";
