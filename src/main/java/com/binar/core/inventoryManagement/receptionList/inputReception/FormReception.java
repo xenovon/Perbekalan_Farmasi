@@ -109,19 +109,19 @@ public class FormReception {
 		}
 	}
 
-	protected Integer getInvoiceItemId() {
+	public Integer getInvoiceItemId() {
 		return invoiceItemId;
 	}
-	protected void setInvoiceItemId(Integer invoiceItemId) {
+	public void setInvoiceItemId(Integer invoiceItemId) {
 		this.invoiceItemId = invoiceItemId;
 	}
-	protected String getQuantity() {
+	public String getQuantity() {
 		return quantity;
 	}	
-	protected Integer getQuantityInt() {
+	public Integer getQuantityInt() {
 		return Integer.parseInt(quantity);
 	}
-	protected void setQuantity(String quantity) {
+	public void setQuantity(String quantity) {
 		this.quantity = quantity;
 	}
 	
@@ -133,11 +133,11 @@ public class FormReception {
 		this.receptionDate = receptionDate;
 	}
 
-	protected String getInformation() {
+	public String getInformation() {
 		return information;
 	}
 	
-	protected void setInformation(String information) {
+	public void setInformation(String information) {
 		this.information = information;
 	}
 	

@@ -14,6 +14,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.RowHeaderMode;
@@ -37,6 +38,7 @@ public class PpkExpiredGoodsNonAcceptedViewImpl  extends Panel implements PpkExp
 	private GeneralFunction function;
 	private DateManipulator date;
 	private TextManipulator text;
+	private Label labelEmpty;
 	public PpkExpiredGoodsNonAcceptedViewImpl(GeneralFunction function) {
 		this.function=function;
 		this.date=function.getDate();
@@ -67,7 +69,7 @@ public class PpkExpiredGoodsNonAcceptedViewImpl  extends Panel implements PpkExp
 		
 		buttonRefresh=new Button("Refresh");
 		buttonRefresh.addClickListener(this);
-
+		labelEmpty =new Label();
 		construct(month);
 	}
 
@@ -87,6 +89,7 @@ public class PpkExpiredGoodsNonAcceptedViewImpl  extends Panel implements PpkExp
 			{
 				setSpacing(true);
 				setMargin(true);
+				addComponent(labelEmpty);
 				addComponent(table);
 				addComponent(layout);
 			}
@@ -94,6 +97,14 @@ public class PpkExpiredGoodsNonAcceptedViewImpl  extends Panel implements PpkExp
 	}
 	@Override
 	public void updateTable(List<DeletedGoods> data) {
+		if(data.size()==0){
+			labelEmpty.setVisible(true);
+			table.setVisible(false);
+			labelEmpty.setValue("Tidak ada barang kadaluarsa belum disetujui");
+		}else{
+			labelEmpty.setVisible(false);
+			table.setVisible(true);
+		}
 		tableContainer.removeAllItems();
 		System.out.println(data.size());
 

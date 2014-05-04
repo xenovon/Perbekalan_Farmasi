@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.binar.core.report.reportInterface.reportContent.ReportContentView.ReportType;
 import com.binar.core.report.reportInterface.reportContent.ReportData.PeriodeType;
+import com.binar.core.report.reportInterface.reportContent.ReportData.ReportAcceptance;
 import com.binar.generalFunction.GeneralFunction;
 import com.vaadin.data.Item;
 import com.vaadin.server.VaadinRequest;
@@ -202,10 +203,24 @@ public class ReportParameter {
 	}
 
 	private Map<String, String> processRequirement(ReportType reportType, ReportData reportData){
-		return processProcurement(reportType, reportData);
+		Map<String, String> parameter= processProcurement(reportType, reportData);
+		parameter.put(ACCEPTANCE, reportData.getAccept().toString());
+		return parameter;
+
 	}
 	private ReportData processRequirement(VaadinRequest request){
-		return processProcurement(request);
+	
+		ReportData data= processProcurement(request);
+		try{
+			String acceptance=request.getParameter(ACCEPTANCE);
+			ReportAcceptance accept=ReportAcceptance.valueOf(acceptance);
+			data.setAccept(accept);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return data;
+		
+
 	}
 
 	private Map<String, String> processStock(ReportType reportType, ReportData reportData){

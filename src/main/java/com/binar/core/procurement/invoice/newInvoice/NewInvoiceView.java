@@ -60,13 +60,14 @@ public interface NewInvoiceView {
 		public List<String> validate(){
 			
 			List<String> error=new ArrayList<String>();
-			if(dueDate==null){
+			if(dueDate==null){  
 				error.add("Format tanggal salah");
 			}
 			if(invoiceDate==null){
 				error.add("Format tanggal salah");
 			}
-			if(invoiceNumber==null){
+			
+			if(invoiceNumber==null || invoiceNumber.equals("")){
 				error.add("Nomor faktur tidak boleh kosong");
 			}
 			try {
@@ -138,6 +139,7 @@ public interface NewInvoiceView {
 		private boolean isPPN=false;
 		private String totalPrice="0";
 		private PurchaseOrderItem purchaseOrderItem;
+		private boolean checkSaveReceipt;
 		
 		public int getIdInvoiceItem() {
 			return idInvoiceItem;
@@ -148,6 +150,9 @@ public interface NewInvoiceView {
 		public List<String> validate(){
 			List<String> data=new ArrayList<String>();
 			data.add("<b>Pesan Untuk obat "+purchaseOrderItem.getSupplierGoods().getGoods().getName()+"</b>");
+			if(batch==null || batch.equals("")){
+				data.add("Batch Tidak Boleh Kosong");
+			}
 			if(expiredDate==null){
 				data.add("Format tanggal salah");
 			}
@@ -279,6 +284,12 @@ public interface NewInvoiceView {
 		}
 		public void setTotalPrice(String totalPrice) {
 			this.totalPrice = totalPrice;
+		}
+		public void setCheckSaveReceipt(boolean checkSaveReceipt) {
+			this.checkSaveReceipt = checkSaveReceipt;
+		}
+		public boolean isCheckSaveReceipt() {
+			return checkSaveReceipt;
 		}
 		
 	}

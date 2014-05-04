@@ -56,9 +56,9 @@ public class FarmationExpiredGoodsStatusViewImpl  extends Panel implements Farma
 			{
 				addContainerProperty("Tanggal Pengajuan", String.class,null);
 				addContainerProperty("Nama Barang", String.class,null);
+				addContainerProperty("Jumlah",String.class,null);
 				addContainerProperty("Satuan",String.class,null);
 				addContainerProperty("Status", String.class,null);
-				addContainerProperty("Jumlah",String.class,null);
 			}
 		};
 		table.setContainerDataSource(tableContainer);

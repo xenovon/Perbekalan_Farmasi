@@ -68,7 +68,7 @@ public class EditInvoiceViewImpl extends VerticalLayout implements EditInvoiceVi
 				totalPrice.addValueChangeListener(valueListener);
 		
 			title=new Label("<h3>Isi faktur untuk barang "+goodsName+"</h3>", ContentMode.HTML);
-			inputBatch=new TextField("Batch");
+			inputBatch=new TextField("Batch *)");
 				inputBatch.setImmediate(true);
 			inputDiscount =new TextField("Diskon");
 				inputDiscount.setImmediate(true);
@@ -239,7 +239,7 @@ public class EditInvoiceViewImpl extends VerticalLayout implements EditInvoiceVi
 	public void generateInvoiceView(Invoice data) {
 		this.removeAllComponents();
 		if(invoiceFormLayout==null){
-			inputInvoiceNumber =new TextField("Nomor Faktur"){
+			inputInvoiceNumber =new TextField("Nomor Faktur *)"){
 				{
 					setImmediate(true);
 				}

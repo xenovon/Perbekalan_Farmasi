@@ -133,7 +133,8 @@ public class InputFormModel {
 			}
 			//mulai insert requirement planning
 			ReqPlanning reqPlanning=new ReqPlanning();
-			reqPlanning.setAcceptance(0);;
+			reqPlanning.setAcceptance(0);
+			reqPlanning.setComment("init Value");
 			reqPlanning.setAcceptedQuantity(0);
 			reqPlanning.setInformation(data.getInformation());
 			reqPlanning.setPeriod(function.getDate().parseDateMonth(data.getPeriode()).toDate());

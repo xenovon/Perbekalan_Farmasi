@@ -14,6 +14,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.RowHeaderMode;
@@ -26,6 +27,7 @@ public class SupportRequirementNonApprovedViewImpl  extends Panel implements Sup
 
  */
 	private Table table;
+	private Label labelEmpty;
 	private IndexedContainer tableContainer;
 	private Button buttonRefresh;
 	private Button buttonGo;
@@ -51,8 +53,8 @@ public class SupportRequirementNonApprovedViewImpl  extends Panel implements Sup
 			{
 				addContainerProperty("Tanggal Pengajuan", String.class,null);
 				addContainerProperty("Nama Barang",String.class,null);
-				addContainerProperty("Satuan", String.class,null);
 				addContainerProperty("Jumlah",String.class,null);
+				addContainerProperty("Satuan", String.class,null);
 			}
 		};
 		table.setContainerDataSource(tableContainer);
@@ -61,7 +63,7 @@ public class SupportRequirementNonApprovedViewImpl  extends Panel implements Sup
 		
 		buttonRefresh=new Button("Refresh");
 		buttonRefresh.addClickListener(this);
-
+		labelEmpty=new Label();
 		construct();
 	}
 
@@ -81,6 +83,7 @@ public class SupportRequirementNonApprovedViewImpl  extends Panel implements Sup
 			{
 				setSpacing(true);
 				setMargin(true);
+				addComponent(labelEmpty);
 				addComponent(table);
 				addComponent(layout);
 			}
@@ -90,17 +93,26 @@ public class SupportRequirementNonApprovedViewImpl  extends Panel implements Sup
 
 	@Override
 	public void updateTable(List<ReqPlanning> data) {
-		tableContainer.removeAllItems();
-		System.out.println(data.size());
+		if(data.size()==0){
+			labelEmpty.setVisible(true);
+			labelEmpty.setValue("Data rencana kebutuhan belum tersedia");
+			table.setVisible(false);
+		}else{
+			labelEmpty.setVisible(false);
+			table.setVisible(true);
+			tableContainer.removeAllItems();
+			System.out.println(data.size());
 
-		for(ReqPlanning datum:data){
+			for(ReqPlanning datum:data){
 
 
-			Item item=tableContainer.addItem(datum.getIdReqPlanning());
-			item.getItemProperty("Tanggal Pengajuan").setValue(date.dateToText(datum.getTimestamp(), true));
-			item.getItemProperty("Nama Barang").setValue(datum.getSupplierGoods().getGoods().getName());
-			item.getItemProperty("Satuan").setValue(datum.getSupplierGoods().getGoods().getUnit());
-			item.getItemProperty("Jumlah").setValue(text.intToAngka(datum.getQuantity()));
+				Item item=tableContainer.addItem(datum.getIdReqPlanning());
+				item.getItemProperty("Tanggal Pengajuan").setValue(date.dateToText(datum.getTimestamp(), true));
+				item.getItemProperty("Nama Barang").setValue(datum.getSupplierGoods().getGoods().getName());
+				item.getItemProperty("Satuan").setValue(datum.getSupplierGoods().getGoods().getUnit());
+				item.getItemProperty("Jumlah").setValue(text.intToAngka(datum.getQuantity()));
+			}
+			
 		}
 	}
 	private SupportRequirementNonApprovedListener listener;

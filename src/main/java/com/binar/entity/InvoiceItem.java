@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="invoice_item")
@@ -38,6 +39,9 @@ public class InvoiceItem {
 	//Khususnya terkait dengan diskon, potongan, PPN, dll
 	//Item ini bisa di override di input 
 	private double totalPrice;
+	
+	@Transient
+	private boolean saveToReceipt;
 	
 	public double getTotalPrice() {
 		return totalPrice;
@@ -100,7 +104,13 @@ public class InvoiceItem {
 	public Date getExpiredDate() {
 		return expiredDate;
 	}
+	public boolean isSaveToReceipt() {
+		return saveToReceipt;
+	}
 	
+	public void setSaveToReceipt(boolean saveToReceipt) {
+		this.saveToReceipt = saveToReceipt;
+	}
 	
 	
 }	

@@ -197,7 +197,8 @@ Button.ClickListener, ValueChangeListener {
 		this.inputGoodsQuantity.setValue("");
 		this.inputInformation.setValue("");
 		inputGoodsQuantity.setEnabled(true);
-		
+		inputGoodsSelect.removeAllItems();
+		inputInvoiceItemSelect.removeAllItems();
 		inputExpiredDate.setValue(DateTime.now().withYear(DateTime.now().getYear()+4).toDate());
 		inputReceptionDate.setValue(DateTime.now().toDate());
 		DateTime defaultValue=new DateTime().now();

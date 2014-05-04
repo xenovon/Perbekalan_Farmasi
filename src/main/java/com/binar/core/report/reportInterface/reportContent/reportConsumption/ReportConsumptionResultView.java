@@ -178,6 +178,7 @@ public class ReportConsumptionResultView extends VerticalLayout implements Butto
 	}
 	public Map<String, Integer> filterData(Map<Goods, Integer> data){
 		Map<String, Integer> returnValue=new HashMap<String, Integer>();
+		System.out.println(data.size()+" Input Size");
 		
 		//Urutkan dari besar ke kecil
 		data=FarmationGoodsWithIncreasingTrendModel.MapUtil.sortByValue(data);
@@ -189,6 +190,7 @@ public class ReportConsumptionResultView extends VerticalLayout implements Butto
 			returnValue.put(entry.getKey().getName(), entry.getValue());
 			i++;			
 		}
+		System.out.println(returnValue.size()+" Return Value Size");
 		return returnValue;
 	}
 	public DCharts generateChartData(Map<Goods, Integer> data){

@@ -111,7 +111,7 @@ public class ReceptionListPresenter implements ReceptionListListener {
 		}
 		view.updateTableDataByDate(dataTableByDate);
 		try {
-			List<GoodsReception> data=model.getReceptionsByDate(this.currentDate);
+			List<GoodsReception> data=model.getReceptionsByDate(date);
 			view.setLabelDataByDate(data, withEditReceipt);
 		} catch (Exception e) {
 			e.printStackTrace();

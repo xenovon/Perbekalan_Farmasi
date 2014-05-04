@@ -184,6 +184,7 @@ public class NewInvoiceViewImpl extends Window implements NewInvoiceView, ValueC
 		private DateField expiredDate;
 		private TextField totalPrice;
 		private PurchaseOrderItem purchaseOrderItem;
+		private CheckBox checkSaveReceipt;
 		
 		GeneralFunction function;
 		NewInvoiceListener listener;
@@ -200,7 +201,7 @@ public class NewInvoiceViewImpl extends Window implements NewInvoiceView, ValueC
 				totalPrice.addValueChangeListener(valueListener);
 		
 			title=new Label("<h3>Isi faktur untuk barang "+goodsName+"</h3>", ContentMode.HTML);
-			inputBatch=new TextField("Batch");
+			inputBatch=new TextField("Batch *)");
 				inputBatch.setImmediate(true);
 			inputDiscount =new TextField("Diskon");
 				inputDiscount.setImmediate(true);
@@ -228,12 +229,16 @@ public class NewInvoiceViewImpl extends Window implements NewInvoiceView, ValueC
 				isPPN.setValue(true);
 				isPPN.addValueChangeListener(this);
 				isPPN.addValueChangeListener(valueListener);
+			checkSaveReceipt =new CheckBox("Simpan Data Ke Daftar Penerimaan");
+			checkSaveReceipt.setValue(false);
+			checkSaveReceipt.addValueChangeListener(this);
+			checkSaveReceipt.addValueChangeListener(valueListener);
 				
 			construct();
 		}
 		private void construct(){
 			this.addComponents(title, inputBatch,inputDiscount,
-					inputPrice, expiredDate, inputQuantity, isPPN, totalPrice);
+					inputPrice, expiredDate, inputQuantity, isPPN, totalPrice, checkSaveReceipt);
 		}
 		@Override
 		public void valueChange(ValueChangeEvent event) {
@@ -254,6 +259,7 @@ public class NewInvoiceViewImpl extends Window implements NewInvoiceView, ValueC
 			returnValue.setQuantity(inputQuantity.getValue());
 			returnValue.setTotalPrice(totalPrice.getValue());
 			returnValue.setExpiredDate(expiredDate.getValue());
+			returnValue.setCheckSaveReceipt(checkSaveReceipt.getValue());
 			return returnValue;
 		}
 	}
@@ -273,7 +279,7 @@ public class NewInvoiceViewImpl extends Window implements NewInvoiceView, ValueC
 	public void generateInvoiceView(PurchaseOrder data) {
 		viewInvoice.removeAllComponents();
 		if(invoiceFormLayout==null){
-			inputInvoiceNumber =new TextField("Nomor Faktur"){
+			inputInvoiceNumber =new TextField("Nomor Faktur *)"){
 				{
 					setImmediate(true);
 					addValueChangeListener(new ValueChangeListener() {
@@ -306,7 +312,6 @@ public class NewInvoiceViewImpl extends Window implements NewInvoiceView, ValueC
 					setImmediate(true);
 					setValue(new Date());
 					addValueChangeListener(new ValueChangeListener() {
-
 						@Override
 						public void valueChange(
 								com.vaadin.data.Property.ValueChangeEvent event) {

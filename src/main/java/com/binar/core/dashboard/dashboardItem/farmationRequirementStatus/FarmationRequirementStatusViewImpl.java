@@ -60,8 +60,8 @@ public class FarmationRequirementStatusViewImpl  extends Panel implements Farmat
 				addContainerProperty("Nama Barang", String.class,null);
 				addContainerProperty("Satuan",String.class,null);
 				addContainerProperty("Jumlah Pengajuan", String.class,null);
-				addContainerProperty("Status",String.class,null);
 				addContainerProperty("Jumlah disetujui",String.class,null);
+				addContainerProperty("Status",String.class,null);
 			}
 		};
 		table.setContainerDataSource(tableContainer);

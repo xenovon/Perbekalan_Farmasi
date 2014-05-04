@@ -9,8 +9,12 @@ import javax.persistence.OptimisticLockException;
 import org.joda.time.DateTime;
 
 import com.avaje.ebean.EbeanServer;
+import com.binar.core.inventoryManagement.receptionList.inputReception.FormReception;
+import com.binar.core.inventoryManagement.receptionList.inputReception.InputReceptionModel;
 import com.binar.core.procurement.invoice.newInvoice.NewInvoiceView.FormData;
 import com.binar.core.procurement.invoice.newInvoice.NewInvoiceView.InvoiceItem;
+import com.binar.entity.Goods;
+import com.binar.entity.GoodsReception;
 import com.binar.entity.Invoice;
 import com.binar.entity.PurchaseOrder;
 import com.binar.entity.PurchaseOrderItem;
@@ -25,9 +29,11 @@ public class NewInvoiceModel {
 	EbeanServer server;
 	GetSetting setting;
 	DateManipulator date;
+	InputReceptionModel receptionModel;
 	
 	public NewInvoiceModel(GeneralFunction function) {
 		this.function=function;
+		receptionModel=new InputReceptionModel(function);
 		this.server=function.getServer();
 		this.setting=function.getSetting();
 		this.date=function.getDate();
@@ -87,6 +93,16 @@ public class NewInvoiceModel {
 		formData.setInvoiceItems(invoiceItems);
 		return formData;
 	}
+	public List<String> saveReception(com.binar.entity.InvoiceItem item){
+		FormReception formReception=new FormReception(function);
+		formReception.setReceptionDate(item.getInvoice().getInvoiceDate());
+		formReception.setQuantity(item.getQuantity()+"");
+		formReception.setExpiredDate(item.getExpiredDate());
+		formReception.setInformation("Dari Invoice "+item.getInvoice().getInvoiceNumber());
+		formReception.setInvoiceItemId(item.getIdInvoiceItem());
+		
+		return receptionModel.insertData(formReception);
+	}
 	public List<String> saveInvoice(FormData data){
 		List<String> error=data.validate();
 		if(error!=null){
@@ -103,6 +119,14 @@ public class NewInvoiceModel {
 					supplier.setLastPrice(item.getPricePPN()); //PRICE PPN 
 					server.update(supplier);
 				}
+				for(com.binar.entity.InvoiceItem item:invoice.getInvoiceItem()){
+					if(item.isSaveToReceipt()){
+						List<String> result=saveReception(item);
+						if(result!=null){
+							error.addAll(result);
+						}
+					}
+				}				
 				return null;
 			} catch (OptimisticLockException e) {
 				error.add("Kesalahan penyimpanan data " +e.getMessage());
@@ -139,8 +163,10 @@ public class NewInvoiceModel {
 			invo.setPurchaseOrderItem(item.getPurchaseOrderItem());
 			invo.setQuantity(item.getQuantityInt());
 			invo.setTotalPrice(item.getTotalPriceDouble());
+			invo.setSaveToReceipt(item.isCheckSaveReceipt());
 			
 			invoiceItem.add(invo);
+			
 		}
 		invoice.setInvoiceItem(invoiceItem);
 		invoice.setInvoiceName(generateInvoiceName(invoice));

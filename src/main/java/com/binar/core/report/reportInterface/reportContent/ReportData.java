@@ -25,6 +25,9 @@ public class ReportData {
 	public enum ReportContent{
 		TABLE, CHART, TABLE_CHART, PRINT
 	}
+	public enum ReportAcceptance{
+		ACCEPTED,NON_ACCEPTED, BOTH
+	}
 	private boolean withPPN;
 	public static final String SELECT_GOODS_OBAT="obat";
 	public static final String SELECT_GOODS_ALKES="alkesbmhp";
@@ -38,7 +41,10 @@ public class ReportData {
 	private Date selectedDay;
 	private Date dateStart;
 	private Date dateEnd;
+	//untuk penghapusan
 	private String accepted;
+	//untuk rencana kebutuhan
+	private ReportAcceptance accept;
 	private PeriodeType periodeType;
 	private GeneralFunction function;
 	
@@ -262,6 +268,17 @@ public class ReportData {
 		this.selectedWeek = selectedWeek;
 	}
 
+	public ReportAcceptance getAccept() {
+		return accept;
+	}
+	public void setAccept(ReportAcceptance accept) {
+		if(accept==null){
+			this.accept=ReportAcceptance.BOTH;
+		} else{
+			this.accept = accept;
+		}
+	}
+	
 	public static void main(String[] args) {
 		//array 2=tanggal akhir
 		

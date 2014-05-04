@@ -101,7 +101,7 @@ public class InvoiceViewImpl extends VerticalLayout implements InvoiceView, Clic
 		selectMonth.setImmediate(true);
 
 		String selectedValue=monthList.get(DateTime.now().getMonthOfYear());
-
+		System.out.println("Selected Value" + selectedValue);
 		
 		selectYear.setNullSelectionAllowed(false);
 		selectMonth.setNullSelectionAllowed(false);
@@ -154,6 +154,7 @@ public class InvoiceViewImpl extends VerticalLayout implements InvoiceView, Clic
 		
 		tableContainer=new IndexedContainer(){
 			{
+				
 				addContainerProperty("Nomor Faktur", String.class,null);
 				addContainerProperty("Nama", Label.class,null);
 				addContainerProperty("Distributor",String.class,null);
@@ -166,7 +167,6 @@ public class InvoiceViewImpl extends VerticalLayout implements InvoiceView, Clic
 			}
 		};
 		table.setContainerDataSource(tableContainer);
-		selectMonth.setValue("Semua Bulan");
 
 		construct();
 		
@@ -379,11 +379,11 @@ public class InvoiceViewImpl extends VerticalLayout implements InvoiceView, Clic
 
 			containerDetail=new IndexedContainer(){
 				{
-					addContainerProperty("Jumlah", String.class, null);
 					addContainerProperty("Kode Barang", String.class, null);
 					addContainerProperty("Nama Barang", String.class, null);
-					addContainerProperty("Batch", String.class, null);
 					addContainerProperty("Asuransi", String.class, null);
+					addContainerProperty("Batch", String.class, null);
+					addContainerProperty("Jumlah", String.class, null);
 					addContainerProperty("ED", String.class, null);
 					addContainerProperty("Harga Satuan", String.class, null);
 					addContainerProperty("Harga + PPN", String.class, null);
@@ -415,7 +415,7 @@ public class InvoiceViewImpl extends VerticalLayout implements InvoiceView, Clic
 		 labelInvoiceNumber.setValue(invoice.getInvoiceNumber());
 		 labelInvoiceName.setValue(invoice.getInvoiceName());
 		 labelDueDate.setValue(date.dateToText(invoice.getDueDate(),true));
-		 labelTimestamp.setValue(invoice.getTimestamp().toString());
+		 labelTimestamp.setValue(date.dateTimeToText(invoice.getTimestamp()));
 		 labelTotalPrice.setValue(text.doubleToRupiah(invoice.getTotalPrice()));
 		 labelAmountPaid.setValue(text.doubleToRupiah(invoice.getAmountPaid()));
 		 labelItemCount.setValue(invoice.getInvoiceItem().size()+"");

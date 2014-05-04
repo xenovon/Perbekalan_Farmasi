@@ -43,6 +43,7 @@ import com.binar.entity.Goods;
 import com.binar.entity.GoodsReception;
 import com.binar.entity.ReqPlanning;
 import com.binar.entity.Supplier;
+import com.binar.generalFunction.AcceptancePyramid;
 import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
 import com.binar.generalFunction.TextManipulator;
@@ -70,13 +71,17 @@ public class ReportRequirementResultView extends VerticalLayout implements Butto
 	private ReportContentListener listener;
 	private DateManipulator date;
 	private TextManipulator text;
+	private AcceptancePyramid accept;
+	
 	
 	private GeneralFunction function;
 	public ReportRequirementResultView(GeneralFunction function) {
 		this.function=function;
 		this.date=function.getDate();
 		this.text=function.getTextManipulator();
-	}
+	
+		this.accept=function.getAcceptancePyramid();
+}
 	
 	public void init(ReportData data, ReportContentListener listener) {
 		this.listener=listener;
@@ -106,6 +111,7 @@ public class ReportRequirementResultView extends VerticalLayout implements Butto
 				addContainerProperty("Perkiraan Jumlah Harga", String.class,null);
 				addContainerProperty("Produsen", String.class,null);
 				addContainerProperty("Distributor", String.class,null);
+				addContainerProperty("Disetujui", String.class,null);
 				addContainerProperty("Keterangan", String.class,null);
 			}
 		};				
@@ -118,7 +124,7 @@ public class ReportRequirementResultView extends VerticalLayout implements Butto
 	String goodsType; //ok
 	String periode; //ok
 	String timecycle; //ok
-	 
+	String acceptText="";
 
 	private void processData(ReportData data){
 
@@ -129,13 +135,22 @@ public class ReportRequirementResultView extends VerticalLayout implements Butto
 		
 		if(data.getSelectedGoods().equals(ReportData.SELECT_GOODS_OBAT.toString())){
 			goodsType="Obat";
-			dataContent=model.getRequirement(periodeDate, true);
+			dataContent=model.getRequirement(periodeDate, true, data.getAccept());
 			
 		}else if(data.getSelectedGoods().equals(ReportData.SELECT_GOODS_ALKES.toString())){
-			dataContent=model.getRequirement(periodeDate, false);
+			dataContent=model.getRequirement(periodeDate, false, data.getAccept());
 			goodsType="Alkes & BMHP";
 		}
 		
+		switch (data.getAccept()) {
+		case ACCEPTED:acceptText="Disetujui";
+			
+			break;
+		case NON_ACCEPTED:acceptText="Belum Disetujui";break;
+		case BOTH:acceptText="";break;
+		default:
+			acceptText="";
+		}
 		construct(data.getReportContent(), dataContent);
 	}
 	
@@ -143,7 +158,7 @@ public class ReportRequirementResultView extends VerticalLayout implements Butto
 	private void construct(ReportContent reportContent, List<ReqPlanning> data){
 		this.removeAllComponents();
 		this.addComponent(buttonBack);
-		title.setValue("<h2 style='text-align:center'>Daftar Kebutuhan "+goodsType+"</h3>");
+		title.setValue("<h2 style='text-align:center'>Daftar Kebutuhan "+goodsType+" "+acceptText+"</h3>");
 		subTitle.setValue("<h5 style='text-align:center'>"+periode+"</h5>");
 		
 		this.addComponents(title, subTitle);
@@ -181,6 +196,7 @@ public class ReportRequirementResultView extends VerticalLayout implements Butto
 			item.getItemProperty("Perkiraan Jumlah Harga").setValue(text.doubleToRupiah(datum.getPriceEstimationPPN()*datum.getQuantity()));
 			item.getItemProperty("Produsen").setValue(datum.getSupplierGoods().getManufacturer().getManufacturerName());
 			item.getItemProperty("Distributor").setValue(datum.getSupplierGoods().getSupplier().getSupplierName());
+			item.getItemProperty("Disetujui").setValue(accept.acceptedBy(datum.getAcceptance()));
 			item.getItemProperty("Keterangan").setValue(datum.getInformation());
 		}
 	}

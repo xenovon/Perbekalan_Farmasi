@@ -57,6 +57,7 @@ public class StockListViewImpl  extends VerticalLayout implements StockListView,
 	private Label labelUnit;
 	private Label labelPackage;
 	private Label labelManufacturer;
+	private Label labelCurrentStock;
 	
 	private TableFilter filter;
 	private TextManipulator text;
@@ -95,12 +96,13 @@ public class StockListViewImpl  extends VerticalLayout implements StockListView,
 		
 		selectGoods=new ComboBox("Pilih Barang");
 		selectGoods.addValueChangeListener(this);
-		selectGoods.setWidth("200px");
+		selectGoods.setWidth("300px");
 		selectGoods.setImmediate(true);
 		labelGoodsName=new Label();
 		labelUnit=new Label();
 		labelPackage=new Label();
 		labelManufacturer=new Label();
+		labelCurrentStock = new Label();
 		
 		filter=function.getFilter("");
 		inputFilter=new TextField("Filter Data"){
@@ -120,11 +122,10 @@ public class StockListViewImpl  extends VerticalLayout implements StockListView,
 				});
 			}
 		};
-		
 		table=new Table();
 		table.setSizeFull();
 		table.setWidth("100%");
-		table.setHeight("340px");
+		table.setHeight("320px");
 		table.setPageLength(10);
 		table.setSortEnabled(true);
 		table.setImmediate(true);
@@ -139,9 +140,9 @@ public class StockListViewImpl  extends VerticalLayout implements StockListView,
 				addContainerProperty("Detail Masuk",Button.class,null);
 				addContainerProperty("_",Label.class,new Label(" | ", ContentMode.HTML));
 				addContainerProperty("Jumlah Keluar", String.class, null);
-				addContainerProperty("Sisa", String.class, null);
 				addContainerProperty("Keterangan", String.class, null);
 				addContainerProperty("Detail Keluar", Button.class,null);
+				addContainerProperty("Jumlah Stok", String.class, null);
 			}
 		};
 		table.setContainerDataSource(tableContainer);
@@ -169,12 +170,12 @@ public class StockListViewImpl  extends VerticalLayout implements StockListView,
 				setMargin(true);
 				setSpacing(true);
 				addComponent(new Label("Nama Barang"), 0,1);
-//				addComponent(new Label("Stok Saat Ini"), 0,2);
-				addComponent(new Label("Kemasan"), 0,2);
+				addComponent(new Label("Stok Saat Ini"), 0,2);
+				addComponent(new Label("Kemasan"), 0,3);
 //				addComponent(new Label("Pabrik"), 0,4);
 				addComponent(labelGoodsName, 1,1);
-//				addComponent(labelUnit, 1,2);
-				addComponent(labelPackage, 1,2);
+				addComponent(labelCurrentStock, 1,2);
+				addComponent(labelPackage, 1,3);
 //				addComponent(labelManufacturer, 1,4);
 			}
 		});
@@ -204,7 +205,8 @@ public class StockListViewImpl  extends VerticalLayout implements StockListView,
 		tableContainer.removeAllItems();
 		if(goods!=null){
 			labelGoodsName.setValue(goods.getName());
-			labelUnit.setValue(goods.getUnit());;
+			labelUnit.setValue(goods.getUnit());
+			labelCurrentStock.setValue(text.intToAngka(goods.getCurrentStock()));
 			labelPackage.setValue(goods.getGoodsPackage());			
 		}
 		
@@ -267,6 +269,7 @@ public class StockListViewImpl  extends VerticalLayout implements StockListView,
 					item.getItemProperty("PBF").setValue(reception.getInvoiceItem().getPurchaseOrderItem().getSupplierGoods().getSupplier().getSupplierName());;
 					item.getItemProperty("ED").setValue(date.dateToText(reception.getExpiredDate(), true));
 					item.getItemProperty("Jumlah Masuk").setValue(text.intToAngka(reception.getQuantityReceived()));
+					item.getItemProperty("Jumlah Stok").setValue(text.intToAngka(reception.getStockQuantity()));
 					item.getItemProperty("Detail Masuk").setValue(new Button(){ //mengeset operasi
 						{
 							{
@@ -288,7 +291,7 @@ public class StockListViewImpl  extends VerticalLayout implements StockListView,
 				
 				if(consumption!=null){
 					item.getItemProperty("Jumlah Keluar").setValue(text.intToAngka(consumption.getQuantity()));
-					item.getItemProperty("Sisa").setValue(text.intToAngka(consumption.getStockQuantity()));
+					item.getItemProperty("Jumlah Stok").setValue(text.intToAngka(consumption.getStockQuantity()));
 					item.getItemProperty("Keterangan").setValue(consumption.getInformation());
 					item.getItemProperty("Detail Keluar").setValue(new Button(){ //mengeset operasi
 						{

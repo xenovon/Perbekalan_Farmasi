@@ -14,6 +14,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.RowHeaderMode;
@@ -26,6 +27,7 @@ public class FarmationExpiredGoodsViewImpl  extends Panel implements FarmationEx
 
  */
 	private Table table;
+	private Label labelEmpty;
 	private IndexedContainer tableContainer;
 	private Button buttonRefresh;
 	private Button buttonGo;
@@ -41,6 +43,7 @@ public class FarmationExpiredGoodsViewImpl  extends Panel implements FarmationEx
 	@Override
 	public void init() {
 		table=new Table();
+		
 		table.setSizeFull();
 		table.setPageLength(5);
 		table.setWidth(function.DASHBOARD_TABLE_WIDTH);
@@ -61,6 +64,8 @@ public class FarmationExpiredGoodsViewImpl  extends Panel implements FarmationEx
 		
 		buttonRefresh=new Button("Refresh");
 		buttonRefresh.addClickListener(this);
+		
+		labelEmpty =  new Label();
 
 		construct();
 	}
@@ -81,6 +86,7 @@ public class FarmationExpiredGoodsViewImpl  extends Panel implements FarmationEx
 			{
 				setSpacing(true);
 				setMargin(true);
+				addComponent(labelEmpty);
 				addComponent(table);
 				addComponent(layout);
 			}
@@ -90,17 +96,26 @@ public class FarmationExpiredGoodsViewImpl  extends Panel implements FarmationEx
 
 	@Override
 	public void updateTable(List<GoodsReception> data) {
-		tableContainer.removeAllItems();
-		System.out.println(data.size());
+		if(data.size()==0){
+			table.setVisible(false);
+			labelEmpty.setVisible(true);
+			labelEmpty.setValue("Belum ada barang mendekati kadaluarsa");
+		}else{
+			table.setVisible(true);
+			labelEmpty.setVisible(false);
+			
+			tableContainer.removeAllItems();
+			System.out.println(data.size());
+			
+			for(GoodsReception datum:data){
 
-		for(GoodsReception datum:data){
 
-
-			Item item=tableContainer.addItem(datum.getIdGoodsReceipt());
-			item.getItemProperty("Nama Barang").setValue(datum.getInvoiceItem().getPurchaseOrderItem().getSupplierGoods().getGoods().getName());
-			item.getItemProperty("Jumlah Barang").setValue(text.intToAngka(datum.getQuantityReceived()));
-			item.getItemProperty("Tanggal Masuk").setValue(date.dateToText(datum.getDate(), true));
-			item.getItemProperty("Tanggal Kadaluarsa").setValue(date.dateToText(datum.getExpiredDate(), true));
+				Item item=tableContainer.addItem(datum.getIdGoodsReceipt());
+				item.getItemProperty("Nama Barang").setValue(datum.getInvoiceItem().getPurchaseOrderItem().getSupplierGoods().getGoods().getName());
+				item.getItemProperty("Jumlah Barang").setValue(text.intToAngka(datum.getQuantityReceived()));
+				item.getItemProperty("Tanggal Masuk").setValue(date.dateToText(datum.getDate(), true));
+				item.getItemProperty("Tanggal Kadaluarsa").setValue(date.dateToText(datum.getExpiredDate(), true));
+			}			
 		}
 	}
 	private FarmationExpiredGoodsListener listener;

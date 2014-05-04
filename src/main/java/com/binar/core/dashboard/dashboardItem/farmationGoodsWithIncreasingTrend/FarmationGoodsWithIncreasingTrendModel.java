@@ -334,6 +334,6 @@ public class FarmationGoodsWithIncreasingTrendModel {
 	public String getCurrentMonth(){
 		LocalDate now=new LocalDate();
 		LocalDate notNow=now.minusMonths(6);
-		return date.dateToText(notNow.toDate())+"-"+date.dateToText(now.toDate());
+		return date.dateToText(now.toDate())+"-"+date.dateToText(notNow.toDate());
 	}
 }

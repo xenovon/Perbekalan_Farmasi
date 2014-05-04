@@ -351,6 +351,7 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 	        		addContainerProperty("Tanggal", String.class, null);
 					addContainerProperty("PBF", String.class, null);
 		        	addContainerProperty("Nama barang", String.class, null);
+		        	addContainerProperty("Batch", String.class, null);
 		        	addContainerProperty("Jumlah", String.class, null);
 		        	addContainerProperty("Satuan", String.class, null);
 		        	addContainerProperty("Keterangan", String.class, null);
@@ -456,6 +457,7 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 				Item itemDetailByDate = containerDetailByDate.addItem(reception);
 				itemDetailByDate.getItemProperty("PBF").setValue(reception.getInvoiceItem().getPurchaseOrderItem().getSupplierGoods().getSupplier().getSupplierName());
 				itemDetailByDate.getItemProperty("Nama barang").setValue(reception.getInvoiceItem().getPurchaseOrderItem().getSupplierGoods().getGoods().getName());
+				itemDetailByDate.getItemProperty("Batch").setValue(reception.getInvoiceItem().getBatch());
 				itemDetailByDate.getItemProperty("Jumlah").setValue(text.intToAngka(reception.getQuantityReceived()));
 				itemDetailByDate.getItemProperty("Satuan").setValue(reception.getInvoiceItem().getPurchaseOrderItem().getSupplierGoods().getGoods().getUnit());
 				itemDetailByDate.getItemProperty("Tanggal Kadaluarsa").setValue(date.dateToText(reception.getExpiredDate(),true));;
@@ -521,6 +523,7 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 				itemDetail.getItemProperty("Tanggal").setValue(dateFormat.format(reception.getDate()));
 				itemDetail.getItemProperty("PBF").setValue(reception.getInvoiceItem().getPurchaseOrderItem().getSupplierGoods().getSupplier().getSupplierName());
 				itemDetail.getItemProperty("Nama barang").setValue(reception.getInvoiceItem().getPurchaseOrderItem().getSupplierGoods().getGoods().getName());
+				itemDetail.getItemProperty("Batch").setValue(reception.getInvoiceItem().getBatch());
 				itemDetail.getItemProperty("Satuan").setValue(reception.getInvoiceItem().getPurchaseOrderItem().getSupplierGoods().getGoods().getUnit());
 				itemDetail.getItemProperty("Jumlah").setValue(text.intToAngka(reception.getQuantityReceived()));
         		itemDetail.getItemProperty("Keterangan").setValue(reception.getInformation());;

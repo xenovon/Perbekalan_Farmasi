@@ -190,6 +190,9 @@ public class AcceptancePyramid {
 	
 	//apakah sudah dianggap diterima atau belum oleh ifrs
 	public boolean isAccepted(int value){
+		if(value==-1){
+			return true;
+		}
 		if(value>=1){
 			return true;
 		}else return false;
@@ -319,6 +322,7 @@ public class AcceptancePyramid {
 	private String getAllCommentReqPlanning(int idReqPlanning){
 		try {
 			ReqPlanning req=server.find(ReqPlanning.class, idReqPlanning);
+			System.out.println(req.getIdReqPlanning()+" "+req.getInformation());
 			return req.getComment();
 		} catch (Exception e) {
 			e.printStackTrace();

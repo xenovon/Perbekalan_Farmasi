@@ -47,8 +47,12 @@ public class IfrsGoodsReceptionSummaryPresenter implements IfrsGoodsReceptionSum
 		if(data==null){
 			view.setEmptyDataView();
 		}else{
-			view.generateInformation(data);
-			view.generateChart(model.getChartData(data));			
+			if(data.size()!=0){
+				view.generateInformation(data);
+				view.generateChart(model.getChartData(data));							
+			}else{
+				view.setEmptyDataView();
+			}
 		}
 		
 	}

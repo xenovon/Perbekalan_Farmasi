@@ -167,7 +167,6 @@ public class ReportExpiredGoodsModel extends Label{
 		}else{
 			deletedList=server.find(DeletedGoods.class).where().lt("acceptance",accept.getAcceptedByAllCriteria()).
 					between("deletionDate", start.toDate(), end.toDate()).findList();
-
 		}
 		
 		System.out.println("Start Date : "+startDate);

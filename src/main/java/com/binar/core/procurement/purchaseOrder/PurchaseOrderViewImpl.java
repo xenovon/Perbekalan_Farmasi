@@ -151,7 +151,6 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 			}
 		};
 		table.setContainerDataSource(tableContainer);
-		selectMonth.setValue("Semua Bulan");
 		 buttonPrint=new Button("Cetak");
 			buttonPrint.setDescription("Cetak Surat Pesanan");
 			buttonPrint.setIcon(new ThemeResource("icons/image/icon-print.png"));

@@ -8,6 +8,7 @@ import org.joda.time.DateTime;
 import com.binar.core.report.reportInterface.ReportInterfaceView.ReportInterfaceListener;
 import com.binar.core.report.reportInterface.reportContent.ReportContentView;
 import com.binar.core.report.reportInterface.reportContent.ReportData;
+import com.binar.core.report.reportInterface.reportContent.ReportData.ReportAcceptance;
 import com.binar.core.report.reportInterface.reportContent.ReportData.ReportContent;
 import com.binar.core.report.reportInterface.reportContent.ReportPrint;
 import com.binar.core.report.reportInterface.reportContent.ReportContentView.ReportContentListener;
@@ -42,6 +43,7 @@ public class ReportRequirementViewImpl extends VerticalLayout implements ClickLi
 	private ComboBox   selectYear;
 	private ComboBox selectMonth;
 	private ComboBox selectContent;
+	private OptionGroup selectAcceptance; //memilih apakah sudah disetujui atau belum				
 
 	private GeneralFunction function;
 	BrowserWindowOpener opener;
@@ -88,6 +90,18 @@ public class ReportRequirementViewImpl extends VerticalLayout implements ClickLi
 		selectMonth.setWidth(function.FORM_WIDTH);
 		selectYear.setWidth(function.FORM_WIDTH);
 		
+		selectAcceptance=new OptionGroup("Persetujuan");
+		Item itemAccept1=selectAcceptance.addItem(ReportAcceptance.ACCEPTED);
+		Item itemAccept2=selectAcceptance.addItem(ReportAcceptance.NON_ACCEPTED);
+		Item itemAccept3=selectAcceptance.addItem(ReportAcceptance.BOTH);
+		selectAcceptance.setImmediate(true);
+		selectAcceptance.setValue(ReportAcceptance.BOTH);
+		
+		selectAcceptance.setItemCaption(ReportAcceptance.ACCEPTED, "Kebutuhan Disetujui");
+
+		selectAcceptance.setItemCaption(ReportAcceptance.NON_ACCEPTED, "Kebutuhan Belum Disetujui");
+		selectAcceptance.setItemCaption(ReportAcceptance.BOTH, "DIsetujui dan Belum Disetujui");
+
 		
 		
 		selectGoodsType=new OptionGroup("Tipe Laporan");
@@ -112,7 +126,8 @@ public class ReportRequirementViewImpl extends VerticalLayout implements ClickLi
 		 selectContent.setValue(ReportContent.TABLE);
 
 		
-		selectGoodsType.addValueChangeListener(this);
+		selectAcceptance.addValueChangeListener(this);
+		 selectGoodsType.addValueChangeListener(this);
 		 selectYear.addValueChangeListener(this);
 		 selectMonth.addValueChangeListener(this);
 		 selectContent.addValueChangeListener(this);
@@ -136,7 +151,7 @@ public class ReportRequirementViewImpl extends VerticalLayout implements ClickLi
 				setMargin(true);
 			}
 		};
-		this.addComponents(selectContent, selectGoodsType, selectYear, selectMonth, layout);
+		this.addComponents(selectContent, selectGoodsType, selectAcceptance, selectYear, selectMonth, layout);
 	}
 	@Override
 	public void setListener(ReportContentListener listener) {
@@ -184,6 +199,7 @@ public class ReportRequirementViewImpl extends VerticalLayout implements ClickLi
 	public ReportData getReportData() {
 		ReportData data=new ReportData(function);
 		data.setReportContent((ReportContent)selectContent.getValue());
+		data.setAccept(((ReportAcceptance)selectAcceptance.getValue()));
 
 		data.setSelectedMonth((String) selectMonth.getValue());
 		data.setSelectedYear((String) selectYear.getValue());

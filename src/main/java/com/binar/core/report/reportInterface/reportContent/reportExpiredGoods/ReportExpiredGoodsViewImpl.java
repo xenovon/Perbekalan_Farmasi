@@ -84,7 +84,6 @@ public class ReportExpiredGoodsViewImpl extends VerticalLayout implements ClickL
 		selectEndDate.setImmediate(true);
 		selectEndDate.setWidth(function.FORM_WIDTH);
 		selectEndDate.setValue(endYear);
-				
 		selectAcceptance=new OptionGroup("Persetujuan");
 		Item itemType1=selectAcceptance.addItem("diterima");
 		Item itemType2=selectAcceptance.addItem("belumditerima");
@@ -180,6 +179,7 @@ public class ReportExpiredGoodsViewImpl extends VerticalLayout implements ClickL
 	@Override
 	public ReportData getReportData() {
 		ReportData data=new ReportData(function);
+		
 		data.setAccepted((String) selectAcceptance.getValue());
 		System.out.println(selectEndDate.getValidators().toString());
 		data.setReportContent((ReportContent)selectContent.getValue());
