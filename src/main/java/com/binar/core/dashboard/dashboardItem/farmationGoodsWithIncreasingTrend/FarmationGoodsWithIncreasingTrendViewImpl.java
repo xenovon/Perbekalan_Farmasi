@@ -86,32 +86,32 @@ public class FarmationGoodsWithIncreasingTrendViewImpl  extends Panel implements
 
 		
 		List<String> yearList=function.getListFactory().createYearList(6, 2, false);
+		DateTime dateTime=new DateTime().minusMonths(6);		
 		selectYearStart = new ComboBox("", yearList);
 		selectYearStart.setImmediate(true);
 		selectYearStart.setNullSelectionAllowed(false);
-		selectYearStart.setValue(yearList.get(2));
 		selectYearStart.setTextInputAllowed(false);
 		selectYearStart.setWidth(FORM_WIDTH);
 		selectYearStart.addStyleName("non-caption-form");
+		selectYearStart.setValue(String.valueOf(dateTime.getYear()));
 
 		List<String> monthList=function.getListFactory().createMonthList();
 		selectMonthStart =new ComboBox("", monthList);
 		selectMonthStart.setImmediate(true);
+		selectMonthStart.setValue(monthList.get(dateTime.getMonthOfYear()-1));
 		selectMonthStart.setNullSelectionAllowed(false);
-		selectMonthStart.setValue(monthList.get(Calendar.getInstance().get(Calendar.MONTH)));
 		selectMonthStart.setTextInputAllowed(false);
 		selectMonthStart.setWidth(FORM_WIDTH);
 		selectMonthStart.addStyleName("non-caption-form");
 		
-		DateTime dateTime=new DateTime().minusMonths(6);		
 		List<String> yearList2=function.getListFactory().createYearList(6, 2, false);
 		selectYearEnd = new ComboBox("", yearList2);
 		selectYearEnd.setImmediate(true);
 		selectYearEnd.setNullSelectionAllowed(false);
-		selectYearEnd.setValue(String.valueOf(dateTime.getYear()));
 		selectYearEnd.setTextInputAllowed(false);
 		selectYearEnd.setWidth(FORM_WIDTH);
 		selectYearEnd.addStyleName("non-caption-form");
+		selectYearEnd.setValue(yearList.get(2));
 
 		System.out.println(selectYearEnd.getItemIds().toString());
 		System.out.println("Date now "+dateTime.getYear());
@@ -119,10 +119,10 @@ public class FarmationGoodsWithIncreasingTrendViewImpl  extends Panel implements
 		selectMonthEnd =new ComboBox("", monthList2);
 		selectMonthEnd.setImmediate(true);
 		selectMonthEnd.setNullSelectionAllowed(false);
-		selectMonthEnd.setValue(monthList.get(dateTime.getMonthOfYear()-1));
 		selectMonthEnd.setTextInputAllowed(false);
 		selectMonthEnd.setWidth(FORM_WIDTH);		
 		selectMonthEnd.addStyleName("non-caption-form");
+		selectMonthEnd.setValue(monthList.get(Calendar.getInstance().get(Calendar.MONTH)));
 
 		buttonSubmit =new Button("Submit");
 		buttonSubmit.addClickListener(this);

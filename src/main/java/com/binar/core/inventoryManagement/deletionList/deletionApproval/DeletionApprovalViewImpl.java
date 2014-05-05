@@ -333,7 +333,7 @@ DeletionApprovalView, Button.ClickListener, ValueChangeListener{
 		 }else{
 			 labelAcceptedDate.setValue("");			 		 
 		 }
-		 labelTimeStamp.setValue(data.getTimestamp().toString());
+		 labelTimeStamp.setValue(date.dateTimeToText(data.getTimestamp()));
 		 labelInformation.setValue(data.getInformation());
 		 labelComment.setValue(accept.getCommentDeletionFormat(data.getIdDeletedGoods()));
 

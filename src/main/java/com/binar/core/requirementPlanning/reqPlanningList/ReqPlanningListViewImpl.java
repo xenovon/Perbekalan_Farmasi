@@ -345,7 +345,7 @@ public class ReqPlanningListViewImpl extends VerticalLayout
 			labelIsAccepted.setValue(accept.acceptedBy(data.getAcceptance()));
 			labelAcceptedQuantity.setValue(String.valueOf(data.getAcceptedQuantity()));
 			labelInformation.setValue(data.getInformation());
-			labelTimestamp.setValue(data.getTimestamp().toString());
+			labelTimestamp.setValue(date.dateTimeToText(data.getTimestamp()));
 			labelPriceEstimation.setValue("Rp "+data.getPriceEstimation());
 			labelPriceEstimation.setValue(text.doubleToRupiah(data.getPriceEstimation()));
 			labelPriceEstimationPPN.setValue(text.doubleToRupiah(data.getPriceEstimationPPN()));

@@ -210,7 +210,7 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 			item.getItemProperty("Jenis Surat").setValue(datum.getPurchaseOrderType().toString());
 			item.getItemProperty("Tanggal").setValue(date.dateToText(datum.getDate(), true));
 			item.getItemProperty("Jumlah Barang").setValue(datum.getPurchaseOrderItem().size());
-			item.getItemProperty("Tanggal Dibuat").setValue(datum.getTimeStamp_format());
+			item.getItemProperty("Tanggal Dibuat").setValue(date.dateTimeToText(datum.getTimestamp()));
 			item.getItemProperty("Operasi").setValue(new GridLayout(3,1){
 			{
 					Button buttonEdit=new Button();

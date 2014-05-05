@@ -65,24 +65,67 @@ public class InputDeletionPresenter implements InputDeletionView.InputDeletionLi
 		}		
 		
 	}
-
-	@Override
-	public void buttonSave() {
-		FormDeletion data=view.getFormData();
-		List<String> errors=model.insertData(data);
-		if(errors==null){
-			closeWindow();
-			view.resetForm();
-			Notification.show("Penyimpanan rencana kebutuhan berhasil", Type.TRAY_NOTIFICATION);
-
-		}else{
-			String textError="Penyimpanan Tidak Berhasil, Silahkan koreksi Error berikut : </br>";
-			for(String error:errors){
+	private void submitManyData(){
+		List<FormDeletion> data=view.getFormDataList();
+		//jika data terakhir belum disave ke list form data
+		//Jumlahnya antara jumlah pos dan ukuran data beda
+		if(data.size()!=view.getPosCount()){
+			FormDeletion formData=view.getFormData();
+			List<String> errors=formData.validate();
+			if(errors!=null){
+				String textError="Silahkan terlebih dahulu koreksi Error berikut : </br>";
+				for(String error:errors){
+					textError=textError+error+"</br>";
+				}
+				view.showError(ErrorLabel.GENERAL, textError);
+			}else{
+				data.add(formData);				
+			}
+		}
+		
+//		/simpan
+		List<String> status=model.insertData(data); //insert data
+		if(status!=null){ //penyimpanan gagal
+			String textError="Silahkan terlebih dahulu koreksi Error berikut : </br>";
+			for(String error:status){
 				textError=textError+error+"</br>";
 			}
+
 			view.showError(ErrorLabel.GENERAL, textError);
-			
-		}		
+		}else{ //penyimpanan sukses
+			Collection<Window> list=view.getUI().getWindows();
+			for(Window w:list){
+				view.getUI().removeWindow(w);
+			}
+			view.resetView();
+			view.resetForm();
+			Notification.show("Penyimpanan Penghapusan Data Berhasil", Type.TRAY_NOTIFICATION);
+		}
+
+		
+	
+	}
+	@Override
+	public void buttonSave() {
+		if(view.getFormDataList().size()!=0){
+			submitManyData();
+		}else{
+			FormDeletion data=view.getFormData();
+			List<String> errors=model.insertData(data, true);
+			if(errors==null){
+				closeWindow();
+				view.resetForm();
+				Notification.show("Penyimpanan rencana kebutuhan berhasil", Type.TRAY_NOTIFICATION);
+	
+			}else{
+				String textError="Penyimpanan Tidak Berhasil, Silahkan koreksi Error berikut : </br>";
+				for(String error:errors){
+					textError=textError+error+"</br>";
+				}
+				view.showError(ErrorLabel.GENERAL, textError);
+				
+			}
+		}
 	}
 
 	@Override
@@ -105,8 +148,10 @@ public class InputDeletionPresenter implements InputDeletionView.InputDeletionLi
 		if(goods!=null){
 			view.setUnit(goods.getUnit());
 			view.setPriceGuideValue(model.generatePriceGuide(goods.getIdGoods()));
-
-		}		
+		}else{
+			view.setUnit("");
+			view.setPriceGuideValue("");
+		}
 	}
 	@Override
 	public void buttonCancel() {

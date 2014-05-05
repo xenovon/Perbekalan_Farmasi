@@ -129,11 +129,12 @@ public class FarmationGoodsWithIncreasingTrendModel {
 	public Map<String,List<Integer>> getChartData(DateTime dateStart, int period){
 		//Dapatkan data bulanan semua barang, selama 6 bulan
 		Map<String, List<Integer>> monthlyData=getGoodsConsumptionData(dateStart, period);
-
+		
 		//konversikan ke jumlah trend
 		Map<String, Integer> data2=new HashMap<String, Integer>();
 		for(Entry<String, List<Integer>> entry:monthlyData.entrySet()){
 			data2.put(entry.getKey(),countIncreasingTrend(entry.getValue()));
+			System.out.println(entry.getKey()+" "+entry.getValue().toString());
 		}
 		data2=MapUtil.sortByValue(data2);
 		System.out.println("Data trend "+data2.toString());
@@ -334,6 +335,6 @@ public class FarmationGoodsWithIncreasingTrendModel {
 	public String getCurrentMonth(){
 		LocalDate now=new LocalDate();
 		LocalDate notNow=now.minusMonths(6);
-		return date.dateToText(now.toDate())+"-"+date.dateToText(notNow.toDate());
+		return date.dateToText(notNow.toDate())+"-"+date.dateToText(now.toDate());
 	}
 }

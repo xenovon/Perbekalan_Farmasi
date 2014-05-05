@@ -30,6 +30,7 @@ public class InputDeletionModel {
 		this.function=function;
 		this.server=function.getServer();
 		this.setting=function.getSetting();
+		this.text=function.getTextManipulator();
 	}
 	
 	public Map<String,String> getGoodsData(){
@@ -45,8 +46,28 @@ public class InputDeletionModel {
 		}
 		return data;
 	}
+	public List<String> insertData(List<FormDeletion> data){
+		List<String> returnValue = null;
+		server.beginTransaction();
+		for(FormDeletion datum:data){
+			returnValue=insertData(datum, false);
+			if(returnValue!=null){
+				break;
+			}
+		}
+		if(returnValue!=null){
+			server.rollbackTransaction();
+		}else{
+			server.commitTransaction();
+		}
+		server.endTransaction();
+		return returnValue;
+
+	}
+	//menyimpan data analisis kebutuhan
+
 	
-	public List<String> insertData(FormDeletion data){
+	public List<String> insertData(FormDeletion data, boolean isSingle){
 		//mulai transaksi
 		List<String> error=data.validate();
 		if(error!=null){
@@ -54,7 +75,9 @@ public class InputDeletionModel {
 		}else{
 			error=new ArrayList<String>();
 		}
-		server.beginTransaction();
+		if(isSingle){
+			server.beginTransaction();			
+		}
 		try {
 			Goods goods=server.find(Goods.class, data.getIdGoods());	
 			//mulai insert
@@ -65,25 +88,37 @@ public class InputDeletionModel {
 			deletion.setInformation(data.getInformation());
 			deletion.setGoods(goods);
 			deletion.setPrice(Double.parseDouble(data.getPrice()));
+			deletion.setComment("Init Value");
 			server.save(deletion);
-			server.commitTransaction();
+			
+			if(isSingle){
+				server.commitTransaction();				
+			}
 			return null;
 			
 		} catch (NumberFormatException e) {
-			server.rollbackTransaction();
+			if(isSingle){
+				server.rollbackTransaction();
+			}
 			e.printStackTrace();
 			error.add("Kesalahan pengisian angka :"+e.getMessage());
 		} catch (OptimisticLockException e) {
-			server.rollbackTransaction();
+			if(isSingle){
+				server.rollbackTransaction();
+			}
 			e.printStackTrace();
 			error.add("Kesalahan tulis data ke database " + e.getMessage());
 		}catch(Exception e){
-			server.rollbackTransaction();
+			if(isSingle){				
+				server.rollbackTransaction();
+			}
 			e.printStackTrace();
 			error.add("Kesalahan submit : " + e.getMessage());
 		
 		}finally{
-			server.endTransaction();			
+			if(isSingle){
+				server.endTransaction();							
+			}
 		}
 		return error.size()==0?null:error;
 	}
@@ -151,6 +186,9 @@ public class InputDeletionModel {
 	}
 	
 	public Goods getGoods(String idGoods){
+		if(idGoods==null){
+			return null;
+		}
 		return server.find(Goods.class, idGoods);
 	}
 	//mendapatkan daftar harga untuk ditampilkan saat penghapusan
@@ -161,8 +199,9 @@ public class InputDeletionModel {
 			
 
 			List<SupplierGoods> supplierGoods=server.find(SupplierGoods.class).where().eq("goods",goods).findList();
+			
 			for(SupplierGoods datum:supplierGoods){
-				returnValue=returnValue+text.doubleToRupiah(datum.getLastPrice())+"</br>";
+				returnValue=returnValue+datum.getSupplier().getSupplierName()+" - "+text.doubleToRupiah(datum.getLastPrice())+"</br>";
 			}
 			
 			if(supplierGoods.size()==0){

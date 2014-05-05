@@ -362,7 +362,7 @@ public class DeletionListViewImpl extends VerticalLayout implements DeletionList
 		 if(data.getApprovalDate()!=null){
 			 labelAcceptedDate.setValue(date.dateToText(data.getApprovalDate(), true));
 		 }
-		 labelTimeStamp.setValue(data.getTimestamp().toString());
+		 labelTimeStamp.setValue(date.dateTimeToText(data.getTimestamp()));
 		 labelInformation.setValue(data.getInformation());
 		 labelComment.setValue(accept.getCommentDeletionFormat(data.getIdDeletedGoods()));
 	}

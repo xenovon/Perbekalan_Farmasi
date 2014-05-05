@@ -61,8 +61,8 @@ DCharts chart = new DCharts()
 
 	@Override
 	public void updateChart(DateTime dateStart, int period) {
-		Map<String, List<Integer>> data=model.getChartDataDummy(period);
-//		Map<String, List<Integer>> data=model.getChartData(dateStart, period);
+//		Map<String, List<Integer>> data=model.getChartDataDummy(period);
+		Map<String, List<Integer>> data=model.getChartData(dateStart, period);
 		if(data==null){
 			view.setEmptyDataView();
 		}else{
