@@ -142,7 +142,6 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 				addContainerProperty("Nomor Surat", String.class,null);
 				addContainerProperty("Nama", Label.class,null);
 				addContainerProperty("Distributor",String.class,null);
-				addContainerProperty("Asuransi",String.class,null);
 				addContainerProperty("Jenis Surat", String.class,null);
 				addContainerProperty("Tanggal",String.class,null);
 				addContainerProperty("Jumlah Barang",Integer.class,null);
@@ -206,7 +205,6 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 			item.getItemProperty("Nomor Surat").setValue(datum.getPurchaseOrderNumber());
 			item.getItemProperty("Nama").setValue(new Label(datum.getPurchaseOrderName()){{setWidth("200px");}});
 			item.getItemProperty("Distributor").setValue(datum.getPurchaseOrderItem().get(0).getSupplierGoods().getSupplier().getSupplierName());
-			item.getItemProperty("Asuransi").setValue(datum.getPurchaseOrderItem().get(0).getSupplierGoods().getGoods().getInsurance().getName());
 			item.getItemProperty("Jenis Surat").setValue(datum.getPurchaseOrderType().toString());
 			item.getItemProperty("Tanggal").setValue(date.dateToText(datum.getDate(), true));
 			item.getItemProperty("Jumlah Barang").setValue(datum.getPurchaseOrderItem().size());
@@ -331,6 +329,7 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 			containerDetail=new IndexedContainer(){
 				{
 					addContainerProperty("Nama Barang", String.class, null);
+					addContainerProperty("Asuransi", String.class, null);
 					addContainerProperty("Jumlah", Integer.class, null);
 					addContainerProperty("Satuan", String.class, null);
 					addContainerProperty("Keterangan", String.class, null);
@@ -383,6 +382,7 @@ public class PurchaseOrderViewImpl extends VerticalLayout implements PurchaseOrd
 		for(PurchaseOrderItem datum:purchaseOrder.getPurchaseOrderItem()){
 			Item item=containerDetail.addItem(datum.getIdPurchaseOrderItem());
 			item.getItemProperty("Nama Barang").setValue(datum.getSupplierGoods().getGoods().getName());
+			item.getItemProperty("Asuransi").setValue(datum.getSupplierGoods().getGoods().getInsurance().getName());
 			item.getItemProperty("Jumlah").setValue(datum.getQuantity());
 			item.getItemProperty("Satuan").setValue(datum.getSupplierGoods().getGoods().getUnit());
 			item.getItemProperty("Keterangan").setValue(datum.getInformation());

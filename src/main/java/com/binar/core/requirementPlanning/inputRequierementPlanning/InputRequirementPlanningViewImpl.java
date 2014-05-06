@@ -126,10 +126,10 @@ public class InputRequirementPlanningViewImpl extends VerticalLayout
         tableContainer=new IndexedContainer(){
         	{
         		addContainerProperty("Nama Barang",String.class, null);
+        		addContainerProperty("Asuransi",String.class, null);
         		addContainerProperty("Kebutuhan",Integer.class, null);
         		addContainerProperty("Produsen",String.class, null);
         		addContainerProperty("Distributor",String.class, null);
-        		addContainerProperty("Asuransi",String.class, null);
         		addContainerProperty("Operasi", GridLayout.class, null);
         	}
         };

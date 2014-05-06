@@ -373,8 +373,8 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 				}
 			};					
 		}//menutup jika windowDetail null
-		
 		windowDetail.setContent(layoutDetail);
+		this.getUI().removeWindow(windowDetail);
 		this.getUI().addWindow(windowDetail);	
 	}
 	
@@ -415,6 +415,7 @@ public class ReceptionListViewImpl extends VerticalLayout implements ReceptionLi
 	        	{
 					addContainerProperty("PBF", String.class, null);
 		        	addContainerProperty("Nama barang", String.class, null);
+		        	addContainerProperty("Batch", String.class, null);
 		        	addContainerProperty("Jumlah", String.class, null);
 		        	addContainerProperty("Satuan", String.class, null);
 		        	addContainerProperty("Tanggal Kadaluarsa", String.class, null);

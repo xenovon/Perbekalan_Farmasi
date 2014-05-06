@@ -8,6 +8,7 @@ import com.binar.core.requirementPlanning.approval.ApprovalModel.AcceptData;
 import com.binar.entity.Goods;
 import com.binar.entity.ReqPlanning;
 import com.binar.generalFunction.AcceptancePyramid;
+import com.binar.generalFunction.DateManipulator;
 import com.binar.generalFunction.GeneralFunction;
 import com.binar.generalFunction.TableFilter;
 import com.binar.generalFunction.TextManipulator;
@@ -50,12 +51,14 @@ public class ApprovalViewImpl extends VerticalLayout implements
 	TextManipulator text;
 	IndexedContainer container;
 	TextField inputFilter;
+	DateManipulator date;
 
 	AcceptancePyramid accept;
 	public ApprovalViewImpl(GeneralFunction function){
 		generalFunction=function;
 		text=generalFunction.getTextManipulator();
 		this.accept=function.getAcceptancePyramid();
+		this.date=function.getDate();
 	}
 	TableFilter filter;
 	public void init(){
